@@ -46,6 +46,11 @@ Config env: copiare `env.json.example` → `env.json` con URL e anon key del pro
 | `lib/features/` | Schermate per feature |
 | `lib/shared/widgets/` | Widget riutilizzabili |
 | `supabase/migrations/` | Schema SQL + RPC |
+| `docs/` | Roadmap e piani di implementazione |
+
+## Roadmap
+
+Prima di feature non banali, leggere `docs/ROADMAP.md` e il piano di fase corrispondente in `docs/plans/`.
 
 ## Glossario
 

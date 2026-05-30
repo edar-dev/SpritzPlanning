@@ -60,6 +60,15 @@ Variabili d'ambiente configurate su Vercel (Production + Development):
 
 Il build usa `scripts/vercel-build.sh` (installa Flutter su Linux e compila la web app).
 
+## Roadmap
+
+Piani di miglioramento (punti 1–9): [docs/ROADMAP.md](docs/ROADMAP.md)
+
+- [Fase 1 — Sicurezza, CI, cleanup](docs/plans/phase-1-security-ci.md)
+- [Fase 2 — Realtime resiliente](docs/plans/phase-2-realtime.md)
+- [Fase 3 — UX lobby e votazione](docs/plans/phase-3-lobby-voting-ux.md)
+- [Fase 4 — Test e PWA](docs/plans/phase-4-quality-pwa.md)
+
 ## Test
 
 ```bash
