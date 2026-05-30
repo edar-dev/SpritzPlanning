@@ -1,16 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../models/connection_status.dart';
 import '../models/models.dart';
 import '../supabase/supabase_client.dart';
+import 'realtime_connection_manager.dart';
 
 class RoomRepository {
-  RealtimeChannel? _channel;
+  RoomRepository({RealtimeConnectionManager? connectionManager})
+      : _connectionManager =
+            connectionManager ?? RealtimeConnectionManager();
+
+  final RealtimeConnectionManager _connectionManager;
   final _controller = StreamController<RoomState>.broadcast();
+  String? _subscribedRoomId;
 
   Stream<RoomState> get roomStateStream => _controller.stream;
+
+  Stream<ConnectionStatus> get connectionStatusStream =>
+      _connectionManager.connectionStatusStream;
 
   Future<SessionResult> createRoom({
     required String name,
@@ -82,50 +91,11 @@ class RoomRepository {
 
   void subscribeToRoom(String roomId) {
     unsubscribe();
-    _refreshAndEmit(roomId);
-
-    _channel = supabase
-        .channel('room:$roomId')
-        .onPostgresChanges(
-          event: PostgresChangeEvent.all,
-          schema: 'public',
-          table: 'rooms',
-          filter: PostgresChangeFilter(
-            type: PostgresChangeFilterType.eq,
-            column: 'id',
-            value: roomId,
-          ),
-          callback: (_) => _refreshAndEmit(roomId),
-        )
-        .onPostgresChanges(
-          event: PostgresChangeEvent.all,
-          schema: 'public',
-          table: 'participants',
-          filter: PostgresChangeFilter(
-            type: PostgresChangeFilterType.eq,
-            column: 'room_id',
-            value: roomId,
-          ),
-          callback: (_) => _refreshAndEmit(roomId),
-        )
-        .onPostgresChanges(
-          event: PostgresChangeEvent.all,
-          schema: 'public',
-          table: 'stories',
-          filter: PostgresChangeFilter(
-            type: PostgresChangeFilterType.eq,
-            column: 'room_id',
-            value: roomId,
-          ),
-          callback: (_) => _refreshAndEmit(roomId),
-        )
-        .onPostgresChanges(
-          event: PostgresChangeEvent.all,
-          schema: 'public',
-          table: 'votes',
-          callback: (_) => _refreshAndEmit(roomId),
-        )
-        .subscribe();
+    _subscribedRoomId = roomId;
+    _connectionManager.subscribe(
+      roomId: roomId,
+      onStateRefresh: () => _refreshAndEmit(roomId),
+    );
   }
 
   Future<void> _refreshAndEmit(String roomId) async {
@@ -136,18 +106,24 @@ class RoomRepository {
       }
     } catch (e) {
       debugPrint('Errore refresh room: $e');
+      rethrow;
     }
   }
 
+  Future<void> refreshSubscribedRoom() async {
+    final roomId = _subscribedRoomId;
+    if (roomId == null) return;
+    await _connectionManager.manualRefresh();
+  }
+
   void unsubscribe() {
-    if (_channel != null) {
-      supabase.removeChannel(_channel!);
-      _channel = null;
-    }
+    _subscribedRoomId = null;
+    _connectionManager.unsubscribe();
   }
 
   void dispose() {
     unsubscribe();
+    _connectionManager.dispose();
     _controller.close();
   }
 

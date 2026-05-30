@@ -8,6 +8,8 @@ import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../data/models/connection_status.dart';
+import '../../shared/widgets/connection_banner.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/section_header.dart';
@@ -45,6 +47,8 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     final roomStateAsync = ref.watch(roomStateProvider);
     final session = ref.watch(sessionProvider).valueOrNull;
     final isFacilitator = ref.watch(isFacilitatorProvider);
+    final connectionStatus = ref.watch(connectionStatusProvider).valueOrNull ??
+        ConnectionStatus.connected;
 
     return roomStateAsync.when(
       loading: () => const Scaffold(
@@ -78,6 +82,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         final showVoting = room.phase == RoomPhase.voting ||
             room.phase == RoomPhase.revealed;
 
+        final showConnectionBanner =
+            connectionStatus != ConnectionStatus.connected;
+
         return Scaffold(
           appBar: AppBar(
             title: Column(
@@ -105,7 +112,17 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               ),
             ],
           ),
-          body: LayoutBuilder(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (showConnectionBanner)
+                ConnectionBanner(
+                  status: connectionStatus,
+                  onRefresh: () =>
+                      ref.read(roomStateProvider.notifier).refresh(),
+                ),
+              Expanded(
+                child: LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth > 800;
 
@@ -174,6 +191,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                 ),
               );
             },
+                ),
+              ),
+            ],
           ),
           floatingActionButton: isFacilitator && !showVoting
               ? FloatingActionButton.extended(

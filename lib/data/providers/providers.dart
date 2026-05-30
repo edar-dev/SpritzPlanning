@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/storage/session_storage.dart';
+import '../models/connection_status.dart';
 import '../models/models.dart';
 import '../repositories/room_repository.dart';
 
@@ -10,6 +11,10 @@ final roomRepositoryProvider = Provider<RoomRepository>((ref) {
   final repo = RoomRepository();
   ref.onDispose(repo.dispose);
   return repo;
+});
+
+final connectionStatusProvider = StreamProvider<ConnectionStatus>((ref) {
+  return ref.watch(roomRepositoryProvider).connectionStatusStream;
 });
 
 final sessionProvider =
@@ -65,11 +70,13 @@ final roomStateProvider =
 class RoomStateNotifier extends AsyncNotifier<RoomState?> {
   RoomRepository get _repo => ref.read(roomRepositoryProvider);
   Timer? _heartbeatTimer;
+  StreamSubscription<RoomState>? _roomSubscription;
 
   @override
   Future<RoomState?> build() async {
     ref.onDispose(() {
       _heartbeatTimer?.cancel();
+      _roomSubscription?.cancel();
       _repo.unsubscribe();
     });
     return null;
@@ -78,6 +85,7 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
   Future<void> enterRoom(String roomId, String participantId) async {
     state = const AsyncLoading();
     try {
+      await _roomSubscription?.cancel();
       _repo.subscribeToRoom(roomId);
       final roomState = await _repo.fetchRoomState(roomId);
       state = AsyncData(roomState);
@@ -88,7 +96,7 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
         (_) => _repo.heartbeat(participantId: participantId),
       );
 
-      _repo.roomStateStream.listen((updated) {
+      _roomSubscription = _repo.roomStateStream.listen((updated) {
         state = AsyncData(updated);
       });
     } catch (e, st) {
@@ -97,14 +105,14 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
   }
 
   Future<void> refresh() async {
-    final current = state.valueOrNull;
-    if (current == null) return;
-    final updated = await _repo.fetchRoomState(current.room.id);
-    state = AsyncData(updated);
+    if (state.valueOrNull == null) return;
+    await _repo.refreshSubscribedRoom();
   }
 
   void leaveRoom() {
     _heartbeatTimer?.cancel();
+    _roomSubscription?.cancel();
+    _roomSubscription = null;
     _repo.unsubscribe();
     state = const AsyncData(null);
   }
