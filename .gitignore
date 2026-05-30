@@ -46,3 +46,6 @@ app.*.map.json
 
 # Environment secrets
 env.json
+
+# Vercel local link
+.vercel

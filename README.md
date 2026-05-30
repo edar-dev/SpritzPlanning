@@ -13,9 +13,17 @@ Scrum poker con tema spritz per team di sviluppatori. Flutter (Web + Android) + 
 
 ### 1. Supabase
 
-1. Crea un progetto su [supabase.com](https://supabase.com)
-2. Esegui la migration in `supabase/migrations/001_initial_schema.sql` (SQL Editor o `supabase db push`)
-3. Copia URL e anon key
+Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
+
+- Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
+- Migration già applicata: `initial_schema` (tabelle, RPC, RLS, Realtime)
+
+Per sviluppo locale, copia le credenziali in `env.json`:
+
+```bash
+cp env.json.example env.json
+# Inserisci SUPABASE_URL e SUPABASE_ANON_KEY dalla dashboard → Settings → API
+```
 
 ### 2. Configurazione locale
 
