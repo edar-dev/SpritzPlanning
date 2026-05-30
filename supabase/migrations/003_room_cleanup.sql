@@ -29,12 +29,4 @@ REVOKE ALL ON FUNCTION cleanup_stale_rooms(INT) FROM PUBLIC;
 -- Callable by service role / SQL editor only (not anon client app)
 GRANT EXECUTE ON FUNCTION cleanup_stale_rooms(INT) TO service_role;
 
--- pg_cron: enable extension in Supabase Dashboard, then run manually:
---
--- SELECT cron.schedule(
---   'cleanup-stale-rooms',
---   '0 */6 * * *',
---   $$ SELECT cleanup_stale_rooms(24); $$
--- );
---
--- To remove: SELECT cron.unschedule('cleanup-stale-rooms');
+-- Scheduled cleanup: see 004_pg_cron.sql

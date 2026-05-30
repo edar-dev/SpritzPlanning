@@ -16,7 +16,7 @@ Scrum poker con tema spritz per team di sviluppatori. Flutter (Web + Android) + 
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
-- Migrations applicate (in ordine): `001_initial_schema`, `002_security_hardening`, `003_room_cleanup`
+- Migrations (in ordine): `001_initial_schema`, `002_security_hardening`, `003_room_cleanup`, `004_pg_cron`
 - Dettagli DB: [supabase/README.md](supabase/README.md)
 
 Per sviluppo locale, copia le credenziali in `env.json`:
@@ -82,7 +82,7 @@ Piani di miglioramento (punti 1–9): [docs/ROADMAP.md](docs/ROADMAP.md)
 
 - Ogni attività aggiorna `last_activity_at` sulla stanza.
 - Le stanze **inattive da più di 24 ore** possono essere eliminate con `cleanup_stale_rooms(24)` (cascade su partecipanti, ordini, voti).
-- Per cleanup automatico: abilita **pg_cron** in Supabase e schedula il job (vedi [supabase/README.md](supabase/README.md)).
+- Per cleanup automatico: applica la migration `004_pg_cron.sql` (vedi [supabase/README.md](supabase/README.md)).
 
 ## CI
 

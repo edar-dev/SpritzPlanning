@@ -16,21 +16,23 @@ supabase db push
 | `001_initial_schema.sql` | Schema, RPC, RLS iniziale, Realtime |
 | `002_security_hardening.sql` | RLS write bloccato, rate limit create_room |
 | `003_room_cleanup.sql` | `cleanup_stale_rooms()` |
+| `004_pg_cron.sql` | Estensione `pg_cron` + job `cleanup-stale-rooms` (ogni 6h) |
 
 ## Cleanup automatico (pg_cron)
 
-1. Dashboard → Database → Extensions → abilita **pg_cron**
-2. SQL Editor:
+Applica `004_pg_cron.sql` (o `supabase db push` dopo 001–003).
+
+- Job: `cleanup-stale-rooms`
+- Schedule: ogni 6 ore (`0 */6 * * *`)
+- Azione: `cleanup_stale_rooms(24)` — elimina stanze inattive da **24 ore** (cascade su partecipanti, ordini, voti)
+
+Alternativa senza migration: MCP Supabase `execute_sql` o SQL Editor (stesso SQL del file 004).
+
+Rimuovere il job:
 
 ```sql
-SELECT cron.schedule(
-  'cleanup-stale-rooms',
-  '0 */6 * * *',
-  $$ SELECT cleanup_stale_rooms(24); $$
-);
+SELECT cron.unschedule(jobid) FROM cron.job WHERE jobname = 'cleanup-stale-rooms';
 ```
-
-Stanze senza attività per **24 ore** vengono eliminate (cascade su partecipanti, ordini, voti).
 
 Test manuale:
 
