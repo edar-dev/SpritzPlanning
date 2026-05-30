@@ -10,19 +10,23 @@ class ConnectionBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: const Color(AppColors.errorRed),
+      color: const Color(AppColors.errorRed).withValues(alpha: 0.95),
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: [
-              const Icon(Icons.wifi_off, color: Colors.white, size: 18),
-              const SizedBox(width: 8),
+              const Icon(Icons.wifi_off_rounded, color: Colors.white, size: 18),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   message,
-                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],

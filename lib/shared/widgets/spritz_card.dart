@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/constants/deck_values.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_decorations.dart';
 
 class SpritzCard extends StatelessWidget {
   const SpritzCard({
@@ -24,15 +25,12 @@ class SpritzCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final label = DeckValues.label(value);
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeOut,
+    return AnimatedScale(
+      scale: selected ? 1.05 : 1,
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
       child: Material(
-        color: selected
-            ? Theme.of(context).colorScheme.primary
-            : const Color(AppColors.voteCard),
-        borderRadius: BorderRadius.circular(16),
-        elevation: selected ? 6 : 2,
+        color: Colors.transparent,
         child: InkWell(
           onTap: disabled
               ? null
@@ -40,18 +38,31 @@ class SpritzCard extends StatelessWidget {
                   HapticFeedback.lightImpact();
                   onTap();
                 },
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            width: revealed ? 80 : 72,
-            height: revealed ? 110 : 100,
+          borderRadius: BorderRadius.circular(AppDecorations.radiusMd),
+          child: Ink(
+            width: revealed ? 80 : 68,
+            height: revealed ? 104 : 92,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              color: selected
+                  ? const Color(AppColors.spritzOrange)
+                  : const Color(AppColors.surface),
+              borderRadius: BorderRadius.circular(AppDecorations.radiusMd),
               border: Border.all(
                 color: selected
-                    ? Theme.of(context).colorScheme.primary
-                    : const Color(AppColors.oliveGreen).withValues(alpha: 0.3),
+                    ? const Color(AppColors.spritzOrange)
+                    : const Color(AppColors.border),
                 width: selected ? 2 : 1,
               ),
+              boxShadow: selected
+                  ? [
+                      BoxShadow(
+                        color: const Color(AppColors.spritzOrange)
+                            .withValues(alpha: 0.25),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : null,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -59,9 +70,11 @@ class SpritzCard extends StatelessWidget {
                 Text(
                   value,
                   style: TextStyle(
-                    fontSize: value.length > 2 ? 24 : 32,
-                    fontWeight: FontWeight.bold,
-                    color: selected ? Colors.white : const Color(AppColors.darkWood),
+                    fontSize: value.length > 2 ? 22 : 28,
+                    fontWeight: FontWeight.w700,
+                    color: selected
+                        ? Colors.white
+                        : const Color(AppColors.textPrimary),
                   ),
                 ),
                 if (revealed) ...[
@@ -75,9 +88,10 @@ class SpritzCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 10,
+                        fontWeight: FontWeight.w500,
                         color: selected
-                            ? Colors.white70
-                            : const Color(AppColors.darkWood).withValues(alpha: 0.7),
+                            ? Colors.white.withValues(alpha: 0.85)
+                            : const Color(AppColors.textSecondary),
                       ),
                     ),
                   ),

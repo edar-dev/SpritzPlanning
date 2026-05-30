@@ -6,8 +6,11 @@ import 'package:share_plus/share_plus.dart';
 import '../../core/constants/app_strings.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_decorations.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../shared/widgets/room_code_display.dart';
+import '../../shared/widgets/section_header.dart';
 import '../voting/voting_panel.dart';
 
 class RoomScreen extends ConsumerStatefulWidget {
@@ -77,10 +80,22 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(room.name),
+            title: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(room.name),
+                Text(
+                  room.code,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: const Color(AppColors.textSecondary),
+                        letterSpacing: 1.5,
+                      ),
+                ),
+              ],
+            ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.exit_to_app),
+                icon: const Icon(Icons.logout_rounded),
                 tooltip: 'Lascia il locale',
                 onPressed: () async {
                   ref.read(roomStateProvider.notifier).leaveRoom();
@@ -96,10 +111,16 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
 
               if (isWide) {
                 return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: 320,
+                    Container(
+                      width: 300,
+                      decoration: const BoxDecoration(
+                        color: Color(AppColors.surfaceMuted),
+                        border: Border(
+                          right: BorderSide(color: Color(AppColors.border)),
+                        ),
+                      ),
                       child: _Sidebar(
                         roomState: roomState,
                         isFacilitator: isFacilitator,
@@ -213,15 +234,19 @@ class _ParticipantsRow extends StatelessWidget {
     final showVoteStatus = roomState.room.phase == RoomPhase.voting &&
         !roomState.room.votesRevealed;
 
-    return Card(
+    return DecoratedBox(
+      decoration: AppDecorations.surfaceCard(radius: AppDecorations.radiusLg),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               AppStrings.clienti,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: const Color(AppColors.textSecondary),
+                  ),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -260,47 +285,75 @@ class _LobbyPanel extends ConsumerWidget {
         .where((s) => s.status != StoryStatus.done)
         .toList();
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppStrings.menu,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          if (pendingStories.isEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.menu_book,
-                        size: 48,
-                        color: Colors.grey.shade400,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        AppStrings.menuEmpty,
-                        style: TextStyle(color: Colors.grey.shade600),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SectionHeader(
+                title: AppStrings.menu,
+                subtitle: 'Ordini da stimare con il team',
               ),
-            )
-          else
-            ...pendingStories.map((story) {
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
+              const SizedBox(height: 16),
+              if (pendingStories.isEmpty)
+                DecoratedBox(
+                  decoration: AppDecorations.surfaceCard(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 56,
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: AppDecorations.iconBadge(
+                              primary: false,
+                            ),
+                            child: const Icon(
+                              Icons.receipt_long_outlined,
+                              size: 32,
+                              color: Color(AppColors.textSecondary),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            AppStrings.menuEmpty,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              else
+                ...pendingStories.map((story) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: DecoratedBox(
+                  decoration: AppDecorations.surfaceCard(
+                    radius: AppDecorations.radiusMd,
+                  ),
+                  child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   leading: CircleAvatar(
-                    backgroundColor: _statusColor(story.status),
-                    child: Icon(_statusIcon(story.status), color: Colors.white, size: 18),
+                    backgroundColor: _statusColor(story.status).withValues(alpha: 0.12),
+                    child: Icon(
+                      _statusIcon(story.status),
+                      color: _statusColor(story.status),
+                      size: 20,
+                    ),
                   ),
                   title: Text(story.title),
                   subtitle: story.description.isNotEmpty
@@ -331,24 +384,31 @@ class _LobbyPanel extends ConsumerWidget {
                           ],
                         )
                       : story.finalEstimate != null
-                          ? Chip(label: Text('${story.finalEstimate} pt'))
+                          ? Chip(
+                              label: Text('${story.finalEstimate} pt'),
+                              backgroundColor:
+                                  const Color(AppColors.primarySoft),
+                            )
                           : null,
+                ),
                 ),
               );
             }),
-          if (!isFacilitator) ...[
-            const SizedBox(height: 24),
-            Center(
-              child: Text(
-                AppStrings.waitingAperitivo,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey.shade600,
-                      fontStyle: FontStyle.italic,
-                    ),
-              ),
-            ),
-          ],
-        ],
+              if (!isFacilitator) ...[
+                const SizedBox(height: 24),
+                Center(
+                  child: Text(
+                    AppStrings.waitingAperitivo,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.grey.shade600,
+                          fontStyle: FontStyle.italic,
+                        ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

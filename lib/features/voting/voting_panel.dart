@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/constants/deck_values.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_decorations.dart';
+import '../../shared/widgets/section_header.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../shared/widgets/participant_avatar.dart';
@@ -176,8 +178,8 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            color: const Color(AppColors.barCounter),
+          DecoratedBox(
+            decoration: AppDecorations.surfaceCard(highlight: true),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -185,18 +187,24 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                 children: [
                   Text(
                     'Ordine corrente',
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: const Color(AppColors.textSecondary),
+                        ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Text(
                     story.title,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: const Color(AppColors.textPrimary),
                         ),
                   ),
                   if (story.description.isNotEmpty) ...[
                     const SizedBox(height: 8),
-                    Text(story.description),
+                    Text(
+                      story.description,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ],
                 ],
               ),
@@ -222,10 +230,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               ),
             ),
           ] else ...[
-            Text(
-              AppStrings.chooseDose,
-              style: Theme.of(context).textTheme.titleMedium,
-              textAlign: TextAlign.center,
+            SectionHeader(
+              title: AppStrings.chooseDose,
+              subtitle: 'Seleziona la dose per questo ordine',
             ),
             const SizedBox(height: 16),
             Wrap(
@@ -262,15 +269,15 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                   child: Text(
                     AppStrings.allVoted,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.green.shade700,
-                      fontWeight: FontWeight.bold,
+                    style: const TextStyle(
+                      color: Color(AppColors.success),
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               FilledButton.icon(
                 onPressed: _reveal,
-                icon: const Icon(Icons.celebration),
+                icon: const Icon(Icons.celebration_outlined),
                 label: const Text(AppStrings.servizio),
               ),
             ],

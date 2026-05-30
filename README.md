@@ -47,6 +47,19 @@ flutter build web --dart-define-from-file=env.json
 flutter build apk --dart-define-from-file=env.json
 ```
 
+## Deploy (Vercel)
+
+- **Produzione**: https://spritz-planning.vercel.app
+- **Dashboard**: https://vercel.com/edar-devs-projects/spritz-planning
+- Repo collegato a GitHub: `edar-dev/SpritzPlanning`
+
+Variabili d'ambiente configurate su Vercel (Production + Development):
+
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+
+Il build usa `scripts/vercel-build.sh` (installa Flutter su Linux e compila la web app).
+
 ## Test
 
 ```bash

@@ -1,10 +1,16 @@
-/// Palette e costanti visive del tema Spritz.
+/// Palette moderna — tema Spritz/bar.
 abstract final class AppColors {
-  static const spritzOrange = 0xFFE8651A;
-  static const oliveGreen = 0xFF6B7B3C;
-  static const creamSurface = 0xFFFFF8F0;
-  static const darkWood = 0xFF3D2914;
-  static const barCounter = 0xFFF5E6D3;
-  static const voteCard = 0xFFFFFBF5;
-  static const errorRed = 0xFFC0392B;
+  static const spritzOrange = 0xFFE85D24;
+  static const spritzOrangeDark = 0xFFC44E12;
+  static const oliveGreen = 0xFF5C6B42;
+  static const background = 0xFFF7F5F2;
+  static const surface = 0xFFFFFFFF;
+  static const surfaceMuted = 0xFFF0EBE4;
+  static const primarySoft = 0xFFFFEDE4;
+  static const textPrimary = 0xFF1C1917;
+  static const textSecondary = 0xFF78716C;
+  static const border = 0xFFE7E5E4;
+  static const darkWood = 0xFF44403C;
+  static const success = 0xFF16A34A;
+  static const errorRed = 0xFFDC2626;
 }
