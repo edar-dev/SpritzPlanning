@@ -24,8 +24,9 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final session = ref.read(sessionProvider).valueOrNull;
       final path = state.matchedLocation;
+      final joinCode = state.uri.queryParameters['code'];
 
-      if (session != null && path == '/') {
+      if (session != null && path == '/' && (joinCode == null || joinCode.isEmpty)) {
         return '/room/${session.roomId}';
       }
       return null;

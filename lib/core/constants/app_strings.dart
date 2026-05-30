@@ -18,8 +18,14 @@ abstract final class AppStrings {
   static const copyCode = 'Copia codice';
   static const shareCode = 'Condividi invito';
   static const shareMessage = 'Entra al mio locale SpritzPlanning! Codice:';
+  static const showQr = 'Mostra QR';
+  static const qrBanconeTitle = 'QR bancone';
+  static const qrBanconeHint = 'Inquadra per entrare al locale';
   static const clienti = 'Clienti al bancone';
   static const barman = 'Barman';
+  static const passaBancone = 'Passa il bancone';
+  static String confermaPassaBancone(String nickname) =>
+      'Passa il ruolo di Barman a $nickname?';
   static const menu = 'Menu';
   static const menuEmpty = 'Il menu è vuoto. Aggiungi il primo ordine!';
   static const addOrdine = 'Aggiungi ordine';
@@ -40,6 +46,10 @@ abstract final class AppStrings {
   static const finalEstimateLabel = 'Stima finale';
   static const votesRevealed = 'Ecco le dosi!';
   static const noActiveStory = 'Nessun ordine in votazione';
+  static const consensoSuggerito = 'Consenso suggerito';
+  static const distribuzioneVoti = 'Distribuzione voti';
+  static const dosiScelte = 'dosi scelte';
+  static const outlier = 'Fuori scala';
 
   // Errors
   static const nicknameTooShort = 'Il nickname deve avere almeno 2 caratteri';

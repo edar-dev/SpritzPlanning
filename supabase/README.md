@@ -17,6 +17,7 @@ supabase db push
 | `002_security_hardening.sql` | RLS write bloccato, rate limit create_room |
 | `003_room_cleanup.sql` | `cleanup_stale_rooms()` |
 | `004_pg_cron.sql` | Estensione `pg_cron` + job `cleanup-stale-rooms` (ogni 6h) |
+| `005_transfer_facilitator.sql` | RPC `transfer_facilitator` per passaggio ruolo barman |
 
 ## Cleanup automatico (pg_cron)
 

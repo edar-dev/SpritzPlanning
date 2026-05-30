@@ -226,4 +226,17 @@ class RoomRepository {
       params: {'p_participant_id': participantId},
     );
   }
+
+  Future<void> transferFacilitator({
+    required String fromParticipantId,
+    required String toParticipantId,
+  }) async {
+    await supabase.rpc(
+      'transfer_facilitator',
+      params: {
+        'p_from_participant_id': fromParticipantId,
+        'p_to_participant_id': toParticipantId,
+      },
+    );
+  }
 }

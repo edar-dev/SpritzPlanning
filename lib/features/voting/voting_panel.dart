@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_strings.dart';
 import '../../core/constants/deck_values.dart';
+import '../../core/voting/vote_stats.dart';
+import 'vote_summary_panel.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../shared/widgets/section_header.dart';
@@ -172,6 +174,10 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     final myVote = widget.roomState.currentVotes.firstWhereOrNull(
       (v) => v.participantId == widget.participantId,
     );
+    final voteStats = computeVoteStats(
+      votes: widget.roomState.currentVotes,
+      participants: widget.roomState.participants,
+    );
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -210,6 +216,10 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               ),
             ),
           ),
+          if (widget.isFacilitator && isVoting && !revealed) ...[
+            const SizedBox(height: 16),
+            _VoteProgressBar(stats: voteStats),
+          ],
           const SizedBox(height: 24),
           if (revealed) ...[
             FadeTransition(
@@ -223,6 +233,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                 ),
                 child: _RevealSection(
                   roomState: widget.roomState,
+                  voteStats: voteStats,
                   finalEstimate: _finalEstimate,
                   onSelectEstimate: (v) => setState(() => _finalEstimate = v),
                   isFacilitator: widget.isFacilitator,
@@ -312,28 +323,69 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
   }
 }
 
+class _VoteProgressBar extends StatelessWidget {
+  const _VoteProgressBar({required this.stats});
+
+  final VoteStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${stats.votedCount}/${stats.participantCount} ${AppStrings.dosiScelte}',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            if (stats.votedCount == stats.participantCount &&
+                stats.participantCount > 0)
+              const Text(
+                AppStrings.allVoted,
+                style: TextStyle(
+                  color: Color(AppColors.success),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: LinearProgressIndicator(
+            value: stats.voteProgress,
+            minHeight: 8,
+            backgroundColor: const Color(AppColors.surfaceMuted),
+            color: const Color(AppColors.spritzOrange),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _RevealSection extends StatelessWidget {
   const _RevealSection({
     required this.roomState,
+    required this.voteStats,
     required this.finalEstimate,
     required this.onSelectEstimate,
     required this.isFacilitator,
   });
 
   final RoomState roomState;
+  final VoteStats voteStats;
   final String? finalEstimate;
   final ValueChanged<String> onSelectEstimate;
   final bool isFacilitator;
 
   @override
   Widget build(BuildContext context) {
-    final voteCounts = <String, int>{};
-    for (final vote in roomState.currentVotes) {
-      if (vote.value != null) {
-        voteCounts[vote.value!] = (voteCounts[vote.value!] ?? 0) + 1;
-      }
-    }
-
     return Column(
       children: [
         Text(
@@ -373,20 +425,8 @@ class _RevealSection extends StatelessWidget {
             );
           }).toList(),
         ),
-        if (voteCounts.isNotEmpty) ...[
-          const SizedBox(height: 24),
-          Wrap(
-            spacing: 8,
-            children: voteCounts.entries.map((e) {
-              return Chip(
-                avatar: CircleAvatar(
-                  child: Text('${e.value}', style: const TextStyle(fontSize: 12)),
-                ),
-                label: Text('${e.key} (${DeckValues.label(e.key)})'),
-              );
-            }).toList(),
-          ),
-        ],
+        const SizedBox(height: 24),
+        VoteSummaryPanel(stats: voteStats),
         if (isFacilitator) ...[
           const SizedBox(height: 24),
           Text(

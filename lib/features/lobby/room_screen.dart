@@ -244,15 +244,17 @@ class _Sidebar extends StatelessWidget {
   }
 }
 
-class _ParticipantsRow extends StatelessWidget {
+class _ParticipantsRow extends ConsumerWidget {
   const _ParticipantsRow({required this.roomState});
 
   final RoomState roomState;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final showVoteStatus = roomState.room.phase == RoomPhase.voting &&
         !roomState.room.votesRevealed;
+    final session = ref.watch(sessionProvider).valueOrNull;
+    final isFacilitator = ref.watch(isFacilitatorProvider);
 
     return DecoratedBox(
       decoration: AppDecorations.surfaceCard(radius: AppDecorations.radiusLg),
@@ -273,11 +275,22 @@ class _ParticipantsRow extends StatelessWidget {
               spacing: 12,
               runSpacing: 12,
               children: roomState.participants.map((p) {
+                final canTransfer = isFacilitator &&
+                    session != null &&
+                    p.id != session.participantId;
                 return ParticipantAvatar(
                   nickname: p.nickname,
                   isFacilitator: p.isFacilitator,
                   showVoteStatus: showVoteStatus,
                   hasVoted: roomState.hasParticipantVoted(p.id),
+                  onLongPress: canTransfer
+                      ? () => _confirmTransferBarman(
+                            context,
+                            ref,
+                            fromParticipantId: session.participantId,
+                            toParticipant: p,
+                          )
+                      : null,
                 );
               }).toList(),
             ),
@@ -530,6 +543,48 @@ Future<void> _removeStory(
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
+      );
+    }
+  }
+}
+
+Future<void> _confirmTransferBarman(
+  BuildContext context,
+  WidgetRef ref, {
+  required String fromParticipantId,
+  required Participant toParticipant,
+}) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text(AppStrings.passaBancone),
+      content: Text(
+        AppStrings.confermaPassaBancone(toParticipant.nickname),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Annulla'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: const Text(AppStrings.passaBancone),
+        ),
+      ],
+    ),
+  );
+
+  if (confirmed != true) return;
+
+  try {
+    await ref.read(roomRepositoryProvider).transferFacilitator(
+          fromParticipantId: fromParticipantId,
+          toParticipantId: toParticipant.id,
+        );
+  } catch (e) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
       );
     }
   }

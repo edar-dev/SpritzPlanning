@@ -10,12 +10,14 @@ class ParticipantAvatar extends StatelessWidget {
     required this.isFacilitator,
     this.hasVoted = false,
     this.showVoteStatus = false,
+    this.onLongPress,
   });
 
   final String nickname;
   final bool isFacilitator;
   final bool hasVoted;
   final bool showVoteStatus;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ParticipantAvatar extends StatelessWidget {
         ? const Color(AppColors.spritzOrange)
         : const Color(AppColors.oliveGreen);
 
-    return SizedBox(
+    final avatar = SizedBox(
       width: 72,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -97,6 +99,13 @@ class ParticipantAvatar extends StatelessWidget {
           ],
         ],
       ),
+    );
+
+    if (onLongPress == null) return avatar;
+
+    return GestureDetector(
+      onLongPress: onLongPress,
+      child: avatar,
     );
   }
 }

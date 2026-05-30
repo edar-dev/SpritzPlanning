@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../core/constants/app_config.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
@@ -79,6 +81,12 @@ class RoomCodeDisplay extends StatelessWidget {
           icon: const Icon(Icons.copy_rounded, size: 18),
           label: const Text(AppStrings.copyCode),
         ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: () => _showQrSheet(context),
+          icon: const Icon(Icons.qr_code_2_rounded, size: 18),
+          label: const Text(AppStrings.showQr),
+        ),
         if (onShare != null) ...[
           const SizedBox(height: 8),
           FilledButton.icon(
@@ -102,6 +110,11 @@ class RoomCodeDisplay extends StatelessWidget {
           icon: const Icon(Icons.copy_rounded, size: 18),
           label: const Text(AppStrings.copyCode),
         ),
+        OutlinedButton.icon(
+          onPressed: () => _showQrSheet(context),
+          icon: const Icon(Icons.qr_code_2_rounded, size: 18),
+          label: const Text(AppStrings.showQr),
+        ),
         if (onShare != null)
           FilledButton.icon(
             onPressed: onShare,
@@ -109,6 +122,63 @@ class RoomCodeDisplay extends StatelessWidget {
             label: const Text(AppStrings.shareCode),
           ),
       ],
+    );
+  }
+
+  void _showQrSheet(BuildContext context) {
+    final joinUrl = AppConfig.joinUrlForCode(code);
+
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppStrings.qrBanconeTitle,
+                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppStrings.qrBanconeHint,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                        color: const Color(AppColors.textSecondary),
+                      ),
+                ),
+                const SizedBox(height: 20),
+                DecoratedBox(
+                  decoration: AppDecorations.surfaceCard(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: QrImageView(
+                      data: joinUrl,
+                      version: QrVersions.auto,
+                      size: 220,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SelectableText(
+                  code,
+                  style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(AppColors.spritzOrange),
+                      ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

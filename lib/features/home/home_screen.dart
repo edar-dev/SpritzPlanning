@@ -26,6 +26,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   _HomeMode _mode = _HomeMode.welcome;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _applyJoinCodeFromUrl());
+  }
+
+  void _applyJoinCodeFromUrl() {
+    final code = GoRouterState.of(context).uri.queryParameters['code'];
+    if (code == null || code.trim().isEmpty) return;
+    setState(() {
+      _mode = _HomeMode.join;
+      _roomCodeController.text = code.trim().toUpperCase();
+      _error = null;
+    });
+  }
+
+  @override
   void dispose() {
     _nicknameController.dispose();
     _localeNameController.dispose();

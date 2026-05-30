@@ -54,7 +54,7 @@ Aggiornare questa tabella al completamento di ogni fase:
 |------|-------|-------------|
 | 1 | Completata | migrations 002–004, `.github/workflows/ci.yml` |
 | 2 | Completata | `RealtimeConnectionManager`, `ConnectionBanner` |
-| 3 | Non iniziata | — |
+| 3 | Completata | transfer barman, QR join, vote summary |
 | 4 | Non iniziata | — |
 
 ## Riferimenti codice
