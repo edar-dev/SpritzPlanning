@@ -16,7 +16,8 @@ Scrum poker con tema spritz per team di sviluppatori. Flutter (Web + Android) + 
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
-- Migration già applicata: `initial_schema` (tabelle, RPC, RLS, Realtime)
+- Migrations applicate (in ordine): `001_initial_schema`, `002_security_hardening`, `003_room_cleanup`
+- Dettagli DB: [supabase/README.md](supabase/README.md)
 
 Per sviluppo locale, copia le credenziali in `env.json`:
 
@@ -68,6 +69,24 @@ Piani di miglioramento (punti 1–9): [docs/ROADMAP.md](docs/ROADMAP.md)
 - [Fase 2 — Realtime resiliente](docs/plans/phase-2-realtime.md)
 - [Fase 3 — UX lobby e votazione](docs/plans/phase-3-lobby-voting-ux.md)
 - [Fase 4 — Test e PWA](docs/plans/phase-4-quality-pwa.md)
+
+## Sicurezza
+
+- Le **mutazioni** (crea locale, join, voti, reveal, ecc.) passano solo tramite **RPC** `SECURITY DEFINER`; le policy RLS non consentono INSERT/UPDATE/DELETE diretti con la chiave `anon`.
+- Le **letture** restano aperte su `SELECT` per Realtime e sincronizzazione stato.
+- **Rate limit**: massimo 20 creazioni locale (`create_room`) per ora (limite globale).
+- **Nickname**: non duplicabile nella stessa stanza (`join_room`).
+- **Voti**: solo valori del deck Fibonacci ammessi in `cast_vote`.
+
+## Dati e retention
+
+- Ogni attività aggiorna `last_activity_at` sulla stanza.
+- Le stanze **inattive da più di 24 ore** possono essere eliminate con `cleanup_stale_rooms(24)` (cascade su partecipanti, ordini, voti).
+- Per cleanup automatico: abilita **pg_cron** in Supabase e schedula il job (vedi [supabase/README.md](supabase/README.md)).
+
+## CI
+
+Su push/PR verso `main`, GitHub Actions esegue `flutter analyze`, `flutter test` e un build web di verifica (`.github/workflows/ci.yml`).
 
 ## Test
 

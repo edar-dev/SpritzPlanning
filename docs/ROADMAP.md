@@ -52,7 +52,7 @@ Aggiornare questa tabella al completamento di ogni fase:
 
 | Fase | Stato | PR / commit |
 |------|-------|-------------|
-| 1 | Non iniziata | — |
+| 1 | Completata (pg_cron manuale opzionale) | migrations 002/003, `.github/workflows/ci.yml` |
 | 2 | Non iniziata | — |
 | 3 | Non iniziata | — |
 | 4 | Non iniziata | — |
