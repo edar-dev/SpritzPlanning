@@ -1,0 +1,42 @@
+---
+description: Tema Spritz/bar — copy italiano, palette, glossario UI
+globs: lib/**/*.dart
+alwaysApply: false
+---
+
+# Tema Spritz
+
+## Palette
+
+- Primary: `#E8651A` (arancione spritz)
+- Secondary: `#6B7B3C` (verde oliva)
+- Surface: `#FFF8F0` (crema bancone)
+
+## Copy UI
+
+- **Solo italiano** nell'interfaccia utente
+- Usare terminologia bar, **mai** termini Scrum in UI (no "story", "sprint", "poker")
+- Stringhe centralizzate in `lib/core/constants/app_strings.dart`
+
+## Glossario UI
+
+| Codice | UI |
+|--------|-----|
+| room | Locale / Bar |
+| participant | Cliente |
+| facilitator | Barman |
+| story | Ordine |
+| vote | Dose / Bicchiere |
+| reveal | Servizio! |
+| join | Entra al bancone |
+| create | Apri un locale |
+
+## Esempio
+
+```dart
+// ❌ BAD
+Text('Start voting on story')
+
+// ✅ GOOD
+Text(AppStrings.startVoting) // "Servi l'ordine"
+```

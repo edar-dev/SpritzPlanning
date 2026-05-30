@@ -1,0 +1,27 @@
+name: spritz_planning
+description: Scrum poker con tema spritz per team di sviluppatori.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  supabase_flutter: ^2.9.0
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.8.1
+  shared_preferences: ^2.5.3
+  uuid: ^4.5.1
+  share_plus: ^10.1.4
+  collection: ^1.19.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

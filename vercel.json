@@ -1,0 +1,6 @@
+{
+  "buildCommand": "flutter build web --dart-define-from-file=env.json",
+  "outputDirectory": "build/web",
+  "framework": null,
+  "installCommand": "flutter pub get"
+}

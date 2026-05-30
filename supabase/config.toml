@@ -1,0 +1,22 @@
+# Supabase local development config
+# Run: supabase start (requires Supabase CLI)
+
+project_id = "spritz-planning"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323

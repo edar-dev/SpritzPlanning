@@ -1,0 +1,26 @@
+---
+description: Supabase — RPC, Realtime, RLS senza auth
+globs: "{supabase/**,lib/data/**}"
+alwaysApply: false
+---
+
+# Supabase Realtime
+
+## Principi
+
+- **No login**: anon key + RPC con validazione server-side
+- **Mutazioni**: sempre via RPC (`create_room`, `cast_vote`, etc.)
+- **Letture live**: Realtime su `rooms`, `participants`, `stories`, `votes`
+- **Sicurezza**: `participant_id` UUID salvato in local storage
+
+## Migration
+
+- File in `supabase/migrations/` numerati sequenzialmente
+- Ogni RPC: `SECURITY DEFINER`, `SET search_path = public`
+- Abilitare Realtime: `ALTER PUBLICATION supabase_realtime ADD TABLE ...`
+
+## Checklist nuova RPC
+
+1. Validare input (nickname, permessi barman)
+2. `PERFORM touch_room(room_id)` per TTL
+3. `GRANT EXECUTE ... TO anon, authenticated`

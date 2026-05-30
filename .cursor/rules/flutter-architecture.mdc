@@ -1,0 +1,35 @@
+---
+description: Architettura Flutter — Riverpod, feature-first, repository pattern
+globs: lib/**/*.dart
+alwaysApply: false
+---
+
+# Architettura Flutter
+
+## Struttura
+
+```
+lib/
+  core/       # theme, constants, storage
+  data/       # models, repositories, supabase, providers
+  features/   # home, lobby, voting (per feature)
+  shared/     # widget riutilizzabili
+  app/        # router
+```
+
+## Regole
+
+- **State**: `flutter_riverpod` — logic in Notifier/Provider, non nei widget
+- **Navigazione**: `go_router` in `lib/app/router.dart`
+- **Dati**: mutazioni via `RoomRepository` → Supabase RPC; letture via Realtime
+- **Widget**: solo presentazione; nessuna chiamata Supabase diretta nei widget
+
+## Pattern repository
+
+```dart
+// ✅ GOOD — widget chiama provider/repository
+await ref.read(roomRepositoryProvider).castVote(...);
+
+// ❌ BAD — Supabase diretto nel widget
+await supabase.rpc('cast_vote', ...);
+```
