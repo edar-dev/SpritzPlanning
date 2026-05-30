@@ -26,6 +26,34 @@ jobs:
       - name: Test
         run: flutter test
 
+  integration:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: flutter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Integration test (Supabase)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL_TEST }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_TEST }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Integration test skipped — set SUPABASE_URL_TEST and SUPABASE_ANON_KEY_TEST in repo secrets."
+            exit 0
+          fi
+          flutter test integration/room_flow_integration_test.dart \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+
   build-web:
     runs-on: ubuntu-latest
     needs: flutter

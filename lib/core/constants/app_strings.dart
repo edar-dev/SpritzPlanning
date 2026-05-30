@@ -2,6 +2,8 @@
 abstract final class AppStrings {
   static const appName = 'SpritzPlanning';
   static const tagline = 'Stima le user story al bancone';
+  static const installPwa = 'Installa SpritzPlanning sulla home';
+  static const installPwaAction = 'Installa';
 
   // Home
   static const nicknameLabel = 'Il tuo nome al bancone';

@@ -8,6 +8,7 @@ import '../../core/theme/app_decorations.dart';
 import '../../data/providers/providers.dart';
 import '../../data/supabase/supabase_client.dart';
 import '../../shared/widgets/connection_banner.dart';
+import '../../shared/widgets/pwa_install_banner.dart';
 import '../../shared/widgets/spritz_action_tile.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -132,6 +133,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   message:
                       'Supabase non configurato — usa --dart-define-from-file=env.json',
                 ),
+              const PwaInstallBanner(),
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(

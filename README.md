@@ -16,7 +16,7 @@ Scrum poker con tema spritz per team di sviluppatori. Flutter (Web + Android) + 
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
-- Migrations (in ordine): `001_initial_schema`, `002_security_hardening`, `003_room_cleanup`, `004_pg_cron`
+- Migrations (in ordine): `001`–`005` (vedi [supabase/README.md](supabase/README.md))
 - Dettagli DB: [supabase/README.md](supabase/README.md)
 
 Per sviluppo locale, copia le credenziali in `env.json`:
@@ -94,6 +94,26 @@ Su push/PR verso `main`, GitHub Actions esegue `flutter analyze`, `flutter test`
 flutter test
 flutter analyze
 ```
+
+### Test integrazione (Supabase)
+
+Richiede credenziali reali (consigliato progetto Supabase di test separato):
+
+```bash
+flutter test integration/room_flow_integration_test.dart --dart-define-from-file=env.json
+```
+
+Su GitHub Actions (push su `main`), il job `integration` usa i secrets `SUPABASE_URL_TEST` e `SUPABASE_ANON_KEY_TEST` se configurati; altrimenti viene saltato.
+
+## Installa come app (PWA)
+
+La build web è una **Progressive Web App** installabile:
+
+1. Apri https://spritz-planning.vercel.app in Chrome (desktop o Android)
+2. Quando disponibile, usa il banner **Installa** in home oppure il menu del browser → *Installa app* / *Aggiungi a schermata Home*
+3. Su iOS Safari: Condividi → *Aggiungi a Home*
+
+Il manifest e il service worker Flutter sono in `web/manifest.json`; Vercel invia `Cache-Control: no-cache` su `flutter_service_worker.js` per evitare cache obsoleta.
 
 ## Terminologia
 
