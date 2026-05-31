@@ -129,10 +129,11 @@ Secrets: `SUPABASE_TEST_URL`, `SUPABASE_TEST_ANON_KEY`
 
 ## Criteri di done — Fase 10
 
-- [ ] CI: `flutter analyze --fatal-infos`
-- [ ] Almeno 3 regole lint nuove attive senza eccezioni massicce
-- [ ] `docs/TESTING.md` + `env.test.json.example` + script run-integration
-- [ ] Job integration opzionale (dispatch o schedule) configurato o issue follow-up esplicita nel PR
+- [x] CI: `flutter analyze --fatal-infos`
+- [x] Almeno 3 regole lint nuove attive senza eccezioni massicce
+- [x] `docs/TESTING.md` + `env.test.json.example` + script run-integration
+- [x] Job integration opzionale (dispatch + schedule) in `.github/workflows/integration.yml`
+- [ ] PR `chore/quality-gates` mergiata
 
 ## Rischi
 

@@ -50,6 +50,7 @@ app.*.map.json
 
 # Environment secrets
 env.json
+env.test.json
 .env.vercel*
 
 # Vercel local link

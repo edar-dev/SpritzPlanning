@@ -85,7 +85,7 @@ void main() {
   });
 }
 
-final _t = DateTime.utc(2025, 1, 1);
+final _t = DateTime.utc(2025);
 
 Vote _vote(String participantId, String value) {
   return Vote(

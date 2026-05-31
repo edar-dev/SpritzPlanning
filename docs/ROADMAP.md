@@ -199,7 +199,7 @@ Vedi [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md).
 
 | 9 | Completata | PR #4 — `b5936d5` |
 
-| 10 | Non iniziata | — |
+| 10 | In corso | `chore/quality-gates` |
 
 
 

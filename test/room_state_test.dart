@@ -37,7 +37,7 @@ void main() {
   });
 }
 
-final _t = DateTime.utc(2025, 1, 1);
+final _t = DateTime.utc(2025);
 
 RoomState _roomState({
   Room? room,
@@ -76,7 +76,6 @@ Room _roomWithoutStory() {
     code: 'SPRT-TEST',
     name: 'Test',
     phase: RoomPhase.lobby,
-    currentStoryId: null,
     votesRevealed: false,
     deckValues: _defaultDeck,
     allowCoffeeBreak: true,

@@ -59,9 +59,11 @@ Bypass solo in emergenza: `LEFTHOOK=0 git commit …`
 bash scripts/check-flutter-version.sh
 bash scripts/flutter.sh pub get
 bash scripts/flutter.sh gen-l10n
-bash scripts/flutter.sh analyze
+bash scripts/flutter.sh analyze --fatal-infos
 bash scripts/flutter.sh test
 ```
+
+Integration (opzionale): [TESTING.md](TESTING.md) — `env.test.json` + `scripts/run-integration.sh`
 
 Template PR: [.github/pull_request_template.md](../.github/pull_request_template.md)
 

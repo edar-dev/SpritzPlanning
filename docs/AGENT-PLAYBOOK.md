@@ -1,6 +1,6 @@
 # Agent Playbook — SpritzPlanning
 
-**Ultimo aggiornamento:** 2026-05-29 (Fase 8)
+**Ultimo aggiornamento:** 2026-05-31 (Fase 10)
 
 Checklist operativa per agenti AI e contributor. Per stack e comandi vedi [AGENTS.md](../AGENTS.md).
 
@@ -58,9 +58,9 @@ Elenco migration: [supabase/README.md](../supabase/README.md)
 ## 4. Verifica pre-PR
 
 ```bash
-flutter gen-l10n
-flutter analyze
-flutter test
+scripts/flutter.sh gen-l10n
+scripts/flutter.sh analyze --fatal-infos
+scripts/flutter.sh test
 ```
 
 Se hai modificato ARB o UI:
@@ -70,7 +70,7 @@ Se hai modificato ARB o UI:
 
 Se hai modificato `integration/`:
 
-- [ ] `flutter test integration/… --dart-define-from-file=env.json` (progetto test consigliato)
+- [ ] `scripts/run-integration.ps1` con `env.test.json` (progetto test, non produzione)
 
 ---
 
@@ -130,6 +130,6 @@ Template PR: [.github/pull_request_template.md](../.github/pull_request_template
 | Argomento | File |
 |-----------|------|
 | Performance / Lighthouse | [PERFORMANCE.md](PERFORMANCE.md) |
-| Test integrazione (Fase 10) | [TESTING.md](TESTING.md) — da creare |
+| Test (unit + integration) | [TESTING.md](TESTING.md) |
 | Sicurezza RLS/RPC | [supabase/README.md](../supabase/README.md) |
 | Roadmap | [ROADMAP.md](ROADMAP.md) |

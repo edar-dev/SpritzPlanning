@@ -99,22 +99,21 @@ Opzionale in produzione: `SENTRY_DSN` in Vercel per error reporting (vedi `env.j
 ## Test
 
 ```bash
-scripts/flutter.ps1 test      # Windows
-scripts/flutter.sh test       # Linux/macOS
-scripts/flutter.sh analyze
+scripts/flutter.ps1 test              # Windows — unit/widget
+scripts/flutter.sh analyze --fatal-infos
 ```
 
-Vedi [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+Guida completa: [docs/TESTING.md](docs/TESTING.md) · [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ### Test integrazione (Supabase)
 
-Richiede credenziali reali (consigliato progetto Supabase di test separato):
+Progetto test dedicato + `env.test.json` (da `env.test.json.example`):
 
-```bash
-flutter test integration/room_flow_integration_test.dart --dart-define-from-file=env.json
+```powershell
+.\scripts\run-integration.ps1
 ```
 
-Su GitHub Actions (push su `main`), il job `integration` usa i secrets `SUPABASE_URL_TEST` e `SUPABASE_ANON_KEY_TEST` se configurati; altrimenti viene saltato.
+CI: secrets `SUPABASE_URL_TEST` / `SUPABASE_ANON_KEY_TEST`; workflow settimanale [integration.yml](.github/workflows/integration.yml).
 
 ## Installa come app (PWA)
 
