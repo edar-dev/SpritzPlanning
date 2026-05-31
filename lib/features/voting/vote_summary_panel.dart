@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
 import '../../core/constants/deck_values.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/voting/vote_stats.dart';
@@ -17,6 +17,7 @@ class VoteSummaryPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     if (stats.distribution.isEmpty) return const SizedBox.shrink();
 
     final maxCount = stats.distribution.values.fold<int>(
@@ -31,9 +32,9 @@ class VoteSummaryPanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SectionHeader(
-              title: AppStrings.distribuzioneVoti,
-              subtitle: 'Riepilogo delle dosi scelte',
+            SectionHeader(
+              title: l10n.distribuzioneVoti,
+              subtitle: l10n.distribuzioneVotiSubtitle,
             ),
             const SizedBox(height: 12),
             ...stats.distribution.entries.map((entry) {
@@ -86,8 +87,8 @@ class VoteSummaryPanel extends StatelessWidget {
                     color: Color(AppColors.spritzOrange),
                   ),
                   label: Text(
-                    '${AppStrings.consensoSuggerito}: ${stats.suggestedConsensus} '
-                    '(${DeckValues.label(stats.suggestedConsensus!)})',
+                    '${l10n.consensoSuggerito}: ${stats.suggestedConsensus} '
+                    '(${DeckValues.label(context, stats.suggestedConsensus!)})',
                   ),
                   backgroundColor: const Color(AppColors.primarySoft),
                 ),
@@ -101,7 +102,7 @@ class VoteSummaryPanel extends StatelessWidget {
                 children: stats.numericOutliers.map((value) {
                   return Chip(
                     label: Text(
-                      '${AppStrings.outlier}: $value (${DeckValues.label(value)})',
+                      '${l10n.outlier}: $value (${DeckValues.label(context, value)})',
                     ),
                     backgroundColor:
                         Theme.of(context).colorScheme.error.withValues(alpha: 0.08),

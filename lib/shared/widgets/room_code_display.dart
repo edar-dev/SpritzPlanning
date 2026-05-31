@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/constants/app_config.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 
@@ -31,7 +31,7 @@ class RoomCodeDisplay extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  AppStrings.codiceBancone,
+                  context.l10n.codiceBancone,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: const Color(AppColors.textSecondary),
@@ -79,20 +79,20 @@ class RoomCodeDisplay extends StatelessWidget {
         OutlinedButton.icon(
           onPressed: () => _copyCode(context),
           icon: const Icon(Icons.copy_rounded, size: 18),
-          label: const Text(AppStrings.copyCode),
+          label: Text(context.l10n.copyCode),
         ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: () => _showQrSheet(context),
           icon: const Icon(Icons.qr_code_2_rounded, size: 18),
-          label: const Text(AppStrings.showQr),
+          label: Text(context.l10n.showQr),
         ),
         if (onShare != null) ...[
           const SizedBox(height: 8),
           FilledButton.icon(
             onPressed: onShare,
             icon: const Icon(Icons.share_rounded, size: 18),
-            label: const Text(AppStrings.shareCode),
+            label: Text(context.l10n.shareCode),
           ),
         ],
       ],
@@ -108,18 +108,18 @@ class RoomCodeDisplay extends StatelessWidget {
         OutlinedButton.icon(
           onPressed: () => _copyCode(context),
           icon: const Icon(Icons.copy_rounded, size: 18),
-          label: const Text(AppStrings.copyCode),
+          label: Text(context.l10n.copyCode),
         ),
         OutlinedButton.icon(
           onPressed: () => _showQrSheet(context),
           icon: const Icon(Icons.qr_code_2_rounded, size: 18),
-          label: const Text(AppStrings.showQr),
+          label: Text(context.l10n.showQr),
         ),
         if (onShare != null)
           FilledButton.icon(
             onPressed: onShare,
             icon: const Icon(Icons.share_rounded, size: 18),
-            label: const Text(AppStrings.shareCode),
+            label: Text(context.l10n.shareCode),
           ),
       ],
     );
@@ -139,14 +139,14 @@ class RoomCodeDisplay extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  AppStrings.qrBanconeTitle,
+                  context.l10n.qrBanconeTitle,
                   style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  AppStrings.qrBanconeHint,
+                  context.l10n.qrBanconeHint,
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
                         color: const Color(AppColors.textSecondary),
@@ -185,7 +185,7 @@ class RoomCodeDisplay extends StatelessWidget {
   void _copyCode(BuildContext context) {
     Clipboard.setData(ClipboardData(text: code));
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Codice copiato!')),
+      SnackBar(content: Text(context.l10n.codeCopied)),
     );
   }
 }

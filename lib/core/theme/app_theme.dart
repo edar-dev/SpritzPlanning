@@ -167,4 +167,124 @@ abstract final class AppTheme {
       ),
     );
   }
+
+  static ThemeData get dark {
+    const primary = Color(AppColors.spritzOrange);
+    const onSurface = Color(AppColors.darkTextPrimary);
+    const onSurfaceVariant = Color(AppColors.darkTextSecondary);
+
+    final colorScheme = ColorScheme.dark(
+      primary: primary,
+      onPrimary: Colors.white,
+      primaryContainer: const Color(0xFF4A2510),
+      onPrimaryContainer: const Color(0xFFFFB899),
+      secondary: const Color(AppColors.oliveGreen),
+      onSecondary: Colors.white,
+      surface: const Color(AppColors.darkSurface),
+      onSurface: onSurface,
+      onSurfaceVariant: onSurfaceVariant,
+      outline: const Color(AppColors.darkBorder),
+      outlineVariant: const Color(0xFF3D3835),
+      surfaceContainerLowest: const Color(AppColors.darkBackground),
+      surfaceContainerLow: const Color(AppColors.darkSurfaceMuted),
+      surfaceContainer: const Color(0xFF353230),
+      error: const Color(AppColors.errorRed),
+    );
+
+    final textTheme = Typography.material2021().white.apply(
+          fontFamily: 'Roboto',
+          bodyColor: onSurface,
+          displayColor: onSurface,
+        );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: const Color(AppColors.darkBackground),
+      textTheme: textTheme.copyWith(
+        headlineLarge: textTheme.headlineLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.5,
+        ),
+        headlineSmall: textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+        titleMedium: textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+        bodyLarge: textTheme.bodyLarge?.copyWith(
+          height: 1.45,
+          color: onSurfaceVariant,
+        ),
+      ),
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        backgroundColor: Color(AppColors.darkSurface),
+        foregroundColor: onSurface,
+        surfaceTintColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: onSurface,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: const Color(AppColors.darkSurface),
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Color(AppColors.darkBorder)),
+        ),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Color(AppColors.darkBorder),
+        thickness: 1,
+      ),
+      filledButtonTheme: light.filledButtonTheme,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          side: const BorderSide(color: Color(AppColors.darkBorder)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          foregroundColor: onSurface,
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(AppColors.darkSurfaceMuted),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Color(AppColors.darkBorder)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Color(AppColors.darkBorder)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: primary, width: 1.5),
+        ),
+        labelStyle: const TextStyle(
+          color: onSurfaceVariant,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Color(AppColors.darkBorder)),
+        ),
+      ),
+      snackBarTheme: light.snackBarTheme,
+      floatingActionButtonTheme: light.floatingActionButtonTheme,
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 
 class ParticipantAvatar extends StatelessWidget {
@@ -92,7 +92,7 @@ class ParticipantAvatar extends StatelessWidget {
           if (isFacilitator) ...[
             const SizedBox(height: 2),
             Text(
-              AppStrings.barman,
+              context.l10n.barman,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: const Color(AppColors.spritzOrange),
                     fontWeight: FontWeight.w600,
@@ -101,7 +101,7 @@ class ParticipantAvatar extends StatelessWidget {
           ] else if (isAbsent) ...[
             const SizedBox(height: 2),
             Text(
-              AppStrings.assente,
+              context.l10n.assente,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: const Color(AppColors.textSecondary),
                     fontStyle: FontStyle.italic,

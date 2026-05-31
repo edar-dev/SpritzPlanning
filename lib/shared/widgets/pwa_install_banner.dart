@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/pwa/pwa_install_listener.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -33,6 +33,7 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     if (!_listener.canInstall.value) return const SizedBox.shrink();
 
     return Material(
@@ -49,7 +50,7 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                AppStrings.installPwa,
+                l10n.installPwa,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -57,7 +58,7 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
             ),
             TextButton(
               onPressed: _listener.promptInstall,
-              child: const Text(AppStrings.installPwaAction),
+              child: Text(l10n.installPwaAction),
             ),
           ],
         ),

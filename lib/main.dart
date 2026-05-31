@@ -5,6 +5,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'app.dart';
 import 'core/config/sentry_config.dart';
+import 'core/deep_link/deep_link_bootstrap.dart';
 import 'core/pwa/pwa_install_listener.dart';
 import 'data/providers/providers.dart';
 import 'data/supabase/supabase_client.dart';
@@ -19,8 +20,10 @@ Future<void> main() async {
     await initializeSupabase();
     runApp(
       const ProviderScope(
-        child: SessionRestoreWrapper(
-          child: SpritzPlanningApp(),
+        child: DeepLinkBootstrap(
+          child: SessionRestoreWrapper(
+            child: SpritzPlanningApp(),
+          ),
         ),
       ),
     );

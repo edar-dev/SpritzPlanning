@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/models/connection_status.dart';
 
@@ -18,7 +19,9 @@ class ConnectionBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedStatus = status ?? ConnectionStatus.disconnected;
-    final resolvedMessage = message ?? resolvedStatus.bannerMessage;
+    final l10n = context.l10n;
+    final resolvedMessage =
+        message ?? resolvedStatus.localizedBannerMessage(l10n);
     if (resolvedMessage == null) return const SizedBox.shrink();
 
     final backgroundColor = message != null
@@ -70,7 +73,7 @@ class ConnectionBanner extends StatelessWidget {
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  child: const Text('Aggiorna'),
+                  child: Text(l10n.refresh),
                 ),
             ],
           ),

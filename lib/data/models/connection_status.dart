@@ -1,3 +1,5 @@
+import '../../core/l10n/l10n_extensions.dart';
+
 enum ConnectionStatus {
   connected,
   reconnecting,
@@ -6,11 +8,11 @@ enum ConnectionStatus {
 }
 
 extension ConnectionStatusMessage on ConnectionStatus {
-  String? get bannerMessage => switch (this) {
+  String? localizedBannerMessage(AppLocalizations l10n) => switch (this) {
         ConnectionStatus.connected => null,
-        ConnectionStatus.reconnecting => 'Riconnessione al bancone…',
-        ConnectionStatus.polling => 'Sincronizzazione in corso…',
-        ConnectionStatus.disconnected => 'Connessione persa al bancone',
+        ConnectionStatus.reconnecting => l10n.reconnecting,
+        ConnectionStatus.polling => l10n.pollingFallback,
+        ConnectionStatus.disconnected => l10n.connectionLost,
       };
 
   bool get showSpinner =>

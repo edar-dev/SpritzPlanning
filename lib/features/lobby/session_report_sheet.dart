@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/constants/app_strings.dart';
 import '../../core/export/session_report.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 
@@ -23,6 +23,8 @@ class SessionReportSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
@@ -31,7 +33,7 @@ class SessionReportSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              AppStrings.riepilogoSerata,
+              l10n.riepilogoSerata,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -48,7 +50,7 @@ class SessionReportSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 child: Text(
-                  AppStrings.reportEmpty,
+                  l10n.reportEmpty,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
@@ -63,7 +65,7 @@ class SessionReportSheet extends StatelessWidget {
                         return ListTile(
                           title: Text(row.title),
                           trailing: Chip(
-                            label: Text('${row.estimate} pt'),
+                            label: Text(l10n.pointsSuffix(row.estimate)),
                             backgroundColor: const Color(AppColors.primarySoft),
                           ),
                         );
@@ -81,17 +83,17 @@ class SessionReportSheet extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => _copy(context, report.toCsv()),
                     icon: const Icon(Icons.table_chart_outlined, size: 18),
-                    label: const Text(AppStrings.exportCsv),
+                    label: Text(l10n.exportCsv),
                   ),
                   OutlinedButton.icon(
-                    onPressed: () => _shareMarkdown(report),
+                    onPressed: () => _shareMarkdown(context, report),
                     icon: const Icon(Icons.share_outlined, size: 18),
-                    label: const Text(AppStrings.exportMarkdown),
+                    label: Text(l10n.exportMarkdown),
                   ),
                   FilledButton.icon(
                     onPressed: () => _copy(context, report.toMarkdown()),
                     icon: const Icon(Icons.copy_rounded, size: 18),
-                    label: const Text(AppStrings.copiaReport),
+                    label: Text(l10n.copiaReport),
                   ),
                 ],
               ),
@@ -106,15 +108,16 @@ class SessionReportSheet extends StatelessWidget {
     await Clipboard.setData(ClipboardData(text: text));
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.reportCopied)),
+        SnackBar(content: Text(context.l10n.reportCopied)),
       );
     }
   }
 
-  Future<void> _shareMarkdown(SessionReport report) async {
+  Future<void> _shareMarkdown(BuildContext context, SessionReport report) async {
+    final l10n = context.l10n;
     await Share.share(
       report.toMarkdown(),
-      subject: '${AppStrings.riepilogoSerata} — ${report.roomName}',
+      subject: '${l10n.riepilogoSerata} — ${report.roomName}',
     );
   }
 }

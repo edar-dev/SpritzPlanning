@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:spritz_planning/core/errors/user_facing_error.dart';
-import 'package:spritz_planning/core/constants/app_strings.dart';
 
 void main() {
   test('userFacingMessage returns PostgrestException message', () {
@@ -17,6 +16,9 @@ void main() {
   });
 
   test('userFacingMessage falls back to generic', () {
-    expect(userFacingMessage(Object()), AppStrings.genericError);
+    expect(
+      userFacingMessage(Object()),
+      'Qualcosa è andato storto al bancone',
+    );
   });
 }

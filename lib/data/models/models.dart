@@ -33,6 +33,8 @@ class Room {
     this.currentStoryId,
     required this.votesRevealed,
     this.votingDeadlineAt,
+    required this.deckValues,
+    required this.allowCoffeeBreak,
     required this.lastActivityAt,
     required this.createdAt,
   });
@@ -44,6 +46,8 @@ class Room {
   final String? currentStoryId;
   final bool votesRevealed;
   final DateTime? votingDeadlineAt;
+  final List<String> deckValues;
+  final bool allowCoffeeBreak;
   final DateTime lastActivityAt;
   final DateTime createdAt;
 
@@ -58,10 +62,19 @@ class Room {
       votingDeadlineAt: json['voting_deadline_at'] != null
           ? DateTime.parse(json['voting_deadline_at'] as String)
           : null,
+      deckValues: _parseDeckValues(json['deck_values']),
+      allowCoffeeBreak: json['allow_coffee_break'] as bool? ?? true,
       lastActivityAt: DateTime.parse(json['last_activity_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
+}
+
+List<String> _parseDeckValues(dynamic raw) {
+  if (raw is List) {
+    return raw.map((e) => e.toString()).toList();
+  }
+  return const ['0', '½', '1', '2', '3', '5', '8', '13', '21', '?', '☕'];
 }
 
 class Participant {
