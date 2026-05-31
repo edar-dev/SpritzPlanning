@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
+import 'room_deck_settings_sheet.dart';
 import '../../core/constants/session_constants.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
@@ -69,16 +70,16 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
-        appBar: AppBar(title: const Text(AppStrings.appName)),
+        appBar: AppBar(title: Text(context.l10n.appName)),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(userFacingMessage(e)),
+              Text(userFacingMessage(e, l10n: context.l10n)),
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => context.go('/'),
-                child: const Text('Torna alla home'),
+                child: Text(context.l10n.backToHome),
               ),
             ],
           ),
@@ -128,10 +129,19 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               ],
             ),
             actions: [
+              if (isFacilitator && room.phase == RoomPhase.lobby)
+                IconButton(
+                  icon: const Icon(Icons.style_outlined),
+                  tooltip: context.l10n.deckSettings,
+                  onPressed: () => RoomDeckSettingsSheet.show(
+                    context,
+                    session.participantId,
+                  ),
+                ),
               if (isFacilitator)
                 IconButton(
                   icon: const Icon(Icons.summarize_outlined),
-                  tooltip: AppStrings.riepilogoSerata,
+                  tooltip: context.l10n.riepilogoSerata,
                   onPressed: () => SessionReportSheet.show(
                     context,
                     SessionReport.fromRoomState(roomState),
@@ -139,7 +149,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                 ),
               IconButton(
                 icon: const Icon(Icons.logout_rounded),
-                tooltip: 'Lascia il locale',
+                tooltip: context.l10n.leaveLocale,
                 onPressed: () => unawaited(_leaveAndGoHome()),
               ),
             ],
@@ -201,7 +211,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                     RoomCodeDisplay(
                       code: room.code,
                       onShare: () => Share.share(
-                        '${AppStrings.shareMessage} ${room.code}',
+                        '${context.l10n.shareMessage} ${room.code}',
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -235,7 +245,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                     session.participantId,
                   ),
                   icon: const Icon(Icons.add),
-                  label: const Text(AppStrings.addOrdine),
+                  label: Text(context.l10n.addOrdine),
                 )
               : null,
         );
@@ -265,7 +275,7 @@ class _Sidebar extends StatelessWidget {
           RoomCodeDisplay(
             code: roomState.room.code,
             onShare: () => Share.share(
-              '${AppStrings.shareMessage} ${roomState.room.code}',
+              '${context.l10n.shareMessage} ${roomState.room.code}',
             ),
           ),
           const SizedBox(height: 16),
@@ -296,7 +306,7 @@ class _ParticipantsRow extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppStrings.clienti,
+              context.l10n.clienti,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: const Color(AppColors.textSecondary),
@@ -422,14 +432,14 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SectionHeader(
-                title: AppStrings.menu,
-                subtitle: 'Ordini da stimare con il team',
+              SectionHeader(
+                title: context.l10n.menu,
+                subtitle: context.l10n.menuSubtitle,
               ),
               if (canReorder) ...[
                 const SizedBox(height: 8),
                 Text(
-                  AppStrings.modificaOrdineHint,
+                  context.l10n.modificaOrdineHint,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: const Color(AppColors.textSecondary),
                       ),
@@ -462,7 +472,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            AppStrings.menuEmpty,
+                            context.l10n.menuEmpty,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
@@ -571,7 +581,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
-                    AppStrings.waitingAperitivo,
+                    context.l10n.waitingAperitivo,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.grey.shade600,
                           fontStyle: FontStyle.italic,
@@ -644,7 +654,7 @@ class _StoryTile extends StatelessWidget {
                     if (onEdit != null)
                       IconButton(
                         icon: const Icon(Icons.edit_outlined),
-                        tooltip: AppStrings.modificaOrdine,
+                        tooltip: context.l10n.modificaOrdine,
                         onPressed: onEdit,
                       ),
                     IconButton(
@@ -653,7 +663,7 @@ class _StoryTile extends StatelessWidget {
                     ),
                     FilledButton(
                       onPressed: onStartVoting,
-                      child: const Text(AppStrings.startVoting),
+                      child: Text(context.l10n.startVoting),
                     ),
                   ],
                 )
@@ -698,20 +708,20 @@ Future<void> _showAddStoryDialog(
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text(AppStrings.addOrdine),
+      title: Text(context.l10n.addOrdine),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: titleController,
-            decoration: const InputDecoration(labelText: AppStrings.ordineTitle),
+            decoration: InputDecoration(labelText: context.l10n.ordineTitle),
             autofocus: true,
           ),
           const SizedBox(height: 12),
           TextField(
             controller: descController,
-            decoration: const InputDecoration(
-              labelText: AppStrings.ordineDescription,
+            decoration: InputDecoration(
+              labelText: context.l10n.ordineDescription,
             ),
             maxLines: 3,
           ),
@@ -775,9 +785,9 @@ Future<void> _confirmTransferBarman(
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text(AppStrings.passaBancone),
+      title: Text(context.l10n.passaBancone),
       content: Text(
-        AppStrings.confermaPassaBancone(toParticipant.nickname),
+        context.l10n.confermaPassaBancone(toParticipant.nickname),
       ),
       actions: [
         TextButton(
@@ -786,7 +796,7 @@ Future<void> _confirmTransferBarman(
         ),
         FilledButton(
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text(AppStrings.passaBancone),
+          child: Text(context.l10n.passaBancone),
         ),
       ],
     ),
@@ -818,20 +828,20 @@ Future<void> _showEditStoryDialog(
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text(AppStrings.modificaOrdine),
+      title: Text(context.l10n.modificaOrdine),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: titleController,
-            decoration: const InputDecoration(labelText: AppStrings.ordineTitle),
+            decoration: InputDecoration(labelText: context.l10n.ordineTitle),
             autofocus: true,
           ),
           const SizedBox(height: 12),
           TextField(
             controller: descController,
-            decoration: const InputDecoration(
-              labelText: AppStrings.ordineDescription,
+            decoration: InputDecoration(
+              labelText: context.l10n.ordineDescription,
             ),
             maxLines: 3,
           ),
@@ -844,7 +854,7 @@ Future<void> _showEditStoryDialog(
         ),
         FilledButton(
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text(AppStrings.salvaOrdine),
+          child: Text(context.l10n.salvaOrdine),
         ),
       ],
     ),
@@ -881,28 +891,28 @@ Future<void> _showStartVotingDialog(
     context: context,
     builder: (ctx) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
-        title: const Text(AppStrings.scegliTimer),
+        title: Text(context.l10n.scegliTimer),
         content: Wrap(
           spacing: 8,
           runSpacing: 8,
           children: [
             ChoiceChip(
-              label: const Text(AppStrings.timerNone),
+              label: Text(context.l10n.timerNone),
               selected: durationSeconds == null,
               onSelected: (_) => setState(() => durationSeconds = null),
             ),
             ChoiceChip(
-              label: const Text(AppStrings.timer2Min),
+              label: Text(context.l10n.timer2Min),
               selected: durationSeconds == 120,
               onSelected: (_) => setState(() => durationSeconds = 120),
             ),
             ChoiceChip(
-              label: const Text(AppStrings.timer5Min),
+              label: Text(context.l10n.timer5Min),
               selected: durationSeconds == 300,
               onSelected: (_) => setState(() => durationSeconds = 300),
             ),
             ChoiceChip(
-              label: const Text(AppStrings.timer10Min),
+              label: Text(context.l10n.timer10Min),
               selected: durationSeconds == 600,
               onSelected: (_) => setState(() => durationSeconds = 600),
             ),
@@ -915,7 +925,7 @@ Future<void> _showStartVotingDialog(
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text(AppStrings.startVoting),
+            child: Text(context.l10n.startVoting),
           ),
         ],
       ),
@@ -950,17 +960,17 @@ Future<void> _showParticipantActions(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: Text(AppStrings.azioniCliente),
+            title: Text(context.l10n.azioniCliente),
             subtitle: Text(target.nickname),
           ),
           ListTile(
             leading: const Icon(Icons.swap_horiz),
-            title: const Text(AppStrings.passaBancone),
+            title: Text(context.l10n.passaBancone),
             onTap: () => Navigator.pop(ctx, 'transfer'),
           ),
           ListTile(
             leading: const Icon(Icons.person_remove_outlined),
-            title: const Text(AppStrings.rimuoviDalBancone),
+            title: Text(context.l10n.rimuoviDalBancone),
             onTap: () => Navigator.pop(ctx, 'remove'),
           ),
         ],
@@ -996,8 +1006,8 @@ Future<void> _confirmRemoveParticipant(
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text(AppStrings.rimuoviDalBancone),
-      content: Text(AppStrings.confermaRimuovi(target.nickname)),
+      title: Text(context.l10n.rimuoviDalBancone),
+      content: Text(context.l10n.confermaRimuovi(target.nickname)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
@@ -1005,7 +1015,7 @@ Future<void> _confirmRemoveParticipant(
         ),
         FilledButton(
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text(AppStrings.rimuoviDalBancone),
+          child: Text(context.l10n.rimuoviDalBancone),
         ),
       ],
     ),

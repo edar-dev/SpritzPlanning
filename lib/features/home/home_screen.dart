@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
+import '../../core/preferences/preferences_providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/errors/user_facing_error.dart';
@@ -53,15 +54,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _createRoom() async {
+    final l10n = context.l10n;
     final nickname = _nicknameController.text.trim();
     final localeName = _localeNameController.text.trim();
 
     if (nickname.length < 2) {
-      setState(() => _error = AppStrings.nicknameTooShort);
+      setState(() => _error = l10n.nicknameTooShort);
       return;
     }
     if (localeName.length < 2) {
-      setState(() => _error = AppStrings.localeNameTooShort);
+      setState(() => _error = l10n.localeNameTooShort);
       return;
     }
 
@@ -80,15 +82,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _joinRoom() async {
+    final l10n = context.l10n;
     final nickname = _nicknameController.text.trim();
     final code = _roomCodeController.text.trim();
 
     if (nickname.length < 2) {
-      setState(() => _error = AppStrings.nicknameTooShort);
+      setState(() => _error = l10n.nicknameTooShort);
       return;
     }
     if (code.isEmpty) {
-      setState(() => _error = AppStrings.roomCodeRequired);
+      setState(() => _error = l10n.roomCodeRequired);
       return;
     }
 
@@ -115,7 +118,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       await action();
     } catch (e, st) {
       await ErrorReporter.capture(e, stackTrace: st, tags: {'flow': 'join'});
-      setState(() => _error = userFacingMessage(e));
+      setState(() => _error = userFacingMessage(e, l10n: context.l10n));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -123,6 +126,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final configured = SupabaseConfig.isConfigured;
 
     return Scaffold(
@@ -132,11 +136,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             children: [
               if (!configured)
-                const ConnectionBanner(
-                  message:
-                      'Supabase non configurato — usa --dart-define-from-file=env.json',
-                ),
+                ConnectionBanner(message: l10n.supabaseNotConfigured),
               const PwaInstallBanner(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: _HomePreferencesBar(),
+              ),
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(
@@ -157,7 +162,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               _buildLogo(context),
                               const SizedBox(height: 20),
                               Text(
-                                AppStrings.appName,
+                                l10n.appName,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineMedium
@@ -168,15 +173,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                AppStrings.tagline,
+                                l10n.tagline,
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               const SizedBox(height: 32),
                               if (_mode == _HomeMode.welcome)
-                                _buildWelcomeActions(configured)
+                                _buildWelcomeActions(configured, l10n)
                               else
-                                _buildForm(context),
+                                _buildForm(context, l10n),
                             ],
                           ),
                         ),
@@ -205,13 +210,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildWelcomeActions(bool configured) {
+  Widget _buildWelcomeActions(bool configured, AppLocalizations l10n) {
     return Column(
       children: [
         SpritzActionTile(
           icon: Icons.storefront_outlined,
-          title: AppStrings.openLocale,
-          subtitle: 'Crea una stanza per il tuo team',
+          title: l10n.openLocale,
+          subtitle: l10n.createRoomSubtitle,
           primary: true,
           onTap: configured && !_isLoading
               ? () => setState(() {
@@ -223,8 +228,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: 12),
         SpritzActionTile(
           icon: Icons.door_front_door_outlined,
-          title: AppStrings.enterBancone,
-          subtitle: 'Unisciti con il codice bancone',
+          title: l10n.enterBancone,
+          subtitle: l10n.joinRoomSubtitle,
           onTap: configured && !_isLoading
               ? () => setState(() {
                     _mode = _HomeMode.join;
@@ -236,16 +241,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildForm(BuildContext context) {
+  Widget _buildForm(BuildContext context, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
           controller: _nicknameController,
-          decoration: const InputDecoration(
-            labelText: AppStrings.nicknameLabel,
-            hintText: AppStrings.nicknameHint,
-            prefixIcon: Icon(Icons.person_outline_rounded),
+          decoration: InputDecoration(
+            labelText: l10n.nicknameLabel,
+            hintText: l10n.nicknameHint,
+            prefixIcon: const Icon(Icons.person_outline_rounded),
           ),
           textInputAction: TextInputAction.next,
         ),
@@ -253,10 +258,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         if (_mode == _HomeMode.create)
           TextField(
             controller: _localeNameController,
-            decoration: const InputDecoration(
-              labelText: AppStrings.localeNameLabel,
-              hintText: AppStrings.localeNameHint,
-              prefixIcon: Icon(Icons.store_outlined),
+            decoration: InputDecoration(
+              labelText: l10n.localeNameLabel,
+              hintText: l10n.localeNameHint,
+              prefixIcon: const Icon(Icons.store_outlined),
             ),
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => _createRoom(),
@@ -264,10 +269,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         if (_mode == _HomeMode.join)
           TextField(
             controller: _roomCodeController,
-            decoration: const InputDecoration(
-              labelText: AppStrings.roomCodeLabel,
-              hintText: AppStrings.roomCodeHint,
-              prefixIcon: Icon(Icons.qr_code_rounded),
+            decoration: InputDecoration(
+              labelText: l10n.roomCodeLabel,
+              hintText: l10n.roomCodeHint,
+              prefixIcon: const Icon(Icons.qr_code_rounded),
             ),
             textCapitalization: TextCapitalization.characters,
             textInputAction: TextInputAction.done,
@@ -306,8 +311,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 )
               : Text(
                   _mode == _HomeMode.create
-                      ? AppStrings.openLocale
-                      : AppStrings.enterBancone,
+                      ? l10n.openLocale
+                      : l10n.enterBancone,
                 ),
         ),
         const SizedBox(height: 8),
@@ -318,7 +323,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     _mode = _HomeMode.welcome;
                     _error = null;
                   }),
-          child: const Text('Indietro'),
+          child: Text(l10n.back),
+        ),
+      ],
+    );
+  }
+}
+
+class _HomePreferencesBar extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final themeMode = ref.watch(themeModeProvider).valueOrNull ?? ThemeMode.system;
+    final locale = ref.watch(localeProvider).valueOrNull;
+
+    return Row(
+      children: [
+        DropdownButtonHideUnderline(
+          child: DropdownButton<Locale>(
+            value: locale ?? const Locale('it'),
+            items: const [
+              DropdownMenuItem(value: Locale('it'), child: Text('IT')),
+              DropdownMenuItem(value: Locale('en'), child: Text('EN')),
+            ],
+            onChanged: (value) {
+              if (value != null) {
+                ref.read(localeProvider.notifier).setLocale(value);
+              }
+            },
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          l10n.languageLabel,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
+        const Spacer(),
+        PopupMenuButton<ThemeMode>(
+          tooltip: l10n.themeSystem,
+          icon: Icon(
+            switch (themeMode) {
+              ThemeMode.dark => Icons.dark_mode_outlined,
+              ThemeMode.light => Icons.light_mode_outlined,
+              _ => Icons.brightness_auto_outlined,
+            },
+          ),
+          onSelected: ref.read(themeModeProvider.notifier).setThemeMode,
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: ThemeMode.light,
+              child: Text(l10n.themeLight),
+            ),
+            PopupMenuItem(
+              value: ThemeMode.dark,
+              child: Text(l10n.themeDark),
+            ),
+            PopupMenuItem(
+              value: ThemeMode.system,
+              child: Text(l10n.themeSystem),
+            ),
+          ],
         ),
       ],
     );

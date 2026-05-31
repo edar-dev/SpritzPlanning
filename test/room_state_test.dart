@@ -53,6 +53,8 @@ RoomState _roomState({
   );
 }
 
+const _defaultDeck = ['0', '½', '1', '2', '3', '5', '8', '13', '21', '?', '☕'];
+
 Room _room({String currentStoryId = 'story-1'}) {
   return Room(
     id: 'room-1',
@@ -61,6 +63,8 @@ Room _room({String currentStoryId = 'story-1'}) {
     phase: RoomPhase.voting,
     currentStoryId: currentStoryId,
     votesRevealed: false,
+    deckValues: _defaultDeck,
+    allowCoffeeBreak: true,
     lastActivityAt: _t,
     createdAt: _t,
   );
@@ -74,6 +78,8 @@ Room _roomWithoutStory() {
     phase: RoomPhase.lobby,
     currentStoryId: null,
     votesRevealed: false,
+    deckValues: _defaultDeck,
+    allowCoffeeBreak: true,
     lastActivityAt: _t,
     createdAt: _t,
   );

@@ -1,13 +1,15 @@
 import 'package:postgrest/postgrest.dart';
 
-import '../constants/app_strings.dart';
+import '../l10n/l10n_extensions.dart';
 
 /// Messaggio localizzato per l'utente, senza stack trace.
-String userFacingMessage(Object error) {
+String userFacingMessage(Object error, {AppLocalizations? l10n}) {
+  final generic = l10n?.genericError ?? 'Qualcosa è andato storto al bancone';
+
   if (error is PostgrestException) {
     final message = error.message.trim();
     if (message.isNotEmpty) return message;
-    return AppStrings.genericError;
+    return generic;
   }
 
   final text = error.toString().trim();
@@ -17,7 +19,7 @@ String userFacingMessage(Object error) {
   }
 
   if (text.startsWith('Instance of ')) {
-    return AppStrings.genericError;
+    return generic;
   }
 
   if (text.isNotEmpty &&
@@ -26,5 +28,5 @@ String userFacingMessage(Object error) {
     return text;
   }
 
-  return AppStrings.genericError;
+  return generic;
 }

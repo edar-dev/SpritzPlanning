@@ -284,4 +284,19 @@ class RoomRepository {
       },
     );
   }
+
+  Future<void> setRoomDeck({
+    required String participantId,
+    required List<String> deckValues,
+    required bool allowCoffeeBreak,
+  }) async {
+    await supabase.rpc(
+      'set_room_deck',
+      params: {
+        'p_participant_id': participantId,
+        'p_deck_values': deckValues,
+        'p_allow_coffee_break': allowCoffeeBreak,
+      },
+    );
+  }
 }

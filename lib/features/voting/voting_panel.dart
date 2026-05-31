@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/app_strings.dart';
 import '../../core/constants/deck_values.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/voting/vote_stats.dart';
 import 'vote_summary_panel.dart';
 import '../../core/theme/app_colors.dart';
@@ -86,7 +86,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
   void _showAllVotedSnackbar() {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text(AppStrings.allVoted)),
+      SnackBar(content: Text(context.l10n.allVoted)),
     );
   }
 
@@ -183,11 +183,12 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final story = widget.roomState.currentStory;
     if (story == null) {
       return Center(
         child: Text(
-          AppStrings.noActiveStory,
+          l10n.noActiveStory,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       );
@@ -218,7 +219,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Ordine corrente',
+                    l10n.currentStoryLabel,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: const Color(AppColors.textSecondary),
                         ),
@@ -249,7 +250,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  AppStrings.timerScaduto,
+                  l10n.timerScaduto,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: const Color(AppColors.spritzOrange),
@@ -284,15 +285,15 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
             ),
           ] else ...[
             SectionHeader(
-              title: AppStrings.chooseDose,
-              subtitle: 'Seleziona la dose per questo ordine',
+              title: l10n.chooseDose,
+              subtitle: l10n.chooseDoseSubtitle,
             ),
             const SizedBox(height: 16),
             Wrap(
               spacing: 12,
               runSpacing: 12,
               alignment: WrapAlignment.center,
-              children: DeckValues.values.map((value) {
+              children: DeckValues.forRoom(widget.roomState.room).map((value) {
                 return SpritzCard(
                   value: value,
                   selected: _selectedValue == value || myVote?.value == value,
@@ -304,7 +305,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
             if (_selectedValue != null || myVote?.value != null) ...[
               const SizedBox(height: 16),
               Text(
-                AppStrings.voteSubmitted,
+                l10n.voteSubmitted,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
@@ -320,7 +321,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    AppStrings.allVoted,
+                    l10n.allVoted,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Color(AppColors.success),
@@ -331,7 +332,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               FilledButton.icon(
                 onPressed: _reveal,
                 icon: const Icon(Icons.celebration_outlined),
-                label: const Text(AppStrings.servizio),
+                label: Text(l10n.servizio),
               ),
             ],
             if (revealed) ...[
@@ -340,14 +341,14 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                   Expanded(
                     child: OutlinedButton(
                       onPressed: _reset,
-                      child: const Text(AppStrings.resetRound),
+                      child: Text(l10n.resetRound),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: FilledButton(
                       onPressed: _finalEstimate != null ? _confirmEstimate : null,
-                      child: const Text(AppStrings.confirmEstimate),
+                      child: Text(l10n.confirmEstimate),
                     ),
                   ),
                 ],
@@ -355,7 +356,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               const SizedBox(height: 8),
               OutlinedButton(
                 onPressed: _nextStory,
-                child: const Text(AppStrings.nextOrdine),
+                child: Text(l10n.nextOrdine),
               ),
             ],
           ],
@@ -373,6 +374,7 @@ class _VotingCountdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final remaining = deadline.difference(now);
     final expired = remaining.isNegative;
     final display = expired
@@ -405,7 +407,7 @@ class _VotingCountdown extends StatelessWidget {
         ),
         const SizedBox(width: 6),
         Text(
-          AppStrings.timerLabel,
+          l10n.timerLabel,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: const Color(AppColors.textSecondary),
               ),
@@ -422,6 +424,7 @@ class _VoteProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -429,16 +432,16 @@ class _VoteProgressBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '${stats.votedCount}/${stats.participantCount} ${AppStrings.dosiScelte}',
+              '${stats.votedCount}/${stats.participantCount} ${l10n.dosiScelte}',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
             ),
             if (stats.votedCount == stats.participantCount &&
                 stats.participantCount > 0)
-              const Text(
-                AppStrings.allVoted,
-                style: TextStyle(
+              Text(
+                l10n.allVoted,
+                style: const TextStyle(
                   color: Color(AppColors.success),
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
@@ -478,10 +481,11 @@ class _RevealSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       children: [
         Text(
-          AppStrings.votesRevealed,
+          l10n.votesRevealed,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -522,7 +526,7 @@ class _RevealSection extends StatelessWidget {
         if (isFacilitator) ...[
           const SizedBox(height: 24),
           Text(
-            AppStrings.finalEstimateLabel,
+            l10n.finalEstimateLabel,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
@@ -530,7 +534,7 @@ class _RevealSection extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             alignment: WrapAlignment.center,
-            children: DeckValues.values
+            children: DeckValues.forRoom(roomState.room)
                 .where((v) => v != '?' && v != '☕')
                 .map((value) {
               return ChoiceChip(

@@ -23,8 +23,6 @@ class SpritzCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = DeckValues.label(value);
-
     return AnimatedScale(
       scale: selected ? 1.05 : 1,
       duration: const Duration(milliseconds: 180),
@@ -82,7 +80,7 @@ class SpritzCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Text(
-                      label,
+                      DeckValues.label(context, value),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

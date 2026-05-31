@@ -13,4 +13,12 @@ abstract final class AppColors {
   static const darkWood = 0xFF44403C;
   static const success = 0xFF16A34A;
   static const errorRed = 0xFFDC2626;
+
+  // Dark theme tokens
+  static const darkBackground = 0xFF12100E;
+  static const darkSurface = 0xFF1C1917;
+  static const darkSurfaceMuted = 0xFF292524;
+  static const darkTextPrimary = 0xFFFAFAF9;
+  static const darkTextSecondary = 0xFFA8A29E;
+  static const darkBorder = 0xFF44403C;
 }
