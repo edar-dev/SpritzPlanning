@@ -382,19 +382,25 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
 
   void _scheduleReorder(List<Story> ordered) {
     _reorderDebounce?.cancel();
-    _reorderDebounce = Timer(const Duration(milliseconds: 300), () async {
-      try {
-        await ref.read(roomRepositoryProvider).reorderStories(
-              participantId: widget.participantId,
-              storyIds: ordered.map((s) => s.id).toList(),
-            );
-        if (mounted) setState(() => _localOrder = null);
-      } catch (e, st) {
-        if (!mounted) return;
-        setState(() => _localOrder = null);
-        await showUserError(context, e, stackTrace: st);
-      }
-    });
+    _reorderDebounce = Timer(
+      const Duration(milliseconds: 300),
+      () => unawaited(_persistReorder(ordered)),
+    );
+  }
+
+  Future<void> _persistReorder(List<Story> ordered) async {
+    try {
+      await ref.read(roomRepositoryProvider).reorderStories(
+            participantId: widget.participantId,
+            storyIds: ordered.map((s) => s.id).toList(),
+          );
+      if (!mounted) return;
+      setState(() => _localOrder = null);
+    } catch (e, st) {
+      if (!mounted) return;
+      setState(() => _localOrder = null);
+      await showUserError(context, e, stackTrace: st);
+    }
   }
 
   @override
