@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/session_constants.dart';
 import '../../core/monitoring/error_reporter.dart';
 import '../../core/storage/session_storage.dart';
 import '../models/connection_status.dart';
@@ -93,7 +94,7 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
 
       _heartbeatTimer?.cancel();
       _heartbeatTimer = Timer.periodic(
-        const Duration(seconds: 30),
+        const Duration(seconds: SessionConstants.heartbeatIntervalSeconds),
         (_) => _repo.heartbeat(participantId: participantId),
       );
 

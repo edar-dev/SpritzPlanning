@@ -32,6 +32,7 @@ class Room {
     required this.phase,
     this.currentStoryId,
     required this.votesRevealed,
+    this.votingDeadlineAt,
     required this.lastActivityAt,
     required this.createdAt,
   });
@@ -42,6 +43,7 @@ class Room {
   final RoomPhase phase;
   final String? currentStoryId;
   final bool votesRevealed;
+  final DateTime? votingDeadlineAt;
   final DateTime lastActivityAt;
   final DateTime createdAt;
 
@@ -53,6 +55,9 @@ class Room {
       phase: RoomPhaseX.fromDb(json['phase'] as String),
       currentStoryId: json['current_story_id'] as String?,
       votesRevealed: json['votes_revealed'] as bool? ?? false,
+      votingDeadlineAt: json['voting_deadline_at'] != null
+          ? DateTime.parse(json['voting_deadline_at'] as String)
+          : null,
       lastActivityAt: DateTime.parse(json['last_activity_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
     );
@@ -85,6 +90,10 @@ class Participant {
       joinedAt: DateTime.parse(json['joined_at'] as String),
       lastSeenAt: DateTime.parse(json['last_seen_at'] as String),
     );
+  }
+
+  bool isAbsent({required DateTime now, int thresholdSeconds = 120}) {
+    return now.difference(lastSeenAt).inSeconds > thresholdSeconds;
   }
 }
 
