@@ -166,7 +166,7 @@ class RoomRepository {
       params: {
         'p_participant_id': participantId,
         'p_story_id': storyId,
-        'p_duration_seconds': durationSeconds,
+        if (durationSeconds != null) 'p_duration_seconds': durationSeconds,
       },
     );
   }

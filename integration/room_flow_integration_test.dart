@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spritz_planning/data/models/models.dart';
 import 'package:spritz_planning/data/repositories/room_repository.dart';
 import 'package:spritz_planning/data/supabase/supabase_client.dart';
@@ -10,20 +11,18 @@ import 'package:spritz_planning/data/supabase/supabase_client.dart';
 /// `scripts/run-integration.ps1` oppure:
 /// `flutter test integration/room_flow_integration_test.dart --dart-define-from-file=env.test.json`
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
   group('Room voting flow (Supabase)', () {
     RoomRepository? repo;
 
     setUpAll(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      HttpOverrides.global = null;
       if (!SupabaseConfig.isConfigured) return;
-      // ignore: invalid_use_of_visible_for_testing_member
-      SharedPreferences.setMockInitialValues({});
-      await initializeSupabase();
+      await initializeSupabase(forIntegrationTest: true);
       repo = RoomRepository();
     });
 
-    tearDown(() {
+    tearDownAll(() {
       repo?.dispose();
       repo = null;
     });
@@ -34,18 +33,19 @@ void main() {
           'Imposta SUPABASE_URL e SUPABASE_ANON_KEY (--dart-define-from-file=env.test.json)',
         );
       }
+      expect(SupabaseConfig.url, contains('eyvfsgzbrdibheyejikf'));
 
       final repository = repo!;
-
       final suffix = DateTime.now().millisecondsSinceEpoch;
+
       final barman = await repository.createRoom(
         name: 'IT-$suffix',
-        nickname: 'Barman-$suffix',
+        nickname: 'Barman$suffix',
       );
 
       final guest = await repository.joinRoom(
         code: barman.code,
-        nickname: 'Guest-$suffix',
+        nickname: 'Guest$suffix',
       );
 
       expect(guest.roomId, barman.roomId);

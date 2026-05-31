@@ -133,7 +133,9 @@ Secrets: `SUPABASE_TEST_URL`, `SUPABASE_TEST_ANON_KEY`
 - [x] Almeno 3 regole lint nuove attive senza eccezioni massicce
 - [x] `docs/TESTING.md` + `env.test.json.example` + script run-integration
 - [x] Job integration opzionale (dispatch + schedule) in `.github/workflows/integration.yml`
-- [ ] PR `chore/quality-gates` mergiata
+- [x] PR #5 mergiata (`6fea727`)
+- [ ] Secrets CI: `gh auth login` + `scripts/configure-github-secrets.ps1` (MCP GitHub non espone set secret)
+- [x] Integration test locale: fix `HttpOverrides.global = null` + `forIntegrationTest` (non era bug RPC Supabase)
 
 ## Rischi
 
