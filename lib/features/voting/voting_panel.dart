@@ -8,6 +8,7 @@ import '../../core/voting/vote_stats.dart';
 import 'vote_summary_panel.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
@@ -83,11 +84,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
             storyId: story.id,
             value: value,
           );
-    } catch (e) {
+    } catch (e, st) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
       }
     }
   }
@@ -97,11 +96,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       await ref.read(roomRepositoryProvider).revealVotes(
             participantId: widget.participantId,
           );
-    } catch (e) {
+    } catch (e, st) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
       }
     }
   }
@@ -112,11 +109,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       await ref.read(roomRepositoryProvider).resetVotes(
             participantId: widget.participantId,
           );
-    } catch (e) {
+    } catch (e, st) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
       }
     }
   }
@@ -130,11 +125,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
             storyId: story.id,
             estimate: _finalEstimate!,
           );
-    } catch (e) {
+    } catch (e, st) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
       }
     }
   }
@@ -148,11 +141,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       await ref.read(roomRepositoryProvider).nextStory(
             participantId: widget.participantId,
           );
-    } catch (e) {
+    } catch (e, st) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
       }
     }
   }

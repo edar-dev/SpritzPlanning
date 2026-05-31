@@ -53,6 +53,14 @@ abstract final class AppStrings {
   static const dosiScelte = 'dosi scelte';
   static const outlier = 'Fuori scala';
 
+  // Report
+  static const riepilogoSerata = 'Riepilogo serata';
+  static const exportCsv = 'Esporta CSV';
+  static const exportMarkdown = 'Condividi Markdown';
+  static const copiaReport = 'Copia report';
+  static const reportEmpty = 'Nessuna stima ancora confermata';
+  static const reportCopied = 'Report copiato negli appunti';
+
   // Errors
   static const nicknameTooShort = 'Il nickname deve avere almeno 2 caratteri';
   static const localeNameTooShort = 'Il nome del locale deve avere almeno 2 caratteri';

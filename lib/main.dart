@@ -1,26 +1,43 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'app.dart';
+import 'core/config/sentry_config.dart';
 import 'core/pwa/pwa_install_listener.dart';
 import 'data/providers/providers.dart';
 import 'data/supabase/supabase_client.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    PwaInstallListener.instance.init();
-  }
-  await initializeSupabase();
 
-  runApp(
-    const ProviderScope(
-      child: SessionRestoreWrapper(
-        child: SpritzPlanningApp(),
+  Future<void> bootstrap() async {
+    if (kIsWeb) {
+      PwaInstallListener.instance.init();
+    }
+    await initializeSupabase();
+    runApp(
+      const ProviderScope(
+        child: SessionRestoreWrapper(
+          child: SpritzPlanningApp(),
+        ),
       ),
-    ),
-  );
+    );
+  }
+
+  if (SentryConfig.isConfigured) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = SentryConfig.dsn;
+        options.tracesSampleRate = kReleaseMode ? 0.2 : 1.0;
+        options.environment = kReleaseMode ? 'production' : 'development';
+      },
+      appRunner: bootstrap,
+    );
+  } else {
+    await bootstrap();
+  }
 }
 
 /// Entry point helper for session restore on app start.

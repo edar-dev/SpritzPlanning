@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/monitoring/error_reporter.dart';
 import '../../core/storage/session_storage.dart';
 import '../models/connection_status.dart';
 import '../models/models.dart';
@@ -100,6 +101,11 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
         state = AsyncData(updated);
       });
     } catch (e, st) {
+      await ErrorReporter.capture(
+        e,
+        stackTrace: st,
+        tags: {'room_id': roomId},
+      );
       state = AsyncError(e, st);
     }
   }

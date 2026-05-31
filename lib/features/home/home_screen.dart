@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../core/errors/user_facing_error.dart';
+import '../../core/monitoring/error_reporter.dart';
 import '../../data/providers/providers.dart';
 import '../../data/supabase/supabase_client.dart';
 import '../../shared/widgets/connection_banner.dart';
@@ -111,8 +113,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
     try {
       await action();
-    } catch (e) {
-      setState(() => _error = e.toString().replaceFirst('Exception: ', ''));
+    } catch (e, st) {
+      await ErrorReporter.capture(e, stackTrace: st, tags: {'flow': 'join'});
+      setState(() => _error = userFacingMessage(e));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

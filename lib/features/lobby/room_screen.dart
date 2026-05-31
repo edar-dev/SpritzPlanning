@@ -10,7 +10,11 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../data/models/connection_status.dart';
 import '../../shared/widgets/connection_banner.dart';
+import '../../core/errors/user_facing_error.dart';
+import '../../core/export/session_report.dart';
+import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/participant_avatar.dart';
+import 'session_report_sheet.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/section_header.dart';
 import '../voting/voting_panel.dart';
@@ -60,7 +64,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('$e'),
+              Text(userFacingMessage(e)),
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => context.go('/'),
@@ -101,6 +105,15 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               ],
             ),
             actions: [
+              if (isFacilitator)
+                IconButton(
+                  icon: const Icon(Icons.summarize_outlined),
+                  tooltip: AppStrings.riepilogoSerata,
+                  onPressed: () => SessionReportSheet.show(
+                    context,
+                    SessionReport.fromRoomState(roomState),
+                  ),
+                ),
               IconButton(
                 icon: const Icon(Icons.logout_rounded),
                 tooltip: 'Lascia il locale',
@@ -515,11 +528,9 @@ Future<void> _showAddStoryDialog(
             title: titleController.text.trim(),
             description: descController.text.trim(),
           );
-    } catch (e) {
+    } catch (e, st) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        await showUserError(context, e, stackTrace: st);
       }
     }
   }
@@ -539,11 +550,9 @@ Future<void> _removeStory(
           participantId: participantId,
           storyId: storyId,
         );
-  } catch (e) {
+  } catch (e, st) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      await showUserError(context, e, stackTrace: st);
     }
   }
 }
@@ -581,11 +590,9 @@ Future<void> _confirmTransferBarman(
           fromParticipantId: fromParticipantId,
           toParticipantId: toParticipant.id,
         );
-  } catch (e) {
+  } catch (e, st) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
-      );
+      await showUserError(context, e, stackTrace: st);
     }
   }
 }
@@ -601,11 +608,9 @@ Future<void> _startVoting(
           participantId: participantId,
           storyId: storyId,
         );
-  } catch (e) {
+  } catch (e, st) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      await showUserError(context, e, stackTrace: st);
     }
   }
 }

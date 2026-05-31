@@ -92,6 +92,8 @@ Piani di miglioramento (punti 1–9): [docs/ROADMAP.md](docs/ROADMAP.md)
 
 Su push/PR verso `main`, GitHub Actions esegue `flutter analyze`, `flutter test` e un build web di verifica (`.github/workflows/ci.yml`).
 
+Opzionale in produzione: `SENTRY_DSN` in Vercel per error reporting (vedi `env.json.example`).
+
 ## Test
 
 ```bash

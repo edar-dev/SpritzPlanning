@@ -15,7 +15,15 @@ if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
   exit 1
 fi
 
+DART_DEFINES=(
+  "--dart-define=SUPABASE_URL=$SUPABASE_URL"
+  "--dart-define=SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY"
+)
+
+if [ -n "${SENTRY_DSN:-}" ]; then
+  DART_DEFINES+=("--dart-define=SENTRY_DSN=$SENTRY_DSN")
+fi
+
 flutter build web \
   --release \
-  --dart-define=SUPABASE_URL="$SUPABASE_URL" \
-  --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+  "${DART_DEFINES[@]}"

@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/connection_status.dart';
+import '../../core/monitoring/error_reporter.dart';
 import '../supabase/supabase_client.dart';
 
 typedef RoomStateRefresh = Future<void> Function();
@@ -53,9 +55,20 @@ class RealtimeConnectionManager {
 
   void _emit(ConnectionStatus status) {
     if (_disposed || _status == status) return;
+    final previous = _status;
     _status = status;
     if (!_statusController.isClosed) {
       _statusController.add(status);
+    }
+    if (previous == ConnectionStatus.connected &&
+        status != ConnectionStatus.connected) {
+      ErrorReporter.breadcrumb(
+        'Realtime: $previous → $status',
+        category: 'realtime',
+        level: status == ConnectionStatus.disconnected
+            ? SentryLevel.warning
+            : SentryLevel.info,
+      );
     }
   }
 
