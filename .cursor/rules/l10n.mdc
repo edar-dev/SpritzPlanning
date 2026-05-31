@@ -1,0 +1,35 @@
+---
+description: Localizzazione IT/EN — ARB e context.l10n, no stringhe hardcoded in UI
+globs: lib/**/*.dart
+alwaysApply: false
+---
+
+# Localizzazione (l10n)
+
+## Regole
+
+- Testi visibili all’utente solo via `context.l10n` (estensione in `lib/core/l10n/l10n_extensions.dart`)
+- Aggiungere chiavi in `lib/l10n/app_it.arb` (template) e `app_en.arb`
+- Dopo modifica ARB: `flutter gen-l10n`
+- Import: `package:spritz_planning/l10n/app_localizations.dart`
+
+## Vietato in UI
+
+```dart
+// ❌ BAD
+Text('Entra al bancone')
+const label = 'Servizio!';
+
+// ✅ GOOD
+Text(context.l10n.joinBar)
+Text(context.l10n.revealVotes)
+```
+
+## Plurali e placeholder
+
+Usare sintassi ARB (`{name}`, plural rules) — non concatenare stringhe in Dart per messaggi con parametri.
+
+## Lingue
+
+- Default: italiano
+- Inglese: `Locale('en')` — selettore in home, persistito in preferences

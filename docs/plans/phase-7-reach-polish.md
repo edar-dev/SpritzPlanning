@@ -1,5 +1,7 @@
 # Fase 7 — Reach, polish e personalizzazione
 
+> **Nota:** i18n completata; `app_strings.dart` rimosso in Fase 8.
+
 **Punti:** #11 i18n · #12 Dark mode · #16 Deep link Android · #18 Lighthouse · #20 Deck custom  
 **Branch suggerito:** `feat/reach-and-polish`  
 **Durata stimata:** 10–14 giorni  

@@ -16,7 +16,7 @@ Scrum poker con tema spritz per team di sviluppatori. Flutter (Web + Android) + 
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
-- Migrations (in ordine): `001`–`005` (vedi [supabase/README.md](supabase/README.md))
+- Migrations (in ordine): `001`–`009` (vedi [supabase/README.md](supabase/README.md))
 - Dettagli DB: [supabase/README.md](supabase/README.md)
 
 Per sviluppo locale, copia le credenziali in `env.json`:
@@ -37,9 +37,12 @@ cp env.json.example env.json
 
 ```bash
 flutter pub get
+flutter gen-l10n
 flutter run -d chrome --dart-define-from-file=env.json
 flutter run -d android --dart-define-from-file=env.json
 ```
+
+Guida agenti: [AGENTS.md](AGENTS.md) · Playbook: [docs/AGENT-PLAYBOOK.md](docs/AGENT-PLAYBOOK.md)
 
 ## Build
 
@@ -63,16 +66,15 @@ Il build usa `scripts/vercel-build.sh` (installa Flutter su Linux e compila la w
 
 ## Roadmap
 
-Piani di miglioramento (punti 1–9): [docs/ROADMAP.md](docs/ROADMAP.md)
+Panoramica: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-- [Fase 1 — Sicurezza, CI, cleanup](docs/plans/phase-1-security-ci.md)
-- [Fase 2 — Realtime resiliente](docs/plans/phase-2-realtime.md)
-- [Fase 3 — UX lobby e votazione](docs/plans/phase-3-lobby-voting-ux.md)
-- [Fase 4 — Test e PWA](docs/plans/phase-4-quality-pwa.md)
-- [Prossimi 10 miglioramenti (11–20)](docs/IMPROVEMENTS-NEXT.md)
-- [Fase 5 — Produzione e export](docs/plans/phase-5-production-value.md)
-- [Fase 6 — UX sessione](docs/plans/phase-6-session-ux.md)
-- [Fase 7 — Reach e polish](docs/plans/phase-7-reach-polish.md)
+| Fase | Piano |
+|------|--------|
+| 1–4 | [Sicurezza/CI](docs/plans/phase-1-security-ci.md) · [Realtime](docs/plans/phase-2-realtime.md) · [Lobby/voto](docs/plans/phase-3-lobby-voting-ux.md) · [PWA/E2E](docs/plans/phase-4-quality-pwa.md) |
+| 5–7 | [Produzione](docs/plans/phase-5-production-value.md) · [Sessione](docs/plans/phase-6-session-ux.md) · [Reach/polish](docs/plans/phase-7-reach-polish.md) |
+| 8–10 | [Agent docs](docs/plans/phase-8-agent-docs.md) · [Toolchain](docs/plans/phase-9-dev-toolchain.md) · [Quality gates](docs/plans/phase-10-quality-gates.md) |
+
+Miglioramenti DX (#21–30): [docs/IMPROVEMENTS-DX.md](docs/IMPROVEMENTS-DX.md)
 
 ## Sicurezza
 

@@ -2,7 +2,7 @@
 
 
 
-Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** pianificati (fasi 5–7).
+Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** pianificati (fasi 8–10, DX / agent / toolchain).
 
 
 
@@ -27,8 +27,13 @@ flowchart LR
   P6[Fase6_Sessione]
 
   P7[Fase7_Reach]
+  P8[Fase8_AgentDocs]
+  P9[Fase9_Toolchain]
+  P10[Fase10_Quality]
 
-  P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
+  P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
+  P8 --> P10
+  P9 -.-> P10
 
 ```
 
@@ -51,6 +56,9 @@ flowchart LR
 | 6 | #13, #14, #19 | 6–9 giorni | `feat/session-ux` | [phase-6-session-ux.md](plans/phase-6-session-ux.md) |
 
 | 7 | #11, #12, #16, #18, #20 | 10–14 giorni | `feat/reach-and-polish` | [phase-7-reach-polish.md](plans/phase-7-reach-polish.md) |
+| 8 | #21, #22, #27, #28 | 2–3 giorni | `chore/agent-docs-dx` | [phase-8-agent-docs.md](plans/phase-8-agent-docs.md) |
+| 9 | #23, #24, #25, #30 | 3–5 giorni | `chore/dev-toolchain` | [phase-9-dev-toolchain.md](plans/phase-9-dev-toolchain.md) |
+| 10 | #26, #29 | 2–4 giorni | `chore/quality-gates` | [phase-10-quality-gates.md](plans/phase-10-quality-gates.md) |
 
 
 
@@ -130,15 +138,38 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 
 
-**Prossime:**
+**Prossime (v3 — DX / agent / toolchain):**
 
 
 
-5. **Fase 5** — osservabilità produzione + export retro
+8. **Fase 8** — documentazione e contesto agent allineati ([IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md))
 
-6. **Fase 6** — sessione poker (menu, timer, kick)
+9. **Fase 9** — FVM, bootstrap dev, hook, dev container
 
-7. **Fase 7** — reach (i18n, Android link), polish (dark, Lighthouse), deck custom
+10. **Fase 10** — analyze severo + integration test documentati
+
+
+
+## Lista miglioramenti v3 (#21–30)
+
+
+
+Vedi [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md).
+
+
+
+| # | Miglioramento | Fase |
+|---|-------------|------|
+| 21 | Allineamento documentazione | 8 |
+| 22 | Rimozione codice morto i18n | 8 |
+| 23 | Pin Flutter FVM + version check | 9 |
+| 24 | Bootstrap dev one-command | 9 |
+| 25 | Pre-commit / pre-push | 9 |
+| 26 | Analyze più severo + CI fatal | 10 |
+| 27 | Agent playbook | 8 |
+| 28 | Skill phase delivery + regole Cursor | 8 |
+| 29 | Loop integration test | 10 |
+| 30 | Dev Container | 9 |
 
 
 
@@ -160,9 +191,15 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 | 5 | Completata | Sentry, session report export |
 
-| 6 | Non iniziata | — |
+| 6 | Completata | menu avanzato, timer, kick (migrations 006–008) |
 
-| 7 | Non iniziata | — |
+| 7 | Completata | PR #2 — i18n, dark, deep link, deck custom (migration 009) |
+
+| 8 | Completata (merge pending) | `chore/agent-docs-dx` |
+
+| 9 | Non iniziata | — |
+
+| 10 | Non iniziata | — |
 
 
 

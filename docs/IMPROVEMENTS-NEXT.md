@@ -1,5 +1,8 @@
 # Prossimi 10 miglioramenti — SpritzPlanning (v2)
 
+> **Stato:** i punti **#11–#20** sono stati implementati in **Fasi 5–7** (vedi [ROADMAP.md](ROADMAP.md)).  
+> Prossima ondata: **#21–#30** in [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md) (Fasi 8–10).
+
 Elenco successivo ai punti **1–9** già implementati ([IMPROVEMENTS.md](IMPROVEMENTS.md), [ROADMAP.md](ROADMAP.md)).  
 Numerazione **11–20** per continuità con la lista originale (il vecchio #10 i18n diventa #11).
 
@@ -42,11 +45,13 @@ Impatto medio + sforzo alto:   20
 
 ### 11. Internazionalizzazione (EN)
 
-**Perché:** team misti IT/EN; le stringhe sono già centralizzate in `app_strings.dart`.
+**Perché:** team misti IT/EN.
 
-**Cosa fare:**
+**Stato:** ✅ Completato (Fase 7) — `lib/l10n/*.arb`, `context.l10n`; `app_strings.dart` rimosso (Fase 8).
+
+**Cosa fare (storico):**
 - `flutter gen-l10n` con ARB `it` + `en`
-- Migrare `AppStrings` → delegate l10n
+- Migrare stringhe centralizzate → delegate l10n
 - Selettore lingua in home (opzionale, default sistema)
 
 **Verifica:** switch lingua senza restart; tutte le schermate tradotte.

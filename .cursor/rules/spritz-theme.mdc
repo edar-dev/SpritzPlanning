@@ -1,5 +1,5 @@
 ---
-description: Tema Spritz/bar — copy italiano, palette, glossario UI
+description: Tema Spritz/bar — l10n IT/EN, palette, glossario UI
 globs: lib/**/*.dart
 alwaysApply: false
 ---
@@ -11,17 +11,18 @@ alwaysApply: false
 - Primary: `#E8651A` (arancione spritz)
 - Secondary: `#6B7B3C` (verde oliva)
 - Surface: `#FFF8F0` (crema bancone)
+- Dark: token in `app_colors.dart` / `app_theme.dart`
 
 ## Copy UI
 
-- **Solo italiano** nell'interfaccia utente
-- Usare terminologia bar, **mai** termini Scrum in UI (no "story", "sprint", "poker")
-- Stringhe centralizzate in `lib/core/constants/app_strings.dart`
+- Lingue: **IT** (default), **EN** — `context.l10n`, file ARB in `lib/l10n/`
+- Terminologia **bar**, mai termini Scrum in UI (no "story", "sprint", "poker")
+- Dopo modifica testi: `flutter gen-l10n`
 
 ## Glossario UI
 
-| Codice | UI |
-|--------|-----|
+| Concetto | UI (IT esempio) |
+|----------|-----------------|
 | room | Locale / Bar |
 | participant | Cliente |
 | facilitator | Barman |
@@ -36,7 +37,10 @@ alwaysApply: false
 ```dart
 // ❌ BAD
 Text('Start voting on story')
+Text('Servi l\'ordine')  // hardcoded
 
 // ✅ GOOD
-Text(AppStrings.startVoting) // "Servi l'ordine"
+Text(context.l10n.startVoting)
 ```
+
+Vedi anche `.cursor/rules/l10n.mdc`.
