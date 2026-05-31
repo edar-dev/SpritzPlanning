@@ -49,6 +49,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     }
   }
 
+  Future<void> _leaveAndGoHome() async {
+    ref.read(roomStateProvider.notifier).leaveRoom();
+    await ref.read(sessionProvider.notifier).clearSession();
+    if (!mounted) return;
+    context.go('/');
+  }
+
   @override
   Widget build(BuildContext context) {
     final roomStateAsync = ref.watch(roomStateProvider);
@@ -89,11 +96,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
           (p) => p.id == session.participantId,
         );
         if (!stillInRoom) {
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            ref.read(roomStateProvider.notifier).leaveRoom();
-            await ref.read(sessionProvider.notifier).clearSession();
-            if (context.mounted) context.go('/');
-          });
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => unawaited(_leaveAndGoHome()),
+          );
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
@@ -134,11 +139,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               IconButton(
                 icon: const Icon(Icons.logout_rounded),
                 tooltip: 'Lascia il locale',
-                onPressed: () async {
-                  ref.read(roomStateProvider.notifier).leaveRoom();
-                  await ref.read(sessionProvider.notifier).clearSession();
-                  if (context.mounted) context.go('/');
-                },
+                onPressed: () => unawaited(_leaveAndGoHome()),
               ),
             ],
           ),
