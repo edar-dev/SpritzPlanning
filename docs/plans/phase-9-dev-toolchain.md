@@ -177,7 +177,7 @@ Allineare con stato attuale repo prima di implementare.
 - [x] Hook pre-commit configurati (lefthook.yml + CONTRIBUTING)
 - [x] Dev Container avviabile con istruzioni in README
 - [x] Nessuna modifica funzionale app in `lib/features/`
-- [ ] PR `chore/dev-toolchain` mergiata
+- [x] PR #4 mergiata (`b5936d5`)
 
 ## Rischi
 

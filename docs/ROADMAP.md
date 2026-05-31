@@ -197,7 +197,7 @@ Vedi [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md).
 
 | 8 | Completata | PR #3 — `ff71c34` |
 
-| 9 | In corso | `chore/dev-toolchain` |
+| 9 | Completata | PR #4 — `b5936d5` |
 
 | 10 | Non iniziata | — |
 
