@@ -1,0 +1,17 @@
+# https://github.com/evilmartians/lefthook
+# Install: https://lefthook.dev/installation/  then: lefthook install
+
+pre-commit:
+  parallel: false
+  commands:
+    dart-format:
+      run: dart format --set-exit-if-changed lib test integration
+    gen-l10n:
+      run: bash scripts/flutter.sh gen-l10n
+    l10n-sync:
+      run: git diff --exit-code lib/l10n/ || (echo "ERROR: lib/l10n/ out of date. Run: flutter gen-l10n (or scripts/dev-setup.ps1)" && exit 1)
+
+pre-push:
+  commands:
+    flutter-analyze:
+      run: bash scripts/flutter.sh analyze
