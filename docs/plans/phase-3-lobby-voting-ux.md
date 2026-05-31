@@ -1,5 +1,7 @@
 # Fase 3 — Feature UX lobby e votazione
 
+> **Nota (post–Fase 7/8):** le stringhe UI sono in `lib/l10n/*.arb`; `app_strings.dart` è stato rimosso.
+
 **Punti:** #4 Barman · #7 QR · #8 Dashboard voti  
 **Branch suggerito:** `feat/lobby-voting-ux`  
 **Durata stimata:** 4–6 giorni  

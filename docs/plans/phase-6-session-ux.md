@@ -1,5 +1,7 @@
 # Fase 6 — UX sessione poker
 
+> **Nota (post–Fase 7/8):** le stringhe UI sono in `lib/l10n/*.arb`; `app_strings.dart` è stato rimosso.
+
 **Punti:** #13 Menu avanzato · #14 Timer votazione · #19 Kick cliente  
 **Branch suggerito:** `feat/session-ux`  
 **Durata stimata:** 6–9 giorni  

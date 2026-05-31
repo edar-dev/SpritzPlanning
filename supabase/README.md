@@ -18,6 +18,10 @@ supabase db push
 | `003_room_cleanup.sql` | `cleanup_stale_rooms()` |
 | `004_pg_cron.sql` | Estensione `pg_cron` + job `cleanup-stale-rooms` (ogni 6h) |
 | `005_transfer_facilitator.sql` | RPC `transfer_facilitator` per passaggio ruolo barman |
+| `006_story_management.sql` | Edit titolo/descrizione ordini, riordino menu |
+| `007_voting_timer.sql` | `voting_deadline_at`, timer e clear su reveal/next |
+| `008_remove_participant.sql` | RPC `remove_participant` (kick cliente / AFK) |
+| `009_room_deck_settings.sql` | Deck JSON per stanza, `set_room_deck`, validazione voti |
 
 ## Cleanup automatico (pg_cron)
 

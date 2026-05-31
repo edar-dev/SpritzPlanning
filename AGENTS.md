@@ -1,22 +1,36 @@
 # SpritzPlanning — Guida per Agenti AI
 
+**Ultimo aggiornamento:** Fase 8 (agent DX, doc allineata post–Fase 7).
+
 ## Stack
 
-- **Frontend**: Flutter 3 + Dart + Material 3 (Web + Android)
+- **Frontend**: Flutter 3.35.6 + Dart + Material 3 (Web + Android)
 - **Backend**: Supabase (PostgreSQL + Realtime + RPC)
 - **State**: flutter_riverpod
 - **Navigazione**: go_router
+- **i18n**: `flutter gen-l10n` — IT (default), EN
+- **Osservabilità**: Sentry (opzionale via `SENTRY_DSN`)
 
 ## Vincoli
 
-- UI **solo italiano**, tema **bar/spritz**
+- UI **IT/EN** con tema **bar/spritz** (terminologia bancone, no Scrum in copy)
 - **Nessun login** — nickname + codice stanza
 - Mutazioni via **RPC Supabase**, sync via **Realtime**
+- **Dark mode** e **deck personalizzabile** per locale (migration 009)
+
+## UI e stringhe
+
+- Testi: `lib/l10n/app_it.arb`, `lib/l10n/app_en.arb`
+- In widget: `context.l10n` (`lib/core/l10n/l10n_extensions.dart`)
+- Import: `package:spritz_planning/l10n/app_localizations.dart`
+- **Non** usare `app_strings.dart` (rimosso in Fase 8)
+- Dopo modifica ARB: `flutter gen-l10n`
 
 ## Comandi
 
 ```bash
 flutter pub get
+flutter gen-l10n
 flutter run -d chrome --dart-define-from-file=env.json
 flutter run -d android --dart-define-from-file=env.json
 flutter test
@@ -27,37 +41,59 @@ flutter build apk --dart-define-from-file=env.json
 
 ## Supabase
 
+- **Progetto:** `eyvfsgzbrdibheyejikf` (eu-central-1)
+- Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
+
 ```bash
-# Richiede Supabase CLI
-supabase init
-supabase db push          # applica migrations/
+supabase link --project-ref eyvfsgzbrdibheyejikf
+supabase db push
 ```
 
-Migration iniziale: `supabase/migrations/001_initial_schema.sql`
+Migration **001–009** in ordine — tabella in [supabase/README.md](supabase/README.md).
 
-Config env: copiare `env.json.example` → `env.json` con URL e anon key del progetto Supabase.
+Config locale: `env.json.example` → `env.json` (`SUPABASE_URL`, `SUPABASE_ANON_KEY`, opzionale `SENTRY_DSN`).
 
 ## Struttura
 
 | Path | Ruolo |
 |------|-------|
-| `lib/core/` | Theme, stringhe, storage |
+| `lib/core/` | Theme, l10n extensions, storage, constants |
+| `lib/l10n/` | ARB + file generati da gen-l10n |
 | `lib/data/` | Modelli, repository, providers |
 | `lib/features/` | Schermate per feature |
 | `lib/shared/widgets/` | Widget riutilizzabili |
 | `supabase/migrations/` | Schema SQL + RPC |
-| `docs/` | Roadmap e piani di implementazione |
+| `docs/` | Roadmap, piani, playbook |
+| `scripts/vercel-build.sh` | Build produzione (Flutter 3.35.6 pin) |
 
-## Roadmap
+## Roadmap e delivery
 
-Prima di feature non banali, leggere `docs/ROADMAP.md` e il piano di fase corrispondente in `docs/plans/`.
+- Panoramica: [docs/ROADMAP.md](docs/ROADMAP.md)
+- Piani per fase: [docs/plans/](docs/plans/)
+- Miglioramenti DX (#21–30): [docs/IMPROVEMENTS-DX.md](docs/IMPROVEMENTS-DX.md)
+- **Playbook operativo:** [docs/AGENT-PLAYBOOK.md](docs/AGENT-PLAYBOOK.md)
 
-## Glossario
+Prima di feature non banali: leggere il piano di fase e seguire la skill `phase-delivery`.
 
-Vedi `lib/core/constants/app_strings.dart` e skill `.cursor/skills/spritz-planning-domain/`.
+## Glossario e dominio
 
-## Regole Cursor
+- Terminologia bar: skill `.cursor/skills/spritz-planning-domain/`
+- Chiavi UI: `lib/l10n/app_it.arb` (template ARB)
 
-- `.cursor/rules/spritz-theme.mdc` — copy e palette
-- `.cursor/rules/flutter-architecture.mdc` — pattern codice
-- `.cursor/rules/supabase-realtime.mdc` — backend
+## Regole e skill Cursor
+
+| Risorsa | Uso |
+|---------|-----|
+| `.cursor/rules/spritz-theme.mdc` | Palette, copy, l10n |
+| `.cursor/rules/l10n.mdc` | Nessuna stringa hardcoded in UI |
+| `.cursor/rules/flutter-architecture.mdc` | Pattern codice |
+| `.cursor/rules/supabase-realtime.mdc` | Backend |
+| `.cursor/skills/phase-delivery/` | Branch → piano → PR → deploy |
+| `.cursor/skills/supabase-migrations/` | Nuove migration SQL |
+| `.cursor/skills/spritz-planning-domain/` | Flussi poker / barman |
+
+## Deploy
+
+- Produzione: https://spritz-planning.vercel.app
+- Preview: env `SUPABASE_URL` + `SUPABASE_ANON_KEY` su **tutti** i branch Preview
+- Dettagli: [docs/AGENT-PLAYBOOK.md](docs/AGENT-PLAYBOOK.md), [docs/PERFORMANCE.md](docs/PERFORMANCE.md)

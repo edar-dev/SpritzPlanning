@@ -30,7 +30,7 @@ isProject: false
 
 ## Contesto
 
-Workspace **greenfield** ([d:\source\SpritzPlanning](d:\source\SpritzPlanning)): nessun codice esistente. Stack scelto: **Flutter + Dart + Material 3**, backend **Supabase** (PostgreSQL + Realtime), UI **solo italiano** con terminologia bar/spritz.
+Workspace **greenfield** ([d:\source\SpritzPlanning](d:\source\SpritzPlanning)): nessun codice esistente. Stack scelto: **Flutter + Dart + Material 3**, backend **Supabase** (PostgreSQL + Realtime), UI **IT/EN** (default IT) con terminologia bar/spritz.
 
 ## Architettura
 
@@ -242,7 +242,7 @@ Brief per agenti AI: stack, comandi (`flutter run`, `supabase db push`), struttu
 - **Barman**: il creatore della stanza; trasferibile via RPC `transfer_facilitator` (nice-to-have post-MVP)
 - **Persistenza stanze**: stanze attive con cleanup automatico dopo 24h inattività (cron Supabase o TTL su `last_activity_at`)
 - **Offline**: fuori scope MVP; mostrare banner "Connessione persa al bancone"
-- **i18n**: stringhe centralizzate in [`lib/core/constants/app_strings.dart`](lib/core/constants/app_strings.dart) per facilitare EN in futuro senza refactor
+- **i18n**: IT/EN via `lib/l10n/*.arb` e `context.l10n` (Fase 7; `app_strings.dart` rimosso Fase 8)
 
 ## Rischi e mitigazioni
 

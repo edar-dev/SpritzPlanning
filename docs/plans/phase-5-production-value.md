@@ -1,5 +1,7 @@
 # Fase 5 — Produzione e valore retro
 
+> **Nota (post–Fase 7/8):** messaggi UI da `context.l10n`, non `AppStrings` / `app_strings.dart`.
+
 **Punti:** #17 Osservabilità · #15 Export stime  
 **Branch suggerito:** `feat/observability-and-export`  
 **Durata stimata:** 3–5 giorni  

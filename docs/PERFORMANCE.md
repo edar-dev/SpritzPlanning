@@ -1,5 +1,7 @@
 # Performance — SpritzPlanning Web
 
+**Toolchain:** Flutter **3.35.6** (CI `.github/workflows/ci.yml`, `scripts/vercel-build.sh`).
+
 ## Audit baseline
 
 ```bash
