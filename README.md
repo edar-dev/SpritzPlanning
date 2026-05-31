@@ -69,6 +69,10 @@ Piani di miglioramento (punti 1–9): [docs/ROADMAP.md](docs/ROADMAP.md)
 - [Fase 2 — Realtime resiliente](docs/plans/phase-2-realtime.md)
 - [Fase 3 — UX lobby e votazione](docs/plans/phase-3-lobby-voting-ux.md)
 - [Fase 4 — Test e PWA](docs/plans/phase-4-quality-pwa.md)
+- [Prossimi 10 miglioramenti (11–20)](docs/IMPROVEMENTS-NEXT.md)
+- [Fase 5 — Produzione e export](docs/plans/phase-5-production-value.md)
+- [Fase 6 — UX sessione](docs/plans/phase-6-session-ux.md)
+- [Fase 7 — Reach e polish](docs/plans/phase-7-reach-polish.md)
 
 ## Sicurezza
 

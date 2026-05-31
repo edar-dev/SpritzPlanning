@@ -67,4 +67,6 @@ Impatto alto + sforzo medio:  1, 2, 8
 Impatto medio + sforzo medio: 5, 6
 ```
 
-Piani di implementazione: [ROADMAP.md](ROADMAP.md).
+Piani di implementazione: [ROADMAP.md](ROADMAP.md) (fasi 1–4 completate).
+
+**Prossimi 10 miglioramenti (11–20):** [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
