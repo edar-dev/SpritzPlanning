@@ -6,8 +6,9 @@ import 'package:spritz_planning/data/supabase/supabase_client.dart';
 
 /// Flusso end-to-end contro Supabase reale.
 ///
-/// Esegui con credenziali:
-/// `flutter test integration/room_flow_integration_test.dart --dart-define-from-file=env.json`
+/// Usa un progetto **test** dedicato (non produzione). Vedi [docs/TESTING.md].
+/// `scripts/run-integration.ps1` oppure:
+/// `flutter test integration/room_flow_integration_test.dart --dart-define-from-file=env.test.json`
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -30,7 +31,7 @@ void main() {
     test('create → story → vote → reveal → estimate → next', () async {
       if (!SupabaseConfig.isConfigured || repo == null) {
         markTestSkipped(
-          'Imposta SUPABASE_URL e SUPABASE_ANON_KEY (--dart-define-from-file=env.json)',
+          'Imposta SUPABASE_URL e SUPABASE_ANON_KEY (--dart-define-from-file=env.test.json)',
         );
       }
 

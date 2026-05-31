@@ -20,7 +20,7 @@ class RoomCodeDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: AppDecorations.surfaceCard(radius: AppDecorations.radiusLg),
+      decoration: AppDecorations.surfaceCard(),
       child: Padding(
         padding: const EdgeInsets.all(18),
         child: LayoutBuilder(
@@ -159,7 +159,6 @@ class RoomCodeDisplay extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: QrImageView(
                       data: joinUrl,
-                      version: QrVersions.auto,
                       size: 220,
                       backgroundColor: Colors.white,
                     ),

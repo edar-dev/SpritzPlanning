@@ -14,4 +14,4 @@ pre-commit:
 pre-push:
   commands:
     flutter-analyze:
-      run: bash scripts/flutter.sh analyze
+      run: bash scripts/flutter.sh analyze --fatal-infos

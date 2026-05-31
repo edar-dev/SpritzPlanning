@@ -34,7 +34,6 @@ class SpritzActionTile extends StatelessWidget {
         child: Ink(
           decoration: AppDecorations.surfaceCard(
             highlight: primary,
-            radius: AppDecorations.radiusLg,
           ),
           child: Padding(
             padding: const EdgeInsets.all(18),

@@ -7,7 +7,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import 'room_deck_settings_sheet.dart';
-import '../../core/constants/session_constants.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../core/theme/app_colors.dart';
@@ -299,7 +298,7 @@ class _ParticipantsRow extends ConsumerWidget {
     final isFacilitator = ref.watch(isFacilitatorProvider);
 
     return DecoratedBox(
-      decoration: AppDecorations.surfaceCard(radius: AppDecorations.radiusLg),
+      decoration: AppDecorations.surfaceCard(),
       child: Padding(
         padding: const EdgeInsets.all(18),
         child: Column(
@@ -327,7 +326,6 @@ class _ParticipantsRow extends ConsumerWidget {
                   hasVoted: roomState.hasParticipantVoted(p.id),
                   isAbsent: p.isAbsent(
                     now: DateTime.now(),
-                    thresholdSeconds: SessionConstants.absenceThresholdSeconds,
                   ),
                   onLongPress: canManage
                       ? () => _showParticipantActions(

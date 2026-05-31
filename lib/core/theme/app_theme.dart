@@ -11,12 +11,10 @@ abstract final class AppTheme {
 
     final colorScheme = ColorScheme.light(
       primary: primary,
-      onPrimary: Colors.white,
       primaryContainer: const Color(AppColors.primarySoft),
       onPrimaryContainer: const Color(AppColors.spritzOrangeDark),
       secondary: const Color(AppColors.oliveGreen),
       onSecondary: Colors.white,
-      surface: const Color(AppColors.surface),
       onSurface: onSurface,
       onSurfaceVariant: onSurfaceVariant,
       outline: const Color(AppColors.border),
