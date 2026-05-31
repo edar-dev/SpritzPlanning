@@ -33,8 +33,6 @@ void main() {
           'Imposta SUPABASE_URL e SUPABASE_ANON_KEY (--dart-define-from-file=env.test.json)',
         );
       }
-      expect(SupabaseConfig.url, contains('eyvfsgzbrdibheyejikf'));
-
       final repository = repo!;
       final suffix = DateTime.now().millisecondsSinceEpoch;
 

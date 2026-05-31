@@ -103,7 +103,8 @@ Se Preview fallisce con errore Supabase/env → controllare dashboard Vercel →
 
 File: `web/.well-known/assetlinks.json`
 
-- Sostituire `REPLACE_WITH_RELEASE_SHA256_FINGERPRINT` con fingerprint **release** keystore
+- Debug keystore SHA256 già in `assetlinks.json` (build debug/local)
+- Sostituire `REPLACE_WITH_RELEASE_SHA256_FINGERPRINT` con fingerprint **release** keystore per APK store
 - Host: dominio Vercel produzione (`spritz-planning.vercel.app`)
 - Manifest: `android/app/src/main/AndroidManifest.xml` intent-filter verified
 

@@ -6,7 +6,7 @@ Copia `env.json.example` in `env.json` (già in `.gitignore`). Non committare `e
 |--------|--------------|---------------|
 | `SUPABASE_URL` | Sì | Supabase Dashboard → Settings → API → Project URL |
 | `SUPABASE_ANON_KEY` | Sì | Stessa pagina → `anon` `public` key |
-| `SENTRY_DSN` | No | Sentry project → DSN (solo produzione / debug errori) |
+| `SENTRY_DSN` | No | Sentry → progetto `flutter` → chiave **SpritzPlanning Production** (già su Vercel Production se configurato) |
 
 Progetto SpritzPlanning: `eyvfsgzbrdibheyejikf` — https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
 

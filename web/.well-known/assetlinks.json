@@ -5,6 +5,7 @@
       "namespace": "android_app",
       "package_name": "com.spritzplanning.spritz_planning",
       "sha256_cert_fingerprints": [
+        "26:6F:40:14:23:C8:8B:5C:87:21:41:7A:18:50:58:AF:62:74:BD:73:1D:FA:C4:C4:4A:51:43:E2:4F:24:FF:98",
         "REPLACE_WITH_RELEASE_SHA256_FINGERPRINT"
       ]
     }

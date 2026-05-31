@@ -30,7 +30,7 @@ Flusso E2E: crea locale → join → ordine → voto → reveal → stima → ne
 
 ### Prerequisiti
 
-- Progetto Supabase **dedicato ai test** (consigliato), non produzione `eyvfsgzbrdibheyejikf`
+- Progetto Supabase **dedicato ai test** (consigliato). Se l’org ha raggiunto il limite progetti free (2 attivi), usare lo stesso progetto con prefisso stanze `IT-` e cleanup SQL sotto; **branch** Supabase richiede piano Pro.
 - Rete verso Supabase
 - `env.test.json` (non committare)
 
