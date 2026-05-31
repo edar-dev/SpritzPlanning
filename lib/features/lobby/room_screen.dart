@@ -87,7 +87,8 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       data: (roomState) {
         if (roomState == null || session == null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (context.mounted) context.go('/');
+            if (!mounted) return;
+            context.go('/');
           });
           return const SizedBox.shrink();
         }

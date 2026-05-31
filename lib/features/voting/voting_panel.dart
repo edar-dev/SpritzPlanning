@@ -79,13 +79,15 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     final isAllVoted = widget.roomState.allParticipantsVoted;
     if (!wasAllVoted && isAllVoted && widget.roomState.room.phase == RoomPhase.voting) {
       HapticFeedback.mediumImpact();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text(AppStrings.allVoted)),
-        );
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) => _showAllVotedSnackbar());
     }
+  }
+
+  void _showAllVotedSnackbar() {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text(AppStrings.allVoted)),
+    );
   }
 
   void _syncFromState() {
