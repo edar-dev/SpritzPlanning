@@ -390,10 +390,9 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
             );
         if (mounted) setState(() => _localOrder = null);
       } catch (e, st) {
-        if (mounted) {
-          setState(() => _localOrder = null);
-          await showUserError(context, e, stackTrace: st);
-        }
+        if (!context.mounted) return;
+        setState(() => _localOrder = null);
+        await showUserError(context, e, stackTrace: st);
       }
     });
   }
