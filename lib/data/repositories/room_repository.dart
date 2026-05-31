@@ -159,12 +159,14 @@ class RoomRepository {
   Future<void> startVoting({
     required String participantId,
     required String storyId,
+    int? durationSeconds,
   }) async {
     await supabase.rpc(
       'start_voting',
       params: {
         'p_participant_id': participantId,
         'p_story_id': storyId,
+        'p_duration_seconds': durationSeconds,
       },
     );
   }
@@ -236,6 +238,49 @@ class RoomRepository {
       params: {
         'p_from_participant_id': fromParticipantId,
         'p_to_participant_id': toParticipantId,
+      },
+    );
+  }
+
+  Future<void> updateStory({
+    required String participantId,
+    required String storyId,
+    required String title,
+    String description = '',
+  }) async {
+    await supabase.rpc(
+      'update_story',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_id': storyId,
+        'p_title': title,
+        'p_description': description,
+      },
+    );
+  }
+
+  Future<void> reorderStories({
+    required String participantId,
+    required List<String> storyIds,
+  }) async {
+    await supabase.rpc(
+      'reorder_stories',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_ids': storyIds,
+      },
+    );
+  }
+
+  Future<void> removeParticipant({
+    required String barmanId,
+    required String targetId,
+  }) async {
+    await supabase.rpc(
+      'remove_participant',
+      params: {
+        'p_barman_id': barmanId,
+        'p_target_id': targetId,
       },
     );
   }

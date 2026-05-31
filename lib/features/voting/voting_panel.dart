@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_strings.dart';
@@ -32,10 +35,12 @@ class VotingPanel extends ConsumerStatefulWidget {
 }
 
 class _VotingPanelState extends ConsumerState<VotingPanel>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   String? _selectedValue;
   String? _finalEstimate;
   late AnimationController _revealController;
+  Timer? _countdownTimer;
+  DateTime _now = DateTime.now();
 
   @override
   void initState() {
@@ -45,6 +50,15 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       duration: const Duration(milliseconds: 600),
     );
     _syncFromState();
+    _startCountdownTimer();
+  }
+
+  void _startCountdownTimer() {
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() => _now = DateTime.now());
+    });
   }
 
   @override
@@ -56,6 +70,22 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       _revealController.forward(from: 0);
     }
     _syncFromState();
+    _notifyAllVoted(oldWidget);
+  }
+
+  void _notifyAllVoted(VotingPanel oldWidget) {
+    if (!widget.isFacilitator) return;
+    final wasAllVoted = oldWidget.roomState.allParticipantsVoted;
+    final isAllVoted = widget.roomState.allParticipantsVoted;
+    if (!wasAllVoted && isAllVoted && widget.roomState.room.phase == RoomPhase.voting) {
+      HapticFeedback.mediumImpact();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(AppStrings.allVoted)),
+        );
+      });
+    }
   }
 
   void _syncFromState() {
@@ -69,6 +99,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
 
   @override
   void dispose() {
+    _countdownTimer?.cancel();
     _revealController.dispose();
     super.dispose();
   }
@@ -169,6 +200,8 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       votes: widget.roomState.currentVotes,
       participants: widget.roomState.participants,
     );
+    final deadline = widget.roomState.room.votingDeadlineAt;
+    final timerExpired = deadline != null && _now.isAfter(deadline);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -207,6 +240,22 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               ),
             ),
           ),
+          if (deadline != null && isVoting && !revealed) ...[
+            const SizedBox(height: 12),
+            _VotingCountdown(deadline: deadline, now: _now),
+            if (timerExpired)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  AppStrings.timerScaduto,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: const Color(AppColors.spritzOrange),
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ),
+          ],
           if (widget.isFacilitator && isVoting && !revealed) ...[
             const SizedBox(height: 16),
             _VoteProgressBar(stats: voteStats),
@@ -310,6 +359,56 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
           ],
         ],
       ),
+    );
+  }
+}
+
+class _VotingCountdown extends StatelessWidget {
+  const _VotingCountdown({required this.deadline, required this.now});
+
+  final DateTime deadline;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = deadline.difference(now);
+    final expired = remaining.isNegative;
+    final display = expired
+        ? Duration.zero
+        : Duration(seconds: remaining.inSeconds);
+
+    final minutes = display.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = display.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.timer_outlined,
+          size: 18,
+          color: expired
+              ? const Color(AppColors.spritzOrange)
+              : const Color(AppColors.textSecondary),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          '$minutes:$seconds',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontFeatures: const [FontFeature.tabularFigures()],
+                color: expired
+                    ? const Color(AppColors.spritzOrange)
+                    : const Color(AppColors.textPrimary),
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          AppStrings.timerLabel,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: const Color(AppColors.textSecondary),
+              ),
+        ),
+      ],
     );
   }
 }

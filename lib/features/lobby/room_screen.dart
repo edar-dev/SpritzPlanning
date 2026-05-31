@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/constants/app_strings.dart';
+import '../../core/constants/session_constants.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../core/theme/app_colors.dart';
@@ -80,6 +83,20 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             if (context.mounted) context.go('/');
           });
           return const SizedBox.shrink();
+        }
+
+        final stillInRoom = roomState.participants.any(
+          (p) => p.id == session.participantId,
+        );
+        if (!stillInRoom) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            ref.read(roomStateProvider.notifier).leaveRoom();
+            await ref.read(sessionProvider.notifier).clearSession();
+            if (context.mounted) context.go('/');
+          });
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         final room = roomState.room;
@@ -288,7 +305,7 @@ class _ParticipantsRow extends ConsumerWidget {
               spacing: 12,
               runSpacing: 12,
               children: roomState.participants.map((p) {
-                final canTransfer = isFacilitator &&
+                final canManage = isFacilitator &&
                     session != null &&
                     p.id != session.participantId;
                 return ParticipantAvatar(
@@ -296,12 +313,16 @@ class _ParticipantsRow extends ConsumerWidget {
                   isFacilitator: p.isFacilitator,
                   showVoteStatus: showVoteStatus,
                   hasVoted: roomState.hasParticipantVoted(p.id),
-                  onLongPress: canTransfer
-                      ? () => _confirmTransferBarman(
+                  isAbsent: p.isAbsent(
+                    now: DateTime.now(),
+                    thresholdSeconds: SessionConstants.absenceThresholdSeconds,
+                  ),
+                  onLongPress: canManage
+                      ? () => _showParticipantActions(
                             context,
                             ref,
-                            fromParticipantId: session.participantId,
-                            toParticipant: p,
+                            barmanId: session.participantId,
+                            target: p,
                           )
                       : null,
                 );
@@ -314,7 +335,7 @@ class _ParticipantsRow extends ConsumerWidget {
   }
 }
 
-class _LobbyPanel extends ConsumerWidget {
+class _LobbyPanel extends ConsumerStatefulWidget {
   const _LobbyPanel({
     required this.roomState,
     required this.isFacilitator,
@@ -326,10 +347,64 @@ class _LobbyPanel extends ConsumerWidget {
   final String participantId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final pendingStories = roomState.stories
-        .where((s) => s.status != StoryStatus.done)
-        .toList();
+  ConsumerState<_LobbyPanel> createState() => _LobbyPanelState();
+}
+
+class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
+  Timer? _reorderDebounce;
+  List<String>? _localOrder;
+
+  @override
+  void dispose() {
+    _reorderDebounce?.cancel();
+    super.dispose();
+  }
+
+  List<Story> get _pendingStories {
+    final stories = widget.roomState.stories
+        .where((s) => s.status == StoryStatus.pending)
+        .toList()
+      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    if (_localOrder != null) {
+      final byId = {for (final s in stories) s.id: s};
+      return _localOrder!
+          .where(byId.containsKey)
+          .map((id) => byId[id]!)
+          .toList();
+    }
+    return stories;
+  }
+
+  List<Story> get _activeStories => widget.roomState.stories
+      .where((s) => s.status == StoryStatus.voting || s.status == StoryStatus.revealed)
+      .toList()
+    ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+  void _scheduleReorder(List<Story> ordered) {
+    _reorderDebounce?.cancel();
+    _reorderDebounce = Timer(const Duration(milliseconds: 300), () async {
+      try {
+        await ref.read(roomRepositoryProvider).reorderStories(
+              participantId: widget.participantId,
+              storyIds: ordered.map((s) => s.id).toList(),
+            );
+        if (mounted) setState(() => _localOrder = null);
+      } catch (e, st) {
+        if (mounted) {
+          setState(() => _localOrder = null);
+          await showUserError(context, e, stackTrace: st);
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pendingStories = _pendingStories;
+    final activeStories = _activeStories;
+    final canReorder = widget.isFacilitator &&
+        widget.roomState.room.phase == RoomPhase.lobby &&
+        pendingStories.length > 1;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -344,8 +419,17 @@ class _LobbyPanel extends ConsumerWidget {
                 title: AppStrings.menu,
                 subtitle: 'Ordini da stimare con il team',
               ),
+              if (canReorder) ...[
+                const SizedBox(height: 8),
+                Text(
+                  AppStrings.modificaOrdineHint,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: const Color(AppColors.textSecondary),
+                      ),
+                ),
+              ],
               const SizedBox(height: 16),
-              if (pendingStories.isEmpty)
+              if (pendingStories.isEmpty && activeStories.isEmpty)
                 DecoratedBox(
                   decoration: AppDecorations.surfaceCard(),
                   child: Padding(
@@ -380,67 +464,103 @@ class _LobbyPanel extends ConsumerWidget {
                     ),
                   ),
                 )
-              else
-                ...pendingStories.map((story) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: DecoratedBox(
-                  decoration: AppDecorations.surfaceCard(
-                    radius: AppDecorations.radiusMd,
+              else ...[
+                ...activeStories.map(
+                  (story) => _StoryTile(
+                    story: story,
+                    isFacilitator: widget.isFacilitator,
+                    participantId: widget.participantId,
+                    onStartVoting: () => _showStartVotingDialog(
+                      context,
+                      ref,
+                      widget.participantId,
+                      story.id,
+                    ),
+                    onRemove: () => _removeStory(
+                      context,
+                      ref,
+                      widget.participantId,
+                      story.id,
+                    ),
+                    onEdit: null,
+                    showDragHandle: false,
                   ),
-                  child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  leading: CircleAvatar(
-                    backgroundColor: _statusColor(story.status).withValues(alpha: 0.12),
-                    child: Icon(
-                      _statusIcon(story.status),
-                      color: _statusColor(story.status),
-                      size: 20,
+                ),
+                if (canReorder)
+                  ReorderableListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    buildDefaultDragHandles: false,
+                    itemCount: pendingStories.length,
+                    onReorder: (oldIndex, newIndex) {
+                      if (newIndex > oldIndex) newIndex -= 1;
+                      final updated = List<Story>.from(pendingStories);
+                      final item = updated.removeAt(oldIndex);
+                      updated.insert(newIndex, item);
+                      setState(() => _localOrder = updated.map((s) => s.id).toList());
+                      _scheduleReorder(updated);
+                    },
+                    itemBuilder: (context, index) {
+                      final story = pendingStories[index];
+                      return _StoryTile(
+                        key: ValueKey(story.id),
+                        story: story,
+                        isFacilitator: widget.isFacilitator,
+                        participantId: widget.participantId,
+                        onStartVoting: () => _showStartVotingDialog(
+                          context,
+                          ref,
+                          widget.participantId,
+                          story.id,
+                        ),
+                        onRemove: () => _removeStory(
+                          context,
+                          ref,
+                          widget.participantId,
+                          story.id,
+                        ),
+                        onEdit: () => _showEditStoryDialog(
+                          context,
+                          ref,
+                          widget.participantId,
+                          story,
+                        ),
+                        showDragHandle: true,
+                        dragIndex: index,
+                      );
+                    },
+                  )
+                else
+                  ...pendingStories.map(
+                    (story) => _StoryTile(
+                      story: story,
+                      isFacilitator: widget.isFacilitator,
+                      participantId: widget.participantId,
+                      onStartVoting: () => _showStartVotingDialog(
+                        context,
+                        ref,
+                        widget.participantId,
+                        story.id,
+                      ),
+                      onRemove: () => _removeStory(
+                        context,
+                        ref,
+                        widget.participantId,
+                        story.id,
+                      ),
+                      onEdit: widget.isFacilitator
+                          ? () => _showEditStoryDialog(
+                                context,
+                                ref,
+                                widget.participantId,
+                                story,
+                              )
+                          : null,
+                      showDragHandle: false,
                     ),
                   ),
-                  title: Text(story.title),
-                  subtitle: story.description.isNotEmpty
-                      ? Text(story.description)
-                      : null,
-                  trailing: isFacilitator && story.status == StoryStatus.pending
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.delete_outline),
-                              onPressed: () => _removeStory(
-                                context,
-                                ref,
-                                participantId,
-                                story.id,
-                              ),
-                            ),
-                            FilledButton(
-                              onPressed: () => _startVoting(
-                                context,
-                                ref,
-                                participantId,
-                                story.id,
-                              ),
-                              child: const Text(AppStrings.startVoting),
-                            ),
-                          ],
-                        )
-                      : story.finalEstimate != null
-                          ? Chip(
-                              label: Text('${story.finalEstimate} pt'),
-                              backgroundColor:
-                                  const Color(AppColors.primarySoft),
-                            )
-                          : null,
-                ),
-                ),
-              );
-            }),
-              if (!isFacilitator) ...[
+              ],
+              if (!widget.isFacilitator) ...[
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
@@ -458,24 +578,106 @@ class _LobbyPanel extends ConsumerWidget {
       ),
     );
   }
+}
 
-  Color _statusColor(StoryStatus status) {
-    return switch (status) {
-      StoryStatus.pending => Colors.grey,
-      StoryStatus.voting => Colors.orange,
-      StoryStatus.revealed => Colors.blue,
-      StoryStatus.done => Colors.green,
-    };
-  }
+class _StoryTile extends StatelessWidget {
+  const _StoryTile({
+    super.key,
+    required this.story,
+    required this.isFacilitator,
+    required this.participantId,
+    required this.onStartVoting,
+    required this.onRemove,
+    required this.onEdit,
+    required this.showDragHandle,
+    this.dragIndex = 0,
+  });
 
-  IconData _statusIcon(StoryStatus status) {
-    return switch (status) {
-      StoryStatus.pending => Icons.receipt_long,
-      StoryStatus.voting => Icons.local_bar,
-      StoryStatus.revealed => Icons.visibility,
-      StoryStatus.done => Icons.check,
-    };
+  final Story story;
+  final bool isFacilitator;
+  final String participantId;
+  final VoidCallback onStartVoting;
+  final VoidCallback onRemove;
+  final VoidCallback? onEdit;
+  final bool showDragHandle;
+  final int dragIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: DecoratedBox(
+        decoration: AppDecorations.surfaceCard(
+          radius: AppDecorations.radiusMd,
+        ),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          leading: CircleAvatar(
+            backgroundColor: _statusColor(story.status).withValues(alpha: 0.12),
+            child: Icon(
+              _statusIcon(story.status),
+              color: _statusColor(story.status),
+              size: 20,
+            ),
+          ),
+          title: Text(story.title),
+          subtitle: story.description.isNotEmpty ? Text(story.description) : null,
+          trailing: isFacilitator && story.status == StoryStatus.pending
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (showDragHandle)
+                      ReorderableDragStartListener(
+                        index: dragIndex,
+                        child: const Icon(Icons.drag_handle),
+                      ),
+                    if (onEdit != null)
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        tooltip: AppStrings.modificaOrdine,
+                        onPressed: onEdit,
+                      ),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: onRemove,
+                    ),
+                    FilledButton(
+                      onPressed: onStartVoting,
+                      child: const Text(AppStrings.startVoting),
+                    ),
+                  ],
+                )
+              : story.finalEstimate != null
+                  ? Chip(
+                      label: Text('${story.finalEstimate} pt'),
+                      backgroundColor: const Color(AppColors.primarySoft),
+                    )
+                  : null,
+        ),
+      ),
+    );
   }
+}
+
+Color _statusColor(StoryStatus status) {
+  return switch (status) {
+    StoryStatus.pending => Colors.grey,
+    StoryStatus.voting => Colors.orange,
+    StoryStatus.revealed => Colors.blue,
+    StoryStatus.done => Colors.green,
+  };
+}
+
+IconData _statusIcon(StoryStatus status) {
+  return switch (status) {
+    StoryStatus.pending => Icons.receipt_long,
+    StoryStatus.voting => Icons.local_bar,
+    StoryStatus.revealed => Icons.visibility,
+    StoryStatus.done => Icons.check,
+  };
 }
 
 Future<void> _showAddStoryDialog(
@@ -597,16 +799,217 @@ Future<void> _confirmTransferBarman(
   }
 }
 
-Future<void> _startVoting(
+Future<void> _showEditStoryDialog(
+  BuildContext context,
+  WidgetRef ref,
+  String participantId,
+  Story story,
+) async {
+  final titleController = TextEditingController(text: story.title);
+  final descController = TextEditingController(text: story.description);
+
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text(AppStrings.modificaOrdine),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: titleController,
+            decoration: const InputDecoration(labelText: AppStrings.ordineTitle),
+            autofocus: true,
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: descController,
+            decoration: const InputDecoration(
+              labelText: AppStrings.ordineDescription,
+            ),
+            maxLines: 3,
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Annulla'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: const Text(AppStrings.salvaOrdine),
+        ),
+      ],
+    ),
+  );
+
+  if (result == true && titleController.text.trim().isNotEmpty) {
+    try {
+      await ref.read(roomRepositoryProvider).updateStory(
+            participantId: participantId,
+            storyId: story.id,
+            title: titleController.text.trim(),
+            description: descController.text.trim(),
+          );
+    } catch (e, st) {
+      if (context.mounted) {
+        await showUserError(context, e, stackTrace: st);
+      }
+    }
+  }
+
+  titleController.dispose();
+  descController.dispose();
+}
+
+Future<void> _showStartVotingDialog(
   BuildContext context,
   WidgetRef ref,
   String participantId,
   String storyId,
 ) async {
+  int? durationSeconds;
+
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => StatefulBuilder(
+      builder: (context, setState) => AlertDialog(
+        title: const Text(AppStrings.scegliTimer),
+        content: Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            ChoiceChip(
+              label: const Text(AppStrings.timerNone),
+              selected: durationSeconds == null,
+              onSelected: (_) => setState(() => durationSeconds = null),
+            ),
+            ChoiceChip(
+              label: const Text(AppStrings.timer2Min),
+              selected: durationSeconds == 120,
+              onSelected: (_) => setState(() => durationSeconds = 120),
+            ),
+            ChoiceChip(
+              label: const Text(AppStrings.timer5Min),
+              selected: durationSeconds == 300,
+              onSelected: (_) => setState(() => durationSeconds = 300),
+            ),
+            ChoiceChip(
+              label: const Text(AppStrings.timer10Min),
+              selected: durationSeconds == 600,
+              onSelected: (_) => setState(() => durationSeconds = 600),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annulla'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text(AppStrings.startVoting),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  if (confirmed != true) return;
+
   try {
     await ref.read(roomRepositoryProvider).startVoting(
           participantId: participantId,
           storyId: storyId,
+          durationSeconds: durationSeconds,
+        );
+  } catch (e, st) {
+    if (context.mounted) {
+      await showUserError(context, e, stackTrace: st);
+    }
+  }
+}
+
+Future<void> _showParticipantActions(
+  BuildContext context,
+  WidgetRef ref, {
+  required String barmanId,
+  required Participant target,
+}) async {
+  final action = await showModalBottomSheet<String>(
+    context: context,
+    builder: (ctx) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            title: Text(AppStrings.azioniCliente),
+            subtitle: Text(target.nickname),
+          ),
+          ListTile(
+            leading: const Icon(Icons.swap_horiz),
+            title: const Text(AppStrings.passaBancone),
+            onTap: () => Navigator.pop(ctx, 'transfer'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.person_remove_outlined),
+            title: const Text(AppStrings.rimuoviDalBancone),
+            onTap: () => Navigator.pop(ctx, 'remove'),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  if (!context.mounted) return;
+
+  if (action == 'transfer') {
+    await _confirmTransferBarman(
+      context,
+      ref,
+      fromParticipantId: barmanId,
+      toParticipant: target,
+    );
+  } else if (action == 'remove') {
+    await _confirmRemoveParticipant(
+      context,
+      ref,
+      barmanId: barmanId,
+      target: target,
+    );
+  }
+}
+
+Future<void> _confirmRemoveParticipant(
+  BuildContext context,
+  WidgetRef ref, {
+  required String barmanId,
+  required Participant target,
+}) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text(AppStrings.rimuoviDalBancone),
+      content: Text(AppStrings.confermaRimuovi(target.nickname)),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Annulla'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: const Text(AppStrings.rimuoviDalBancone),
+        ),
+      ],
+    ),
+  );
+
+  if (confirmed != true) return;
+
+  try {
+    await ref.read(roomRepositoryProvider).removeParticipant(
+          barmanId: barmanId,
+          targetId: target.id,
         );
   } catch (e, st) {
     if (context.mounted) {

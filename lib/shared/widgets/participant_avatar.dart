@@ -10,6 +10,7 @@ class ParticipantAvatar extends StatelessWidget {
     required this.isFacilitator,
     this.hasVoted = false,
     this.showVoteStatus = false,
+    this.isAbsent = false,
     this.onLongPress,
   });
 
@@ -17,6 +18,7 @@ class ParticipantAvatar extends StatelessWidget {
   final bool isFacilitator;
   final bool hasVoted;
   final bool showVoteStatus;
+  final bool isAbsent;
   final VoidCallback? onLongPress;
 
   @override
@@ -94,6 +96,15 @@ class ParticipantAvatar extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: const Color(AppColors.spritzOrange),
                     fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ] else if (isAbsent) ...[
+            const SizedBox(height: 2),
+            Text(
+              AppStrings.assente,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: const Color(AppColors.textSecondary),
+                    fontStyle: FontStyle.italic,
                   ),
             ),
           ],

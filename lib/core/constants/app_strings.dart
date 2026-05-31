@@ -35,6 +35,9 @@ abstract final class AppStrings {
   static const ordineDescription = 'Descrizione (opzionale)';
   static const startVoting = 'Servi l\'ordine';
   static const waitingAperitivo = 'In attesa dell\'aperitivo...';
+  static const modificaOrdine = 'Modifica ordine';
+  static const salvaOrdine = 'Salva';
+  static const modificaOrdineHint = 'Trascina per riordinare il menu';
 
   // Voting
   static const chooseDose = 'Scegli la dose';
@@ -52,6 +55,20 @@ abstract final class AppStrings {
   static const distribuzioneVoti = 'Distribuzione voti';
   static const dosiScelte = 'dosi scelte';
   static const outlier = 'Fuori scala';
+  static const timerScaduto = 'Tempo scaduto — pronti per il servizio?';
+  static const timerLabel = 'Tempo rimasto';
+  static const timerNone = 'Senza timer';
+  static const timer2Min = '2 min';
+  static const timer5Min = '5 min';
+  static const timer10Min = '10 min';
+  static const scegliTimer = 'Durata votazione';
+
+  // Participants
+  static const assente = 'Assente';
+  static const rimuoviDalBancone = 'Rimuovi dal bancone';
+  static String confermaRimuovi(String nickname) =>
+      'Rimuovere $nickname dal bancone?';
+  static const azioniCliente = 'Azioni cliente';
 
   // Report
   static const riepilogoSerata = 'Riepilogo serata';
