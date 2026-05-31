@@ -195,7 +195,7 @@ Vedi [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md).
 
 | 7 | Completata | PR #2 — i18n, dark, deep link, deck custom (migration 009) |
 
-| 8 | Completata (merge pending) | `chore/agent-docs-dx` |
+| 8 | Completata | PR #3 — `ff71c34` |
 
 | 9 | Non iniziata | — |
 

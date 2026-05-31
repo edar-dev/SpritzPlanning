@@ -154,7 +154,7 @@ description: Usare flutter gen-l10n, mai stringhe hardcoded in UI
 - [x] `app_strings.dart` rimosso, analyze/test verdi
 - [x] `supabase/README.md` con migration 001–009
 - [x] Skill domain + regole Cursor aggiornate
-- [ ] PR `chore/agent-docs-dx` mergiata
+- [x] PR #3 mergiata (`ff71c34`)
 
 ## Rischi
 
