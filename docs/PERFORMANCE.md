@@ -20,6 +20,21 @@ npx lighthouse https://spritz-planning.vercel.app --view
 - `theme-color` e `preconnect` Supabase in `web/index.html`
 - Service worker cache headers in `vercel.json`
 - Flutter build release con tree-shaking icone
+- Flutter **3.35.6** pin in `scripts/vercel-build.sh` (allineato a CI)
+- Cache lunga su `/canvaskit/` e `/assets/` in `vercel.json`
+
+## Log build Vercel (audit)
+
+| Ambiente | Deploy | Esito | Compile web | Note |
+|----------|--------|-------|-------------|------|
+| Production | `2964c49` | READY | ~122s | Nessuna cache precedente; build ~3 min |
+| Preview | redeploy | READY | ~84s | Env Supabase ok dopo fix globale Preview |
+
+Warning benigni nei log: `flutter as root`, suggerimento Wasm dry-run (disabilitato con `--no-wasm-dry-run`).
+
+Runtime Vercel: nessun log serverless (app statica Flutter web).
+
+Sentry (7g): nessun issue unresolved sul progetto `flutter`.
 
 ## Comandi utili
 
