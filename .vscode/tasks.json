@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev-setup",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/dev-setup.ps1",
+      "windows": {
+        "command": "${workspaceFolder}/scripts/dev-setup.ps1"
+      },
+      "linux": {
+        "command": "bash ${workspaceFolder}/scripts/dev-setup.sh"
+      },
+      "osx": {
+        "command": "bash ${workspaceFolder}/scripts/dev-setup.sh"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: test (no Supabase)",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/flutter.ps1",
+      "args": ["test"],
+      "windows": {
+        "command": "${workspaceFolder}/scripts/flutter.ps1"
+      },
+      "linux": {
+        "command": "bash ${workspaceFolder}/scripts/flutter.sh",
+        "args": ["test"]
+      },
+      "osx": {
+        "command": "bash ${workspaceFolder}/scripts/flutter.sh",
+        "args": ["test"]
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: analyze",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/flutter.ps1",
+      "args": ["analyze"],
+      "windows": {
+        "command": "${workspaceFolder}/scripts/flutter.ps1"
+      },
+      "linux": {
+        "command": "bash ${workspaceFolder}/scripts/flutter.sh",
+        "args": ["analyze"]
+      },
+      "osx": {
+        "command": "bash ${workspaceFolder}/scripts/flutter.sh",
+        "args": ["analyze"]
+      },
+      "problemMatcher": []
+    }
+  ]
+}

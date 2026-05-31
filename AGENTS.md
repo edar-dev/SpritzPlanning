@@ -26,17 +26,23 @@
 - **Non** usare `app_strings.dart` (rimosso in Fase 8)
 - Dopo modifica ARB: `flutter gen-l10n`
 
+## Toolchain
+
+- **Flutter 3.35.6** — `.fvm/fvm_config.json`; preferire FVM (`fvm use`)
+- Bootstrap: `scripts/dev-setup.ps1` / `scripts/dev-setup.sh`
+- Wrapper: `scripts/flutter.ps1` / `scripts/flutter.sh` (usa FVM se presente)
+- Contributi: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+
 ## Comandi
 
 ```bash
-flutter pub get
-flutter gen-l10n
-flutter run -d chrome --dart-define-from-file=env.json
-flutter run -d android --dart-define-from-file=env.json
-flutter test
-flutter analyze
-flutter build web --dart-define-from-file=env.json
-flutter build apk --dart-define-from-file=env.json
+# Dopo dev-setup (o manualmente):
+scripts/flutter.sh pub get
+scripts/flutter.sh gen-l10n
+scripts/flutter.sh run -d chrome --dart-define-from-file=env.json
+scripts/flutter.sh test
+scripts/flutter.sh analyze
+scripts/flutter.sh build web --dart-define-from-file=env.json
 ```
 
 ## Supabase

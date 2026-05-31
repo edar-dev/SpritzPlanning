@@ -19,20 +19,24 @@ Skill consigliata: `.cursor/skills/phase-delivery/SKILL.md`
 
 ## 2. Ambiente locale
 
+```powershell
+# Windows
+.\scripts\dev-setup.ps1
+```
+
 ```bash
-cp env.json.example env.json
-# Compilare SUPABASE_URL, SUPABASE_ANON_KEY (Settings → API su Supabase)
-flutter pub get
-flutter gen-l10n
+# Linux / macOS / Dev Container
+bash scripts/dev-setup.sh
 ```
 
 | Requisito | Valore |
 |-----------|--------|
-| Flutter | **3.35.6** (allineato a CI e `scripts/vercel-build.sh`) |
+| Flutter | **3.35.6** — FVM (`.fvm/fvm_config.json`) o install manuale |
+| Verifica versione | `scripts/check-flutter-version.sh` |
 | Config run | `--dart-define-from-file=env.json` |
-| Launch VS Code | `.vscode/launch.json` (Chrome / Android) |
-
-**Fase 9 (futuro):** script `scripts/dev-setup.ps1` e FVM in `.fvm/`.
+| Env | [env.json.example.md](../env.json.example.md) |
+| Hook | `lefthook install` — vedi [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Launch VS Code | `.vscode/launch.json` (Chrome / Android / test senza env) |
 
 ---
 

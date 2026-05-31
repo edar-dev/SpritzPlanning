@@ -9,40 +9,40 @@ Scrum poker con tema spritz per team di sviluppatori. Flutter (Web + Android) + 
 - Menu ordini (user stories), votazione con deck Fibonacci, reveal "Servizio!"
 - Sync realtime tra partecipanti
 
-## Setup
+## Quick start
 
-### 1. Supabase
+**Flutter 3.35.6** (pin del repo). Consigliato [FVM](https://fvm.app): `fvm install && fvm use`.
+
+**Windows:**
+
+```powershell
+.\scripts\dev-setup.ps1
+.\scripts\flutter.ps1 run -d chrome --dart-define-from-file=env.json
+```
+
+**Linux / macOS:**
+
+```bash
+bash scripts/dev-setup.sh
+bash scripts/flutter.sh run -d chrome --dart-define-from-file=env.json
+```
+
+Senza FVM: installa Flutter 3.35.6 e verifica con `scripts/check-flutter-version.ps1`.
+
+- Credenziali: [env.json.example.md](env.json.example.md) → copia in `env.json`
+- Hook git: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) (`lefthook install`)
+- Dev Container: [.devcontainer/README.md](.devcontainer/README.md)
+
+Guida agenti: [AGENTS.md](AGENTS.md) · Playbook: [docs/AGENT-PLAYBOOK.md](docs/AGENT-PLAYBOOK.md)
+
+## Setup (dettaglio)
+
+### Supabase
 
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
 - Migrations (in ordine): `001`–`009` (vedi [supabase/README.md](supabase/README.md))
-- Dettagli DB: [supabase/README.md](supabase/README.md)
-
-Per sviluppo locale, copia le credenziali in `env.json`:
-
-```bash
-cp env.json.example env.json
-# Inserisci SUPABASE_URL e SUPABASE_ANON_KEY dalla dashboard → Settings → API
-```
-
-### 2. Configurazione locale
-
-```bash
-cp env.json.example env.json
-# Modifica env.json con SUPABASE_URL e SUPABASE_ANON_KEY
-```
-
-### 3. Run
-
-```bash
-flutter pub get
-flutter gen-l10n
-flutter run -d chrome --dart-define-from-file=env.json
-flutter run -d android --dart-define-from-file=env.json
-```
-
-Guida agenti: [AGENTS.md](AGENTS.md) · Playbook: [docs/AGENT-PLAYBOOK.md](docs/AGENT-PLAYBOOK.md)
 
 ## Build
 
@@ -99,9 +99,12 @@ Opzionale in produzione: `SENTRY_DSN` in Vercel per error reporting (vedi `env.j
 ## Test
 
 ```bash
-flutter test
-flutter analyze
+scripts/flutter.ps1 test      # Windows
+scripts/flutter.sh test       # Linux/macOS
+scripts/flutter.sh analyze
 ```
+
+Vedi [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ### Test integrazione (Supabase)
 

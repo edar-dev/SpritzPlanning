@@ -19,6 +19,12 @@
       "args": [
         "--dart-define-from-file=env.json"
       ]
+    },
+    {
+      "name": "SpritzPlanning (tests, no env)",
+      "request": "launch",
+      "type": "dart",
+      "program": "test"
     }
   ]
 }

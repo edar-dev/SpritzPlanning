@@ -172,11 +172,12 @@ Allineare con stato attuale repo prima di implementare.
 
 ## Criteri di done — Fase 9
 
-- [ ] FVM 3.35.6 documentato e script version check in CI
-- [ ] `dev-setup` funziona su Windows (PowerShell) e Linux (bash)
-- [ ] Hook pre-commit attivi (lefthook o equivalente)
-- [ ] Dev Container avviabile con istruzioni in README
-- [ ] Nessuna modifica funzionale app in `lib/features/`
+- [x] FVM 3.35.6 documentato e script version check in CI
+- [x] `dev-setup` funziona su Windows (PowerShell) e Linux (bash)
+- [x] Hook pre-commit configurati (lefthook.yml + CONTRIBUTING)
+- [x] Dev Container avviabile con istruzioni in README
+- [x] Nessuna modifica funzionale app in `lib/features/`
+- [ ] PR `chore/dev-toolchain` mergiata
 
 ## Rischi
 
