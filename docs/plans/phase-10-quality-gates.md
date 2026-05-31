@@ -134,7 +134,7 @@ Secrets: `SUPABASE_TEST_URL`, `SUPABASE_TEST_ANON_KEY`
 - [x] `docs/TESTING.md` + `env.test.json.example` + script run-integration
 - [x] Job integration opzionale (dispatch + schedule) in `.github/workflows/integration.yml`
 - [x] PR #5 mergiata (`6fea727`)
-- [ ] Secrets CI: `gh auth login` + `scripts/configure-github-secrets.ps1` (MCP GitHub non espone set secret)
+- [x] Secrets CI: `SUPABASE_URL_TEST` + `SUPABASE_ANON_KEY_TEST` (via `configure-github-secrets.ps1`)
 - [x] Integration test locale: fix `HttpOverrides.global = null` + `forIntegrationTest` (non era bug RPC Supabase)
 
 ## Rischi
