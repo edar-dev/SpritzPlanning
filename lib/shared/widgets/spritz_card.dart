@@ -27,9 +27,9 @@ class SpritzCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     final semanticsLabel =
-        l10n?.voteCardSemantics(value) ?? 'Vote $value';
+        l10n != null ? l10n.voteCardSemantics(value) : 'Vote $value';
     final projector = ProjectorMode.of(context);
     final scale = projector.cardScale;
     final baseW = revealed ? 80.0 : 68.0;
