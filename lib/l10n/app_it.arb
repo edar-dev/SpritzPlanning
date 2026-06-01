@@ -120,5 +120,55 @@
   "refresh": "Aggiorna",
   "supabaseNotConfigured": "Supabase non configurato — usa --dart-define-from-file=env.json",
   "backToHome": "Torna alla home",
-  "distribuzioneVotiSubtitle": "Riepilogo delle dosi scelte"
+  "distribuzioneVotiSubtitle": "Riepilogo delle dosi scelte",
+  "importStories": "Importa ordini",
+  "importPasteHint": "Una riga per ordine (max 50). CSV: usa solo la prima colonna.",
+  "importStoriesAction": "Importa nel menu",
+  "importStoriesEmpty": "Incolla almeno un titolo ordine",
+  "importStoriesSuccess": "{count, plural, =1{1 ordine importato} other{{count} ordini importati}}",
+  "@importStoriesSuccess": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "importPreview": "Anteprima: {count} ordini",
+  "@importPreview": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "recentRooms": "Locali recenti",
+  "resumeSession": "Riprendi sessione",
+  "resumeSessionSubtitle": "{roomName} · {code}",
+  "@resumeSessionSubtitle": {
+    "placeholders": {
+      "roomName": {"type": "String"},
+      "code": {"type": "String"}
+    }
+  },
+  "backlogProgress": "{done} di {total} ordini stimati",
+  "@backlogProgress": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "menuEmptyImportCta": "Importa una lista o aggiungi il primo ordine",
+  "keyboardShortcuts": "Scorciatoie tastiera",
+  "keyboardShortcutReveal": "R — Servizio (reveal)",
+  "keyboardShortcutNext": "N — Prossimo ordine",
+  "keyboardShortcutStartVote": "V — Servi ordine (primo in coda)",
+  "applyConsensusAndNext": "Applica {value} e prossimo",
+  "@applyConsensusAndNext": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "confirmVoteTitle": "Confermi la dose {value}?",
+  "@confirmVoteTitle": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "exportJson": "Esporta JSON"
 }

@@ -143,6 +143,20 @@ class RoomRepository {
         as String;
   }
 
+  Future<int> addStories({
+    required String participantId,
+    required List<String> titles,
+  }) async {
+    final response = await supabase.rpc(
+      'add_stories',
+      params: {
+        'p_participant_id': participantId,
+        'p_titles': titles,
+      },
+    );
+    return response as int;
+  }
+
   Future<void> removeStory({
     required String participantId,
     required String storyId,

@@ -22,6 +22,7 @@ supabase db push
 | `007_voting_timer.sql` | `voting_deadline_at`, timer e clear su reveal/next |
 | `008_remove_participant.sql` | RPC `remove_participant` (kick cliente / AFK) |
 | `009_room_deck_settings.sql` | Deck JSON per stanza, `set_room_deck`, validazione voti |
+| `010_bulk_add_stories.sql` | RPC `add_stories` — import batch titoli (max 50) |
 
 ## Cleanup automatico (pg_cron)
 

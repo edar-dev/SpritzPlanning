@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../data/models/models.dart';
 
 class SessionReportRow {
@@ -65,6 +67,23 @@ class SessionReport {
       );
     }
     return buffer.toString();
+  }
+
+  String toJson() {
+    return jsonEncode({
+      'roomName': roomName,
+      'roomCode': roomCode,
+      'exportedAt': exportedAt.toIso8601String(),
+      'stories': rows
+          .map(
+            (r) => {
+              'title': r.title,
+              'estimate': r.estimate,
+              'completedAt': r.completedAt.toIso8601String(),
+            },
+          )
+          .toList(),
+    });
   }
 
   String toMarkdown() {

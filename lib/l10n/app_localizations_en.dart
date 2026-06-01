@@ -319,4 +319,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get distribuzioneVotiSubtitle => 'Summary of chosen doses';
+
+  @override
+  String get importStories => 'Import stories';
+
+  @override
+  String get importPasteHint =>
+      'One line per story (max 50). CSV: first column only.';
+
+  @override
+  String get importStoriesAction => 'Import to menu';
+
+  @override
+  String get importStoriesEmpty => 'Paste at least one story title';
+
+  @override
+  String importStoriesSuccess(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stories imported',
+      one: '1 story imported',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importPreview(int count) {
+    return 'Preview: $count stories';
+  }
+
+  @override
+  String get recentRooms => 'Recent rooms';
+
+  @override
+  String get resumeSession => 'Resume session';
+
+  @override
+  String resumeSessionSubtitle(String roomName, String code) {
+    return '$roomName · $code';
+  }
+
+  @override
+  String backlogProgress(int done, int total) {
+    return '$done of $total stories estimated';
+  }
+
+  @override
+  String get menuEmptyImportCta => 'Import a list or add the first story';
+
+  @override
+  String get keyboardShortcuts => 'Keyboard shortcuts';
+
+  @override
+  String get keyboardShortcutReveal => 'R — Reveal votes';
+
+  @override
+  String get keyboardShortcutNext => 'N — Next story';
+
+  @override
+  String get keyboardShortcutStartVote => 'V — Start voting (first queued)';
+
+  @override
+  String applyConsensusAndNext(String value) {
+    return 'Apply $value and next';
+  }
+
+  @override
+  String confirmVoteTitle(String value) {
+    return 'Confirm dose $value?';
+  }
+
+  @override
+  String get exportJson => 'Export JSON';
 }
