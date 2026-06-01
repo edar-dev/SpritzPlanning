@@ -11,23 +11,23 @@ description: Create and review Supabase SQL migrations for SpritzPlanning — ta
 - **Regione:** `eu-central-1`
 - **Path:** `supabase/migrations/`
 
-## Elenco migration (001–011)
+## Elenco migration (timestamp Supabase)
 
 | File | Scopo |
 |------|--------|
-| `001_initial_schema.sql` | Schema, RPC, RLS, Realtime |
-| `002_security_hardening.sql` | RLS write bloccato, rate limit `create_room` |
-| `003_room_cleanup.sql` | `cleanup_stale_rooms()` |
-| `004_pg_cron.sql` | Job pg_cron cleanup stanze (6h) |
-| `005_transfer_facilitator.sql` | RPC `transfer_facilitator` |
-| `006_story_management.sql` | Edit/riordino ordini (`update_story`, reorder) |
-| `007_voting_timer.sql` | `voting_deadline_at`, timer votazione |
-| `008_remove_participant.sql` | RPC `remove_participant` (kick) |
-| `009_room_deck_settings.sql` | Deck custom per stanza, `set_room_deck` |
-| `010_bulk_add_stories.sql` | RPC `add_stories` (batch titoli) |
-| `011_join_room_rejoin.sql` | `join_room` reclaim + `leave_room` |
+| `20260530120808_initial_schema.sql` | Schema, RPC, RLS, Realtime |
+| `20260530205137_security_hardening.sql` | RLS write bloccato, rate limit `create_room` |
+| `20260530205145_room_cleanup.sql` | `cleanup_stale_rooms()` |
+| `20260530205849_pg_cron.sql` | Job pg_cron cleanup stanze (6h) |
+| `20260530213606_transfer_facilitator.sql` | RPC `transfer_facilitator` |
+| `20260531151743_story_management.sql` | Edit/riordino ordini (`update_story`, reorder) |
+| `20260531151756_voting_timer.sql` | `voting_deadline_at`, timer votazione |
+| `20260531151757_remove_participant.sql` | RPC `remove_participant` (kick) |
+| `20260531190333_room_deck_settings.sql` | Deck custom per stanza, `set_room_deck` |
+| `20260601120938_bulk_add_stories.sql` | RPC `add_stories` (batch titoli) |
+| `20260601131912_join_room_rejoin.sql` | `join_room` reclaim + `leave_room` |
 
-Nuovo file: numero sequenziale successivo (es. `012_…`). Aggiornare [supabase/README.md](../../../supabase/README.md). Su merge a `main`, CI applica con `supabase-migrations.yml` se `SUPABASE_ACCESS_TOKEN` è configurato.
+Nuovo file: `supabase migration new nome` (genera `YYYYMMDDHHMMSS_nome.sql`) oppure timestamp manuale coerente con l’ordine. Aggiornare [supabase/README.md](../../../supabase/README.md). Su merge a `main`, CI applica con `supabase-migrations.yml` se `SUPABASE_ACCESS_TOKEN` è configurato.
 
 ## Template RPC
 
