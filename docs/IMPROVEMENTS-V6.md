@@ -108,3 +108,5 @@ RPC `duplicate_room`: nuovo codice, stesso backlog.
 - Follow-up #39: [phase-11-session-productivity.md](plans/phase-11-session-productivity.md)
 - Report export: Fase 5 `#15`
 - PWA: Fase 4 `#6`, UI-H Fase 12
+
+**Successivo (v7 — discoverability):** [IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md) · Fase 15

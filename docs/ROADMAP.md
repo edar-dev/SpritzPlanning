@@ -32,11 +32,14 @@ flowchart LR
   P10[Fase10_Quality]
   P11[Fase11_Productivity]
   P12[Fase12_Production]
+  P13[Fase13_UI_a11y]
+  P14[Fase14_SessionAdv]
+  P15[Fase15_Discover]
 
   P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
   P8 --> P10
   P9 -.-> P10
-  P10 --> P11 --> P12
+  P10 --> P11 --> P12 --> P13 --> P14 --> P15
 
 ```
 
@@ -66,6 +69,7 @@ flowchart LR
 | 12 | #34, #36–37, #40, UI-G–H | 6–9 giorni | `chore/production-hardening` | [phase-12-production-hardening.md](plans/phase-12-production-hardening.md) |
 | 13 | #41–48, UI-I–T | 5–8 giorni | `feat/ui-a11y-polish` | [phase-13-ui-a11y-polish.md](plans/phase-13-ui-a11y-polish.md) |
 | 14 | #49–58 | 10–14 giorni | `feat/session-advanced` | [phase-14-session-advanced.md](plans/phase-14-session-advanced.md) |
+| 15 | #59–68 | 8–12 giorni | `feat/discoverability` | [phase-15-discoverability.md](plans/phase-15-discoverability.md) |
 
 
 
@@ -153,11 +157,15 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 
 
-**Prossima (v6 — sessione avanzata):**
+**Completata (v6 — sessione avanzata):** Fase 14 — auto-reveal, osservatori, PIN, export Jira/ADO, template, notifiche, spike, report stats, duplica stanza ([IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md), PR #11).
 
 
 
-14. **Fase 14** — auto-reveal, osservatori, PIN, export Jira/ADO, template, notifiche PWA, spike, report stats, duplica stanza ([IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md))
+**Prossima (v7 — discoverability):**
+
+
+
+15. **Fase 15** — help page, tour onboarding, archivio sessioni, preset deck, invito smart, voto anonimo, chiusura sessione, Open Graph, export Linear/GitHub, feedback ([IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md))
 
 
 
@@ -238,7 +246,8 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 11 | Completata | PR #6 — `611cd4b` |
 | 12 | Completata | PR #7 — `4273442` |
 | 13 | Completata | PR #8 — `8a341ae` |
-| 14 | Pianificata | [IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md) #49–58 |
+| 14 | Completata | PR #11 — `feat/session-advanced` |
+| 15 | Pianificata | [IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md) #59–68 |
 
 
 
@@ -260,6 +269,27 @@ Vedi [IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md).
 | 58 | Duplica stanza («stessa serata») | 14 |
 
 Piano unico: [phase-14-session-advanced.md](plans/phase-14-session-advanced.md).
+
+
+
+## Lista miglioramenti v7 (#59–68)
+
+Vedi [IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md).
+
+| # | Miglioramento | Fase |
+|---|---------------|------|
+| 59 | Help page / guida feature | 15 |
+| 60 | Tour guidato al primo accesso | 15 |
+| 61 | Archivio sessioni locali | 15 |
+| 62 | Preset deck ufficiali | 15 |
+| 63 | Invito smart (share testo + link) | 15 |
+| 64 | Voto anonimo pre-reveal | 15 |
+| 65 | Chiusura sessione + mini-retro | 15 |
+| 66 | Open Graph / anteprima link join | 15 |
+| 67 | Export Linear / GitHub Issues | 15 |
+| 68 | Feedback post-sessione | 15 |
+
+Piano unico: [phase-15-discoverability.md](plans/phase-15-discoverability.md).
 
 
 
