@@ -1,11 +1,14 @@
-# Set GitHub Actions secrets for integration tests from env.json or env.test.json.
+# Set GitHub Actions secrets from env.json / env.test.json and optional Supabase CLI token.
 # Requires: gh auth login  (https://cli.github.com/)
 # Usage: .\scripts\configure-github-secrets.ps1
 #        .\scripts\configure-github-secrets.ps1 -EnvFile env.test.json
+#        $env:SUPABASE_ACCESS_TOKEN = 'sbp_...'; .\scripts\configure-github-secrets.ps1 -SetAccessToken
 
 param(
     [string]$EnvFile = "env.json",
-    [string]$Repo = "edar-dev/SpritzPlanning"
+    [string]$Repo = "edar-dev/SpritzPlanning",
+    [switch]$SetAccessToken,
+    [string]$AccessToken = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -40,5 +43,20 @@ Write-Host "Setting SUPABASE_URL_TEST and SUPABASE_ANON_KEY_TEST on $Repo ..."
 $url | gh secret set SUPABASE_URL_TEST --repo $Repo
 $key | gh secret set SUPABASE_ANON_KEY_TEST --repo $Repo
 
+if ($SetAccessToken) {
+    $token = $AccessToken
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        $token = $env:SUPABASE_ACCESS_TOKEN
+    }
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        Write-Error "Set -AccessToken or env SUPABASE_ACCESS_TOKEN (create at https://supabase.com/dashboard/account/tokens)"
+    }
+    Write-Host "Setting SUPABASE_ACCESS_TOKEN on $Repo ..."
+    $token | gh secret set SUPABASE_ACCESS_TOKEN --repo $Repo
+}
+
 Write-Host "Done. Verify: gh secret list --repo $Repo"
 Write-Host "Trigger integration workflow: gh workflow run integration.yml --repo $Repo"
+if (-not $SetAccessToken) {
+    Write-Host "For migration CI also run: `$env:SUPABASE_ACCESS_TOKEN='sbp_...'; .\scripts\configure-github-secrets.ps1 -SetAccessToken"
+}
