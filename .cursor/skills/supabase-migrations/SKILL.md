@@ -11,7 +11,7 @@ description: Create and review Supabase SQL migrations for SpritzPlanning — ta
 - **Regione:** `eu-central-1`
 - **Path:** `supabase/migrations/`
 
-## Elenco migration (001–009)
+## Elenco migration (001–011)
 
 | File | Scopo |
 |------|--------|
@@ -24,8 +24,10 @@ description: Create and review Supabase SQL migrations for SpritzPlanning — ta
 | `007_voting_timer.sql` | `voting_deadline_at`, timer votazione |
 | `008_remove_participant.sql` | RPC `remove_participant` (kick) |
 | `009_room_deck_settings.sql` | Deck custom per stanza, `set_room_deck` |
+| `010_bulk_add_stories.sql` | RPC `add_stories` (batch titoli) |
+| `011_join_room_rejoin.sql` | `join_room` reclaim + `leave_room` |
 
-Nuovo file: numero sequenziale successivo (es. `010_…`). Aggiornare [supabase/README.md](../../../supabase/README.md).
+Nuovo file: numero sequenziale successivo (es. `012_…`). Aggiornare [supabase/README.md](../../../supabase/README.md). Su merge a `main`, CI applica con `supabase-migrations.yml` se `SUPABASE_ACCESS_TOKEN` è configurato.
 
 ## Template RPC
 

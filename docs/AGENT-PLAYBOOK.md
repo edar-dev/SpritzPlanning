@@ -45,8 +45,8 @@ bash scripts/dev-setup.sh
 | Regola | Dettaglio |
 |--------|-----------|
 | Progetto | `eyvfsgzbrdibheyejikf` · `eu-central-1` |
-| Migration | Solo file in `supabase/migrations/` — **001 → 009** in ordine |
-| Applicazione | `supabase db push` oppure MCP Supabase / SQL Editor con contenuto del file |
+| Migration | Solo file in `supabase/migrations/` — **001 → 011** in ordine |
+| Applicazione | `supabase db push`, CI `supabase-migrations.yml` su `main`, oppure MCP Supabase / SQL Editor |
 | Vietato | Schema o RPC “a mano” senza migration versionata |
 
 Dopo nuova migration nel PR, indicare in descrizione: **migration applicata su progetto cloud: sì/no**.

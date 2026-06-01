@@ -23,6 +23,13 @@ supabase db push
 | `008_remove_participant.sql` | RPC `remove_participant` (kick cliente / AFK) |
 | `009_room_deck_settings.sql` | Deck JSON per stanza, `set_room_deck`, validazione voti |
 | `010_bulk_add_stories.sql` | RPC `add_stories` — import batch titoli (max 50) |
+| `011_join_room_rejoin.sql` | `join_room` reclaim nickname assente; RPC `leave_room` per uscita |
+
+## CI (GitHub Actions)
+
+Su push a `main` che modifica `supabase/migrations/`, il workflow [`.github/workflows/supabase-migrations.yml`](../.github/workflows/supabase-migrations.yml) esegue `supabase db push` sul progetto `eyvfsgzbrdibheyejikf`.
+
+Configura il secret **`SUPABASE_ACCESS_TOKEN`** nel repository (Settings → Secrets → Actions): [Account tokens](https://supabase.com/dashboard/account/tokens).
 
 ## Cleanup automatico (pg_cron)
 

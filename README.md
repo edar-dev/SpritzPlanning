@@ -42,7 +42,7 @@ Guida agenti: [AGENTS.md](AGENTS.md) · Playbook: [docs/AGENT-PLAYBOOK.md](docs/
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
-- Migrations (in ordine): `001`–`009` (vedi [supabase/README.md](supabase/README.md))
+- Migrations (in ordine): `001`–`011` (vedi [supabase/README.md](supabase/README.md)); su `main` applicate da CI se configurato `SUPABASE_ACCESS_TOKEN`
 
 ## Build
 

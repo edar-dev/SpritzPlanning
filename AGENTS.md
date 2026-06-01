@@ -55,7 +55,7 @@ supabase link --project-ref eyvfsgzbrdibheyejikf
 supabase db push
 ```
 
-Migration **001–009** in ordine — tabella in [supabase/README.md](supabase/README.md).
+Migration **001–011** in ordine — tabella in [supabase/README.md](supabase/README.md). Push automatico su `main` via workflow `supabase-migrations.yml` (secret `SUPABASE_ACCESS_TOKEN`).
 
 Config locale: `env.json.example` → `env.json` (`SUPABASE_URL`, `SUPABASE_ANON_KEY`, opzionale `SENTRY_DSN`).
 
