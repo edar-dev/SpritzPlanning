@@ -33,6 +33,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get projectorMode => 'Room / projector mode';
 
   @override
+  String get projectorModeHint => 'Larger text and cards for projector or TV';
+
+  @override
+  String get appSettings => 'Settings';
+
+  @override
   String get nicknameLabel => 'Your name at the bar';
 
   @override

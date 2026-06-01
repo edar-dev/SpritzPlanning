@@ -54,6 +54,22 @@ abstract final class AppDecorations {
     );
   }
 
+  /// Top bar on home (language / settings) — readable on hero gradient.
+  static BoxDecoration preferencesBar() {
+    return BoxDecoration(
+      color: const Color(AppColors.surface),
+      borderRadius: BorderRadius.circular(radiusMd),
+      border: Border.all(color: const Color(AppColors.border)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.06),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    );
+  }
+
   static BoxDecoration iconBadge({bool primary = true}) {
     return BoxDecoration(
       color: primary

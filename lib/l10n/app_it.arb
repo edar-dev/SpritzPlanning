@@ -14,6 +14,8 @@
     }
   },
   "projectorMode": "Modalità sala / proiettore",
+  "projectorModeHint": "Testo e card più grandi per proiettore o TV",
+  "appSettings": "Impostazioni",
   "nicknameLabel": "Il tuo nome al bancone",
   "nicknameHint": "Es. Marco",
   "openLocale": "Apri un locale",

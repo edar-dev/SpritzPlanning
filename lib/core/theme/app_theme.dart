@@ -53,9 +53,29 @@ abstract final class AppTheme {
         ),
         bodyLarge: textTheme.bodyLarge?.copyWith(
           height: 1.45,
+          color: onSurface,
+        ),
+        bodyMedium: textTheme.bodyMedium?.copyWith(
+          height: 1.4,
           color: onSurfaceVariant,
         ),
+        labelMedium: textTheme.labelMedium?.copyWith(
+          color: onSurface,
+          fontWeight: FontWeight.w600,
+        ),
       ),
+      iconTheme: const IconThemeData(
+        color: onSurface,
+        size: 24,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          minimumSize: const Size(48, 48),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          foregroundColor: onSurface,
+        ),
+      ),
+      focusColor: primary.withValues(alpha: 0.12),
       appBarTheme: const AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -138,7 +158,7 @@ abstract final class AppTheme {
           color: onSurfaceVariant,
           fontWeight: FontWeight.w500,
         ),
-        hintStyle: TextStyle(color: onSurfaceVariant.withValues(alpha: 0.7)),
+        hintStyle: const TextStyle(color: Color(AppColors.textMuted)),
       ),
       chipTheme: ChipThemeData(
         shape: RoundedRectangleBorder(
@@ -213,9 +233,29 @@ abstract final class AppTheme {
         ),
         bodyLarge: textTheme.bodyLarge?.copyWith(
           height: 1.45,
+          color: onSurface,
+        ),
+        bodyMedium: textTheme.bodyMedium?.copyWith(
+          height: 1.4,
           color: onSurfaceVariant,
         ),
+        labelMedium: textTheme.labelMedium?.copyWith(
+          color: onSurface,
+          fontWeight: FontWeight.w600,
+        ),
       ),
+      iconTheme: const IconThemeData(
+        color: onSurface,
+        size: 24,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          minimumSize: const Size(48, 48),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          foregroundColor: onSurface,
+        ),
+      ),
+      focusColor: primary.withValues(alpha: 0.12),
       appBarTheme: const AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,

@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'Modalità sala / proiettore'**
   String get projectorMode;
 
+  /// No description provided for @projectorModeHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Testo e card più grandi per proiettore o TV'**
+  String get projectorModeHint;
+
+  /// No description provided for @appSettings.
+  ///
+  /// In it, this message translates to:
+  /// **'Impostazioni'**
+  String get appSettings;
+
   /// No description provided for @nicknameLabel.
   ///
   /// In it, this message translates to:
