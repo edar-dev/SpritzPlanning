@@ -89,6 +89,9 @@ abstract final class AppPreferences {
 
   static const _hasSeenOnboardingKey = 'has_seen_onboarding';
   static const _hasSubmittedFeedbackKey = 'has_submitted_feedback';
+  static const _soundEffectsEnabledKey = 'sound_effects_enabled';
+  static const _hapticEnabledKey = 'haptic_enabled';
+  static const _pushNotificationsEnabledKey = 'push_notifications_enabled';
 
   static Future<bool> loadHasSeenOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
@@ -108,5 +111,35 @@ abstract final class AppPreferences {
   static Future<void> markFeedbackSubmitted() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_hasSubmittedFeedbackKey, true);
+  }
+
+  static Future<bool> loadSoundEffectsEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_soundEffectsEnabledKey) ?? false;
+  }
+
+  static Future<void> saveSoundEffectsEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_soundEffectsEnabledKey, enabled);
+  }
+
+  static Future<bool> loadHapticEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_hapticEnabledKey) ?? false;
+  }
+
+  static Future<void> saveHapticEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hapticEnabledKey, enabled);
+  }
+
+  static Future<bool> loadPushNotificationsEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_pushNotificationsEnabledKey) ?? false;
+  }
+
+  static Future<void> savePushNotificationsEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_pushNotificationsEnabledKey, enabled);
   }
 }

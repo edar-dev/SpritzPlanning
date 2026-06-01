@@ -50,6 +50,7 @@ class Room {
     required this.allowCoffeeBreak,
     required this.autoRevealWhenAllVoted,
     required this.hideVotersUntilReveal,
+    required this.confidenceRoundActive,
     required this.lastActivityAt,
     required this.createdAt,
   });
@@ -65,6 +66,7 @@ class Room {
   final bool allowCoffeeBreak;
   final bool autoRevealWhenAllVoted;
   final bool hideVotersUntilReveal;
+  final bool confidenceRoundActive;
   final DateTime lastActivityAt;
   final DateTime createdAt;
 
@@ -85,6 +87,8 @@ class Room {
           json['auto_reveal_when_all_voted'] as bool? ?? false,
       hideVotersUntilReveal:
           json['hide_voters_until_reveal'] as bool? ?? false,
+      confidenceRoundActive:
+          json['confidence_round_active'] as bool? ?? false,
       lastActivityAt: DateTime.parse(json['last_activity_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
     );
@@ -134,6 +138,31 @@ class Participant {
   }
 }
 
+class EstimateHistoryEntry {
+  const EstimateHistoryEntry({
+    required this.estimate,
+    required this.at,
+    required this.kind,
+  });
+
+  final String estimate;
+  final DateTime at;
+  final String kind;
+
+  factory EstimateHistoryEntry.fromJson(Map<String, dynamic> json) {
+    return EstimateHistoryEntry(
+      estimate: json['estimate'] as String? ?? '',
+      at: _parseEstimateAt(json['at']),
+      kind: json['kind'] as String? ?? 'final',
+    );
+  }
+
+  static DateTime _parseEstimateAt(dynamic value) {
+    if (value is String) return DateTime.parse(value);
+    return DateTime.now().toUtc();
+  }
+}
+
 class Story {
   const Story({
     required this.id,
@@ -145,6 +174,9 @@ class Story {
     required this.kind,
     this.finalEstimate,
     required this.facilitatorNote,
+    required this.publicComment,
+    required this.isReference,
+    required this.estimateHistory,
     required this.createdAt,
   });
 
@@ -157,6 +189,9 @@ class Story {
   final StoryKind kind;
   final String? finalEstimate;
   final String facilitatorNote;
+  final String publicComment;
+  final bool isReference;
+  final List<EstimateHistoryEntry> estimateHistory;
   final DateTime createdAt;
 
   bool get isSpike => kind == StoryKind.spike;
@@ -172,7 +207,41 @@ class Story {
       kind: StoryKindX.fromDb(json['kind'] as String? ?? 'story'),
       finalEstimate: json['final_estimate'] as String?,
       facilitatorNote: json['facilitator_note'] as String? ?? '',
+      publicComment: json['public_comment'] as String? ?? '',
+      isReference: json['is_reference'] as bool? ?? false,
+      estimateHistory: _parseEstimateHistory(json['estimate_history']),
       createdAt: DateTime.parse(json['created_at'] as String),
+    );
+  }
+
+  static List<EstimateHistoryEntry> _parseEstimateHistory(dynamic raw) {
+    if (raw is! List) return const [];
+    return raw
+        .map(
+          (e) => EstimateHistoryEntry.fromJson(
+            Map<String, dynamic>.from(e as Map),
+          ),
+        )
+        .toList();
+  }
+}
+
+class ConfidenceVote {
+  const ConfidenceVote({
+    required this.storyId,
+    required this.participantId,
+    required this.value,
+  });
+
+  final String storyId;
+  final String participantId;
+  final int value;
+
+  factory ConfidenceVote.fromJson(Map<String, dynamic> json) {
+    return ConfidenceVote(
+      storyId: json['story_id'] as String,
+      participantId: json['participant_id'] as String,
+      value: json['value'] as int,
     );
   }
 }
@@ -239,12 +308,14 @@ class RoomState {
     required this.participants,
     required this.stories,
     required this.votes,
+    this.confidenceVotes = const [],
   });
 
   final Room room;
   final List<Participant> participants;
   final List<Story> stories;
   final List<Vote> votes;
+  final List<ConfidenceVote> confidenceVotes;
 
   Story? get currentStory {
     final id = room.currentStoryId;
@@ -292,17 +363,44 @@ class RoomState {
     return (voted, voters.length);
   }
 
+  Story? get referenceStory {
+    try {
+      return stories.firstWhere((s) => s.isReference);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  List<ConfidenceVote> get currentConfidenceVotes {
+    final id = room.currentStoryId;
+    if (id == null) return [];
+    return confidenceVotes.where((v) => v.storyId == id).toList();
+  }
+
+  (int voted, int total) get confidenceProgress {
+    final voters = activeVotingParticipants;
+    if (voters.isEmpty) return (0, 0);
+    final voted = voters
+        .where(
+          (p) => currentConfidenceVotes.any((c) => c.participantId == p.id),
+        )
+        .length;
+    return (voted, voters.length);
+  }
+
   RoomState copyWith({
     Room? room,
     List<Participant>? participants,
     List<Story>? stories,
     List<Vote>? votes,
+    List<ConfidenceVote>? confidenceVotes,
   }) {
     return RoomState(
       room: room ?? this.room,
       participants: participants ?? this.participants,
       stories: stories ?? this.stories,
       votes: votes ?? this.votes,
+      confidenceVotes: confidenceVotes ?? this.confidenceVotes,
     );
   }
 }

@@ -8,6 +8,9 @@ class SessionReportRow {
     required this.estimate,
     required this.description,
     required this.facilitatorNote,
+    required this.publicComment,
+    required this.isReference,
+    required this.estimateHistorySummary,
     required this.completedAt,
     required this.isSpike,
   });
@@ -16,6 +19,9 @@ class SessionReportRow {
   final String estimate;
   final String description;
   final String facilitatorNote;
+  final String publicComment;
+  final bool isReference;
+  final String estimateHistorySummary;
   final DateTime completedAt;
   final bool isSpike;
 }
@@ -49,6 +55,11 @@ class SessionReport {
             estimate: s.finalEstimate!,
             description: s.description,
             facilitatorNote: s.facilitatorNote,
+            publicComment: s.publicComment,
+            isReference: s.isReference,
+            estimateHistorySummary: s.estimateHistory
+                .map((e) => e.estimate)
+                .join(' → '),
             completedAt: s.createdAt,
             isSpike: s.isSpike,
           ),
@@ -78,6 +89,10 @@ class SessionReport {
             estimate: m['estimate'] as String,
             description: m['description'] as String? ?? '',
             facilitatorNote: m['facilitatorNote'] as String? ?? '',
+            publicComment: m['publicComment'] as String? ?? '',
+            isReference: m['isReference'] as bool? ?? false,
+            estimateHistorySummary:
+                m['estimateHistorySummary'] as String? ?? '',
             completedAt: DateTime.parse(m['completedAt'] as String),
             isSpike: m['isSpike'] as bool? ?? false,
           );
@@ -171,6 +186,9 @@ class SessionReport {
               'estimate': r.estimate,
               'description': r.description,
               if (includeFacilitatorNotes) 'facilitatorNote': r.facilitatorNote,
+              'publicComment': r.publicComment,
+              'isReference': r.isReference,
+              'estimateHistorySummary': r.estimateHistorySummary,
               'isSpike': r.isSpike,
               'completedAt': r.completedAt.toIso8601String(),
             },
@@ -223,8 +241,14 @@ class SessionReport {
   String _jiraDescription(SessionReportRow row) {
     final parts = <String>[];
     if (row.description.isNotEmpty) parts.add(row.description);
+    if (row.publicComment.isNotEmpty) {
+      parts.add('Comment: ${row.publicComment}');
+    }
     if (includeFacilitatorNotes && row.facilitatorNote.isNotEmpty) {
       parts.add('Note: ${row.facilitatorNote}');
+    }
+    if (row.estimateHistorySummary.isNotEmpty) {
+      parts.add('Revisions: ${row.estimateHistorySummary}');
     }
     return parts.join('\n\n');
   }

@@ -27,6 +27,7 @@ supabase db push
 | `20260602140000_session_advanced.sql` | Spike, osservatori, auto-reveal, PIN, note barman, duplica stanza |
 | `20260603120000_hide_voters_until_reveal.sql` | Voto anonimo pre-reveal (#64) |
 | `20260604120000_drop_rpc_overloads.sql` | Rimuove overload `create_room`/`join_room` (fix PostgREST PGRST203) |
+| `20260605120000_session_depth.sql` | Reference story, commenti pubblici, confidence vote, cronologia stime, push subscription (#71–#75, #78) |
 
 I nomi usano il timestamp Supabase (`YYYYMMDDHHMMSS_nome.sql`) per allinearsi a `supabase_migrations.schema_migrations` e a `supabase db push` in CI.
 

@@ -1387,6 +1387,144 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Nasconde chi ha già votato; resta il conteggio N/M'**
   String get hideVotersUntilRevealSubtitle;
+
+  /// No description provided for @confidenceVoteTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Quanto siete sicuri?'**
+  String get confidenceVoteTitle;
+
+  /// No description provided for @confidenceVoteSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Valuta da 1 (poco) a 5 (molto) — non cambia la stima.'**
+  String get confidenceVoteSubtitle;
+
+  /// No description provided for @confidenceVoteProgress.
+  ///
+  /// In it, this message translates to:
+  /// **'{voted}/{total} hanno risposto'**
+  String confidenceVoteProgress(int voted, int total);
+
+  /// No description provided for @confidenceVoteClose.
+  ///
+  /// In it, this message translates to:
+  /// **'Chiudi confidence'**
+  String get confidenceVoteClose;
+
+  /// No description provided for @confidenceVoteStart.
+  ///
+  /// In it, this message translates to:
+  /// **'Confidence vote'**
+  String get confidenceVoteStart;
+
+  /// No description provided for @storyPublicCommentTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Commento / domanda'**
+  String get storyPublicCommentTitle;
+
+  /// No description provided for @storyPublicCommentHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Visibile a tutti in sala'**
+  String get storyPublicCommentHint;
+
+  /// No description provided for @referenceStoryBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Riferimento'**
+  String get referenceStoryBadge;
+
+  /// No description provided for @setReferenceStory.
+  ///
+  /// In it, this message translates to:
+  /// **'Imposta come riferimento'**
+  String get setReferenceStory;
+
+  /// No description provided for @saveRoomTemplate.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva come template'**
+  String get saveRoomTemplate;
+
+  /// No description provided for @saveRoomTemplateSuccess.
+  ///
+  /// In it, this message translates to:
+  /// **'Template salvato'**
+  String get saveRoomTemplateSuccess;
+
+  /// No description provided for @saveRoomTemplatePrompt.
+  ///
+  /// In it, this message translates to:
+  /// **'Nome template'**
+  String get saveRoomTemplatePrompt;
+
+  /// No description provided for @importJiraAdoTab.
+  ///
+  /// In it, this message translates to:
+  /// **'Jira / ADO'**
+  String get importJiraAdoTab;
+
+  /// No description provided for @importPasteTab.
+  ///
+  /// In it, this message translates to:
+  /// **'Incolla titoli'**
+  String get importPasteTab;
+
+  /// No description provided for @importJiraAdoHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Incolla export CSV o tab-separated (Summary, Story Points…)'**
+  String get importJiraAdoHint;
+
+  /// No description provided for @soundEffectsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Effetti sonori'**
+  String get soundEffectsTitle;
+
+  /// No description provided for @soundEffectsSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Suoni su reveal e timer (opt-in)'**
+  String get soundEffectsSubtitle;
+
+  /// No description provided for @hapticTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Feedback aptico'**
+  String get hapticTitle;
+
+  /// No description provided for @hapticSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Vibrazione su eventi chiave (mobile)'**
+  String get hapticSubtitle;
+
+  /// No description provided for @pushNotificationsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Push PWA (beta)'**
+  String get pushNotificationsTitle;
+
+  /// No description provided for @pushNotificationsSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Notifiche con app in background (web, richiede VAPID)'**
+  String get pushNotificationsSubtitle;
+
+  /// No description provided for @relativeSizingHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Rispetto al riferimento ({reference} pt): ~{ratio}×'**
+  String relativeSizingHint(String reference, String ratio);
+
+  /// No description provided for @estimateHistoryLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Revisioni stima'**
+  String get estimateHistoryLabel;
 }
 
 class _AppLocalizationsDelegate

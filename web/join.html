@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpritzPlanning — Unisciti alla sessione</title>
+  <meta name="description" content="Unisciti a una sessione di planning poker su SpritzPlanning.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SpritzPlanning">
+  <meta property="og:image" content="https://spritz-planning.vercel.app/icons/Icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image" content="https://spritz-planning.vercel.app/icons/Icon-512.png">
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var match = window.location.pathname.match(/\/j\/([^/?#]+)/i);
+      var code = params.get('code') || (match ? decodeURIComponent(match[1]) : '');
+      var title = code
+        ? 'Unisciti a SpritzPlanning — ' + code
+        : 'SpritzPlanning — Planning poker';
+      var description = code
+        ? 'Entra al bancone con il codice ' + code + '. Nickname e codice stanza, zero registrazione.'
+        : 'Planning poker a tema spritz — nickname e codice stanza, zero registrazione.';
+      var url = window.location.href;
+
+      function setMeta(property, content) {
+        var el = document.querySelector('meta[property="' + property + '"]');
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute('property', property);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', content);
+      }
+
+      function setNameMeta(name, content) {
+        var el = document.querySelector('meta[name="' + name + '"]');
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute('name', name);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', content);
+      }
+
+      document.title = title;
+      setMeta('og:title', title);
+      setMeta('og:description', description);
+      setMeta('og:url', url);
+      setNameMeta('twitter:title', title);
+      setNameMeta('twitter:description', description);
+      setNameMeta('description', description);
+
+      if (code && !/bot|crawl|spider|facebook|slack|whatsapp|telegram|discord/i.test(navigator.userAgent)) {
+        window.location.replace('/?code=' + encodeURIComponent(code.trim()));
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Reindirizzamento a SpritzPlanning…</p>
+  <p><a id="join-link" href="/">Apri l'app</a></p>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var match = window.location.pathname.match(/\/j\/([^/?#]+)/i);
+      var code = params.get('code') || (match ? decodeURIComponent(match[1]) : '');
+      if (code) {
+        document.getElementById('join-link').href = '/?code=' + encodeURIComponent(code.trim());
+      }
+    })();
+  </script>
+</body>
+</html>

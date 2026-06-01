@@ -709,4 +709,80 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get hideVotersUntilRevealSubtitle =>
       'Nasconde chi ha già votato; resta il conteggio N/M';
+
+  @override
+  String get confidenceVoteTitle => 'Quanto siete sicuri?';
+
+  @override
+  String get confidenceVoteSubtitle =>
+      'Valuta da 1 (poco) a 5 (molto) — non cambia la stima.';
+
+  @override
+  String confidenceVoteProgress(int voted, int total) {
+    return '$voted/$total hanno risposto';
+  }
+
+  @override
+  String get confidenceVoteClose => 'Chiudi confidence';
+
+  @override
+  String get confidenceVoteStart => 'Confidence vote';
+
+  @override
+  String get storyPublicCommentTitle => 'Commento / domanda';
+
+  @override
+  String get storyPublicCommentHint => 'Visibile a tutti in sala';
+
+  @override
+  String get referenceStoryBadge => 'Riferimento';
+
+  @override
+  String get setReferenceStory => 'Imposta come riferimento';
+
+  @override
+  String get saveRoomTemplate => 'Salva come template';
+
+  @override
+  String get saveRoomTemplateSuccess => 'Template salvato';
+
+  @override
+  String get saveRoomTemplatePrompt => 'Nome template';
+
+  @override
+  String get importJiraAdoTab => 'Jira / ADO';
+
+  @override
+  String get importPasteTab => 'Incolla titoli';
+
+  @override
+  String get importJiraAdoHint =>
+      'Incolla export CSV o tab-separated (Summary, Story Points…)';
+
+  @override
+  String get soundEffectsTitle => 'Effetti sonori';
+
+  @override
+  String get soundEffectsSubtitle => 'Suoni su reveal e timer (opt-in)';
+
+  @override
+  String get hapticTitle => 'Feedback aptico';
+
+  @override
+  String get hapticSubtitle => 'Vibrazione su eventi chiave (mobile)';
+
+  @override
+  String get pushNotificationsTitle => 'Push PWA (beta)';
+
+  @override
+  String get pushNotificationsSubtitle =>
+      'Notifiche con app in background (web, richiede VAPID)';
+
+  @override
+  String relativeSizingHint(String reference, String ratio) {
+    return 'Rispetto al riferimento ($reference pt): ~$ratio×';
+  }
+
+  @override
+  String get estimateHistoryLabel => 'Revisioni stima';
 }

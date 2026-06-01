@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/notifications/browser_notifications.dart';
+import '../../core/notifications/web_push_service.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/preferences/preferences_providers.dart';
+import '../../data/providers/providers.dart';
 
 /// Lingua, tema e modalità proiettore in un unico pannello accessibile.
 class HomeSettingsSheet extends ConsumerStatefulWidget {
@@ -28,19 +30,30 @@ class HomeSettingsSheet extends ConsumerStatefulWidget {
 class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
   bool _notificationsEnabled = false;
   bool _notificationsLoaded = false;
+  bool _soundEnabled = false;
+  bool _hapticEnabled = false;
+  bool _pushEnabled = false;
+  bool _feedbackLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    unawaited(_loadNotifications());
+    unawaited(_loadPrefs());
   }
 
-  Future<void> _loadNotifications() async {
+  Future<void> _loadPrefs() async {
     final enabled = await AppPreferences.loadNotificationsEnabled();
+    final sound = await AppPreferences.loadSoundEffectsEnabled();
+    final haptic = await AppPreferences.loadHapticEnabled();
+    final push = await AppPreferences.loadPushNotificationsEnabled();
     if (!mounted) return;
     setState(() {
       _notificationsEnabled = enabled;
       _notificationsLoaded = true;
+      _soundEnabled = sound;
+      _hapticEnabled = haptic;
+      _pushEnabled = push;
+      _feedbackLoaded = true;
     });
   }
 
@@ -57,6 +70,36 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
     await AppPreferences.saveNotificationsEnabled(value);
     if (!mounted) return;
     setState(() => _notificationsEnabled = value);
+  }
+
+  Future<void> _setPush(bool value) async {
+    if (value) {
+      final session = ref.read(sessionProvider).valueOrNull;
+      if (session == null || !WebPushService.isSupported) {
+        if (!mounted) return;
+        setState(() => _pushEnabled = false);
+        await AppPreferences.savePushNotificationsEnabled(false);
+        return;
+      }
+      final ok = await WebPushService.subscribeAndRegister(
+        participantId: session.participantId,
+        register: (sub) => ref.read(roomRepositoryProvider).registerPushSubscription(
+              participantId: session.participantId,
+              subscription: sub,
+            ),
+      );
+      if (!ok) {
+        if (!mounted) return;
+        setState(() => _pushEnabled = false);
+        await AppPreferences.savePushNotificationsEnabled(false);
+        return;
+      }
+    } else {
+      await WebPushService.unsubscribe();
+    }
+    await AppPreferences.savePushNotificationsEnabled(value);
+    if (!mounted) return;
+    setState(() => _pushEnabled = value);
   }
 
   @override
@@ -143,6 +186,38 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
                 value: _notificationsEnabled,
                 onChanged: (value) => unawaited(_setNotifications(value)),
               ),
+            if (_feedbackLoaded) ...[
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.soundEffectsTitle),
+                subtitle: Text(l10n.soundEffectsSubtitle),
+                value: _soundEnabled,
+                onChanged: (value) async {
+                  await AppPreferences.saveSoundEffectsEnabled(value);
+                  if (!mounted) return;
+                  setState(() => _soundEnabled = value);
+                },
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.hapticTitle),
+                subtitle: Text(l10n.hapticSubtitle),
+                value: _hapticEnabled,
+                onChanged: (value) async {
+                  await AppPreferences.saveHapticEnabled(value);
+                  if (!mounted) return;
+                  setState(() => _hapticEnabled = value);
+                },
+              ),
+              if (WebPushService.isSupported)
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(l10n.pushNotificationsTitle),
+                  subtitle: Text(l10n.pushNotificationsSubtitle),
+                  value: _pushEnabled,
+                  onChanged: (value) => unawaited(_setPush(value)),
+                ),
+            ],
           ],
         ),
       ),
