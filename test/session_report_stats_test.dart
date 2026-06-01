@@ -13,8 +13,8 @@ RoomState _stateWithDoneStories(List<Story> stories) {
       deckValues: const ['1', '2', '3', '5', '8'],
       allowCoffeeBreak: true,
       autoRevealWhenAllVoted: false,
-      lastActivityAt: DateTime.utc(2026, 1, 1),
-      createdAt: DateTime.utc(2026, 1, 1),
+      lastActivityAt: DateTime.utc(2026),
+      createdAt: DateTime.utc(2026),
     ),
     participants: const [],
     stories: stories,
@@ -33,7 +33,7 @@ Story _doneStory(String title, String estimate, {StoryKind kind = StoryKind.stor
     finalEstimate: estimate,
     kind: kind,
     facilitatorNote: '',
-    createdAt: DateTime.utc(2026, 1, 1),
+    createdAt: DateTime.utc(2026),
   );
 }
 

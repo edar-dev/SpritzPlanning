@@ -1,3 +1,6 @@
+// Web-only implementation loaded via conditional export.
+// ignore_for_file: avoid_web_libraries_in_flutter, deprecated_member_use
+
 import 'dart:html' as html;
 
 enum BrowserNotificationPermission { denied, granted, defaultState }
