@@ -412,4 +412,90 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get exportJson => 'Esporta JSON';
+
+  @override
+  String get joinAsObserver => 'Solo osservazione (non voto)';
+
+  @override
+  String get observerBadge => 'Osservatore';
+
+  @override
+  String get observerCannotVote => 'Stai osservando: non puoi votare';
+
+  @override
+  String get roomPinLabel => 'PIN locale';
+
+  @override
+  String get roomPinHint => '4-6 cifre';
+
+  @override
+  String get roomPinRequired => 'PIN richiesto per questo locale';
+
+  @override
+  String get setRoomPin => 'Imposta PIN';
+
+  @override
+  String get removeRoomPin => 'Rimuovi PIN';
+
+  @override
+  String get autoRevealTitle => 'Reveal automatico';
+
+  @override
+  String get autoRevealSubtitle => 'Rivela i voti quando tutti hanno scelto';
+
+  @override
+  String get markAsSpike => 'Segna come spike';
+
+  @override
+  String get storyKindSpike => 'Spike';
+
+  @override
+  String get duplicateRoom => 'Nuova serata (stesso menu)';
+
+  @override
+  String get duplicateRoomConfirm =>
+      'Si crea un nuovo codice. Il backlog viene copiato. I clienti dovranno rientrare.';
+
+  @override
+  String get facilitatorNote => 'Note barman';
+
+  @override
+  String get facilitatorNoteHint => 'Solo per te, visibili in export';
+
+  @override
+  String get exportJira => 'Jira';
+
+  @override
+  String get exportAzureDevOps => 'Azure DevOps';
+
+  @override
+  String get reportMean => 'Media punti';
+
+  @override
+  String get reportMedian => 'Mediana punti';
+
+  @override
+  String get reportCompleted => 'Ordini completati';
+
+  @override
+  String get reportSpikes => 'Spike';
+
+  @override
+  String get roomTemplates => 'Template locale';
+
+  @override
+  String get createFromTemplate => 'Crea da template';
+
+  @override
+  String get notificationsTitle => 'Notifiche browser';
+
+  @override
+  String get notificationsSubtitle =>
+      'Reveal e timer quando la scheda è in background';
+
+  @override
+  String get notificationsReveal => 'Voti rivelati';
+
+  @override
+  String get notificationsTimer => 'Tempo quasi scaduto';
 }

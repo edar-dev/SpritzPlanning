@@ -19,7 +19,9 @@ import '../../core/errors/user_facing_error.dart';
 import '../../core/export/session_report.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/participant_avatar.dart';
+import '../../core/export/session_report_stats.dart';
 import 'session_report_sheet.dart';
+import '../../core/notifications/browser_notifications.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/room_screen_skeleton.dart';
@@ -38,10 +40,76 @@ class RoomScreen extends ConsumerStatefulWidget {
 }
 
 class _RoomScreenState extends ConsumerState<RoomScreen> {
+  bool? _wasVotesRevealed;
+  bool _timerWarned = false;
+  Timer? _notificationPoll;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _ensureRoomEntered());
+  }
+
+  @override
+  void dispose() {
+    _notificationPoll?.cancel();
+    super.dispose();
+  }
+
+  void _onRoomStateChanged(RoomState? previous, RoomState? current) {
+    if (previous == null || current == null) return;
+    final prevRoom = previous.room;
+    final currRoom = current.room;
+    if (prevRoom.id != currRoom.id) {
+      _wasVotesRevealed = currRoom.votesRevealed;
+      _timerWarned = false;
+      _syncTimerNotificationPoll(currRoom);
+      return;
+    }
+    if (!prevRoom.votesRevealed && currRoom.votesRevealed) {
+      unawaited(_notifyReveal());
+    }
+    _wasVotesRevealed = currRoom.votesRevealed;
+    if (prevRoom.currentStoryId != currRoom.currentStoryId ||
+        prevRoom.votingDeadlineAt != currRoom.votingDeadlineAt) {
+      _timerWarned = false;
+    }
+    _syncTimerNotificationPoll(currRoom);
+  }
+
+  void _syncTimerNotificationPoll(Room room) {
+    _notificationPoll?.cancel();
+    if (room.votingDeadlineAt == null || room.votesRevealed) return;
+    _notificationPoll = Timer.periodic(const Duration(seconds: 10), (_) {
+      final deadline = room.votingDeadlineAt;
+      if (deadline == null) return;
+      final seconds = deadline.difference(DateTime.now()).inSeconds;
+      if (seconds <= 30 && seconds > 0 && !_timerWarned) {
+        _timerWarned = true;
+        unawaited(_notifyTimer());
+      }
+      if (seconds <= 0) {
+        _notificationPoll?.cancel();
+      }
+    });
+  }
+
+  Future<void> _notifyReveal() async {
+    if (!await AppPreferences.loadNotificationsEnabled()) return;
+    if (!mounted) return;
+    showBrowserNotification(
+      title: context.l10n.notificationsReveal,
+      body: context.l10n.appName,
+    );
+  }
+
+  Future<void> _notifyTimer() async {
+    if (!await AppPreferences.loadNotificationsEnabled()) return;
+    if (!mounted) return;
+    showBrowserNotification(
+      title: context.l10n.notificationsTimer,
+      body: context.l10n.appName,
+    );
   }
 
   Future<void> _ensureRoomEntered() async {
@@ -79,6 +147,14 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<RoomState?>>(
+      roomStateProvider,
+      (previous, next) => _onRoomStateChanged(
+        previous?.valueOrNull,
+        next.valueOrNull,
+      ),
+    );
+
     final roomStateAsync = ref.watch(roomStateProvider);
     final session = ref.watch(sessionProvider).valueOrNull;
     final isFacilitator = ref.watch(isFacilitatorProvider);
@@ -104,6 +180,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         ),
       ),
       data: (roomState) {
+        if (_wasVotesRevealed == null && roomState != null) {
+          _wasVotesRevealed = roomState.room.votesRevealed;
+          _syncTimerNotificationPoll(roomState.room);
+        }
+
         if (roomState == null || session == null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (!mounted) return;
@@ -188,8 +269,27 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                   tooltip: context.l10n.riepilogoSerata,
                   onPressed: () => SessionReportSheet.show(
                     context,
-                    SessionReport.fromRoomState(roomState),
+                    SessionReport.fromRoomState(
+                      roomState,
+                      includeFacilitatorNotes: true,
+                    ),
+                    SessionReportStats.fromRoomState(roomState),
                   ),
+                ),
+              if (isFacilitator)
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: (value) {
+                    if (value == 'duplicate') {
+                      unawaited(_duplicateRoom(context, ref, session));
+                    }
+                  },
+                  itemBuilder: (ctx) => [
+                    PopupMenuItem(
+                      value: 'duplicate',
+                      child: Text(context.l10n.duplicateRoom),
+                    ),
+                  ],
                 ),
               IconButton(
                 icon: const Icon(Icons.logout_rounded),
@@ -438,7 +538,8 @@ class _ParticipantsRow extends ConsumerWidget {
                 return ParticipantAvatar(
                   nickname: p.nickname,
                   isFacilitator: p.isFacilitator,
-                  showVoteStatus: showVoteStatus,
+                  isObserver: p.isObserver,
+                  showVoteStatus: showVoteStatus && !p.isObserver,
                   hasVoted: roomState.hasParticipantVoted(p.id),
                   isAbsent: p.isAbsent(
                     now: DateTime.now(),
@@ -658,6 +759,13 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                       story.id,
                     ),
                     onEdit: null,
+                    onMarkSpike: _spikeCallback(
+                      context,
+                      ref,
+                      widget.isFacilitator,
+                      widget.participantId,
+                      story,
+                    ),
                     showDragHandle: false,
                   ),
                 ),
@@ -699,6 +807,14 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           ref,
                           widget.participantId,
                           story,
+                          isFacilitator: widget.isFacilitator,
+                        ),
+                        onMarkSpike: _spikeCallback(
+                          context,
+                          ref,
+                          widget.isFacilitator,
+                          widget.participantId,
+                          story,
                         ),
                         showDragHandle: true,
                         dragIndex: index,
@@ -729,8 +845,16 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                                 ref,
                                 widget.participantId,
                                 story,
+                                isFacilitator: true,
                               )
                           : null,
+                      onMarkSpike: _spikeCallback(
+                        context,
+                        ref,
+                        widget.isFacilitator,
+                        widget.participantId,
+                        story,
+                      ),
                       showDragHandle: false,
                     ),
                   ),
@@ -764,6 +888,7 @@ class _StoryTile extends StatelessWidget {
     required this.onStartVoting,
     required this.onRemove,
     required this.onEdit,
+    this.onMarkSpike,
     required this.showDragHandle,
     this.dragIndex = 0,
   });
@@ -774,6 +899,7 @@ class _StoryTile extends StatelessWidget {
   final VoidCallback onStartVoting;
   final VoidCallback onRemove;
   final VoidCallback? onEdit;
+  final VoidCallback? onMarkSpike;
   final bool showDragHandle;
   final int dragIndex;
 
@@ -792,10 +918,10 @@ class _StoryTile extends StatelessWidget {
             vertical: 8,
           ),
           leading: CircleAvatar(
-            backgroundColor: _statusColor(story.status).withValues(alpha: 0.12),
+            backgroundColor: _statusColor(story).withValues(alpha: 0.12),
             child: Icon(
-              _statusIcon(story.status),
-              color: _statusColor(story.status),
+              _statusIcon(story),
+              color: _statusColor(story),
               size: 20,
             ),
           ),
@@ -813,6 +939,12 @@ class _StoryTile extends StatelessWidget {
                           color: Color(AppColors.spritzOrange),
                           size: 28,
                         ),
+                      ),
+                    if (onMarkSpike != null)
+                      IconButton(
+                        icon: const Icon(Icons.bolt_outlined),
+                        tooltip: context.l10n.markAsSpike,
+                        onPressed: onMarkSpike,
                       ),
                     if (onEdit != null)
                       IconButton(
@@ -843,8 +975,9 @@ class _StoryTile extends StatelessWidget {
   }
 }
 
-Color _statusColor(StoryStatus status) {
-  return switch (status) {
+Color _statusColor(Story story) {
+  if (story.isSpike) return Colors.deepPurple;
+  return switch (story.status) {
     StoryStatus.pending => Colors.grey,
     StoryStatus.voting => Colors.orange,
     StoryStatus.revealed => Colors.blue,
@@ -852,8 +985,9 @@ Color _statusColor(StoryStatus status) {
   };
 }
 
-IconData _statusIcon(StoryStatus status) {
-  return switch (status) {
+IconData _statusIcon(Story story) {
+  if (story.isSpike) return Icons.bolt;
+  return switch (story.status) {
     StoryStatus.pending => Icons.receipt_long,
     StoryStatus.voting => Icons.local_bar,
     StoryStatus.revealed => Icons.visibility,
@@ -980,14 +1114,101 @@ Future<void> _confirmTransferBarman(
   }
 }
 
+VoidCallback? _spikeCallback(
+  BuildContext context,
+  WidgetRef ref,
+  bool isFacilitator,
+  String participantId,
+  Story story,
+) {
+  if (!isFacilitator ||
+      story.status != StoryStatus.pending ||
+      story.isSpike) {
+    return null;
+  }
+  return () => unawaited(
+        _markStorySpike(context, ref, participantId, story.id),
+      );
+}
+
+Future<void> _markStorySpike(
+  BuildContext context,
+  WidgetRef ref,
+  String participantId,
+  String storyId,
+) async {
+  try {
+    await ref.read(roomRepositoryProvider).markStorySpike(
+          participantId: participantId,
+          storyId: storyId,
+        );
+  } catch (e, st) {
+    if (context.mounted) {
+      await showUserError(context, e, stackTrace: st);
+    }
+  }
+}
+
+Future<void> _duplicateRoom(
+  BuildContext context,
+  WidgetRef ref,
+  SessionData session,
+) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text(context.l10n.duplicateRoom),
+      content: Text(context.l10n.duplicateRoomConfirm),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Annulla'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(context.l10n.duplicateRoom),
+        ),
+      ],
+    ),
+  );
+
+  if (confirmed != true) return;
+
+  try {
+    final result = await ref.read(roomRepositoryProvider).duplicateRoom(
+          participantId: session.participantId,
+          sourceRoomId: session.roomId,
+        );
+    await ref.read(sessionProvider.notifier).saveSession(
+          result,
+          nickname: session.nickname,
+        );
+    ref.read(roomStateProvider.notifier).leaveRoom();
+    await ref.read(roomStateProvider.notifier).enterRoom(
+          result.roomId,
+          result.participantId,
+        );
+    if (context.mounted) {
+      context.go('/room/${result.roomId}');
+    }
+  } catch (e, st) {
+    if (context.mounted) {
+      await showUserError(context, e, stackTrace: st);
+    }
+  }
+}
+
 Future<void> _showEditStoryDialog(
   BuildContext context,
   WidgetRef ref,
   String participantId,
-  Story story,
-) async {
+  Story story, {
+  required bool isFacilitator,
+}) async {
   final titleController = TextEditingController(text: story.title);
   final descController = TextEditingController(text: story.description);
+  final noteController =
+      TextEditingController(text: story.facilitatorNote);
 
   final result = await showDialog<bool>(
     context: context,
@@ -1009,6 +1230,17 @@ Future<void> _showEditStoryDialog(
             ),
             maxLines: 3,
           ),
+          if (isFacilitator) ...[
+            const SizedBox(height: 12),
+            TextField(
+              controller: noteController,
+              decoration: InputDecoration(
+                labelText: context.l10n.facilitatorNote,
+                hintText: context.l10n.facilitatorNoteHint,
+              ),
+              maxLines: 2,
+            ),
+          ],
         ],
       ),
       actions: [
@@ -1031,6 +1263,7 @@ Future<void> _showEditStoryDialog(
             storyId: story.id,
             title: titleController.text.trim(),
             description: descController.text.trim(),
+            facilitatorNote: isFacilitator ? noteController.text.trim() : null,
           );
     } catch (e, st) {
       if (context.mounted) {
@@ -1041,6 +1274,7 @@ Future<void> _showEditStoryDialog(
 
   titleController.dispose();
   descController.dispose();
+  noteController.dispose();
 }
 
 Future<void> _showStartVotingDialog(

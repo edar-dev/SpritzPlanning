@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/notifications/browser_notifications.dart';
+import '../../core/preferences/app_preferences.dart';
 import '../../core/preferences/preferences_providers.dart';
 
 /// Lingua, tema e modalità proiettore in un unico pannello accessibile.
-class HomeSettingsSheet extends ConsumerWidget {
+class HomeSettingsSheet extends ConsumerStatefulWidget {
   const HomeSettingsSheet({super.key});
 
   static Future<void> show(BuildContext context) {
@@ -18,7 +22,45 @@ class HomeSettingsSheet extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeSettingsSheet> createState() => _HomeSettingsSheetState();
+}
+
+class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
+  bool _notificationsEnabled = false;
+  bool _notificationsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_loadNotifications());
+  }
+
+  Future<void> _loadNotifications() async {
+    final enabled = await AppPreferences.loadNotificationsEnabled();
+    if (!mounted) return;
+    setState(() {
+      _notificationsEnabled = enabled;
+      _notificationsLoaded = true;
+    });
+  }
+
+  Future<void> _setNotifications(bool value) async {
+    if (value) {
+      final permission = await requestBrowserNotificationPermission();
+      if (permission != BrowserNotificationPermission.granted) {
+        if (!mounted) return;
+        setState(() => _notificationsEnabled = false);
+        await AppPreferences.saveNotificationsEnabled(false);
+        return;
+      }
+    }
+    await AppPreferences.saveNotificationsEnabled(value);
+    if (!mounted) return;
+    setState(() => _notificationsEnabled = value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
     final themeMode = ref.watch(themeModeProvider).valueOrNull ?? ThemeMode.system;
     final locale = ref.watch(localeProvider).valueOrNull ?? const Locale('it');
@@ -93,6 +135,14 @@ class HomeSettingsSheet extends ConsumerWidget {
                 ref.read(projectorModeProvider.notifier).setProjectorMode(value);
               },
             ),
+            if (_notificationsLoaded)
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.notificationsTitle),
+                subtitle: Text(l10n.notificationsSubtitle),
+                value: _notificationsEnabled,
+                onChanged: (value) => unawaited(_setNotifications(value)),
+              ),
           ],
         ),
       ),
