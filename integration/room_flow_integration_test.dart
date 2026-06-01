@@ -87,5 +87,35 @@ void main() {
       expect(state.room.phase, RoomPhase.lobby);
       expect(state.room.votesRevealed, isFalse);
     });
+
+    test('leave then re-join with same nickname', () async {
+      if (!SupabaseConfig.isConfigured || repo == null) {
+        markTestSkipped(
+          'Imposta SUPABASE_URL e SUPABASE_ANON_KEY (--dart-define-from-file=env.test.json)',
+        );
+      }
+      final repository = repo!;
+      final suffix = DateTime.now().millisecondsSinceEpoch;
+
+      final barman = await repository.createRoom(
+        name: 'Rejoin-$suffix',
+        nickname: 'Barman$suffix',
+      );
+
+      final guest = await repository.joinRoom(
+        code: barman.code,
+        nickname: 'Guest$suffix',
+      );
+
+      await repository.leaveRoom(participantId: guest.participantId);
+
+      final rejoined = await repository.joinRoom(
+        code: barman.code,
+        nickname: 'Guest$suffix',
+      );
+
+      expect(rejoined.roomId, barman.roomId);
+      expect(rejoined.participantId, guest.participantId);
+    });
   });
 }

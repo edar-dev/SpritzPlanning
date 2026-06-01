@@ -156,6 +156,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
+      final stored = _storedSession;
+      if (stored != null &&
+          stored.roomCode != null &&
+          stored.nickname != null &&
+          stored.roomCode!.toUpperCase() == code.toUpperCase() &&
+          stored.nickname!.toLowerCase() == nickname.toLowerCase()) {
+        await ref.read(sessionProvider.notifier).saveSession(
+              SessionResult(
+                roomId: stored.roomId,
+                participantId: stored.participantId,
+                code: stored.roomCode!,
+              ),
+              nickname: nickname,
+              roomName: stored.roomName,
+            );
+        await ref.read(roomStateProvider.notifier).enterRoom(
+              stored.roomId,
+              stored.participantId,
+            );
+        if (mounted) context.go('/room/${stored.roomId}');
+        return;
+      }
+
       final result = await ref.read(roomRepositoryProvider).joinRoom(
             code: code,
             nickname: nickname,

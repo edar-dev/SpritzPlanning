@@ -246,6 +246,14 @@ class RoomRepository {
     );
   }
 
+  /// Marks the participant as left so the same nickname can re-join immediately.
+  Future<void> leaveRoom({required String participantId}) async {
+    await supabase.rpc(
+      'leave_room',
+      params: {'p_participant_id': participantId},
+    );
+  }
+
   Future<void> transferFacilitator({
     required String fromParticipantId,
     required String toParticipantId,
