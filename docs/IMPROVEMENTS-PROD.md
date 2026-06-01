@@ -66,3 +66,7 @@ Impatto medio + sforzo medio: 37, 39, UI-C, UI-E, UI-H
 | 40 | Tag Sentry senza PII; release ↔ commit Vercel |
 
 Vedi i piani di fase per task file-by-file e criteri di done.
+
+---
+
+**Successivo (v5 — UI / a11y):** [IMPROVEMENTS-UI-A11Y.md](IMPROVEMENTS-UI-A11Y.md) · Fase 13

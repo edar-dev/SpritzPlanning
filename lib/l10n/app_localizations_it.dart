@@ -33,6 +33,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get projectorMode => 'Modalità sala / proiettore';
 
   @override
+  String get projectorModeHint => 'Testo e card più grandi per proiettore o TV';
+
+  @override
+  String get appSettings => 'Impostazioni';
+
+  @override
   String get nicknameLabel => 'Il tuo nome al bancone';
 
   @override

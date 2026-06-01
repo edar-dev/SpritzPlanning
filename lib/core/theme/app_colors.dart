@@ -8,7 +8,10 @@ abstract final class AppColors {
   static const surfaceMuted = 0xFFF0EBE4;
   static const primarySoft = 0xFFFFEDE4;
   static const textPrimary = 0xFF1C1917;
-  static const textSecondary = 0xFF78716C;
+  /// Body secondary — ≥4.5:1 on white (WCAG AA). Was #78716C (~4.0:1).
+  static const textSecondary = 0xFF57534E;
+  /// Hints only (not for essential copy on white).
+  static const textMuted = 0xFF78716C;
   static const border = 0xFFE7E5E4;
   static const darkWood = 0xFF44403C;
   static const success = 0xFF16A34A;

@@ -1,3 +1,12 @@
+# Performance e accessibilità — SpritzPlanning
+
+## Contrasto (Fase 13)
+
+- Testo secondario: `AppColors.textSecondary` (#57534E) su bianco ≥ WCAG AA 4.5:1.
+- Hint: `AppColors.textMuted` (#78716C) — solo placeholder, non copy critico.
+- Home: barra preferenze su `surface`; tagline usa `textPrimary`.
+- Obiettivo Lighthouse Accessibility: **≥ 90** su preview produzione (verifica manuale o workflow futuro).
+
 # Performance — SpritzPlanning Web
 
 **Toolchain:** Flutter **3.35.6** (CI `.github/workflows/ci.yml`, `scripts/vercel-build.sh`).

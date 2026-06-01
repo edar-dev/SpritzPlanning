@@ -14,6 +14,8 @@
     }
   },
   "projectorMode": "Room / projector mode",
+  "projectorModeHint": "Larger text and cards for projector or TV",
+  "appSettings": "Settings",
   "nicknameLabel": "Your name at the bar",
   "nicknameHint": "e.g. Alex",
   "openLocale": "Open a room",

@@ -19,6 +19,8 @@ import '../../data/supabase/supabase_client.dart';
 import '../../shared/widgets/connection_banner.dart';
 import '../../shared/widgets/pwa_install_banner.dart';
 import '../../shared/widgets/spritz_action_tile.dart';
+import 'home_settings_sheet.dart';
+import '../../core/theme/app_focus.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -33,6 +35,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _roomCodeController = TextEditingController();
   bool _isLoading = false;
   String? _error;
+  String? _nicknameError;
+  String? _localeNameError;
+  String? _roomCodeError;
   _HomeMode _mode = _HomeMode.welcome;
   List<RecentRoomEntry> _recentRooms = [];
   StoredSession? _storedSession;
@@ -84,13 +89,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final localeName = _localeNameController.text.trim();
 
     if (nickname.length < 2) {
-      setState(() => _error = l10n.nicknameTooShort);
+      setState(() {
+        _nicknameError = l10n.nicknameTooShort;
+        _error = null;
+      });
       return;
     }
     if (localeName.length < 2) {
-      setState(() => _error = l10n.localeNameTooShort);
+      setState(() {
+        _localeNameError = l10n.localeNameTooShort;
+        _error = null;
+      });
       return;
     }
+
+    setState(() {
+      _nicknameError = null;
+      _localeNameError = null;
+    });
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
@@ -118,13 +134,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final code = _roomCodeController.text.trim();
 
     if (nickname.length < 2) {
-      setState(() => _error = l10n.nicknameTooShort);
+      setState(() {
+        _nicknameError = l10n.nicknameTooShort;
+        _error = null;
+      });
       return;
     }
     if (code.isEmpty) {
-      setState(() => _error = l10n.roomCodeRequired);
+      setState(() {
+        _roomCodeError = l10n.roomCodeRequired;
+        _error = null;
+      });
       return;
     }
+
+    setState(() {
+      _nicknameError = null;
+      _roomCodeError = null;
+    });
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
@@ -251,7 +278,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               Text(
                                 l10n.tagline,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyLarge,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          const Color(AppColors.textPrimary),
+                                    ),
                               ),
                               const SizedBox(height: 32),
                               if (_mode == _HomeMode.welcome)
@@ -312,7 +346,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               l10n.recentRooms,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: const Color(AppColors.textSecondary),
                   ),
             ),
           ),
@@ -370,8 +403,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             labelText: l10n.nicknameLabel,
             hintText: l10n.nicknameHint,
             prefixIcon: const Icon(Icons.person_outline_rounded),
+            errorText: _nicknameError,
           ),
           textInputAction: TextInputAction.next,
+          onChanged: (_) {
+            if (_nicknameError != null) {
+              setState(() => _nicknameError = null);
+            }
+          },
         ),
         const SizedBox(height: 16),
         if (_mode == _HomeMode.create)
@@ -381,9 +420,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               labelText: l10n.localeNameLabel,
               hintText: l10n.localeNameHint,
               prefixIcon: const Icon(Icons.store_outlined),
+              errorText: _localeNameError,
             ),
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => _createRoom(),
+            onChanged: (_) {
+              if (_localeNameError != null) {
+                setState(() => _localeNameError = null);
+              }
+            },
           ),
         if (_mode == _HomeMode.join)
           TextField(
@@ -392,10 +437,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               labelText: l10n.roomCodeLabel,
               hintText: l10n.roomCodeHint,
               prefixIcon: const Icon(Icons.qr_code_rounded),
+              errorText: _roomCodeError,
             ),
             textCapitalization: TextCapitalization.characters,
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => _joinRoom(),
+            onChanged: (_) {
+              if (_roomCodeError != null) {
+                setState(() => _roomCodeError = null);
+              }
+            },
           ),
         const SizedBox(height: 24),
         if (_error != null)
@@ -441,6 +492,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               : () => setState(() {
                     _mode = _HomeMode.welcome;
                     _error = null;
+                    _nicknameError = null;
+                    _localeNameError = null;
+                    _roomCodeError = null;
                   }),
           child: Text(l10n.back),
         ),
@@ -453,73 +507,51 @@ class _HomePreferencesBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final themeMode = ref.watch(themeModeProvider).valueOrNull ?? ThemeMode.system;
-    final locale = ref.watch(localeProvider).valueOrNull;
-    final projectorMode =
-        ref.watch(projectorModeProvider).valueOrNull ?? false;
+    final locale = ref.watch(localeProvider).valueOrNull ?? const Locale('it');
+    final iconColor = appToolbarIconColor(context);
 
-    return Row(
-      children: [
-        DropdownButtonHideUnderline(
-          child: DropdownButton<Locale>(
-            value: locale ?? const Locale('it'),
-            items: const [
-              DropdownMenuItem(value: Locale('it'), child: Text('IT')),
-              DropdownMenuItem(value: Locale('en'), child: Text('EN')),
-            ],
-            onChanged: (value) {
-              if (value != null) {
-                ref.read(localeProvider.notifier).setLocale(value);
-              }
-            },
-          ),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          l10n.languageLabel,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-        IconButton(
-          tooltip: l10n.projectorMode,
-          onPressed: () => ref
-              .read(projectorModeProvider.notifier)
-              .setProjectorMode(!projectorMode),
-          icon: Icon(
-            projectorMode
-                ? Icons.present_to_all
-                : Icons.present_to_all_outlined,
-            color: projectorMode
-                ? Theme.of(context).colorScheme.primary
-                : null,
-          ),
-        ),
-        const Spacer(),
-        PopupMenuButton<ThemeMode>(
-          tooltip: l10n.themeSystem,
-          icon: Icon(
-            switch (themeMode) {
-              ThemeMode.dark => Icons.dark_mode_outlined,
-              ThemeMode.light => Icons.light_mode_outlined,
-              _ => Icons.brightness_auto_outlined,
-            },
-          ),
-          onSelected: ref.read(themeModeProvider.notifier).setThemeMode,
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: ThemeMode.light,
-              child: Text(l10n.themeLight),
+    return DecoratedBox(
+      decoration: AppDecorations.preferencesBar(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Row(
+          children: [
+            Semantics(
+              label: l10n.languageLabel,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<Locale>(
+                  value: locale,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: const Color(AppColors.textPrimary),
+                      ),
+                  dropdownColor: const Color(AppColors.surface),
+                  items: const [
+                    DropdownMenuItem(
+                      value: Locale('it'),
+                      child: Text('Italiano (IT)'),
+                    ),
+                    DropdownMenuItem(
+                      value: Locale('en'),
+                      child: Text('English (EN)'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      ref.read(localeProvider.notifier).setLocale(value);
+                    }
+                  },
+                ),
+              ),
             ),
-            PopupMenuItem(
-              value: ThemeMode.dark,
-              child: Text(l10n.themeDark),
-            ),
-            PopupMenuItem(
-              value: ThemeMode.system,
-              child: Text(l10n.themeSystem),
+            const Spacer(),
+            IconButton(
+              tooltip: l10n.appSettings,
+              onPressed: () => HomeSettingsSheet.show(context),
+              icon: Icon(Icons.settings_outlined, color: iconColor),
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

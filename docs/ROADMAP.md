@@ -64,6 +64,7 @@ flowchart LR
 | 10 | #26, #29 | 2–4 giorni | `chore/quality-gates` | [phase-10-quality-gates.md](plans/phase-10-quality-gates.md) |
 | 11 | #31–33, #38–39, UI-A–F | 8–12 giorni | `feat/session-productivity` | [phase-11-session-productivity.md](plans/phase-11-session-productivity.md) |
 | 12 | #34, #36–37, #40, UI-G–H | 6–9 giorni | `chore/production-hardening` | [phase-12-production-hardening.md](plans/phase-12-production-hardening.md) |
+| 13 | #41–48, UI-I–T | 5–8 giorni | `feat/ui-a11y-polish` | [phase-13-ui-a11y-polish.md](plans/phase-13-ui-a11y-polish.md) |
 
 
 
@@ -155,6 +156,8 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 12. **Fase 12** — retry ottimistico, CI smoke, a11y/proiettore, osservabilità Sentry
 
+13. **Fase 13** — contrasto, leggibilità home, focus, Lighthouse a11y ([IMPROVEMENTS-UI-A11Y.md](IMPROVEMENTS-UI-A11Y.md))
+
 
 
 ## Lista miglioramenti v3 (#21–30)
@@ -233,6 +236,7 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 10 | Completata | PR #5 — `6fea727` |
 | 11 | Completata | PR #6 — `611cd4b` |
 | 12 | Completata | PR #7 — `4273442` |
+| 13 | Pianificata | — |
 
 
 
