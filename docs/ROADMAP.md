@@ -231,7 +231,7 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 9 | Completata | PR #4 — `b5936d5` |
 
 | 10 | Completata | PR #5 — `6fea727` |
-| 11 | Pianificata | — |
+| 11 | Completata | PR #6 — `611cd4b` |
 | 12 | Pianificata | — |
 
 

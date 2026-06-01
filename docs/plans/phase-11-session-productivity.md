@@ -174,12 +174,12 @@ nickname, roomCode, roomName, savedAt
 
 ## Criteri di done — Fase 11
 
-- [ ] Migration 010 applicata (se RPC batch)
-- [ ] Barman: import ≥10 storie, shortcut reveal, vede progress voti
-- [ ] Refresh browser non perde sessione valida
-- [ ] `flutter analyze --fatal-infos` + `flutter test` verdi
-- [ ] ARB IT/EN aggiornati
-- [ ] `docs/IMPROVEMENTS-PROD.md` e ROADMAP aggiornati a “In corso” / “Completata” al merge
+- [x] Migration 010 applicata (RPC `add_stories`)
+- [x] Barman: import, shortcut reveal, progress voti
+- [x] Refresh / ripresa sessione documentata in home
+- [x] `flutter analyze --fatal-infos` + `flutter test` verdi
+- [x] ARB IT/EN aggiornati
+- [x] PR #6 mergiata (`611cd4b`)
 
 ## Rischi
 
