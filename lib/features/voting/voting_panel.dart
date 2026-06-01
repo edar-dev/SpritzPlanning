@@ -14,6 +14,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/section_header.dart';
+import '../../core/theme/light_surface_scope.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../shared/widgets/participant_avatar.dart';
@@ -266,33 +267,34 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
         children: [
           DecoratedBox(
             decoration: AppDecorations.surfaceCard(highlight: true),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.currentStoryLabel,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: const Color(AppColors.textSecondary),
-                        ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    story.title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: const Color(AppColors.textPrimary),
-                        ),
-                  ),
-                  if (story.description.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+            child: LightSurfaceScope(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      story.description,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      l10n.currentStoryLabel,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
+                    const SizedBox(height: 6),
+                    Text(
+                      story.title,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    if (story.description.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        story.description,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),

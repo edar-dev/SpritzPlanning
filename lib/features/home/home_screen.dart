@@ -21,6 +21,7 @@ import '../../shared/widgets/pwa_install_banner.dart';
 import '../../shared/widgets/spritz_action_tile.dart';
 import 'home_settings_sheet.dart';
 import '../../core/theme/app_focus.dart';
+import '../../core/theme/light_surface_scope.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -241,10 +242,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               if (!configured)
                 ConnectionBanner(message: l10n.supabaseNotConfigured),
               const PwaInstallBanner(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: _HomePreferencesBar(),
-              ),
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(
@@ -260,39 +257,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(28, 36, 28, 28),
-                          child: Column(
-                            children: [
-                              _buildLogo(context),
-                              const SizedBox(height: 20),
-                              Text(
-                                l10n.appName,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: const Color(AppColors.textPrimary),
-                                    ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                l10n.tagline,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          const Color(AppColors.textPrimary),
-                                    ),
-                              ),
-                              const SizedBox(height: 32),
-                              if (_mode == _HomeMode.welcome)
-                                _buildWelcomeActions(configured, l10n)
-                              else
-                                _buildForm(context, l10n),
-                            ],
+                          child: LightSurfaceScope(
+                            child: Column(
+                              children: [
+                                const _HomePreferencesBar(),
+                                const SizedBox(height: 20),
+                                _buildLogo(context),
+                                const SizedBox(height: 20),
+                                Text(
+                                  l10n.appName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  l10n.tagline,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                                const SizedBox(height: 32),
+                                if (_mode == _HomeMode.welcome)
+                                  _buildWelcomeActions(configured, l10n)
+                                else
+                                  _buildForm(context, l10n),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -504,6 +502,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 }
 
 class _HomePreferencesBar extends ConsumerWidget {
+  const _HomePreferencesBar();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;

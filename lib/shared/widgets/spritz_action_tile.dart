@@ -95,7 +95,9 @@ class _SpritzActionTileState extends State<SpritzActionTile> {
                             const SizedBox(height: 4),
                             Text(
                               widget.subtitle,
-                              style: theme.textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),

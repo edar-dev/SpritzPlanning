@@ -24,6 +24,8 @@ import '../../core/preferences/app_preferences.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/room_screen_skeleton.dart';
 import '../../shared/widgets/section_header.dart';
+import '../../core/theme/light_surface_scope.dart';
+import '../../shared/widgets/spritz_surface_card.dart';
 import '../voting/voting_panel.dart';
 
 class RoomScreen extends ConsumerStatefulWidget {
@@ -372,7 +374,8 @@ class _Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return LightSurfaceScope(
+      child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -386,6 +389,7 @@ class _Sidebar extends StatelessWidget {
           const SizedBox(height: 16),
           _ParticipantsRow(roomState: roomState),
         ],
+      ),
       ),
     );
   }
@@ -403,10 +407,7 @@ class _ParticipantsRow extends ConsumerWidget {
     final session = ref.watch(sessionProvider).valueOrNull;
     final isFacilitator = ref.watch(isFacilitatorProvider);
 
-    return DecoratedBox(
-      decoration: AppDecorations.surfaceCard(),
-      child: Padding(
-        padding: const EdgeInsets.all(18),
+    return SpritzSurfaceCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -414,7 +415,6 @@ class _ParticipantsRow extends ConsumerWidget {
               context.l10n.clienti,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: const Color(AppColors.textSecondary),
                   ),
             ),
             const SizedBox(height: 12),
@@ -446,7 +446,6 @@ class _ParticipantsRow extends ConsumerWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -580,56 +579,53 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
               ],
               const SizedBox(height: 16),
               if (pendingStories.isEmpty && activeStories.isEmpty)
-                DecoratedBox(
-                  decoration: AppDecorations.surfaceCard(),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 56,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 64,
-                            height: 64,
-                            decoration: AppDecorations.iconBadge(
-                              primary: false,
-                            ),
-                            child: const Icon(
-                              Icons.receipt_long_outlined,
-                              size: 32,
-                              color: Color(AppColors.textSecondary),
-                            ),
+                SpritzSurfaceCard(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 56,
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 64,
+                          height: 64,
+                          decoration: AppDecorations.iconBadge(
+                            primary: false,
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            context.l10n.menuEmpty,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyLarge,
+                          child: Icon(
+                            Icons.receipt_long_outlined,
+                            size: 32,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            context.l10n.menuEmptyImportCta,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: const Color(AppColors.textSecondary),
-                                ),
-                          ),
-                          if (widget.isFacilitator) ...[
-                            const SizedBox(height: 20),
-                            FilledButton.icon(
-                              onPressed: () => StoryImportSheet.show(
-                                context,
-                                participantId: widget.participantId,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          context.l10n.menuEmpty,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
                               ),
-                              icon: const Icon(Icons.upload_file_outlined),
-                              label: Text(context.l10n.importStories),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          context.l10n.menuEmptyImportCta,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        if (widget.isFacilitator) ...[
+                          const SizedBox(height: 20),
+                          FilledButton.icon(
+                            onPressed: () => StoryImportSheet.show(
+                              context,
+                              participantId: widget.participantId,
                             ),
-                          ],
+                            icon: const Icon(Icons.upload_file_outlined),
+                            label: Text(context.l10n.importStories),
+                          ),
                         ],
-                      ),
+                      ],
                     ),
                   ),
                 )
@@ -779,7 +775,8 @@ class _StoryTile extends StatelessWidget {
         decoration: AppDecorations.surfaceCard(
           radius: AppDecorations.radiusMd,
         ),
-        child: ListTile(
+        child: LightSurfaceScope(
+          child: ListTile(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 8,
@@ -829,6 +826,7 @@ class _StoryTile extends StatelessWidget {
                       backgroundColor: const Color(AppColors.primarySoft),
                     )
                   : null,
+          ),
         ),
       ),
     );

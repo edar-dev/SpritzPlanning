@@ -6,6 +6,7 @@ import '../../core/constants/app_config.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import 'spritz_surface_card.dart';
 
 class RoomCodeDisplay extends StatelessWidget {
   const RoomCodeDisplay({
@@ -19,10 +20,7 @@ class RoomCodeDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: AppDecorations.surfaceCard(),
-      child: Padding(
-        padding: const EdgeInsets.all(18),
+    return SpritzSurfaceCard(
         child: LayoutBuilder(
           builder: (context, constraints) {
             final stackButtons = constraints.maxWidth < 420;
@@ -34,7 +32,7 @@ class RoomCodeDisplay extends StatelessWidget {
                   context.l10n.codiceBancone,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: const Color(AppColors.textSecondary),
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
                 const SizedBox(height: 10),
@@ -68,7 +66,6 @@ class RoomCodeDisplay extends StatelessWidget {
             );
           },
         ),
-      ),
     );
   }
 
