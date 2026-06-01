@@ -6,6 +6,12 @@ abstract final class AppConfig {
     return '$productionWebUrl/?code=${Uri.encodeComponent(code.trim())}';
   }
 
+  /// Short share URL for Open Graph previews (#69).
+  static String shareJoinUrlForCode(String code) {
+    final trimmed = code.trim();
+    return '$productionWebUrl/j/${Uri.encodeComponent(trimmed)}';
+  }
+
   static const helpUrl = '$productionWebUrl/help';
 
   static const feedbackUrl =

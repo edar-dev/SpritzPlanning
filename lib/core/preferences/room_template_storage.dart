@@ -10,6 +10,8 @@ class RoomTemplate {
     required this.allowCoffeeBreak,
     required this.storyTitles,
     required this.updatedAt,
+    this.autoRevealWhenAllVoted = false,
+    this.hideVotersUntilReveal = false,
   });
 
   final String id;
@@ -18,6 +20,8 @@ class RoomTemplate {
   final bool allowCoffeeBreak;
   final List<String> storyTitles;
   final DateTime updatedAt;
+  final bool autoRevealWhenAllVoted;
+  final bool hideVotersUntilReveal;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -26,6 +30,8 @@ class RoomTemplate {
         'allowCoffeeBreak': allowCoffeeBreak,
         'storyTitles': storyTitles,
         'updatedAt': updatedAt.toIso8601String(),
+        'autoRevealWhenAllVoted': autoRevealWhenAllVoted,
+        'hideVotersUntilReveal': hideVotersUntilReveal,
       };
 
   factory RoomTemplate.fromJson(Map<String, dynamic> json) {
@@ -37,13 +43,16 @@ class RoomTemplate {
       storyTitles:
           (json['storyTitles'] as List).map((e) => e.toString()).toList(),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
+      autoRevealWhenAllVoted:
+          json['autoRevealWhenAllVoted'] as bool? ?? false,
+      hideVotersUntilReveal: json['hideVotersUntilReveal'] as bool? ?? false,
     );
   }
 }
 
 abstract final class RoomTemplateStorage {
   static const _key = 'room_templates_v1';
-  static const maxTemplates = 5;
+  static const maxTemplates = 10;
 
   static Future<List<RoomTemplate>> load() async {
     final prefs = await SharedPreferences.getInstance();

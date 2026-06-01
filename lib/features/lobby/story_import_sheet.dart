@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/import/jira_ado_parser.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/providers/providers.dart';
 import '../../shared/widgets/error_snackbar.dart';
+
+enum _ImportMode { paste, jiraAdo }
 
 class StoryImportSheet extends ConsumerStatefulWidget {
   const StoryImportSheet({
@@ -33,6 +36,7 @@ class StoryImportSheet extends ConsumerStatefulWidget {
 class _StoryImportSheetState extends ConsumerState<StoryImportSheet> {
   final _controller = TextEditingController();
   bool _importing = false;
+  _ImportMode _mode = _ImportMode.paste;
 
   @override
   void dispose() {
@@ -41,12 +45,16 @@ class _StoryImportSheetState extends ConsumerState<StoryImportSheet> {
   }
 
   List<String> _parseTitles() {
+    if (_mode == _ImportMode.jiraAdo) {
+      return JiraAdoParser.parse(_controller.text)
+          .map((r) => r.title)
+          .toList();
+    }
     final lines = _controller.text.split(RegExp(r'\r?\n'));
     final titles = <String>[];
     for (final line in lines) {
       final trimmed = line.trim();
       if (trimmed.isEmpty) continue;
-      // CSV: first column only
       final title = trimmed.split(',').first.trim();
       if (title.isNotEmpty) titles.add(title);
     }
@@ -107,9 +115,28 @@ class _StoryImportSheetState extends ConsumerState<StoryImportSheet> {
                     fontWeight: FontWeight.w700,
                   ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
+            SegmentedButton<_ImportMode>(
+              segments: [
+                ButtonSegment(
+                  value: _ImportMode.paste,
+                  label: Text(l10n.importPasteTab),
+                ),
+                ButtonSegment(
+                  value: _ImportMode.jiraAdo,
+                  label: Text(l10n.importJiraAdoTab),
+                ),
+              ],
+              selected: {_mode},
+              onSelectionChanged: (selected) {
+                setState(() => _mode = selected.first);
+              },
+            ),
+            const SizedBox(height: 12),
             Text(
-              l10n.importPasteHint,
+              _mode == _ImportMode.jiraAdo
+                  ? l10n.importJiraAdoHint
+                  : l10n.importPasteHint,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: const Color(AppColors.textSecondary),
                   ),
@@ -119,7 +146,9 @@ class _StoryImportSheetState extends ConsumerState<StoryImportSheet> {
               controller: _controller,
               maxLines: 8,
               decoration: InputDecoration(
-                hintText: l10n.importPasteHint,
+                hintText: _mode == _ImportMode.jiraAdo
+                    ? l10n.importJiraAdoHint
+                    : l10n.importPasteHint,
                 border: const OutlineInputBorder(),
               ),
               onChanged: (_) => setState(() {}),

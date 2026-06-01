@@ -6,7 +6,7 @@
 - Hint: `AppColors.textMuted` (#78716C) — solo placeholder, non copy critico.
 - Home: barra preferenze su `surface`; tagline usa `textPrimary`.
 - Card bianche: widget `LightSurfaceScope` / `SpritzSurfaceCard` — con tema scuro i form non devono ereditare campi scuri e testo chiaro sulla card.
-- Obiettivo Lighthouse Accessibility: **≥ 90** su preview produzione (verifica manuale o workflow futuro).
+- Obiettivo Lighthouse Accessibility: **≥ 90** su preview produzione (workflow CI `.github/workflows/lighthouse.yml`).
 
 # Performance — SpritzPlanning Web
 
@@ -58,7 +58,21 @@ flutter build web --release --dart-define-from-file=env.json
 du -sh build/web
 ```
 
+## Lighthouse CI (Fase 16, #77)
+
+Workflow `.github/workflows/lighthouse.yml` su push/PR verso `main`: build web release, audit con [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) (config `.github/lighthouse/lighthouserc.json`).
+
+Soglie minime in CI:
+
+| Category | Min score |
+|----------|-----------|
+| Performance | 0.6 |
+| Accessibility | 0.85 |
+| Best Practices | 0.8 |
+| PWA | 0.5 |
+
+Audit manuale consigliato prima del release; la CI serve come regressione su build preview.
+
 ## Note
 
-- Lighthouse in CI è flaky; audit manuale documentato qui
 - `--wasm` opzionale per sperimentazione, non usato in produzione

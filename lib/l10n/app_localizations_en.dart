@@ -709,4 +709,80 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hideVotersUntilRevealSubtitle =>
       'Hide who voted; show N/M count only';
+
+  @override
+  String get confidenceVoteTitle => 'How confident are you?';
+
+  @override
+  String get confidenceVoteSubtitle =>
+      'Rate 1 (low) to 5 (high) — does not change the estimate.';
+
+  @override
+  String confidenceVoteProgress(int voted, int total) {
+    return '$voted/$total responded';
+  }
+
+  @override
+  String get confidenceVoteClose => 'Close confidence';
+
+  @override
+  String get confidenceVoteStart => 'Confidence vote';
+
+  @override
+  String get storyPublicCommentTitle => 'Comment / question';
+
+  @override
+  String get storyPublicCommentHint => 'Visible to everyone in the room';
+
+  @override
+  String get referenceStoryBadge => 'Reference';
+
+  @override
+  String get setReferenceStory => 'Set as reference story';
+
+  @override
+  String get saveRoomTemplate => 'Save as template';
+
+  @override
+  String get saveRoomTemplateSuccess => 'Template saved';
+
+  @override
+  String get saveRoomTemplatePrompt => 'Template name';
+
+  @override
+  String get importJiraAdoTab => 'Jira / ADO';
+
+  @override
+  String get importPasteTab => 'Paste titles';
+
+  @override
+  String get importJiraAdoHint =>
+      'Paste CSV or tab-separated export (Summary, Story Points…)';
+
+  @override
+  String get soundEffectsTitle => 'Sound effects';
+
+  @override
+  String get soundEffectsSubtitle => 'Sounds on reveal and timer (opt-in)';
+
+  @override
+  String get hapticTitle => 'Haptic feedback';
+
+  @override
+  String get hapticSubtitle => 'Vibration on key events (mobile)';
+
+  @override
+  String get pushNotificationsTitle => 'PWA push (beta)';
+
+  @override
+  String get pushNotificationsSubtitle =>
+      'Notifications when app is in background (web, requires VAPID)';
+
+  @override
+  String relativeSizingHint(String reference, String ratio) {
+    return 'Vs reference ($reference pt): ~$ratio×';
+  }
+
+  @override
+  String get estimateHistoryLabel => 'Estimate revisions';
 }

@@ -14,6 +14,7 @@ RoomState _stateWithDoneStories(List<Story> stories) {
       allowCoffeeBreak: true,
         autoRevealWhenAllVoted: false,
         hideVotersUntilReveal: false,
+        confidenceRoundActive: false,
         lastActivityAt: DateTime.utc(2026),
       createdAt: DateTime.utc(2026),
     ),
@@ -34,6 +35,9 @@ Story _doneStory(String title, String estimate, {StoryKind kind = StoryKind.stor
     finalEstimate: estimate,
     kind: kind,
     facilitatorNote: '',
+    publicComment: '',
+    isReference: false,
+    estimateHistory: const [],
     createdAt: DateTime.utc(2026),
   );
 }

@@ -68,6 +68,7 @@ Room _room({String currentStoryId = 'story-1'}) {
     allowCoffeeBreak: true,
       autoRevealWhenAllVoted: false,
       hideVotersUntilReveal: false,
+      confidenceRoundActive: false,
       lastActivityAt: _t,
     createdAt: _t,
   );
@@ -84,6 +85,7 @@ Room _roomWithoutStory() {
     allowCoffeeBreak: true,
       autoRevealWhenAllVoted: false,
       hideVotersUntilReveal: false,
+      confidenceRoundActive: false,
       lastActivityAt: _t,
     createdAt: _t,
   );
@@ -111,6 +113,9 @@ Story _story() {
     status: StoryStatus.voting,
     kind: StoryKind.story,
     facilitatorNote: '',
+    publicComment: '',
+    isReference: false,
+    estimateHistory: const [],
     createdAt: _t,
   );
 }

@@ -4,6 +4,12 @@
   "outputDirectory": "build/web",
   "framework": null,
   "installCommand": "echo 'Dependencies installed in build script'",
+  "rewrites": [
+    {
+      "source": "/j/:code",
+      "destination": "/join.html?code=:code"
+    }
+  ],
   "headers": [
     {
       "source": "/flutter_service_worker.js",

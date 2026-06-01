@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import 'room_deck_settings_sheet.dart';
@@ -20,9 +21,12 @@ import '../../core/export/session_report.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../core/export/session_report_stats.dart';
+import '../../core/feedback/session_feedback.dart';
 import '../../core/share/room_invite_text.dart';
+import '../../core/preferences/room_template_storage.dart';
 import 'session_report_sheet.dart';
 import 'session_close_sheet.dart';
+import 'story_public_comment_sheet.dart';
 import '../../core/notifications/browser_notifications.dart';
 import '../../core/preferences/session_archive_storage.dart';
 import '../../core/preferences/app_preferences.dart';
@@ -70,6 +74,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       return;
     }
     if (!prevRoom.votesRevealed && currRoom.votesRevealed) {
+      unawaited(SessionFeedback.onReveal());
       unawaited(_notifyReveal());
     }
     _wasVotesRevealed = currRoom.votesRevealed;
@@ -89,6 +94,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       final seconds = deadline.difference(DateTime.now()).inSeconds;
       if (seconds <= 30 && seconds > 0 && !_timerWarned) {
         _timerWarned = true;
+        unawaited(SessionFeedback.onTimerWarning());
         unawaited(_notifyTimer());
       }
       if (seconds <= 0) {
@@ -133,6 +139,59 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         roomName: roomState.room.name,
         code: roomState.room.code,
       ),
+    );
+  }
+
+  Future<void> _saveRoomAsTemplate(
+    BuildContext context,
+    RoomState roomState,
+  ) async {
+    final l10n = context.l10n;
+    final nameController = TextEditingController(text: roomState.room.name);
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.saveRoomTemplate),
+        content: TextField(
+          controller: nameController,
+          decoration: InputDecoration(labelText: l10n.saveRoomTemplatePrompt),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.feedbackDismiss),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.salvaOrdine),
+          ),
+        ],
+      ),
+    );
+    if (saved != true || nameController.text.trim().isEmpty) {
+      nameController.dispose();
+      return;
+    }
+
+    final template = RoomTemplate(
+      id: const Uuid().v4(),
+      name: nameController.text.trim(),
+      deckValues: List<String>.from(roomState.room.deckValues),
+      allowCoffeeBreak: roomState.room.allowCoffeeBreak,
+      storyTitles: roomState.stories
+          .where((s) => s.status == StoryStatus.pending)
+          .map((s) => s.title)
+          .toList(),
+      updatedAt: DateTime.now(),
+      autoRevealWhenAllVoted: roomState.room.autoRevealWhenAllVoted,
+      hideVotersUntilReveal: roomState.room.hideVotersUntilReveal,
+    );
+    nameController.dispose();
+    await RoomTemplateStorage.upsert(template);
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.saveRoomTemplateSuccess)),
     );
   }
 
@@ -317,9 +376,15 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                         participantId: session.participantId,
                         onLeave: () => unawaited(_leaveAndGoHome()),
                       );
+                    } else if (value == 'template') {
+                      unawaited(_saveRoomAsTemplate(context, roomState));
                     }
                   },
                   itemBuilder: (ctx) => [
+                    PopupMenuItem(
+                      value: 'template',
+                      child: Text(context.l10n.saveRoomTemplate),
+                    ),
                     PopupMenuItem(
                       value: 'close',
                       child: Text(context.l10n.sessionCloseTitle),
@@ -848,6 +913,14 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           story,
                           isFacilitator: widget.isFacilitator,
                         ),
+                        onSetReference: widget.isFacilitator
+                            ? () => unawaited(_setReferenceStory(
+                                  context,
+                                  ref,
+                                  widget.participantId,
+                                  story.id,
+                                ))
+                            : null,
                         onMarkSpike: _spikeCallback(
                           context,
                           ref,
@@ -886,6 +959,14 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                                 story,
                                 isFacilitator: true,
                               )
+                          : null,
+                      onSetReference: widget.isFacilitator
+                          ? () => unawaited(_setReferenceStory(
+                                context,
+                                ref,
+                                widget.participantId,
+                                story.id,
+                              ))
                           : null,
                       onMarkSpike: _spikeCallback(
                         context,
@@ -928,6 +1009,7 @@ class _StoryTile extends StatelessWidget {
     required this.onRemove,
     required this.onEdit,
     this.onMarkSpike,
+    this.onSetReference,
     required this.showDragHandle,
     this.dragIndex = 0,
   });
@@ -939,6 +1021,7 @@ class _StoryTile extends StatelessWidget {
   final VoidCallback onRemove;
   final VoidCallback? onEdit;
   final VoidCallback? onMarkSpike;
+  final VoidCallback? onSetReference;
   final bool showDragHandle;
   final int dragIndex;
 
@@ -964,12 +1047,55 @@ class _StoryTile extends StatelessWidget {
               size: 20,
             ),
           ),
-          title: Text(story.title),
-          subtitle: story.description.isNotEmpty ? Text(story.description) : null,
+          title: Row(
+            children: [
+              Expanded(child: Text(story.title)),
+              if (story.isReference)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Chip(
+                    label: Text(context.l10n.referenceStoryBadge),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ),
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (story.description.isNotEmpty) Text(story.description),
+              if (story.publicComment.isNotEmpty)
+                Text(
+                  story.publicComment,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                      ),
+                ),
+            ],
+          ),
           trailing: isFacilitator && story.status == StoryStatus.pending
               ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    IconButton(
+                      icon: const Icon(Icons.chat_bubble_outline),
+                      tooltip: context.l10n.storyPublicCommentTitle,
+                      onPressed: () => StoryPublicCommentSheet.show(
+                        context,
+                        story: story,
+                        participantId: participantId,
+                      ),
+                    ),
+                    if (onSetReference != null)
+                      IconButton(
+                        icon: Icon(
+                          story.isReference
+                              ? Icons.anchor
+                              : Icons.anchor_outlined,
+                        ),
+                        tooltip: context.l10n.setReferenceStory,
+                        onPressed: onSetReference,
+                      ),
                     if (showDragHandle)
                       ReorderableDragStartListener(
                         index: dragIndex,
@@ -1001,12 +1127,22 @@ class _StoryTile extends StatelessWidget {
                     ),
                   ],
                 )
-              : story.finalEstimate != null
-                  ? Chip(
-                      label: Text('${story.finalEstimate} pt'),
-                      backgroundColor: const Color(AppColors.primarySoft),
+              : story.status == StoryStatus.pending
+                  ? IconButton(
+                      icon: const Icon(Icons.chat_bubble_outline),
+                      tooltip: context.l10n.storyPublicCommentTitle,
+                      onPressed: () => StoryPublicCommentSheet.show(
+                        context,
+                        story: story,
+                        participantId: participantId,
+                      ),
                     )
-                  : null,
+                  : story.finalEstimate != null
+                      ? Chip(
+                          label: Text('${story.finalEstimate} pt'),
+                          backgroundColor: const Color(AppColors.primarySoft),
+                        )
+                      : null,
           ),
         ),
       ),
@@ -1093,6 +1229,25 @@ Future<void> _showAddStoryDialog(
 
   titleController.dispose();
   descController.dispose();
+}
+
+Future<void> _setReferenceStory(
+  BuildContext context,
+  WidgetRef ref,
+  String participantId,
+  String storyId,
+) async {
+  try {
+    await ref.read(roomRepositoryProvider).setReferenceStory(
+          participantId: participantId,
+          storyId: storyId,
+        );
+    await ref.read(roomStateProvider.notifier).refresh();
+  } catch (e, st) {
+    if (context.mounted) {
+      await showUserError(context, e, stackTrace: st);
+    }
+  }
 }
 
 Future<void> _removeStory(

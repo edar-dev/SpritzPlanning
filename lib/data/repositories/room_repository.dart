@@ -162,11 +162,24 @@ class RoomRepository {
           .toList();
     }
 
+    List<ConfidenceVote> confidenceVotes = [];
+    if (room.currentStoryId != null &&
+        (room.confidenceRoundActive || room.votesRevealed)) {
+      final confidenceData = await supabase
+          .from('confidence_votes')
+          .select()
+          .eq('story_id', room.currentStoryId!);
+      confidenceVotes = (confidenceData as List)
+          .map((e) => ConfidenceVote.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+
     return RoomState(
       room: room,
       participants: participants,
       stories: stories,
       votes: votes,
+      confidenceVotes: confidenceVotes,
     );
   }
 
@@ -403,6 +416,74 @@ class RoomRepository {
         'p_participant_id': participantId,
         'p_deck_values': deckValues,
         'p_allow_coffee_break': allowCoffeeBreak,
+      },
+    );
+  }
+
+  Future<void> setReferenceStory({
+    required String participantId,
+    required String storyId,
+  }) async {
+    await supabase.rpc(
+      'set_reference_story',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_id': storyId,
+      },
+    );
+  }
+
+  Future<void> setStoryPublicComment({
+    required String participantId,
+    required String storyId,
+    required String comment,
+  }) async {
+    await supabase.rpc(
+      'set_story_public_comment',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_id': storyId,
+        'p_comment': comment,
+      },
+    );
+  }
+
+  Future<void> startConfidenceVote({required String participantId}) async {
+    await supabase.rpc(
+      'start_confidence_vote',
+      params: {'p_participant_id': participantId},
+    );
+  }
+
+  Future<void> castConfidenceVote({
+    required String participantId,
+    required int value,
+  }) async {
+    await supabase.rpc(
+      'cast_confidence_vote',
+      params: {
+        'p_participant_id': participantId,
+        'p_value': value,
+      },
+    );
+  }
+
+  Future<void> endConfidenceVote({required String participantId}) async {
+    await supabase.rpc(
+      'end_confidence_vote',
+      params: {'p_participant_id': participantId},
+    );
+  }
+
+  Future<void> registerPushSubscription({
+    required String participantId,
+    required Map<String, dynamic> subscription,
+  }) async {
+    await supabase.rpc(
+      'register_push_subscription',
+      params: {
+        'p_participant_id': participantId,
+        'p_subscription': subscription,
       },
     );
   }

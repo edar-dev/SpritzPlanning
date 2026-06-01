@@ -15,7 +15,7 @@ abstract final class RoomInviteText {
       roomName,
       code,
       pinLine,
-      AppConfig.joinUrlForCode(code),
+      AppConfig.shareJoinUrlForCode(code),
       AppConfig.helpUrl,
     );
   }
