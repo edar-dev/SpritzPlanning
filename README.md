@@ -42,7 +42,7 @@ Guida agenti: [AGENTS.md](AGENTS.md) · Playbook: [docs/AGENT-PLAYBOOK.md](docs/
 Progetto cloud: **SpritzPlanning** (`eyvfsgzbrdibheyejikf`, regione `eu-central-1`)
 
 - Dashboard: https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf
-- Migrations (in ordine): `001`–`009` (vedi [supabase/README.md](supabase/README.md))
+- Migrations (in ordine): `001`–`011` (vedi [supabase/README.md](supabase/README.md)); su `main` applicate da CI se configurato `SUPABASE_ACCESS_TOKEN`
 
 ## Build
 
@@ -83,7 +83,7 @@ Miglioramenti prod / production-ready (#31–40): [docs/IMPROVEMENTS-PROD.md](do
 - Le **mutazioni** (crea locale, join, voti, reveal, ecc.) passano solo tramite **RPC** `SECURITY DEFINER`; le policy RLS non consentono INSERT/UPDATE/DELETE diretti con la chiave `anon`.
 - Le **letture** restano aperte su `SELECT` per Realtime e sincronizzazione stato.
 - **Rate limit**: massimo 20 creazioni locale (`create_room`) per ora (limite globale).
-- **Nickname**: non duplicabile nella stessa stanza (`join_room`).
+- **Nickname**: un solo cliente attivo per nickname nella stessa stanza; dopo `leave_room` o ~2 min senza heartbeat si può rientrare con lo stesso nome (`join_room`).
 - **Voti**: solo valori del deck Fibonacci ammessi in `cast_vote`.
 
 ## Dati e retention

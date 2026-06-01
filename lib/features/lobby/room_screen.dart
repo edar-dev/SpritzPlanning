@@ -56,10 +56,20 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   }
 
   Future<void> _leaveAndGoHome() async {
+    final session = ref.read(sessionProvider).valueOrNull;
     final roomState = ref.read(roomStateProvider).valueOrNull;
     if (roomState != null &&
         roomState.stories.any((s) => s.status == StoryStatus.done)) {
       await AppPreferences.markSessionCompleted();
+    }
+    if (session != null) {
+      try {
+        await ref.read(roomRepositoryProvider).leaveRoom(
+              participantId: session.participantId,
+            );
+      } catch (_) {
+        // Best-effort: local session is cleared even if the RPC fails.
+      }
     }
     ref.read(roomStateProvider.notifier).leaveRoom();
     await ref.read(sessionProvider.notifier).clearSession();
