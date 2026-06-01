@@ -30,6 +30,7 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
   List<String>? _deck;
   bool? _allowCoffee;
   bool? _autoReveal;
+  bool? _hideVoters;
   final _pinController = TextEditingController();
 
   void _initFromRoom(Room? room) {
@@ -39,6 +40,7 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
     );
     _allowCoffee = room?.allowCoffeeBreak ?? true;
     _autoReveal = room?.autoRevealWhenAllVoted ?? false;
+    _hideVoters = room?.hideVotersUntilReveal ?? false;
   }
 
   @override
@@ -67,6 +69,7 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
       await repo.setRoomSettings(
         participantId: widget.participantId,
         autoRevealWhenAllVoted: _autoReveal!,
+        hideVotersUntilReveal: _hideVoters!,
       );
       if (mounted) Navigator.pop(context);
     } catch (e, st) {
@@ -140,6 +143,14 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
                   label: Text(l10n.deckPresetTshirt),
                   onPressed: () => _applyPreset(DeckValues.tshirt),
                 ),
+                ActionChip(
+                  label: Text(l10n.deckPresetPowers2),
+                  onPressed: () => _applyPreset(DeckValues.powersOf2),
+                ),
+                ActionChip(
+                  label: Text(l10n.deckPresetSafe),
+                  onPressed: () => _applyPreset(DeckValues.safe),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -162,6 +173,12 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
               subtitle: Text(l10n.autoRevealSubtitle),
               value: _autoReveal!,
               onChanged: (v) => setState(() => _autoReveal = v),
+            ),
+            SwitchListTile(
+              title: Text(l10n.hideVotersUntilRevealTitle),
+              subtitle: Text(l10n.hideVotersUntilRevealSubtitle),
+              value: _hideVoters!,
+              onChanged: (v) => setState(() => _hideVoters = v),
             ),
             const Divider(),
             Text(l10n.setRoomPin, style: Theme.of(context).textTheme.titleSmall),

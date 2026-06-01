@@ -21,6 +21,10 @@ import '../../shared/widgets/pwa_install_banner.dart';
 import '../../shared/widgets/spritz_action_tile.dart';
 import 'home_settings_sheet.dart';
 import 'room_template_sheet.dart';
+import 'onboarding_dialog.dart';
+import 'session_archive_sheet.dart';
+import 'feedback_dialog.dart';
+import '../../core/preferences/session_archive_storage.dart';
 import '../../core/theme/app_focus.dart';
 import '../../core/theme/light_surface_scope.dart';
 
@@ -48,6 +52,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   _HomeMode _mode = _HomeMode.welcome;
   List<RecentRoomEntry> _recentRooms = [];
   StoredSession? _storedSession;
+  int _archiveCount = 0;
+  bool _pendingFeedback = false;
 
   @override
   void initState() {
@@ -55,6 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _applyJoinCodeFromUrl();
       unawaited(_loadLocalPreferences());
+      unawaited(OnboardingDialog.maybeShow(context));
     });
   }
 
@@ -62,6 +69,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final nickname = await AppPreferences.loadLastNickname();
     final recent = await RecentRoomsStorage.load();
     final stored = await SessionStorage.loadSession();
+    final archive = await SessionArchiveStorage.load();
+    final completed = await AppPreferences.loadHasCompletedSession();
+    final feedbackDone = await AppPreferences.loadHasSubmittedFeedback();
     if (!mounted) return;
     setState(() {
       if (nickname != null && _nicknameController.text.isEmpty) {
@@ -69,7 +79,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       }
       _recentRooms = recent;
       _storedSession = stored;
+      _archiveCount = archive.length;
+      _pendingFeedback = completed && !feedbackDone;
     });
+    if (_pendingFeedback && mounted) {
+      await FeedbackDialog.maybeShow(context);
+      if (mounted) setState(() => _pendingFeedback = false);
+    }
   }
 
   void _applyJoinCodeFromUrl() {
@@ -511,6 +527,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           subtitle: l10n.roomTemplates,
           onTap: configured && !_isLoading ? _createFromTemplate : null,
         ),
+        if (_archiveCount > 0) ...[
+          const SizedBox(height: 12),
+          SpritzActionTile(
+            icon: Icons.archive_outlined,
+            title: l10n.pastSessions,
+            subtitle: '$_archiveCount',
+            onTap: () => SessionArchiveSheet.show(context),
+          ),
+        ],
       ],
     );
   }
@@ -695,6 +720,11 @@ class _HomePreferencesBar extends ConsumerWidget {
               ),
             ),
             const Spacer(),
+            IconButton(
+              tooltip: l10n.helpTitle,
+              onPressed: () => context.push('/help'),
+              icon: Icon(Icons.help_outline_rounded, color: iconColor),
+            ),
             IconButton(
               tooltip: l10n.appSettings,
               onPressed: () => HomeSettingsSheet.show(context),

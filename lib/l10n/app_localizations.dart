@@ -1009,6 +1009,384 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Tempo quasi scaduto'**
   String get notificationsTimer;
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Guida SpritzPlanning'**
+  String get helpTitle;
+
+  /// No description provided for @helpIntro.
+  ///
+  /// In it, this message translates to:
+  /// **'Planning poker a tema spritz per team agile. Nessun account: nickname e codice stanza bastano per iniziare.'**
+  String get helpIntro;
+
+  /// No description provided for @helpRolesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Ruoli'**
+  String get helpRolesTitle;
+
+  /// No description provided for @helpRolesBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Il barman facilita: avvia votazioni, rivela i voti, gestisce il menu ordini. I clienti votano con le carte. Gli osservatori seguono la sessione senza votare.'**
+  String get helpRolesBody;
+
+  /// No description provided for @helpFlowTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Flusso di una serata'**
+  String get helpFlowTitle;
+
+  /// No description provided for @helpFlowBody.
+  ///
+  /// In it, this message translates to:
+  /// **'1. Apri o entra in un locale\n2. Aggiungi ordini al menu (backlog)\n3. Avvia la votazione per ogni story\n4. Rivelate i voti e concordate la stima\n5. Esportate il report di fine serata'**
+  String get helpFlowBody;
+
+  /// No description provided for @helpFeaturesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Funzionalità'**
+  String get helpFeaturesTitle;
+
+  /// No description provided for @helpFeatTemplates.
+  ///
+  /// In it, this message translates to:
+  /// **'Template locale — Home → Crea da template'**
+  String get helpFeatTemplates;
+
+  /// No description provided for @helpFeatImport.
+  ///
+  /// In it, this message translates to:
+  /// **'Import backlog — Lobby barman → icona upload'**
+  String get helpFeatImport;
+
+  /// No description provided for @helpFeatSpike.
+  ///
+  /// In it, this message translates to:
+  /// **'Story spike — Icona fulmine su ordine pending'**
+  String get helpFeatSpike;
+
+  /// No description provided for @helpFeatPin.
+  ///
+  /// In it, this message translates to:
+  /// **'PIN stanza — Impostazioni deck del barman'**
+  String get helpFeatPin;
+
+  /// No description provided for @helpFeatAutoReveal.
+  ///
+  /// In it, this message translates to:
+  /// **'Auto-reveal — Impostazioni deck, quando tutti hanno votato'**
+  String get helpFeatAutoReveal;
+
+  /// No description provided for @helpFeatDuplicate.
+  ///
+  /// In it, this message translates to:
+  /// **'Nuova serata — Menu ⋮ in stanza (barman)'**
+  String get helpFeatDuplicate;
+
+  /// No description provided for @helpFeatReport.
+  ///
+  /// In it, this message translates to:
+  /// **'Report Jira/ADO — Icona riepilogo in stanza'**
+  String get helpFeatReport;
+
+  /// No description provided for @helpFeatNotify.
+  ///
+  /// In it, this message translates to:
+  /// **'Notifiche browser — Impostazioni home'**
+  String get helpFeatNotify;
+
+  /// No description provided for @helpFeatProjector.
+  ///
+  /// In it, this message translates to:
+  /// **'Modalità proiettore — Impostazioni home'**
+  String get helpFeatProjector;
+
+  /// No description provided for @helpFeatResume.
+  ///
+  /// In it, this message translates to:
+  /// **'Ripresa sessione — Home, se hai già giocato'**
+  String get helpFeatResume;
+
+  /// No description provided for @helpFaqTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Domande frequenti'**
+  String get helpFaqTitle;
+
+  /// No description provided for @helpFaqNicknameTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nickname già presente'**
+  String get helpFaqNicknameTitle;
+
+  /// No description provided for @helpFaqNicknameBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Significa che quel nickname è attivo in stanza. Esci dal locale prima di rientrare, oppure attendi ~2 minuti se il cliente è assente.'**
+  String get helpFaqNicknameBody;
+
+  /// No description provided for @helpFaqRejoinTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Come rientro nella stessa stanza'**
+  String get helpFaqRejoinTitle;
+
+  /// No description provided for @helpFaqRejoinBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Usa lo stesso nickname e codice. L\'app propone di riprendere la sessione se l\'hai lasciata di recente.'**
+  String get helpFaqRejoinBody;
+
+  /// No description provided for @helpFaqPinTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'PIN non accettato'**
+  String get helpFaqPinTitle;
+
+  /// No description provided for @helpFaqPinBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Chiedi il PIN al barman. Deve essere di 4–6 cifre numeriche.'**
+  String get helpFaqPinBody;
+
+  /// No description provided for @helpFaqObserverTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Osservatore'**
+  String get helpFaqObserverTitle;
+
+  /// No description provided for @helpFaqObserverBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Spunta «Solo osservazione» in fase di join. Non potrai votare ma vedrai reveal e report.'**
+  String get helpFaqObserverBody;
+
+  /// No description provided for @helpShortcutsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Scorciatoie tastiera (barman, web)'**
+  String get helpShortcutsTitle;
+
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Benvenuto al bancone!'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeBody.
+  ///
+  /// In it, this message translates to:
+  /// **'SpritzPlanning è planning poker veloce per il tuo team — senza registrazione.'**
+  String get onboardingWelcomeBody;
+
+  /// No description provided for @onboardingCreateTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Apri un locale'**
+  String get onboardingCreateTitle;
+
+  /// No description provided for @onboardingCreateBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea una stanza, condividi il codice o il QR con il team e aggiungi gli ordini da stimare.'**
+  String get onboardingCreateBody;
+
+  /// No description provided for @onboardingJoinTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Entra al bancone'**
+  String get onboardingJoinTitle;
+
+  /// No description provided for @onboardingJoinBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Hai un codice? Inserisci nickname e codice stanza. Puoi anche usare un link con ?code=.'**
+  String get onboardingJoinBody;
+
+  /// No description provided for @onboardingHelpTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Serve aiuto?'**
+  String get onboardingHelpTitle;
+
+  /// No description provided for @onboardingHelpBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Nella guida trovi tutte le funzioni: spike, PIN, template, export e molto altro.'**
+  String get onboardingHelpBody;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In it, this message translates to:
+  /// **'Salta'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In it, this message translates to:
+  /// **'Avanti'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingDone.
+  ///
+  /// In it, this message translates to:
+  /// **'Inizia'**
+  String get onboardingDone;
+
+  /// No description provided for @pastSessions.
+  ///
+  /// In it, this message translates to:
+  /// **'Sessioni passate'**
+  String get pastSessions;
+
+  /// No description provided for @sessionArchiveTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Archivio sessioni'**
+  String get sessionArchiveTitle;
+
+  /// No description provided for @sessionArchiveEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna sessione salvata. Completa almeno una serata con ordini stimati.'**
+  String get sessionArchiveEmpty;
+
+  /// No description provided for @sessionArchiveExported.
+  ///
+  /// In it, this message translates to:
+  /// **'Report copiato'**
+  String get sessionArchiveExported;
+
+  /// No description provided for @sessionCloseTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Chiudi serata'**
+  String get sessionCloseTitle;
+
+  /// No description provided for @sessionCloseRetroLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Note retro (opzionale)'**
+  String get sessionCloseRetroLabel;
+
+  /// No description provided for @sessionCloseRetroHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Incluse nell\'export Markdown'**
+  String get sessionCloseRetroHint;
+
+  /// No description provided for @sessionCloseExport.
+  ///
+  /// In it, this message translates to:
+  /// **'Esporta report'**
+  String get sessionCloseExport;
+
+  /// No description provided for @sessionCloseDuplicate.
+  ///
+  /// In it, this message translates to:
+  /// **'Duplica per prossima settimana'**
+  String get sessionCloseDuplicate;
+
+  /// No description provided for @sessionCloseLeave.
+  ///
+  /// In it, this message translates to:
+  /// **'Esci dal locale'**
+  String get sessionCloseLeave;
+
+  /// No description provided for @feedbackTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Com\'è andata la serata?'**
+  String get feedbackTitle;
+
+  /// No description provided for @feedbackSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Un rapido feedback ci aiuta a migliorare SpritzPlanning.'**
+  String get feedbackSubtitle;
+
+  /// No description provided for @feedbackPositive.
+  ///
+  /// In it, this message translates to:
+  /// **'Bene'**
+  String get feedbackPositive;
+
+  /// No description provided for @feedbackNegative.
+  ///
+  /// In it, this message translates to:
+  /// **'Da migliorare'**
+  String get feedbackNegative;
+
+  /// No description provided for @feedbackSuggest.
+  ///
+  /// In it, this message translates to:
+  /// **'Lascia un suggerimento'**
+  String get feedbackSuggest;
+
+  /// No description provided for @feedbackDismiss.
+  ///
+  /// In it, this message translates to:
+  /// **'Non ora'**
+  String get feedbackDismiss;
+
+  /// No description provided for @roomInvitePinLine.
+  ///
+  /// In it, this message translates to:
+  /// **'PIN: {pin}'**
+  String roomInvitePinLine(String pin);
+
+  /// No description provided for @roomInviteBody.
+  ///
+  /// In it, this message translates to:
+  /// **'🍹 Unisciti a «{roomName}» su SpritzPlanning!\nCodice: {code}\n{pinLine}\nApri: {joinUrl}\nGuida: {helpUrl}'**
+  String roomInviteBody(
+    String roomName,
+    String code,
+    String pinLine,
+    String joinUrl,
+    String helpUrl,
+  );
+
+  /// No description provided for @exportLinear.
+  ///
+  /// In it, this message translates to:
+  /// **'Linear'**
+  String get exportLinear;
+
+  /// No description provided for @exportGitHubIssues.
+  ///
+  /// In it, this message translates to:
+  /// **'GitHub Issues'**
+  String get exportGitHubIssues;
+
+  /// No description provided for @deckPresetPowers2.
+  ///
+  /// In it, this message translates to:
+  /// **'Powers of 2'**
+  String get deckPresetPowers2;
+
+  /// No description provided for @deckPresetSafe.
+  ///
+  /// In it, this message translates to:
+  /// **'SAFe'**
+  String get deckPresetSafe;
+
+  /// No description provided for @hideVotersUntilRevealTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Voto anonimo fino al reveal'**
+  String get hideVotersUntilRevealTitle;
+
+  /// No description provided for @hideVotersUntilRevealSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nasconde chi ha già votato; resta il conteggio N/M'**
+  String get hideVotersUntilRevealSubtitle;
 }
 
 class _AppLocalizationsDelegate

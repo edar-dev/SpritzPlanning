@@ -86,4 +86,27 @@ abstract final class AppPreferences {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_notificationsEnabledKey, enabled);
   }
+
+  static const _hasSeenOnboardingKey = 'has_seen_onboarding';
+  static const _hasSubmittedFeedbackKey = 'has_submitted_feedback';
+
+  static Future<bool> loadHasSeenOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_hasSeenOnboardingKey) ?? false;
+  }
+
+  static Future<void> markOnboardingSeen() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hasSeenOnboardingKey, true);
+  }
+
+  static Future<bool> loadHasSubmittedFeedback() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_hasSubmittedFeedbackKey) ?? false;
+  }
+
+  static Future<void> markFeedbackSubmitted() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hasSubmittedFeedbackKey, true);
+  }
 }

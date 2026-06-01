@@ -25,6 +25,7 @@ supabase db push
 | `20260601120938_bulk_add_stories.sql` | RPC `add_stories` — import batch titoli (max 50) |
 | `20260601131912_join_room_rejoin.sql` | `join_room` reclaim nickname assente; RPC `leave_room` per uscita |
 | `20260602140000_session_advanced.sql` | Spike, osservatori, auto-reveal, PIN, note barman, duplica stanza |
+| `20260603120000_hide_voters_until_reveal.sql` | Voto anonimo pre-reveal (#64) |
 
 I nomi usano il timestamp Supabase (`YYYYMMDDHHMMSS_nome.sql`) per allinearsi a `supabase_migrations.schema_migrations` e a `supabase db push` in CI.
 

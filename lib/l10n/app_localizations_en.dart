@@ -496,4 +496,217 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsTimer => 'Time almost up';
+
+  @override
+  String get helpTitle => 'SpritzPlanning guide';
+
+  @override
+  String get helpIntro =>
+      'Spritz-themed planning poker for agile teams. No account needed — just a nickname and room code.';
+
+  @override
+  String get helpRolesTitle => 'Roles';
+
+  @override
+  String get helpRolesBody =>
+      'The facilitator runs the session: start voting, reveal votes, manage the backlog. Participants vote with cards. Observers watch without voting.';
+
+  @override
+  String get helpFlowTitle => 'Typical session flow';
+
+  @override
+  String get helpFlowBody =>
+      '1. Create or join a room\n2. Add stories to the backlog\n3. Start voting for each story\n4. Reveal votes and agree on the estimate\n5. Export the session report';
+
+  @override
+  String get helpFeaturesTitle => 'Features';
+
+  @override
+  String get helpFeatTemplates =>
+      'Room templates — Home → Create from template';
+
+  @override
+  String get helpFeatImport =>
+      'Import backlog — Facilitator lobby → upload icon';
+
+  @override
+  String get helpFeatSpike => 'Spike stories — Bolt icon on pending story';
+
+  @override
+  String get helpFeatPin => 'Room PIN — Facilitator deck settings';
+
+  @override
+  String get helpFeatAutoReveal =>
+      'Auto-reveal — Deck settings, when everyone voted';
+
+  @override
+  String get helpFeatDuplicate => 'New session — ⋮ menu in room (facilitator)';
+
+  @override
+  String get helpFeatReport => 'Jira/ADO report — Summary icon in room';
+
+  @override
+  String get helpFeatNotify => 'Browser notifications — Home settings';
+
+  @override
+  String get helpFeatProjector => 'Projector mode — Home settings';
+
+  @override
+  String get helpFeatResume => 'Resume session — Home, if you played recently';
+
+  @override
+  String get helpFaqTitle => 'FAQ';
+
+  @override
+  String get helpFaqNicknameTitle => 'Nickname already taken';
+
+  @override
+  String get helpFaqNicknameBody =>
+      'That nickname is active in the room. Leave the room first, or wait ~2 minutes if they appear away.';
+
+  @override
+  String get helpFaqRejoinTitle => 'Rejoining the same room';
+
+  @override
+  String get helpFaqRejoinBody =>
+      'Use the same nickname and code. The app offers to resume if you left recently.';
+
+  @override
+  String get helpFaqPinTitle => 'PIN not accepted';
+
+  @override
+  String get helpFaqPinBody =>
+      'Ask the facilitator for the PIN. It must be 4–6 digits.';
+
+  @override
+  String get helpFaqObserverTitle => 'Observer role';
+
+  @override
+  String get helpFaqObserverBody =>
+      'Check «Observe only» when joining. You can watch reveals and reports but cannot vote.';
+
+  @override
+  String get helpShortcutsTitle => 'Keyboard shortcuts (facilitator, web)';
+
+  @override
+  String get onboardingWelcomeTitle => 'Welcome to the bar!';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'SpritzPlanning is fast planning poker for your team — no sign-up required.';
+
+  @override
+  String get onboardingCreateTitle => 'Open a room';
+
+  @override
+  String get onboardingCreateBody =>
+      'Create a session, share the code or QR with your team, and add stories to estimate.';
+
+  @override
+  String get onboardingJoinTitle => 'Join the bar';
+
+  @override
+  String get onboardingJoinBody =>
+      'Have a code? Enter nickname and room code. You can also use a link with ?code=.';
+
+  @override
+  String get onboardingHelpTitle => 'Need help?';
+
+  @override
+  String get onboardingHelpBody =>
+      'The guide covers every feature: spikes, PIN, templates, exports, and more.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingDone => 'Get started';
+
+  @override
+  String get pastSessions => 'Past sessions';
+
+  @override
+  String get sessionArchiveTitle => 'Session archive';
+
+  @override
+  String get sessionArchiveEmpty =>
+      'No saved sessions yet. Complete a session with estimated stories.';
+
+  @override
+  String get sessionArchiveExported => 'Report copied';
+
+  @override
+  String get sessionCloseTitle => 'Close session';
+
+  @override
+  String get sessionCloseRetroLabel => 'Retro notes (optional)';
+
+  @override
+  String get sessionCloseRetroHint => 'Included in Markdown export';
+
+  @override
+  String get sessionCloseExport => 'Export report';
+
+  @override
+  String get sessionCloseDuplicate => 'Duplicate for next week';
+
+  @override
+  String get sessionCloseLeave => 'Leave room';
+
+  @override
+  String get feedbackTitle => 'How was the session?';
+
+  @override
+  String get feedbackSubtitle =>
+      'Quick feedback helps us improve SpritzPlanning.';
+
+  @override
+  String get feedbackPositive => 'Good';
+
+  @override
+  String get feedbackNegative => 'Needs work';
+
+  @override
+  String get feedbackSuggest => 'Leave a suggestion';
+
+  @override
+  String get feedbackDismiss => 'Not now';
+
+  @override
+  String roomInvitePinLine(String pin) {
+    return 'PIN: $pin';
+  }
+
+  @override
+  String roomInviteBody(
+    String roomName,
+    String code,
+    String pinLine,
+    String joinUrl,
+    String helpUrl,
+  ) {
+    return '🍹 Join «$roomName» on SpritzPlanning!\nCode: $code\n$pinLine\nOpen: $joinUrl\nGuide: $helpUrl';
+  }
+
+  @override
+  String get exportLinear => 'Linear';
+
+  @override
+  String get exportGitHubIssues => 'GitHub Issues';
+
+  @override
+  String get deckPresetPowers2 => 'Powers of 2';
+
+  @override
+  String get deckPresetSafe => 'SAFe';
+
+  @override
+  String get hideVotersUntilRevealTitle => 'Anonymous vote until reveal';
+
+  @override
+  String get hideVotersUntilRevealSubtitle =>
+      'Hide who voted; show N/M count only';
 }

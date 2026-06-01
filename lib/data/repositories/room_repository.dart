@@ -98,12 +98,15 @@ class RoomRepository {
   Future<void> setRoomSettings({
     required String participantId,
     required bool autoRevealWhenAllVoted,
+    bool? hideVotersUntilReveal,
   }) async {
     await supabase.rpc(
       'set_room_settings',
       params: {
         'p_participant_id': participantId,
         'p_auto_reveal_when_all_voted': autoRevealWhenAllVoted,
+        if (hideVotersUntilReveal != null)
+          'p_hide_voters_until_reveal': hideVotersUntilReveal,
       },
     );
   }
