@@ -155,10 +155,15 @@ abstract final class AppTheme {
           borderSide: const BorderSide(color: primary, width: 1.5),
         ),
         labelStyle: const TextStyle(
+          color: onSurface,
+          fontWeight: FontWeight.w600,
+        ),
+        floatingLabelStyle: const TextStyle(
           color: onSurfaceVariant,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ),
         hintStyle: const TextStyle(color: Color(AppColors.textMuted)),
+        prefixIconColor: onSurfaceVariant,
       ),
       chipTheme: ChipThemeData(
         shape: RoundedRectangleBorder(
