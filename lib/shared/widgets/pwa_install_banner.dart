@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/preferences/app_preferences.dart';
 import '../../core/pwa/pwa_install_listener.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Banner installazione PWA (solo web, quando il browser lo consente).
+/// Banner installazione PWA (solo web, dopo prima sessione completata).
 class PwaInstallBanner extends StatefulWidget {
   const PwaInstallBanner({super.key});
 
@@ -14,11 +15,23 @@ class PwaInstallBanner extends StatefulWidget {
 
 class _PwaInstallBannerState extends State<PwaInstallBanner> {
   final _listener = PwaInstallListener.instance;
+  bool _sessionCompleted = false;
+  bool _loaded = false;
 
   @override
   void initState() {
     super.initState();
     _listener.canInstall.addListener(_onCanInstallChanged);
+    _loadSessionFlag();
+  }
+
+  Future<void> _loadSessionFlag() async {
+    final completed = await AppPreferences.loadHasCompletedSession();
+    if (!mounted) return;
+    setState(() {
+      _sessionCompleted = completed;
+      _loaded = true;
+    });
   }
 
   @override
@@ -33,8 +46,13 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_loaded ||
+        !_sessionCompleted ||
+        !_listener.canInstall.value) {
+      return const SizedBox.shrink();
+    }
+
     final l10n = context.l10n;
-    if (!_listener.canInstall.value) return const SizedBox.shrink();
 
     return Material(
       color: const Color(AppColors.primarySoft),

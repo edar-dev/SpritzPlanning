@@ -5,6 +5,8 @@ abstract final class AppPreferences {
   static const _themeModeKey = 'theme_mode';
   static const _localeKey = 'locale_code';
   static const _lastNicknameKey = 'last_nickname';
+  static const _hasCompletedSessionKey = 'has_completed_session';
+  static const _projectorModeKey = 'projector_mode';
 
   static Future<ThemeMode> loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
@@ -52,5 +54,25 @@ abstract final class AppPreferences {
     if (trimmed.length < 2) return;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_lastNicknameKey, trimmed);
+  }
+
+  static Future<bool> loadHasCompletedSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_hasCompletedSessionKey) ?? false;
+  }
+
+  static Future<void> markSessionCompleted() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hasCompletedSessionKey, true);
+  }
+
+  static Future<bool> loadProjectorMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_projectorModeKey) ?? false;
+  }
+
+  static Future<void> saveProjectorMode(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_projectorModeKey, enabled);
   }
 }

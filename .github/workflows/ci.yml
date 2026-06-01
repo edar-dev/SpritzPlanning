@@ -35,6 +35,45 @@ jobs:
       - name: Test
         run: flutter test
 
+  integration-pr:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'pull_request' &&
+      contains(github.event.pull_request.labels.*.name, 'integration')
+    needs: flutter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.35.6'
+          cache: true
+
+      - name: Verify Flutter version
+        run: bash scripts/check-flutter-version.sh
+        env:
+          FLUTTER_VERSION: '3.35.6'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate l10n
+        run: flutter gen-l10n
+
+      - name: Integration test (PR label)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL_TEST }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_TEST }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Integration test skipped — set SUPABASE_URL_TEST and SUPABASE_ANON_KEY_TEST."
+            exit 1
+          fi
+          flutter test integration/room_flow_integration_test.dart \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+
   integration:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -99,4 +138,5 @@ jobs:
         run: |
           flutter build web --release \
             --dart-define=SUPABASE_URL=https://placeholder.supabase.co \
-            --dart-define=SUPABASE_ANON_KEY=placeholder-key-for-ci-build-only
+            --dart-define=SUPABASE_ANON_KEY=placeholder-key-for-ci-build-only \
+            --dart-define=GIT_SHA=${{ github.sha }}

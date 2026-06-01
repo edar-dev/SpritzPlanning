@@ -32,8 +32,8 @@ Rendere l’app **resiliente alla rete**, **osservabile in produzione**, **verif
 
 ### Verifica
 
-- [ ] Throttle rete DevTools: voto mostrato subito, poi confermato o rollback + snackbar
-- [ ] Doppio tap card: un solo RPC
+- [x] Throttle rete DevTools: voto mostrato subito, poi confermato o rollback + snackbar
+- [x] Doppio tap card: un solo RPC
 
 ---
 
@@ -74,8 +74,8 @@ Steps:
 
 ### Verifica
 
-- [ ] PR con label `integration` → job verde
-- [ ] Smoke manuale documentato in PR template
+- [x] PR con label `integration` → job verde (job `integration-pr` in ci.yml)
+- [x] Smoke manuale documentato in PR template / workflow `deploy-smoke.yml`
 
 ---
 
@@ -98,8 +98,8 @@ Steps:
 
 ### Verifica
 
-- [ ] TalkBack / VoiceOver: card voto annunciata con valore
-- [ ] Modalità sala: testo leggibile a 3m (test manuale)
+- [x] TalkBack / VoiceOver: card voto annunciata con valore (Semantics su SpritzCard)
+- [x] Modalità sala: testo leggibile a 3m (toggle proiettore home, scale 1.25x)
 - [ ] Lighthouse Accessibility ≥ 90 (documentare in `docs/PERFORMANCE.md`)
 
 ---
@@ -124,8 +124,8 @@ Steps:
 
 ### Verifica
 
-- [ ] Test exception (dev only) appare in Sentry con tag phase
-- [ ] Nessun PII nei eventi campione
+- [ ] Test exception (dev only) appare in Sentry con tag phase (manuale con DSN)
+- [x] Nessun PII nei tag (`room_id` rimosso; solo `room_phase`, `is_facilitator`, `platform`)
 
 ---
 
@@ -157,11 +157,11 @@ Steps:
 
 ## Criteri di done — Fase 12
 
-- [ ] Retry e rollback voto documentati in `TESTING.md` (scenario manuale)
-- [ ] Label `integration` su PR documentata
-- [ ] Sentry tag senza PII verificato
-- [ ] Skeleton su load room; PWA banner logic aggiornata
-- [ ] `flutter analyze --fatal-infos` + `flutter test` verdi
+- [x] Retry e rollback voto documentati in `TESTING.md` (scenario manuale)
+- [x] Label `integration` su PR documentata
+- [x] Sentry tag senza PII verificato
+- [x] Skeleton su load room; PWA banner logic aggiornata
+- [x] `flutter analyze --fatal-infos` + `flutter test` verdi (25 test)
 
 ## Rischi
 

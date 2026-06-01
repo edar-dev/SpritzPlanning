@@ -112,11 +112,29 @@ class ParticipantAvatar extends StatelessWidget {
       ),
     );
 
-    if (onLongPress == null) return avatar;
+    final semanticsLabel = _semanticsLabel(context);
+
+    final wrapped = Semantics(
+      label: semanticsLabel,
+      child: avatar,
+    );
+
+    if (onLongPress == null) return wrapped;
 
     return GestureDetector(
       onLongPress: onLongPress,
-      child: avatar,
+      child: wrapped,
     );
+  }
+
+  String _semanticsLabel(BuildContext context) {
+    final l10n = context.l10n;
+    final parts = <String>[nickname];
+    if (isFacilitator) parts.add(l10n.barman);
+    if (showVoteStatus && hasVoted) {
+      parts.add(l10n.voteSubmitted);
+    }
+    if (isAbsent) parts.add(l10n.assente);
+    return parts.join(', ');
   }
 }

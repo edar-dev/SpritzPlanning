@@ -1,6 +1,6 @@
 # Agent Playbook — SpritzPlanning
 
-**Ultimo aggiornamento:** 2026-05-31 (Fase 10)
+**Ultimo aggiornamento:** 2026-05-29 (Fase 12)
 
 Checklist operativa per agenti AI e contributor. Per stack e comandi vedi [AGENTS.md](../AGENTS.md).
 
@@ -110,7 +110,18 @@ File: `web/.well-known/assetlinks.json`
 
 ---
 
-## 8. Handoff (commit / PR)
+## 8. Sentry (osservabilità)
+
+- Progetto: [Sentry — `flutter`](https://sentry.io) (org SpritzPlanning)
+- DSN: variabile `SENTRY_DSN` in Vercel / `--dart-define=SENTRY_DSN=…` in locale
+- Release: `GIT_SHA` da Vercel (`VERCEL_GIT_COMMIT_SHA`) o CI → `spritz-planning@<sha>`
+- Tag consentiti: `room_phase`, `is_facilitator`, `platform`, `git_sha` — **mai** `room_code`, `nickname`, `participant_id`, `room_id`
+- Breadcrumb RPC: solo `rpc_failed:<function>` + codice PostgREST
+- Alert consigliato: regressioni su `PostgrestException` in produzione
+
+---
+
+## 9. Handoff (commit / PR)
 
 Includere sempre:
 

@@ -232,7 +232,7 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 
 | 10 | Completata | PR #5 — `6fea727` |
 | 11 | Completata | PR #6 — `611cd4b` |
-| 12 | Pianificata | — |
+| 12 | In corso (PR) | `chore/production-hardening` |
 
 
 

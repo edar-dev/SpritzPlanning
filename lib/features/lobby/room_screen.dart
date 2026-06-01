@@ -20,7 +20,9 @@ import '../../core/export/session_report.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import 'session_report_sheet.dart';
+import '../../core/preferences/app_preferences.dart';
 import '../../shared/widgets/room_code_display.dart';
+import '../../shared/widgets/room_screen_skeleton.dart';
 import '../../shared/widgets/section_header.dart';
 import '../voting/voting_panel.dart';
 
@@ -52,6 +54,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   }
 
   Future<void> _leaveAndGoHome() async {
+    final roomState = ref.read(roomStateProvider).valueOrNull;
+    if (roomState != null &&
+        roomState.stories.any((s) => s.status == StoryStatus.done)) {
+      await AppPreferences.markSessionCompleted();
+    }
     ref.read(roomStateProvider.notifier).leaveRoom();
     await ref.read(sessionProvider.notifier).clearSession();
     if (!mounted) return;
@@ -67,9 +74,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         ConnectionStatus.connected;
 
     return roomStateAsync.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () => const RoomScreenSkeleton(),
       error: (e, _) => Scaffold(
         appBar: AppBar(title: Text(context.l10n.appName)),
         body: Center(
@@ -265,14 +270,18 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             ],
           ),
           floatingActionButton: isFacilitator && !showVoting
-              ? FloatingActionButton.extended(
-                  onPressed: () => _showAddStoryDialog(
-                    context,
-                    ref,
-                    session.participantId,
+              ? Semantics(
+                  button: true,
+                  label: context.l10n.addOrdine,
+                  child: FloatingActionButton.extended(
+                    onPressed: () => _showAddStoryDialog(
+                      context,
+                      ref,
+                      session.participantId,
+                    ),
+                    icon: const Icon(Icons.add),
+                    label: Text(context.l10n.addOrdine),
                   ),
-                  icon: const Icon(Icons.add),
-                  label: Text(context.l10n.addOrdine),
                 )
               : null,
         ),
@@ -296,6 +305,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       await ref.read(roomRepositoryProvider).nextStory(
             participantId: participantId,
           );
+      final roomState = ref.read(roomStateProvider).valueOrNull;
+      if (roomState != null &&
+          roomState.stories.any((s) => s.status == StoryStatus.done)) {
+        await AppPreferences.markSessionCompleted();
+      }
     } catch (e, st) {
       if (mounted) await showUserError(context, e, stackTrace: st);
     }

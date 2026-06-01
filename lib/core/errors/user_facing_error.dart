@@ -8,7 +8,16 @@ String userFacingMessage(Object error, {AppLocalizations? l10n}) {
 
   if (error is PostgrestException) {
     final message = error.message.trim();
+    if (message.contains('Rate limit') || message.contains('rate limit')) {
+      return l10n?.rateLimitError ??
+          'Troppe richieste. Attendi un momento e riprova.';
+    }
     if (message.isNotEmpty) return message;
+    final code = error.code;
+    if (code == '429') {
+      return l10n?.rateLimitError ??
+          'Troppe richieste. Attendi un momento e riprova.';
+    }
     return generic;
   }
 

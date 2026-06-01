@@ -28,6 +28,12 @@ if [ -n "${SENTRY_DSN:-}" ]; then
   DART_DEFINES+=("--dart-define=SENTRY_DSN=$SENTRY_DSN")
 fi
 
+if [ -n "${VERCEL_GIT_COMMIT_SHA:-}" ]; then
+  DART_DEFINES+=("--dart-define=GIT_SHA=$VERCEL_GIT_COMMIT_SHA")
+elif [ -n "${GIT_SHA:-}" ]; then
+  DART_DEFINES+=("--dart-define=GIT_SHA=$GIT_SHA")
+fi
+
 flutter build web \
   --release \
   --no-wasm-dry-run \

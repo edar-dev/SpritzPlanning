@@ -10,8 +10,16 @@ Future<void> showUserError(
   Object error, {
   StackTrace? stackTrace,
   Map<String, String>? tags,
+  String? roomPhase,
+  bool? isFacilitator,
 }) async {
-  await ErrorReporter.capture(error, stackTrace: stackTrace, tags: tags);
+  await ErrorReporter.capture(
+    error,
+    stackTrace: stackTrace,
+    tags: tags,
+    roomPhase: roomPhase,
+    isFacilitator: isFacilitator,
+  );
   if (!context.mounted) return;
 
   ScaffoldMessenger.of(context).showSnackBar(

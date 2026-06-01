@@ -4,6 +4,16 @@
   "tagline": "Stima le user story al bancone",
   "installPwa": "Installa SpritzPlanning sulla home",
   "installPwaAction": "Installa",
+  "rateLimitError": "Troppe richieste. Attendi un momento e riprova.",
+  "voteCardSemantics": "Vota {value}",
+  "@voteCardSemantics": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "projectorMode": "Modalità sala / proiettore",
   "nicknameLabel": "Il tuo nome al bancone",
   "nicknameHint": "Es. Marco",
   "openLocale": "Apri un locale",

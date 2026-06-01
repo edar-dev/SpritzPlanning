@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import '../../core/network/rpc_retry.dart';
 import '../models/connection_status.dart';
 import '../models/models.dart';
 import '../supabase/supabase_client.dart';
@@ -190,13 +191,15 @@ class RoomRepository {
     required String storyId,
     required String value,
   }) async {
-    await supabase.rpc(
-      'cast_vote',
-      params: {
-        'p_participant_id': participantId,
-        'p_story_id': storyId,
-        'p_value': value,
-      },
+    await withRpcRetry(
+      () => supabase.rpc(
+        'cast_vote',
+        params: {
+          'p_participant_id': participantId,
+          'p_story_id': storyId,
+          'p_value': value,
+        },
+      ),
     );
   }
 

@@ -1,0 +1,19 @@
+name: Deploy smoke
+
+on:
+  workflow_dispatch:
+  deployment_status:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment_status.environment == 'Production')
+    steps:
+      - name: Smoke production URLs
+        run: |
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/manifest.json
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/.well-known/assetlinks.json || true

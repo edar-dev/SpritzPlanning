@@ -49,13 +49,11 @@ void main() {
     testWidgets('shows value and responds to tap', (tester) async {
       var tapped = false;
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpritzCard(
-              value: '5',
-              selected: false,
-              onTap: () => tapped = true,
-            ),
+        _l10nApp(
+          SpritzCard(
+            value: '5',
+            selected: false,
+            onTap: () => tapped = true,
           ),
         ),
       );
@@ -68,14 +66,12 @@ void main() {
     testWidgets('disabled card does not respond to tap', (tester) async {
       var tapped = false;
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpritzCard(
-              value: '3',
-              selected: false,
-              disabled: true,
-              onTap: () => tapped = true,
-            ),
+        _l10nApp(
+          SpritzCard(
+            value: '3',
+            selected: false,
+            disabled: true,
+            onTap: () => tapped = true,
           ),
         ),
       );
