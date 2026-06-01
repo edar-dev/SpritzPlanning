@@ -2,7 +2,7 @@
 
 
 
-Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** pianificati (fasi 8–10, DX / agent / toolchain).
+Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI pianificati (fasi 11–12, produttività / production-ready).
 
 
 
@@ -30,10 +30,13 @@ flowchart LR
   P8[Fase8_AgentDocs]
   P9[Fase9_Toolchain]
   P10[Fase10_Quality]
+  P11[Fase11_Productivity]
+  P12[Fase12_Production]
 
   P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
   P8 --> P10
   P9 -.-> P10
+  P10 --> P11 --> P12
 
 ```
 
@@ -59,6 +62,8 @@ flowchart LR
 | 8 | #21, #22, #27, #28 | 2–3 giorni | `chore/agent-docs-dx` | [phase-8-agent-docs.md](plans/phase-8-agent-docs.md) |
 | 9 | #23, #24, #25, #30 | 3–5 giorni | `chore/dev-toolchain` | [phase-9-dev-toolchain.md](plans/phase-9-dev-toolchain.md) |
 | 10 | #26, #29 | 2–4 giorni | `chore/quality-gates` | [phase-10-quality-gates.md](plans/phase-10-quality-gates.md) |
+| 11 | #31–33, #38–39, UI-A–F | 8–12 giorni | `feat/session-productivity` | [phase-11-session-productivity.md](plans/phase-11-session-productivity.md) |
+| 12 | #34, #36–37, #40, UI-G–H | 6–9 giorni | `chore/production-hardening` | [phase-12-production-hardening.md](plans/phase-12-production-hardening.md) |
 
 
 
@@ -138,15 +143,17 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 
 
-**Prossime (v3 — DX / agent / toolchain):**
+**Completate (v3 — DX / agent / toolchain):** Fasi 8–10 ([IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md)).
 
 
 
-8. **Fase 8** — documentazione e contesto agent allineati ([IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md))
+**Prossime (v4 — produttività / production-ready):**
 
-9. **Fase 9** — FVM, bootstrap dev, hook, dev container
 
-10. **Fase 10** — analyze severo + integration test documentati
+
+11. **Fase 11** — import backlog, shortcut barman, presenza voti, ripresa sessione ([IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md))
+
+12. **Fase 12** — retry ottimistico, CI smoke, a11y/proiettore, osservabilità Sentry
 
 
 
@@ -170,6 +177,30 @@ Vedi [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md).
 | 28 | Skill phase delivery + regole Cursor | 8 |
 | 29 | Loop integration test | 10 |
 | 30 | Dev Container | 9 |
+
+
+
+## Lista miglioramenti v4 (#31–40, UI)
+
+
+
+Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
+
+
+
+| # / ID | Miglioramento | Fase |
+|--------|---------------|------|
+| 31 | Import backlog paste/CSV | 11 |
+| 32 | Shortcut + barra azioni barman | 11 |
+| 33 | Ripresa sessione robusta | 11 |
+| 34 | UI ottimistica + retry RPC | 12 |
+| 36 | CI stretta + smoke deploy | 12 |
+| 37 | Accessibilità + modalità proiettore | 12 |
+| 38 | Presenza / stato voto | 11 |
+| 39 | Auto-flow consenso (suggerimenti) | 11 |
+| 40 | Osservabilità operativa Sentry | 12 |
+| UI-A–F | Quick wins home/lobby/voting/report | 11 |
+| UI-G–H | Skeleton room + PWA post-sessione | 12 |
 
 
 
@@ -200,6 +231,8 @@ Vedi [IMPROVEMENTS-DX.md](IMPROVEMENTS-DX.md).
 | 9 | Completata | PR #4 — `b5936d5` |
 
 | 10 | Completata | PR #5 — `6fea727` |
+| 11 | Pianificata | — |
+| 12 | Pianificata | — |
 
 
 

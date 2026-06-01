@@ -77,6 +77,7 @@ Config locale: `env.json.example` → `env.json` (`SUPABASE_URL`, `SUPABASE_ANON
 - Panoramica: [docs/ROADMAP.md](docs/ROADMAP.md)
 - Piani per fase: [docs/plans/](docs/plans/)
 - Miglioramenti DX (#21–30): [docs/IMPROVEMENTS-DX.md](docs/IMPROVEMENTS-DX.md)
+- Miglioramenti prod (#31–40, fasi 11–12): [docs/IMPROVEMENTS-PROD.md](docs/IMPROVEMENTS-PROD.md)
 - **Playbook operativo:** [docs/AGENT-PLAYBOOK.md](docs/AGENT-PLAYBOOK.md)
 
 Prima di feature non banali: leggere il piano di fase e seguire la skill `phase-delivery`.

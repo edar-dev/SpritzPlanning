@@ -5,6 +5,8 @@ Focus: **debito tecnico documentale**, **toolchain locale riproducibile**, **flu
 
 Non richiedono nuove feature prodotto; preparano il repo per manutenzione a lungo termine e sessioni agent affidabili.
 
+**Ondata successiva (v4):** produttività sessione e production-ready — [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md) (fasi 11–12).
+
 ## Tabella riepilogativa
 
 | # | Miglioramento | Tipo | Importanza | Complessità | Durata stimata |

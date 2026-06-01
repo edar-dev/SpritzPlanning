@@ -76,6 +76,8 @@ Panoramica: [docs/ROADMAP.md](docs/ROADMAP.md)
 
 Miglioramenti DX (#21–30): [docs/IMPROVEMENTS-DX.md](docs/IMPROVEMENTS-DX.md)
 
+Miglioramenti prod / production-ready (#31–40): [docs/IMPROVEMENTS-PROD.md](docs/IMPROVEMENTS-PROD.md)
+
 ## Sicurezza
 
 - Le **mutazioni** (crea locale, join, voti, reveal, ecc.) passano solo tramite **RPC** `SECURITY DEFINER`; le policy RLS non consentono INSERT/UPDATE/DELETE diretti con la chiave `anon`.
