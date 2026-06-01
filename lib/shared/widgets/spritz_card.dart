@@ -11,6 +11,7 @@ class SpritzCard extends StatelessWidget {
     required this.value,
     required this.selected,
     required this.onTap,
+    this.onLongPress,
     this.disabled = false,
     this.revealed = false,
   });
@@ -18,6 +19,7 @@ class SpritzCard extends StatelessWidget {
   final String value;
   final bool selected;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
   final bool disabled;
   final bool revealed;
 
@@ -36,6 +38,7 @@ class SpritzCard extends StatelessWidget {
                   HapticFeedback.lightImpact();
                   onTap();
                 },
+          onLongPress: disabled ? null : onLongPress,
           borderRadius: BorderRadius.circular(AppDecorations.radiusMd),
           child: Ink(
             width: revealed ? 80 : 68,

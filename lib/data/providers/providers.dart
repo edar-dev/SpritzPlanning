@@ -27,11 +27,15 @@ class SessionData {
     required this.roomId,
     required this.participantId,
     required this.code,
+    this.nickname,
+    this.roomName,
   });
 
   final String roomId;
   final String participantId;
   final String code;
+  final String? nickname;
+  final String? roomName;
 }
 
 class SessionNotifier extends AsyncNotifier<SessionData?> {
@@ -42,20 +46,55 @@ class SessionNotifier extends AsyncNotifier<SessionData?> {
     return SessionData(
       roomId: saved.roomId,
       participantId: saved.participantId,
-      code: '',
+      code: saved.roomCode ?? '',
+      nickname: saved.nickname,
+      roomName: saved.roomName,
     );
   }
 
-  Future<void> saveSession(SessionResult result) async {
+  Future<void> saveSession(
+    SessionResult result, {
+    String? nickname,
+    String? roomName,
+  }) async {
     await SessionStorage.saveSession(
       participantId: result.participantId,
       roomId: result.roomId,
+      nickname: nickname,
+      roomCode: result.code,
+      roomName: roomName,
     );
     state = AsyncData(
       SessionData(
         roomId: result.roomId,
         participantId: result.participantId,
         code: result.code,
+        nickname: nickname,
+        roomName: roomName,
+      ),
+    );
+  }
+
+  Future<void> updateRoomMetadata({
+    required String roomName,
+    String? roomCode,
+  }) async {
+    final current = state.valueOrNull;
+    if (current == null) return;
+    await SessionStorage.saveSession(
+      participantId: current.participantId,
+      roomId: current.roomId,
+      nickname: current.nickname,
+      roomCode: roomCode ?? current.code,
+      roomName: roomName,
+    );
+    state = AsyncData(
+      SessionData(
+        roomId: current.roomId,
+        participantId: current.participantId,
+        code: roomCode ?? current.code,
+        nickname: current.nickname,
+        roomName: roomName,
       ),
     );
   }

@@ -1,13 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/preferences/app_preferences.dart';
 import '../../core/preferences/preferences_providers.dart';
+import '../../core/preferences/recent_rooms_storage.dart';
+import '../../core/storage/session_storage.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/errors/user_facing_error.dart';
 import '../../core/monitoring/error_reporter.dart';
+import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../data/supabase/supabase_client.dart';
 import '../../shared/widgets/connection_banner.dart';
@@ -28,11 +34,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isLoading = false;
   String? _error;
   _HomeMode _mode = _HomeMode.welcome;
+  List<RecentRoomEntry> _recentRooms = [];
+  StoredSession? _storedSession;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _applyJoinCodeFromUrl());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _applyJoinCodeFromUrl();
+      unawaited(_loadLocalPreferences());
+    });
+  }
+
+  Future<void> _loadLocalPreferences() async {
+    final nickname = await AppPreferences.loadLastNickname();
+    final recent = await RecentRoomsStorage.load();
+    final stored = await SessionStorage.loadSession();
+    if (!mounted) return;
+    setState(() {
+      if (nickname != null && _nicknameController.text.isEmpty) {
+        _nicknameController.text = nickname;
+      }
+      _recentRooms = recent;
+      _storedSession = stored;
+    });
   }
 
   void _applyJoinCodeFromUrl() {
@@ -68,15 +93,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     await _joinAction(() async {
+      await AppPreferences.saveLastNickname(nickname);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: localeName,
             nickname: nickname,
           );
-      await ref.read(sessionProvider.notifier).saveSession(result);
+      await ref.read(sessionProvider.notifier).saveSession(
+            result,
+            nickname: nickname,
+            roomName: localeName,
+          );
       await ref.read(roomStateProvider.notifier).enterRoom(
             result.roomId,
             result.participantId,
           );
+      await RecentRoomsStorage.add(code: result.code, name: localeName);
       if (mounted) context.go('/room/${result.roomId}');
     });
   }
@@ -96,16 +127,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     await _joinAction(() async {
+      await AppPreferences.saveLastNickname(nickname);
       final result = await ref.read(roomRepositoryProvider).joinRoom(
             code: code,
             nickname: nickname,
           );
-      await ref.read(sessionProvider.notifier).saveSession(result);
+      await ref.read(sessionProvider.notifier).saveSession(
+            result,
+            nickname: nickname,
+          );
       await ref.read(roomStateProvider.notifier).enterRoom(
             result.roomId,
             result.participantId,
           );
+      final roomState = ref.read(roomStateProvider).valueOrNull;
+      if (roomState != null) {
+        await ref.read(sessionProvider.notifier).updateRoomMetadata(
+              roomName: roomState.room.name,
+              roomCode: roomState.room.code,
+            );
+        await RecentRoomsStorage.add(
+          code: roomState.room.code,
+          name: roomState.room.name,
+        );
+      }
       if (mounted) context.go('/room/${result.roomId}');
+    });
+  }
+
+  Future<void> _resumeStoredSession() async {
+    final stored = _storedSession;
+    if (stored == null) return;
+
+    await _joinAction(() async {
+      await ref.read(sessionProvider.notifier).saveSession(
+            SessionResult(
+              roomId: stored.roomId,
+              participantId: stored.participantId,
+              code: stored.roomCode ?? '',
+            ),
+            nickname: stored.nickname,
+            roomName: stored.roomName,
+          );
+      await ref.read(roomStateProvider.notifier).enterRoom(
+            stored.roomId,
+            stored.participantId,
+          );
+      if (mounted) context.go('/room/${stored.roomId}');
+    });
+  }
+
+  void _openRecentRoom(RecentRoomEntry entry) {
+    setState(() {
+      _mode = _HomeMode.join;
+      _roomCodeController.text = entry.code;
+      _error = null;
     });
   }
 
@@ -211,8 +287,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildWelcomeActions(bool configured, AppLocalizations l10n) {
+    final session = ref.watch(sessionProvider).valueOrNull;
+    final showResume = session == null && _storedSession != null;
+
     return Column(
       children: [
+        if (showResume) ...[
+          SpritzActionTile(
+            icon: Icons.restore_rounded,
+            title: l10n.resumeSession,
+            subtitle: l10n.resumeSessionSubtitle(
+              _storedSession!.roomName ?? l10n.appName,
+              _storedSession!.roomCode ?? '',
+            ),
+            primary: true,
+            onTap: configured && !_isLoading ? _resumeStoredSession : null,
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_recentRooms.isNotEmpty) ...[
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              l10n.recentRooms,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: const Color(AppColors.textSecondary),
+                  ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          ..._recentRooms.map(
+            (entry) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: SpritzActionTile(
+                icon: Icons.history_rounded,
+                title: entry.name,
+                subtitle: entry.code,
+                onTap: configured && !_isLoading
+                    ? () => _openRecentRoom(entry)
+                    : null,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
         SpritzActionTile(
           icon: Icons.storefront_outlined,
           title: l10n.openLocale,

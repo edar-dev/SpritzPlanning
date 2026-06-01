@@ -7,6 +7,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import 'room_deck_settings_sheet.dart';
+import 'story_import_sheet.dart';
+import '../voting/facilitator_shortcuts.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../core/theme/app_colors.dart';
@@ -112,7 +114,18 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         final showConnectionBanner =
             connectionStatus != ConnectionStatus.connected;
 
-        return Scaffold(
+        return FacilitatorShortcuts(
+          enabled: isFacilitator,
+          onReveal: showVoting && !room.votesRevealed
+              ? () => unawaited(_facilitatorReveal(session.participantId))
+              : null,
+          onNextStory: showVoting && room.votesRevealed
+              ? () => unawaited(_facilitatorNextStory(session.participantId))
+              : null,
+          onStartVoting: !showVoting && room.phase == RoomPhase.lobby
+              ? () => unawaited(_facilitatorStartFirstStory(session.participantId))
+              : null,
+          child: Scaffold(
           appBar: AppBar(
             title: Column(
               mainAxisSize: MainAxisSize.min,
@@ -128,6 +141,21 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               ],
             ),
             actions: [
+              if (isFacilitator && room.phase == RoomPhase.lobby) ...[
+                IconButton(
+                  icon: const Icon(Icons.upload_file_outlined),
+                  tooltip: context.l10n.importStories,
+                  onPressed: () => StoryImportSheet.show(
+                    context,
+                    participantId: session.participantId,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.keyboard_outlined),
+                  tooltip: context.l10n.keyboardShortcuts,
+                  onPressed: () => _showKeyboardShortcuts(context),
+                ),
+              ],
               if (isFacilitator && room.phase == RoomPhase.lobby)
                 IconButton(
                   icon: const Icon(Icons.style_outlined),
@@ -247,8 +275,72 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                   label: Text(context.l10n.addOrdine),
                 )
               : null,
+        ),
         );
       },
+    );
+  }
+
+  Future<void> _facilitatorReveal(String participantId) async {
+    try {
+      await ref.read(roomRepositoryProvider).revealVotes(
+            participantId: participantId,
+          );
+    } catch (e, st) {
+      if (mounted) await showUserError(context, e, stackTrace: st);
+    }
+  }
+
+  Future<void> _facilitatorNextStory(String participantId) async {
+    try {
+      await ref.read(roomRepositoryProvider).nextStory(
+            participantId: participantId,
+          );
+    } catch (e, st) {
+      if (mounted) await showUserError(context, e, stackTrace: st);
+    }
+  }
+
+  Future<void> _facilitatorStartFirstStory(String participantId) async {
+    final roomState = ref.read(roomStateProvider).valueOrNull;
+    if (roomState == null) return;
+    final pending = roomState.stories
+        .where((s) => s.status == StoryStatus.pending)
+        .toList()
+      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    if (pending.isEmpty) return;
+    try {
+      await ref.read(roomRepositoryProvider).startVoting(
+            participantId: participantId,
+            storyId: pending.first.id,
+          );
+    } catch (e, st) {
+      if (mounted) await showUserError(context, e, stackTrace: st);
+    }
+  }
+
+  void _showKeyboardShortcuts(BuildContext context) {
+    final l10n = context.l10n;
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.keyboardShortcuts),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.keyboardShortcutReveal),
+            Text(l10n.keyboardShortcutNext),
+            Text(l10n.keyboardShortcutStartVote),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.back),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -434,6 +526,35 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                 title: context.l10n.menu,
                 subtitle: context.l10n.menuSubtitle,
               ),
+              if (widget.roomState.stories.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  context.l10n.backlogProgress(
+                    widget.roomState.stories
+                        .where((s) => s.status == StoryStatus.done)
+                        .length,
+                    widget.roomState.stories.length,
+                  ),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: widget.roomState.stories.isEmpty
+                        ? 0
+                        : widget.roomState.stories
+                                .where((s) => s.status == StoryStatus.done)
+                                .length /
+                            widget.roomState.stories.length,
+                    minHeight: 8,
+                    backgroundColor: const Color(AppColors.surfaceMuted),
+                    color: const Color(AppColors.oliveGreen),
+                  ),
+                ),
+              ],
               if (canReorder) ...[
                 const SizedBox(height: 8),
                 Text(
@@ -474,6 +595,25 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
+                          const SizedBox(height: 8),
+                          Text(
+                            context.l10n.menuEmptyImportCta,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: const Color(AppColors.textSecondary),
+                                ),
+                          ),
+                          if (widget.isFacilitator) ...[
+                            const SizedBox(height: 20),
+                            FilledButton.icon(
+                              onPressed: () => StoryImportSheet.show(
+                                context,
+                                participantId: widget.participantId,
+                              ),
+                              icon: const Icon(Icons.upload_file_outlined),
+                              label: Text(context.l10n.importStories),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -647,7 +787,11 @@ class _StoryTile extends StatelessWidget {
                     if (showDragHandle)
                       ReorderableDragStartListener(
                         index: dragIndex,
-                        child: const Icon(Icons.drag_handle),
+                        child: const Icon(
+                          Icons.drag_handle,
+                          color: Color(AppColors.spritzOrange),
+                          size: 28,
+                        ),
                       ),
                     if (onEdit != null)
                       IconButton(

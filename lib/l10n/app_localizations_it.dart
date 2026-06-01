@@ -320,4 +320,78 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get distribuzioneVotiSubtitle => 'Riepilogo delle dosi scelte';
+
+  @override
+  String get importStories => 'Importa ordini';
+
+  @override
+  String get importPasteHint =>
+      'Una riga per ordine (max 50). CSV: usa solo la prima colonna.';
+
+  @override
+  String get importStoriesAction => 'Importa nel menu';
+
+  @override
+  String get importStoriesEmpty => 'Incolla almeno un titolo ordine';
+
+  @override
+  String importStoriesSuccess(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ordini importati',
+      one: '1 ordine importato',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importPreview(int count) {
+    return 'Anteprima: $count ordini';
+  }
+
+  @override
+  String get recentRooms => 'Locali recenti';
+
+  @override
+  String get resumeSession => 'Riprendi sessione';
+
+  @override
+  String resumeSessionSubtitle(String roomName, String code) {
+    return '$roomName · $code';
+  }
+
+  @override
+  String backlogProgress(int done, int total) {
+    return '$done di $total ordini stimati';
+  }
+
+  @override
+  String get menuEmptyImportCta =>
+      'Importa una lista o aggiungi il primo ordine';
+
+  @override
+  String get keyboardShortcuts => 'Scorciatoie tastiera';
+
+  @override
+  String get keyboardShortcutReveal => 'R — Servizio (reveal)';
+
+  @override
+  String get keyboardShortcutNext => 'N — Prossimo ordine';
+
+  @override
+  String get keyboardShortcutStartVote => 'V — Servi ordine (primo in coda)';
+
+  @override
+  String applyConsensusAndNext(String value) {
+    return 'Applica $value e prossimo';
+  }
+
+  @override
+  String confirmVoteTitle(String value) {
+    return 'Confermi la dose $value?';
+  }
+
+  @override
+  String get exportJson => 'Esporta JSON';
 }

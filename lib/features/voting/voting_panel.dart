@@ -106,6 +106,35 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     super.dispose();
   }
 
+  Future<void> _confirmAndCastVote(String value) async {
+    final l10n = context.l10n;
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.confirmVoteTitle(value)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.back),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.chooseDose),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) {
+      await _castVote(value);
+    }
+  }
+
+  Future<void> _applyConsensusAndNext(String value) async {
+    setState(() => _finalEstimate = value);
+    await _confirmEstimate();
+    await _nextStory();
+  }
+
   Future<void> _castVote(String value) async {
     final story = widget.roomState.currentStory;
     if (story == null) return;
@@ -280,6 +309,12 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                   finalEstimate: _finalEstimate,
                   onSelectEstimate: (v) => setState(() => _finalEstimate = v),
                   isFacilitator: widget.isFacilitator,
+                  onApplyConsensus: widget.isFacilitator &&
+                          voteStats.suggestedConsensus != null
+                      ? () => _applyConsensusAndNext(
+                            voteStats.suggestedConsensus!,
+                          )
+                      : null,
                 ),
               ),
             ),
@@ -298,6 +333,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                   value: value,
                   selected: _selectedValue == value || myVote?.value == value,
                   onTap: () => _castVote(value),
+                  onLongPress: revealed
+                      ? null
+                      : () => unawaited(_confirmAndCastVote(value)),
                   disabled: revealed,
                 );
               }).toList(),
@@ -471,6 +509,7 @@ class _RevealSection extends StatelessWidget {
     required this.finalEstimate,
     required this.onSelectEstimate,
     required this.isFacilitator,
+    this.onApplyConsensus,
   });
 
   final RoomState roomState;
@@ -478,6 +517,7 @@ class _RevealSection extends StatelessWidget {
   final String? finalEstimate;
   final ValueChanged<String> onSelectEstimate;
   final bool isFacilitator;
+  final VoidCallback? onApplyConsensus;
 
   @override
   Widget build(BuildContext context) {
@@ -521,6 +561,23 @@ class _RevealSection extends StatelessWidget {
             );
           }).toList(),
         ),
+        if (onApplyConsensus != null && voteStats.suggestedConsensus != null) ...[
+          const SizedBox(height: 16),
+          MaterialBanner(
+            backgroundColor: const Color(AppColors.primarySoft),
+            content: Text(
+              '${l10n.consensoSuggerito}: ${voteStats.suggestedConsensus}',
+            ),
+            actions: [
+              TextButton(
+                onPressed: onApplyConsensus,
+                child: Text(
+                  l10n.applyConsensusAndNext(voteStats.suggestedConsensus!),
+                ),
+              ),
+            ],
+          ),
+        ],
         const SizedBox(height: 24),
         VoteSummaryPanel(stats: voteStats),
         if (isFacilitator) ...[

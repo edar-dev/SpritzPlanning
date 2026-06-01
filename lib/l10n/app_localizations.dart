@@ -703,6 +703,114 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Riepilogo delle dosi scelte'**
   String get distribuzioneVotiSubtitle;
+
+  /// No description provided for @importStories.
+  ///
+  /// In it, this message translates to:
+  /// **'Importa ordini'**
+  String get importStories;
+
+  /// No description provided for @importPasteHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Una riga per ordine (max 50). CSV: usa solo la prima colonna.'**
+  String get importPasteHint;
+
+  /// No description provided for @importStoriesAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Importa nel menu'**
+  String get importStoriesAction;
+
+  /// No description provided for @importStoriesEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Incolla almeno un titolo ordine'**
+  String get importStoriesEmpty;
+
+  /// No description provided for @importStoriesSuccess.
+  ///
+  /// In it, this message translates to:
+  /// **'{count, plural, =1{1 ordine importato} other{{count} ordini importati}}'**
+  String importStoriesSuccess(int count);
+
+  /// No description provided for @importPreview.
+  ///
+  /// In it, this message translates to:
+  /// **'Anteprima: {count} ordini'**
+  String importPreview(int count);
+
+  /// No description provided for @recentRooms.
+  ///
+  /// In it, this message translates to:
+  /// **'Locali recenti'**
+  String get recentRooms;
+
+  /// No description provided for @resumeSession.
+  ///
+  /// In it, this message translates to:
+  /// **'Riprendi sessione'**
+  String get resumeSession;
+
+  /// No description provided for @resumeSessionSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'{roomName} · {code}'**
+  String resumeSessionSubtitle(String roomName, String code);
+
+  /// No description provided for @backlogProgress.
+  ///
+  /// In it, this message translates to:
+  /// **'{done} di {total} ordini stimati'**
+  String backlogProgress(int done, int total);
+
+  /// No description provided for @menuEmptyImportCta.
+  ///
+  /// In it, this message translates to:
+  /// **'Importa una lista o aggiungi il primo ordine'**
+  String get menuEmptyImportCta;
+
+  /// No description provided for @keyboardShortcuts.
+  ///
+  /// In it, this message translates to:
+  /// **'Scorciatoie tastiera'**
+  String get keyboardShortcuts;
+
+  /// No description provided for @keyboardShortcutReveal.
+  ///
+  /// In it, this message translates to:
+  /// **'R — Servizio (reveal)'**
+  String get keyboardShortcutReveal;
+
+  /// No description provided for @keyboardShortcutNext.
+  ///
+  /// In it, this message translates to:
+  /// **'N — Prossimo ordine'**
+  String get keyboardShortcutNext;
+
+  /// No description provided for @keyboardShortcutStartVote.
+  ///
+  /// In it, this message translates to:
+  /// **'V — Servi ordine (primo in coda)'**
+  String get keyboardShortcutStartVote;
+
+  /// No description provided for @applyConsensusAndNext.
+  ///
+  /// In it, this message translates to:
+  /// **'Applica {value} e prossimo'**
+  String applyConsensusAndNext(String value);
+
+  /// No description provided for @confirmVoteTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Confermi la dose {value}?'**
+  String confirmVoteTitle(String value);
+
+  /// No description provided for @exportJson.
+  ///
+  /// In it, this message translates to:
+  /// **'Esporta JSON'**
+  String get exportJson;
 }
 
 class _AppLocalizationsDelegate

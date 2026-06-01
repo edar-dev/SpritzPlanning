@@ -100,5 +100,55 @@
   "refresh": "Refresh",
   "supabaseNotConfigured": "Supabase not configured — use --dart-define-from-file=env.json",
   "backToHome": "Back to home",
-  "distribuzioneVotiSubtitle": "Summary of chosen doses"
+  "distribuzioneVotiSubtitle": "Summary of chosen doses",
+  "importStories": "Import stories",
+  "importPasteHint": "One line per story (max 50). CSV: first column only.",
+  "importStoriesAction": "Import to menu",
+  "importStoriesEmpty": "Paste at least one story title",
+  "importStoriesSuccess": "{count, plural, =1{1 story imported} other{{count} stories imported}}",
+  "@importStoriesSuccess": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "importPreview": "Preview: {count} stories",
+  "@importPreview": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "recentRooms": "Recent rooms",
+  "resumeSession": "Resume session",
+  "resumeSessionSubtitle": "{roomName} · {code}",
+  "@resumeSessionSubtitle": {
+    "placeholders": {
+      "roomName": {"type": "String"},
+      "code": {"type": "String"}
+    }
+  },
+  "backlogProgress": "{done} of {total} stories estimated",
+  "@backlogProgress": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "menuEmptyImportCta": "Import a list or add the first story",
+  "keyboardShortcuts": "Keyboard shortcuts",
+  "keyboardShortcutReveal": "R — Reveal votes",
+  "keyboardShortcutNext": "N — Next story",
+  "keyboardShortcutStartVote": "V — Start voting (first queued)",
+  "applyConsensusAndNext": "Apply {value} and next",
+  "@applyConsensusAndNext": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "confirmVoteTitle": "Confirm dose {value}?",
+  "@confirmVoteTitle": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "exportJson": "Export JSON"
 }

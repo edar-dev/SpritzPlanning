@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract final class AppPreferences {
   static const _themeModeKey = 'theme_mode';
   static const _localeKey = 'locale_code';
+  static const _lastNicknameKey = 'last_nickname';
 
   static Future<ThemeMode> loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
@@ -39,5 +40,17 @@ abstract final class AppPreferences {
       return;
     }
     await prefs.setString(_localeKey, locale.languageCode);
+  }
+
+  static Future<String?> loadLastNickname() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_lastNicknameKey);
+  }
+
+  static Future<void> saveLastNickname(String nickname) async {
+    final trimmed = nickname.trim();
+    if (trimmed.length < 2) return;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_lastNicknameKey, trimmed);
   }
 }

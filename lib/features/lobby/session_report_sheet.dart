@@ -86,6 +86,11 @@ class SessionReportSheet extends StatelessWidget {
                     label: Text(l10n.exportCsv),
                   ),
                   OutlinedButton.icon(
+                    onPressed: () => _copy(context, report.toJson()),
+                    icon: const Icon(Icons.data_object_outlined, size: 18),
+                    label: Text(l10n.exportJson),
+                  ),
+                  OutlinedButton.icon(
                     onPressed: () => _shareMarkdown(context, report),
                     icon: const Icon(Icons.share_outlined, size: 18),
                     label: Text(l10n.exportMarkdown),
