@@ -11,6 +11,7 @@ class ParticipantAvatar extends StatelessWidget {
     this.hasVoted = false,
     this.showVoteStatus = false,
     this.isAbsent = false,
+    this.isObserver = false,
     this.onLongPress,
   });
 
@@ -19,6 +20,7 @@ class ParticipantAvatar extends StatelessWidget {
   final bool hasVoted;
   final bool showVoteStatus;
   final bool isAbsent;
+  final bool isObserver;
   final VoidCallback? onLongPress;
 
   @override
@@ -60,6 +62,16 @@ class ParticipantAvatar extends StatelessWidget {
                   ),
                 ),
               ),
+              if (isObserver)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: Icon(
+                    Icons.visibility_outlined,
+                    size: 16,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
               if (showVoteStatus)
                 Positioned(
                   right: 0,
@@ -89,7 +101,16 @@ class ParticipantAvatar extends StatelessWidget {
                   color: const Color(AppColors.textPrimary),
                 ),
           ),
-          if (isFacilitator) ...[
+          if (isObserver) ...[
+            const SizedBox(height: 2),
+            Text(
+              context.l10n.observerBadge,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: const Color(AppColors.textSecondary),
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ] else if (isFacilitator) ...[
             const SizedBox(height: 2),
             Text(
               context.l10n.barman,
@@ -130,6 +151,7 @@ class ParticipantAvatar extends StatelessWidget {
   String _semanticsLabel(BuildContext context) {
     final l10n = context.l10n;
     final parts = <String>[nickname];
+    if (isObserver) parts.add(l10n.observerBadge);
     if (isFacilitator) parts.add(l10n.barman);
     if (showVoteStatus && hasVoted) {
       parts.add(l10n.voteSubmitted);

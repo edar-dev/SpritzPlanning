@@ -38,6 +38,7 @@ void main() {
 }
 
 final _t = DateTime.utc(2025);
+final _now = DateTime.now();
 
 RoomState _roomState({
   Room? room,
@@ -65,6 +66,7 @@ Room _room({String currentStoryId = 'story-1'}) {
     votesRevealed: false,
     deckValues: _defaultDeck,
     allowCoffeeBreak: true,
+    autoRevealWhenAllVoted: false,
     lastActivityAt: _t,
     createdAt: _t,
   );
@@ -79,6 +81,7 @@ Room _roomWithoutStory() {
     votesRevealed: false,
     deckValues: _defaultDeck,
     allowCoffeeBreak: true,
+    autoRevealWhenAllVoted: false,
     lastActivityAt: _t,
     createdAt: _t,
   );
@@ -90,8 +93,9 @@ Participant _participant(String id) {
     roomId: 'room-1',
     nickname: id,
     isFacilitator: id == 'p1',
+    isObserver: false,
     joinedAt: _t,
-    lastSeenAt: _t,
+    lastSeenAt: _now,
   );
 }
 
@@ -103,6 +107,8 @@ Story _story() {
     description: '',
     sortOrder: 0,
     status: StoryStatus.voting,
+    kind: StoryKind.story,
+    facilitatorNote: '',
     createdAt: _t,
   );
 }

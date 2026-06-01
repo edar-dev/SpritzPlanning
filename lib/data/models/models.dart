@@ -2,6 +2,19 @@ enum RoomPhase { lobby, voting, revealed }
 
 enum StoryStatus { pending, voting, revealed, done }
 
+enum StoryKind { story, spike }
+
+extension StoryKindX on StoryKind {
+  String get dbValue => name;
+
+  static StoryKind fromDb(String value) {
+    return StoryKind.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => StoryKind.story,
+    );
+  }
+}
+
 extension RoomPhaseX on RoomPhase {
   String get dbValue => name;
 
@@ -35,6 +48,7 @@ class Room {
     this.votingDeadlineAt,
     required this.deckValues,
     required this.allowCoffeeBreak,
+    required this.autoRevealWhenAllVoted,
     required this.lastActivityAt,
     required this.createdAt,
   });
@@ -48,6 +62,7 @@ class Room {
   final DateTime? votingDeadlineAt;
   final List<String> deckValues;
   final bool allowCoffeeBreak;
+  final bool autoRevealWhenAllVoted;
   final DateTime lastActivityAt;
   final DateTime createdAt;
 
@@ -64,6 +79,8 @@ class Room {
           : null,
       deckValues: _parseDeckValues(json['deck_values']),
       allowCoffeeBreak: json['allow_coffee_break'] as bool? ?? true,
+      autoRevealWhenAllVoted:
+          json['auto_reveal_when_all_voted'] as bool? ?? false,
       lastActivityAt: DateTime.parse(json['last_activity_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
     );
@@ -83,6 +100,7 @@ class Participant {
     required this.roomId,
     required this.nickname,
     required this.isFacilitator,
+    required this.isObserver,
     required this.joinedAt,
     required this.lastSeenAt,
   });
@@ -91,6 +109,7 @@ class Participant {
   final String roomId;
   final String nickname;
   final bool isFacilitator;
+  final bool isObserver;
   final DateTime joinedAt;
   final DateTime lastSeenAt;
 
@@ -100,6 +119,7 @@ class Participant {
       roomId: json['room_id'] as String,
       nickname: json['nickname'] as String,
       isFacilitator: json['is_facilitator'] as bool? ?? false,
+      isObserver: json['is_observer'] as bool? ?? false,
       joinedAt: DateTime.parse(json['joined_at'] as String),
       lastSeenAt: DateTime.parse(json['last_seen_at'] as String),
     );
@@ -118,7 +138,9 @@ class Story {
     required this.description,
     required this.sortOrder,
     required this.status,
+    required this.kind,
     this.finalEstimate,
+    required this.facilitatorNote,
     required this.createdAt,
   });
 
@@ -128,8 +150,12 @@ class Story {
   final String description;
   final int sortOrder;
   final StoryStatus status;
+  final StoryKind kind;
   final String? finalEstimate;
+  final String facilitatorNote;
   final DateTime createdAt;
+
+  bool get isSpike => kind == StoryKind.spike;
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
@@ -139,7 +165,9 @@ class Story {
       description: json['description'] as String? ?? '',
       sortOrder: json['sort_order'] as int? ?? 0,
       status: StoryStatusX.fromDb(json['status'] as String),
+      kind: StoryKindX.fromDb(json['kind'] as String? ?? 'story'),
       finalEstimate: json['final_estimate'] as String?,
+      facilitatorNote: json['facilitator_note'] as String? ?? '',
       createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
@@ -169,6 +197,16 @@ class Vote {
       votedAt: DateTime.parse(json['voted_at'] as String),
     );
   }
+}
+
+class RoomJoinInfo {
+  const RoomJoinInfo({
+    required this.requiresPin,
+    required this.roomName,
+  });
+
+  final bool requiresPin;
+  final String roomName;
 }
 
 class SessionResult {
@@ -226,9 +264,28 @@ class RoomState {
     );
   }
 
-  bool get allParticipantsVoted {
-    if (participants.isEmpty || room.currentStoryId == null) return false;
-    return participants.every((p) => hasParticipantVoted(p.id));
+  /// Active voters who must cast a ballot (excludes observers and AFK).
+  List<Participant> get activeVotingParticipants {
+    final now = DateTime.now();
+    return participants
+        .where((p) => !p.isObserver && !p.isAbsent(now: now))
+        .toList();
+  }
+
+  bool get allParticipantsVoted => allActiveVotingParticipantsVoted;
+
+  bool get allActiveVotingParticipantsVoted {
+    if (room.currentStoryId == null) return false;
+    final voters = activeVotingParticipants;
+    if (voters.isEmpty) return false;
+    return voters.every((p) => hasParticipantVoted(p.id));
+  }
+
+  (int voted, int total) get votingProgress {
+    final voters = activeVotingParticipants;
+    if (voters.isEmpty) return (0, 0);
+    final voted = voters.where((p) => hasParticipantVoted(p.id)).length;
+    return (voted, voters.length);
   }
 
   RoomState copyWith({

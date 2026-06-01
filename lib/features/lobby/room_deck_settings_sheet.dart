@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/deck_values.dart';
@@ -28,6 +29,8 @@ class RoomDeckSettingsSheet extends ConsumerStatefulWidget {
 class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
   List<String>? _deck;
   bool? _allowCoffee;
+  bool? _autoReveal;
+  final _pinController = TextEditingController();
 
   void _initFromRoom(Room? room) {
     if (_deck != null) return;
@@ -35,25 +38,60 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
       room != null ? DeckValues.forRoom(room) : DeckValues.defaultDeck,
     );
     _allowCoffee = room?.allowCoffeeBreak ?? true;
+    _autoReveal = room?.autoRevealWhenAllVoted ?? false;
+  }
+
+  @override
+  void dispose() {
+    _pinController.dispose();
+    super.dispose();
   }
 
   void _applyPreset(List<String> preset) {
     setState(() {
       _deck = List<String>.from(preset);
       if (_allowCoffee == false) {
-        _deck!.removeWhere((v) => v == '☕');
+        _deck!.removeWhere((e) => e == '☕');
       }
     });
   }
 
   Future<void> _save() async {
+    final repo = ref.read(roomRepositoryProvider);
     try {
-      await ref.read(roomRepositoryProvider).setRoomDeck(
-            participantId: widget.participantId,
-            deckValues: _deck!,
-            allowCoffeeBreak: _allowCoffee!,
-          );
+      await repo.setRoomDeck(
+        participantId: widget.participantId,
+        deckValues: _deck!,
+        allowCoffeeBreak: _allowCoffee!,
+      );
+      await repo.setRoomSettings(
+        participantId: widget.participantId,
+        autoRevealWhenAllVoted: _autoReveal!,
+      );
       if (mounted) Navigator.pop(context);
+    } catch (e, st) {
+      if (mounted) {
+        await showUserError(context, e, stackTrace: st);
+      }
+    }
+  }
+
+  Future<void> _savePin({required bool remove}) async {
+    try {
+      await ref.read(roomRepositoryProvider).setRoomPin(
+            participantId: widget.participantId,
+            pin: remove ? null : _pinController.text.trim(),
+          );
+      if (!remove) _pinController.clear();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              remove ? context.l10n.removeRoomPin : context.l10n.setRoomPin,
+            ),
+          ),
+        );
+      }
     } catch (e, st) {
       if (mounted) {
         await showUserError(context, e, stackTrace: st);
@@ -118,6 +156,42 @@ class _RoomDeckSettingsSheetState extends ConsumerState<RoomDeckSettingsSheet> {
                   }
                 });
               },
+            ),
+            SwitchListTile(
+              title: Text(l10n.autoRevealTitle),
+              subtitle: Text(l10n.autoRevealSubtitle),
+              value: _autoReveal!,
+              onChanged: (v) => setState(() => _autoReveal = v),
+            ),
+            const Divider(),
+            Text(l10n.setRoomPin, style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _pinController,
+              decoration: InputDecoration(
+                labelText: l10n.roomPinLabel,
+                hintText: l10n.roomPinHint,
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              maxLength: 6,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => _savePin(remove: false),
+                    child: Text(l10n.setRoomPin),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => _savePin(remove: true),
+                    child: Text(l10n.removeRoomPin),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Wrap(

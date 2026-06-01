@@ -65,6 +65,7 @@ flowchart LR
 | 11 | #31–33, #38–39, UI-A–F | 8–12 giorni | `feat/session-productivity` | [phase-11-session-productivity.md](plans/phase-11-session-productivity.md) |
 | 12 | #34, #36–37, #40, UI-G–H | 6–9 giorni | `chore/production-hardening` | [phase-12-production-hardening.md](plans/phase-12-production-hardening.md) |
 | 13 | #41–48, UI-I–T | 5–8 giorni | `feat/ui-a11y-polish` | [phase-13-ui-a11y-polish.md](plans/phase-13-ui-a11y-polish.md) |
+| 14 | #49–58 | 10–14 giorni | `feat/session-advanced` | [phase-14-session-advanced.md](plans/phase-14-session-advanced.md) |
 
 
 
@@ -148,15 +149,15 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 
 
-**Prossime (v4 — produttività / production-ready):**
+**Completate (v4–v5):** Fasi 11–13 — produttività, production-ready, UI/a11y ([IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md), [IMPROVEMENTS-UI-A11Y.md](IMPROVEMENTS-UI-A11Y.md)).
 
 
 
-11. **Fase 11** — import backlog, shortcut barman, presenza voti, ripresa sessione ([IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md))
+**Prossima (v6 — sessione avanzata):**
 
-12. **Fase 12** — retry ottimistico, CI smoke, a11y/proiettore, osservabilità Sentry
 
-13. **Fase 13** — contrasto, leggibilità home, focus, Lighthouse a11y ([IMPROVEMENTS-UI-A11Y.md](IMPROVEMENTS-UI-A11Y.md))
+
+14. **Fase 14** — auto-reveal, osservatori, PIN, export Jira/ADO, template, notifiche PWA, spike, report stats, duplica stanza ([IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md))
 
 
 
@@ -237,6 +238,28 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 11 | Completata | PR #6 — `611cd4b` |
 | 12 | Completata | PR #7 — `4273442` |
 | 13 | Completata | PR #8 — `8a341ae` |
+| 14 | Pianificata | [IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md) #49–58 |
+
+
+
+## Lista miglioramenti v6 (#49–58)
+
+Vedi [IMPROVEMENTS-V6.md](IMPROVEMENTS-V6.md).
+
+| # | Miglioramento | Fase |
+|---|---------------|------|
+| 49 | Auto-reveal quando tutti hanno votato | 14 |
+| 50 | Ruolo osservatore | 14 |
+| 51 | PIN stanza opzionale | 14 |
+| 52 | Note facilitatore per story | 14 |
+| 53 | Export Jira / Azure DevOps / CSV | 14 |
+| 54 | Template stanza (deck + backlog) | 14 |
+| 55 | Notifiche browser (PWA) | 14 |
+| 56 | Story spike / salta stima | 14 |
+| 57 | Report sessione con stats e grafico | 14 |
+| 58 | Duplica stanza («stessa serata») | 14 |
+
+Piano unico: [phase-14-session-advanced.md](plans/phase-14-session-advanced.md).
 
 
 

@@ -20,6 +20,7 @@ import '../../shared/widgets/connection_banner.dart';
 import '../../shared/widgets/pwa_install_banner.dart';
 import '../../shared/widgets/spritz_action_tile.dart';
 import 'home_settings_sheet.dart';
+import 'room_template_sheet.dart';
 import '../../core/theme/app_focus.dart';
 import '../../core/theme/light_surface_scope.dart';
 
@@ -34,7 +35,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _nicknameController = TextEditingController();
   final _localeNameController = TextEditingController();
   final _roomCodeController = TextEditingController();
+  final _pinController = TextEditingController();
   bool _isLoading = false;
+  bool _joinAsObserver = false;
+  bool _requiresPin = false;
+  String? _joinRoomPreviewName;
+  Timer? _joinInfoDebounce;
   String? _error;
   String? _nicknameError;
   String? _localeNameError;
@@ -81,7 +87,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _nicknameController.dispose();
     _localeNameController.dispose();
     _roomCodeController.dispose();
+    _pinController.dispose();
+    _joinInfoDebounce?.cancel();
     super.dispose();
+  }
+
+  void _scheduleJoinInfoLookup(String code) {
+    _joinInfoDebounce?.cancel();
+    final trimmed = code.trim();
+    if (trimmed.length < 4) {
+      setState(() {
+        _requiresPin = false;
+        _joinRoomPreviewName = null;
+      });
+      return;
+    }
+    _joinInfoDebounce = Timer(const Duration(milliseconds: 450), () async {
+      try {
+        final info = await ref
+            .read(roomRepositoryProvider)
+            .getRoomJoinInfo(trimmed);
+        if (!mounted) return;
+        setState(() {
+          _requiresPin = info.requiresPin;
+          _joinRoomPreviewName =
+              info.roomName.isNotEmpty ? info.roomName : null;
+        });
+      } catch (_) {
+        if (!mounted) return;
+        setState(() {
+          _requiresPin = false;
+          _joinRoomPreviewName = null;
+        });
+      }
+    });
   }
 
   Future<void> _createRoom() async {
@@ -148,6 +187,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       });
       return;
     }
+    final pin = _pinController.text.trim();
+    if (_requiresPin && pin.isEmpty) {
+      setState(() => _error = l10n.roomPinRequired);
+      return;
+    }
 
     setState(() {
       _nicknameError = null;
@@ -182,6 +226,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       final result = await ref.read(roomRepositoryProvider).joinRoom(
             code: code,
             nickname: nickname,
+            observer: _joinAsObserver,
+            pin: pin.isNotEmpty ? pin : null,
           );
       await ref.read(sessionProvider.notifier).saveSession(
             result,
@@ -233,6 +279,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       _mode = _HomeMode.join;
       _roomCodeController.text = entry.code;
       _error = null;
+    });
+    _scheduleJoinInfoLookup(entry.code);
+  }
+
+  Future<void> _createFromTemplate() async {
+    final template = await RoomTemplateSheet.pick(context);
+    if (template == null || !mounted) return;
+
+    final l10n = context.l10n;
+    final nickname = _nicknameController.text.trim();
+    if (nickname.length < 2) {
+      setState(() {
+        _mode = _HomeMode.create;
+        _localeNameController.text = template.name;
+        _error = l10n.nicknameTooShort;
+      });
+      return;
+    }
+
+    await _joinAction(() async {
+      await AppPreferences.saveLastNickname(nickname);
+      final result = await ref.read(roomRepositoryProvider).createRoom(
+            name: template.name,
+            nickname: nickname,
+          );
+      final repo = ref.read(roomRepositoryProvider);
+      await repo.setRoomDeck(
+        participantId: result.participantId,
+        deckValues: template.deckValues,
+        allowCoffeeBreak: template.allowCoffeeBreak,
+      );
+      if (template.storyTitles.isNotEmpty) {
+        await repo.addStories(
+          participantId: result.participantId,
+          titles: template.storyTitles,
+        );
+      }
+      await ref.read(sessionProvider.notifier).saveSession(
+            result,
+            nickname: nickname,
+            roomName: template.name,
+          );
+      await ref.read(roomStateProvider.notifier).enterRoom(
+            result.roomId,
+            result.participantId,
+          );
+      await RecentRoomsStorage.add(code: result.code, name: template.name);
+      if (mounted) context.go('/room/${result.roomId}');
     });
   }
 
@@ -410,6 +504,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   })
               : null,
         ),
+        const SizedBox(height: 12),
+        SpritzActionTile(
+          icon: Icons.dashboard_customize_outlined,
+          title: l10n.createFromTemplate,
+          subtitle: l10n.roomTemplates,
+          onTap: configured && !_isLoading ? _createFromTemplate : null,
+        ),
       ],
     );
   }
@@ -451,7 +552,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               }
             },
           ),
-        if (_mode == _HomeMode.join)
+        if (_mode == _HomeMode.join) ...[
           TextField(
             controller: _roomCodeController,
             decoration: InputDecoration(
@@ -459,16 +560,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               hintText: l10n.roomCodeHint,
               prefixIcon: const Icon(Icons.qr_code_rounded),
               errorText: _roomCodeError,
+              helperText: _joinRoomPreviewName,
             ),
             textCapitalization: TextCapitalization.characters,
-            textInputAction: TextInputAction.done,
+            textInputAction: TextInputAction.next,
             onSubmitted: (_) => _joinRoom(),
-            onChanged: (_) {
+            onChanged: (value) {
               if (_roomCodeError != null) {
                 setState(() => _roomCodeError = null);
               }
+              _scheduleJoinInfoLookup(value);
             },
           ),
+          if (_requiresPin) ...[
+            const SizedBox(height: 16),
+            TextField(
+              controller: _pinController,
+              decoration: InputDecoration(
+                labelText: l10n.roomPinLabel,
+                hintText: l10n.roomPinHint,
+                prefixIcon: const Icon(Icons.lock_outline),
+              ),
+              keyboardType: TextInputType.number,
+              obscureText: true,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _joinRoom(),
+            ),
+          ],
+          const SizedBox(height: 8),
+          CheckboxListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.joinAsObserver),
+            value: _joinAsObserver,
+            onChanged: (value) =>
+                setState(() => _joinAsObserver = value ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
+        ],
         const SizedBox(height: 24),
         if (_error != null)
           Container(

@@ -410,4 +410,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportJson => 'Export JSON';
+
+  @override
+  String get joinAsObserver => 'Observe only (no voting)';
+
+  @override
+  String get observerBadge => 'Observer';
+
+  @override
+  String get observerCannotVote => 'You are observing — voting is disabled';
+
+  @override
+  String get roomPinLabel => 'Room PIN';
+
+  @override
+  String get roomPinHint => '4-6 digits';
+
+  @override
+  String get roomPinRequired => 'PIN required for this room';
+
+  @override
+  String get setRoomPin => 'Set PIN';
+
+  @override
+  String get removeRoomPin => 'Remove PIN';
+
+  @override
+  String get autoRevealTitle => 'Auto-reveal';
+
+  @override
+  String get autoRevealSubtitle => 'Reveal when everyone has voted';
+
+  @override
+  String get markAsSpike => 'Mark as spike';
+
+  @override
+  String get storyKindSpike => 'Spike';
+
+  @override
+  String get duplicateRoom => 'New session (same menu)';
+
+  @override
+  String get duplicateRoomConfirm =>
+      'A new code will be created. The backlog is copied. Guests must re-join.';
+
+  @override
+  String get facilitatorNote => 'Facilitator note';
+
+  @override
+  String get facilitatorNoteHint => 'Private; included in export';
+
+  @override
+  String get exportJira => 'Jira';
+
+  @override
+  String get exportAzureDevOps => 'Azure DevOps';
+
+  @override
+  String get reportMean => 'Mean points';
+
+  @override
+  String get reportMedian => 'Median points';
+
+  @override
+  String get reportCompleted => 'Completed stories';
+
+  @override
+  String get reportSpikes => 'Spikes';
+
+  @override
+  String get roomTemplates => 'Room templates';
+
+  @override
+  String get createFromTemplate => 'Create from template';
+
+  @override
+  String get notificationsTitle => 'Browser notifications';
+
+  @override
+  String get notificationsSubtitle =>
+      'Reveal and timer when tab is in background';
+
+  @override
+  String get notificationsReveal => 'Votes revealed';
+
+  @override
+  String get notificationsTimer => 'Time almost up';
 }

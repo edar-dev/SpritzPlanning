@@ -253,9 +253,25 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     final myVote = widget.roomState.currentVotes.firstWhereOrNull(
       (v) => v.participantId == widget.participantId,
     );
+    final me = widget.roomState.participants.firstWhereOrNull(
+      (p) => p.id == widget.participantId,
+    );
+    if (me?.isObserver == true && isVoting && !revealed) {
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: Text(
+            l10n.observerCannotVote,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+      );
+    }
+
     final voteStats = computeVoteStats(
       votes: widget.roomState.currentVotes,
-      participants: widget.roomState.participants,
+      participants: widget.roomState.activeVotingParticipants,
     );
     final deadline = widget.roomState.room.votingDeadlineAt;
     final timerExpired = deadline != null && _now.isAfter(deadline);

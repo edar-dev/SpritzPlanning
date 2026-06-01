@@ -841,6 +841,174 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Esporta JSON'**
   String get exportJson;
+
+  /// No description provided for @joinAsObserver.
+  ///
+  /// In it, this message translates to:
+  /// **'Solo osservazione (non voto)'**
+  String get joinAsObserver;
+
+  /// No description provided for @observerBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Osservatore'**
+  String get observerBadge;
+
+  /// No description provided for @observerCannotVote.
+  ///
+  /// In it, this message translates to:
+  /// **'Stai osservando: non puoi votare'**
+  String get observerCannotVote;
+
+  /// No description provided for @roomPinLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'PIN locale'**
+  String get roomPinLabel;
+
+  /// No description provided for @roomPinHint.
+  ///
+  /// In it, this message translates to:
+  /// **'4-6 cifre'**
+  String get roomPinHint;
+
+  /// No description provided for @roomPinRequired.
+  ///
+  /// In it, this message translates to:
+  /// **'PIN richiesto per questo locale'**
+  String get roomPinRequired;
+
+  /// No description provided for @setRoomPin.
+  ///
+  /// In it, this message translates to:
+  /// **'Imposta PIN'**
+  String get setRoomPin;
+
+  /// No description provided for @removeRoomPin.
+  ///
+  /// In it, this message translates to:
+  /// **'Rimuovi PIN'**
+  String get removeRoomPin;
+
+  /// No description provided for @autoRevealTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Reveal automatico'**
+  String get autoRevealTitle;
+
+  /// No description provided for @autoRevealSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Rivela i voti quando tutti hanno scelto'**
+  String get autoRevealSubtitle;
+
+  /// No description provided for @markAsSpike.
+  ///
+  /// In it, this message translates to:
+  /// **'Segna come spike'**
+  String get markAsSpike;
+
+  /// No description provided for @storyKindSpike.
+  ///
+  /// In it, this message translates to:
+  /// **'Spike'**
+  String get storyKindSpike;
+
+  /// No description provided for @duplicateRoom.
+  ///
+  /// In it, this message translates to:
+  /// **'Nuova serata (stesso menu)'**
+  String get duplicateRoom;
+
+  /// No description provided for @duplicateRoomConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Si crea un nuovo codice. Il backlog viene copiato. I clienti dovranno rientrare.'**
+  String get duplicateRoomConfirm;
+
+  /// No description provided for @facilitatorNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Note barman'**
+  String get facilitatorNote;
+
+  /// No description provided for @facilitatorNoteHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Solo per te, visibili in export'**
+  String get facilitatorNoteHint;
+
+  /// No description provided for @exportJira.
+  ///
+  /// In it, this message translates to:
+  /// **'Jira'**
+  String get exportJira;
+
+  /// No description provided for @exportAzureDevOps.
+  ///
+  /// In it, this message translates to:
+  /// **'Azure DevOps'**
+  String get exportAzureDevOps;
+
+  /// No description provided for @reportMean.
+  ///
+  /// In it, this message translates to:
+  /// **'Media punti'**
+  String get reportMean;
+
+  /// No description provided for @reportMedian.
+  ///
+  /// In it, this message translates to:
+  /// **'Mediana punti'**
+  String get reportMedian;
+
+  /// No description provided for @reportCompleted.
+  ///
+  /// In it, this message translates to:
+  /// **'Ordini completati'**
+  String get reportCompleted;
+
+  /// No description provided for @reportSpikes.
+  ///
+  /// In it, this message translates to:
+  /// **'Spike'**
+  String get reportSpikes;
+
+  /// No description provided for @roomTemplates.
+  ///
+  /// In it, this message translates to:
+  /// **'Template locale'**
+  String get roomTemplates;
+
+  /// No description provided for @createFromTemplate.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea da template'**
+  String get createFromTemplate;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Notifiche browser'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Reveal e timer quando la scheda è in background'**
+  String get notificationsSubtitle;
+
+  /// No description provided for @notificationsReveal.
+  ///
+  /// In it, this message translates to:
+  /// **'Voti rivelati'**
+  String get notificationsReveal;
+
+  /// No description provided for @notificationsTimer.
+  ///
+  /// In it, this message translates to:
+  /// **'Tempo quasi scaduto'**
+  String get notificationsTimer;
 }
 
 class _AppLocalizationsDelegate

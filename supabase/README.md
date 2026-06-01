@@ -24,6 +24,7 @@ supabase db push
 | `20260531190333_room_deck_settings.sql` | Deck JSON per stanza, `set_room_deck`, validazione voti |
 | `20260601120938_bulk_add_stories.sql` | RPC `add_stories` — import batch titoli (max 50) |
 | `20260601131912_join_room_rejoin.sql` | `join_room` reclaim nickname assente; RPC `leave_room` per uscita |
+| `20260602140000_session_advanced.sql` | Spike, osservatori, auto-reveal, PIN, note barman, duplica stanza |
 
 I nomi usano il timestamp Supabase (`YYYYMMDDHHMMSS_nome.sql`) per allinearsi a `supabase_migrations.schema_migrations` e a `supabase db push` in CI.
 

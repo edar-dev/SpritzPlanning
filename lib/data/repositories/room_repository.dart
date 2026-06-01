@@ -25,10 +25,15 @@ class RoomRepository {
   Future<SessionResult> createRoom({
     required String name,
     required String nickname,
+    String? pin,
   }) async {
     final response = await supabase.rpc(
       'create_room',
-      params: {'p_name': name, 'p_nickname': nickname},
+      params: {
+        'p_name': name,
+        'p_nickname': nickname,
+        if (pin != null && pin.isNotEmpty) 'p_pin': pin,
+      },
     );
     return SessionResult.fromJson(Map<String, dynamic>.from(response as Map));
   }
@@ -36,12 +41,84 @@ class RoomRepository {
   Future<SessionResult> joinRoom({
     required String code,
     required String nickname,
+    bool observer = false,
+    String? pin,
   }) async {
     final response = await supabase.rpc(
       'join_room',
-      params: {'p_code': code.trim(), 'p_nickname': nickname},
+      params: {
+        'p_code': code.trim(),
+        'p_nickname': nickname,
+        'p_observer': observer,
+        if (pin != null && pin.isNotEmpty) 'p_pin': pin,
+      },
     );
     return SessionResult.fromJson(Map<String, dynamic>.from(response as Map));
+  }
+
+  Future<RoomJoinInfo> getRoomJoinInfo(String code) async {
+    final response = await supabase.rpc(
+      'get_room_join_info',
+      params: {'p_code': code.trim()},
+    );
+    final map = Map<String, dynamic>.from(response as Map);
+    return RoomJoinInfo(
+      requiresPin: map['requires_pin'] as bool? ?? false,
+      roomName: map['room_name'] as String? ?? '',
+    );
+  }
+
+  Future<SessionResult> duplicateRoom({
+    required String participantId,
+    required String sourceRoomId,
+  }) async {
+    final response = await supabase.rpc(
+      'duplicate_room',
+      params: {
+        'p_participant_id': participantId,
+        'p_source_room_id': sourceRoomId,
+      },
+    );
+    return SessionResult.fromJson(Map<String, dynamic>.from(response as Map));
+  }
+
+  Future<void> markStorySpike({
+    required String participantId,
+    required String storyId,
+  }) async {
+    await supabase.rpc(
+      'mark_story_spike',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_id': storyId,
+      },
+    );
+  }
+
+  Future<void> setRoomSettings({
+    required String participantId,
+    required bool autoRevealWhenAllVoted,
+  }) async {
+    await supabase.rpc(
+      'set_room_settings',
+      params: {
+        'p_participant_id': participantId,
+        'p_auto_reveal_when_all_voted': autoRevealWhenAllVoted,
+      },
+    );
+  }
+
+  Future<void> setRoomPin({
+    required String participantId,
+    String? pin,
+  }) async {
+    await supabase.rpc(
+      'set_room_pin',
+      params: {
+        'p_participant_id': participantId,
+        'p_pin': pin ?? '',
+      },
+    );
   }
 
   Future<RoomState> fetchRoomState(String roomId) async {
@@ -272,6 +349,7 @@ class RoomRepository {
     required String storyId,
     required String title,
     String description = '',
+    String? facilitatorNote,
   }) async {
     await supabase.rpc(
       'update_story',
@@ -280,6 +358,7 @@ class RoomRepository {
         'p_story_id': storyId,
         'p_title': title,
         'p_description': description,
+        if (facilitatorNote != null) 'p_facilitator_note': facilitatorNote,
       },
     );
   }
