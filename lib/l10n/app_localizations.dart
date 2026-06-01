@@ -122,6 +122,24 @@ abstract class AppLocalizations {
   /// **'Installa'**
   String get installPwaAction;
 
+  /// No description provided for @rateLimitError.
+  ///
+  /// In it, this message translates to:
+  /// **'Troppe richieste. Attendi un momento e riprova.'**
+  String get rateLimitError;
+
+  /// No description provided for @voteCardSemantics.
+  ///
+  /// In it, this message translates to:
+  /// **'Vota {value}'**
+  String voteCardSemantics(String value);
+
+  /// No description provided for @projectorMode.
+  ///
+  /// In it, this message translates to:
+  /// **'Modalità sala / proiettore'**
+  String get projectorMode;
+
   /// No description provided for @nicknameLabel.
   ///
   /// In it, this message translates to:

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/constants/deck_values.dart';
+import '../../l10n/app_localizations.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../core/theme/projector_theme.dart';
 
 class SpritzCard extends StatelessWidget {
   const SpritzCard({
@@ -25,7 +27,21 @@ class SpritzCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedScale(
+    final l10n = AppLocalizations.of(context);
+    final semanticsLabel =
+        l10n?.voteCardSemantics(value) ?? 'Vote $value';
+    final projector = ProjectorMode.of(context);
+    final scale = projector.cardScale;
+    final baseW = revealed ? 80.0 : 68.0;
+    final baseH = revealed ? 104.0 : 92.0;
+    final cardW = baseW * scale;
+    final cardH = baseH * scale;
+
+    return Semantics(
+      button: !disabled,
+      label: semanticsLabel,
+      selected: selected,
+      child: AnimatedScale(
       scale: selected ? 1.05 : 1,
       duration: const Duration(milliseconds: 180),
       curve: Curves.easeOutCubic,
@@ -41,8 +57,8 @@ class SpritzCard extends StatelessWidget {
           onLongPress: disabled ? null : onLongPress,
           borderRadius: BorderRadius.circular(AppDecorations.radiusMd),
           child: Ink(
-            width: revealed ? 80 : 68,
-            height: revealed ? 104 : 92,
+            width: cardW,
+            height: cardH,
             decoration: BoxDecoration(
               color: selected
                   ? const Color(AppColors.spritzOrange)
@@ -101,6 +117,7 @@ class SpritzCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

@@ -455,6 +455,8 @@ class _HomePreferencesBar extends ConsumerWidget {
     final l10n = context.l10n;
     final themeMode = ref.watch(themeModeProvider).valueOrNull ?? ThemeMode.system;
     final locale = ref.watch(localeProvider).valueOrNull;
+    final projectorMode =
+        ref.watch(projectorModeProvider).valueOrNull ?? false;
 
     return Row(
       children: [
@@ -476,6 +478,20 @@ class _HomePreferencesBar extends ConsumerWidget {
         Text(
           l10n.languageLabel,
           style: Theme.of(context).textTheme.labelMedium,
+        ),
+        IconButton(
+          tooltip: l10n.projectorMode,
+          onPressed: () => ref
+              .read(projectorModeProvider.notifier)
+              .setProjectorMode(!projectorMode),
+          icon: Icon(
+            projectorMode
+                ? Icons.present_to_all
+                : Icons.present_to_all_outlined,
+            color: projectorMode
+                ? Theme.of(context).colorScheme.primary
+                : null,
+          ),
         ),
         const Spacer(),
         PopupMenuButton<ThemeMode>(

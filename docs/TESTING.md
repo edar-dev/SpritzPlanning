@@ -1,6 +1,6 @@
 # Testing — SpritzPlanning
 
-**Ultimo aggiornamento:** Fase 10
+**Ultimo aggiornamento:** Fase 12
 
 ## Unit e widget test
 
@@ -85,12 +85,25 @@ Oppure attendere `cleanup_stale_rooms(24)` se pg_cron attivo.
 - Non committare `env.test.json`
 - Preferire progetto test separato documentato nel playbook
 
+## Voto ottimistico e retry (manuale)
+
+1. Apri DevTools → Network → **Slow 3G** (o offline breve dopo il tap).
+2. In sessione di voto, tocca una card: il voto deve comparire subito; dopo la risposta RPC resta confermato, oppure rollback + snackbar se errore.
+3. Doppio tap rapido sulla stessa card: un solo RPC (secondo tap ignorato finché il primo è in corso).
+
 ## CI
 
 | Workflow | Quando | Secrets |
 |----------|--------|---------|
-| [ci.yml](../.github/workflows/ci.yml) | ogni PR/push `main` | `SUPABASE_URL_TEST`, `SUPABASE_ANON_KEY_TEST` (job integration su push main; skip se assenti) |
+| [ci.yml](../.github/workflows/ci.yml) | ogni PR/push `main` | `SUPABASE_URL_TEST`, `SUPABASE_ANON_KEY_TEST` |
+| Job `integration-pr` | PR con label **`integration`** | stessi secrets (fallisce se secrets assenti) |
+| Job `integration` | push `main` | skip se secrets assenti |
 | [integration.yml](../.github/workflows/integration.yml) | `workflow_dispatch` + lunedì 06:00 UTC | stessi secrets |
+| [deploy-smoke.yml](../.github/workflows/deploy-smoke.yml) | `workflow_dispatch` o deploy Production OK | nessuno (curl su produzione) |
+
+### Label `integration` su PR
+
+Aggiungere la label GitHub **`integration`** al pull request per eseguire `integration/room_flow_integration_test.dart` in CI senza attendere il merge su `main`.
 
 Nomi secrets GitHub (Settings → Secrets → Actions):
 

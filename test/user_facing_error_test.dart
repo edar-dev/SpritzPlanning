@@ -15,6 +15,17 @@ void main() {
     );
   });
 
+  test('userFacingMessage maps rate limit', () {
+    const error = PostgrestException(
+      message: 'Rate limit exceeded',
+      code: '429',
+    );
+    expect(
+      userFacingMessage(error),
+      contains('Troppe richieste'),
+    );
+  });
+
   test('userFacingMessage falls back to generic', () {
     expect(
       userFacingMessage(Object()),

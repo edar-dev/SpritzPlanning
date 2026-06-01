@@ -4,6 +4,16 @@
   "tagline": "Estimate user stories at the bar",
   "installPwa": "Install SpritzPlanning on your home screen",
   "installPwaAction": "Install",
+  "rateLimitError": "Too many requests. Please wait a moment and try again.",
+  "voteCardSemantics": "Vote {value}",
+  "@voteCardSemantics": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "projectorMode": "Room / projector mode",
   "nicknameLabel": "Your name at the bar",
   "nicknameHint": "e.g. Alex",
   "openLocale": "Open a room",

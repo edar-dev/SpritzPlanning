@@ -35,6 +35,9 @@ Future<void> main() async {
         options.dsn = SentryConfig.dsn;
         options.tracesSampleRate = kReleaseMode ? 0.2 : 1.0;
         options.environment = kReleaseMode ? 'production' : 'development';
+        if (SentryConfig.gitSha.isNotEmpty) {
+          options.release = 'spritz-planning@${SentryConfig.gitSha}';
+        }
       },
       appRunner: bootstrap,
     );

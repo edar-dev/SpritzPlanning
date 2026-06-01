@@ -21,6 +21,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get installPwaAction => 'Install';
 
   @override
+  String get rateLimitError =>
+      'Too many requests. Please wait a moment and try again.';
+
+  @override
+  String voteCardSemantics(String value) {
+    return 'Vote $value';
+  }
+
+  @override
+  String get projectorMode => 'Room / projector mode';
+
+  @override
   String get nicknameLabel => 'Your name at the bar';
 
   @override

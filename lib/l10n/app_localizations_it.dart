@@ -21,6 +21,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get installPwaAction => 'Installa';
 
   @override
+  String get rateLimitError =>
+      'Troppe richieste. Attendi un momento e riprova.';
+
+  @override
+  String voteCardSemantics(String value) {
+    return 'Vota $value';
+  }
+
+  @override
+  String get projectorMode => 'Modalità sala / proiettore';
+
+  @override
   String get nicknameLabel => 'Il tuo nome al bancone';
 
   @override

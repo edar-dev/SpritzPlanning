@@ -112,6 +112,7 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
   RoomRepository get _repo => ref.read(roomRepositoryProvider);
   Timer? _heartbeatTimer;
   StreamSubscription<RoomState>? _roomSubscription;
+  bool _castVoteInFlight = false;
 
   @override
   Future<RoomState?> build() async {
@@ -144,10 +145,85 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
       await ErrorReporter.capture(
         e,
         stackTrace: st,
-        tags: {'room_id': roomId},
+        tags: const {'flow': 'enter_room'},
       );
       state = AsyncError(e, st);
     }
+  }
+
+  /// Applies vote locally, then RPC with retry; rolls back on failure.
+  Future<void> castVoteOptimistic({
+    required String participantId,
+    required String storyId,
+    required String value,
+  }) async {
+    final current = state.valueOrNull;
+    if (current == null || _castVoteInFlight) return;
+
+    final previous = current;
+    final optimisticVotes = _upsertVote(
+      current.votes,
+      participantId: participantId,
+      storyId: storyId,
+      value: value,
+    );
+    state = AsyncData(current.copyWith(votes: optimisticVotes));
+    _castVoteInFlight = true;
+
+    try {
+      await _repo.castVote(
+        participantId: participantId,
+        storyId: storyId,
+        value: value,
+      );
+    } catch (e, st) {
+      state = AsyncData(previous);
+      ErrorReporter.breadcrumbRpcFailure('cast_vote', e);
+      await ErrorReporter.capture(
+        e,
+        stackTrace: st,
+        tags: const {'action': 'cast_vote'},
+        roomPhase: current.room.phase.name,
+        isFacilitator: ref.read(isFacilitatorProvider),
+      );
+      rethrow;
+    } finally {
+      _castVoteInFlight = false;
+    }
+  }
+
+  List<Vote> _upsertVote(
+    List<Vote> votes, {
+    required String participantId,
+    required String storyId,
+    required String value,
+  }) {
+    final index = votes.indexWhere(
+      (v) => v.participantId == participantId && v.storyId == storyId,
+    );
+    final now = DateTime.now().toUtc();
+    if (index >= 0) {
+      final existing = votes[index];
+      final updated = List<Vote>.from(votes);
+      updated[index] = Vote(
+        id: existing.id,
+        storyId: storyId,
+        participantId: participantId,
+        value: value,
+        votedAt: now,
+      );
+      return updated;
+    }
+    return [
+      ...votes,
+      Vote(
+        id: 'optimistic-$participantId-$storyId',
+        storyId: storyId,
+        participantId: participantId,
+        value: value,
+        votedAt: now,
+      ),
+    ];
   }
 
   Future<void> refresh() async {

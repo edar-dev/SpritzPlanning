@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/deck_values.dart';
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/preferences/app_preferences.dart';
 import '../../core/voting/vote_stats.dart';
 import 'vote_summary_panel.dart';
 import '../../core/theme/app_colors.dart';
@@ -41,6 +42,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
   late AnimationController _revealController;
   Timer? _countdownTimer;
   DateTime _now = DateTime.now();
+  bool _castVoteInFlight = false;
 
   @override
   void initState() {
@@ -67,7 +69,11 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     if (oldWidget.roomState.room.votesRevealed !=
             widget.roomState.room.votesRevealed &&
         widget.roomState.room.votesRevealed) {
-      _revealController.forward(from: 0);
+      if (MediaQuery.disableAnimationsOf(context)) {
+        _revealController.value = 1;
+      } else {
+        _revealController.forward(from: 0);
+      }
     }
     _syncFromState();
     _notifyAllVoted(oldWidget);
@@ -137,19 +143,32 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
 
   Future<void> _castVote(String value) async {
     final story = widget.roomState.currentStory;
-    if (story == null) return;
+    if (story == null || _castVoteInFlight) return;
 
-    setState(() => _selectedValue = value);
+    setState(() {
+      _selectedValue = value;
+      _castVoteInFlight = true;
+    });
     try {
-      await ref.read(roomRepositoryProvider).castVote(
+      await ref.read(roomStateProvider.notifier).castVoteOptimistic(
             participantId: widget.participantId,
             storyId: story.id,
             value: value,
           );
     } catch (e, st) {
       if (mounted) {
-        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
+        setState(() => _selectedValue = null);
+        await showUserError(
+          context,
+          e,
+          stackTrace: st,
+          tags: const {'action': 'cast_vote'},
+          roomPhase: widget.roomState.room.phase.name,
+          isFacilitator: widget.isFacilitator,
+        );
       }
+    } finally {
+      if (mounted) setState(() => _castVoteInFlight = false);
     }
   }
 
@@ -203,6 +222,11 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       await ref.read(roomRepositoryProvider).nextStory(
             participantId: widget.participantId,
           );
+      final updated = ref.read(roomStateProvider).valueOrNull;
+      if (updated != null &&
+          updated.stories.any((s) => s.status == StoryStatus.done)) {
+        await AppPreferences.markSessionCompleted();
+      }
     } catch (e, st) {
       if (mounted) {
         await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
@@ -294,29 +318,8 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
           ],
           const SizedBox(height: 24),
           if (revealed) ...[
-            FadeTransition(
-              opacity: _revealController,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.8, end: 1).animate(
-                  CurvedAnimation(
-                    parent: _revealController,
-                    curve: Curves.elasticOut,
-                  ),
-                ),
-                child: _RevealSection(
-                  roomState: widget.roomState,
-                  voteStats: voteStats,
-                  finalEstimate: _finalEstimate,
-                  onSelectEstimate: (v) => setState(() => _finalEstimate = v),
-                  isFacilitator: widget.isFacilitator,
-                  onApplyConsensus: widget.isFacilitator &&
-                          voteStats.suggestedConsensus != null
-                      ? () => _applyConsensusAndNext(
-                            voteStats.suggestedConsensus!,
-                          )
-                      : null,
-                ),
-              ),
+            _buildRevealContent(
+              voteStats: voteStats,
             ),
           ] else ...[
             SectionHeader(
@@ -399,6 +402,37 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
             ],
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildRevealContent({required VoteStats voteStats}) {
+    final section = _RevealSection(
+      roomState: widget.roomState,
+      voteStats: voteStats,
+      finalEstimate: _finalEstimate,
+      onSelectEstimate: (v) => setState(() => _finalEstimate = v),
+      isFacilitator: widget.isFacilitator,
+      onApplyConsensus: widget.isFacilitator &&
+              voteStats.suggestedConsensus != null
+          ? () => _applyConsensusAndNext(voteStats.suggestedConsensus!)
+          : null,
+    );
+
+    if (MediaQuery.disableAnimationsOf(context)) {
+      return section;
+    }
+
+    return FadeTransition(
+      opacity: _revealController,
+      child: ScaleTransition(
+        scale: Tween<double>(begin: 0.8, end: 1).animate(
+          CurvedAnimation(
+            parent: _revealController,
+            curve: Curves.elasticOut,
+          ),
+        ),
+        child: section,
       ),
     );
   }
@@ -522,7 +556,9 @@ class _RevealSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Column(
+    return Semantics(
+      liveRegion: true,
+      child: Column(
       children: [
         Text(
           l10n.votesRevealed,
@@ -603,6 +639,7 @@ class _RevealSection extends StatelessWidget {
           ),
         ],
       ],
+      ),
     );
   }
 }
