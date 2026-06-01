@@ -84,6 +84,8 @@ Se hai modificato `integration/`:
 
 Build: `scripts/vercel-build.sh` — Flutter **3.35.6**, `flutter gen-l10n`, `flutter build web --no-wasm-dry-run`.
 
+Skip build: `scripts/vercel-should-build.sh` (in `vercel.json` → `ignoreCommand`) salta deploy su commit solo docs/ops; `VERCEL_FORCE_BUILD=1` forza rebuild.
+
 Cache statica: `vercel.json` (`/canvaskit/`, `/assets/`).
 
 Se Preview fallisce con errore Supabase/env → controllare dashboard Vercel → Environment Variables → Preview.

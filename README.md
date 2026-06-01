@@ -62,7 +62,7 @@ Variabili d'ambiente configurate su Vercel (Production + Development):
 - `SUPABASE_URL`
 - `SUPABASE_ANON_KEY`
 
-Il build usa `scripts/vercel-build.sh` (installa Flutter su Linux e compila la web app).
+Il build usa `scripts/vercel-build.sh` (installa Flutter su Linux e compila la web app). Commit solo documentazione **non** ridistribuiscono l’app (`scripts/vercel-should-build.sh` → `ignoreCommand` in `vercel.json`).
 
 ## Roadmap
 
@@ -94,7 +94,7 @@ Miglioramenti prod / production-ready (#31–40): [docs/IMPROVEMENTS-PROD.md](do
 
 ## CI
 
-Su push/PR verso `main`, GitHub Actions esegue `flutter analyze`, `flutter test` e un build web di verifica (`.github/workflows/ci.yml`).
+Su push/PR verso `main`, GitHub Actions esegue `flutter analyze`, `flutter test` e un build web di verifica (`.github/workflows/ci.yml`) **solo se** cambiano path app (`lib/`, `web/`, `test/`, …). Commit solo `docs/` → job `flutter` verde con skip.
 
 Opzionale in produzione: `SENTRY_DSN` in Vercel per error reporting (vedi `env.json.example`).
 

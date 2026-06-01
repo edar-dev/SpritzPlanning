@@ -1,5 +1,6 @@
 {
   "buildCommand": "bash scripts/vercel-build.sh",
+  "ignoreCommand": "bash scripts/vercel-should-build.sh",
   "outputDirectory": "build/web",
   "framework": null,
   "installCommand": "echo 'Dependencies installed in build script'",

@@ -95,11 +95,15 @@ Oppure attendere `cleanup_stale_rooms(24)` se pg_cron attivo.
 
 | Workflow | Quando | Secrets |
 |----------|--------|---------|
-| [ci.yml](../.github/workflows/ci.yml) | ogni PR/push `main` | `SUPABASE_URL_TEST`, `SUPABASE_ANON_KEY_TEST` |
-| Job `integration-pr` | PR con label **`integration`** | stessi secrets (fallisce se secrets assenti) |
-| Job `integration` | push `main` | skip se secrets assenti |
+| [ci.yml](../.github/workflows/ci.yml) | PR/push `main` con path **app** (`lib/`, `web/`, `test/`, …) | `SUPABASE_URL_TEST`, `SUPABASE_ANON_KEY_TEST` |
+| Job `flutter` | path app | analyze + test; **skip** (job verde) su commit solo `docs/` o `supabase/` |
+| Job `integration-pr` | PR con label **`integration`** + path app | stessi secrets (fallisce se secrets assenti) |
+| Job `integration` | push `main` + path app | skip se secrets assenti |
 | [integration.yml](../.github/workflows/integration.yml) | `workflow_dispatch` + lunedì 06:00 UTC | stessi secrets |
 | [deploy-smoke.yml](../.github/workflows/deploy-smoke.yml) | `workflow_dispatch` o deploy Production OK | nessuno (curl su produzione) |
+| [supabase-migrations.yml](../.github/workflows/supabase-migrations.yml) | push `main` solo `supabase/migrations/**` | `SUPABASE_ACCESS_TOKEN` |
+
+Commit solo documentazione (`docs/**`, `*.md`) **non** avviano Flutter CI né build Vercel produzione (`scripts/vercel-should-build.sh`). Forza rebuild Vercel: env `VERCEL_FORCE_BUILD=1` nel dashboard.
 
 ### Label `integration` su PR
 

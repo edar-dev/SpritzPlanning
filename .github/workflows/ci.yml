@@ -7,40 +7,78 @@ on:
     branches: [main]
 
 jobs:
-  flutter:
+  changes:
     runs-on: ubuntu-latest
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'lib/**'
+              - 'web/**'
+              - 'test/**'
+              - 'integration/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - 'l10n.yaml'
+              - 'analysis_options.yaml'
+              - 'scripts/check-flutter-version.sh'
+              - 'scripts/vercel-build.sh'
+              - '.fvmrc'
+              - '.github/workflows/ci.yml'
+
+  flutter:
+    runs-on: ubuntu-latest
+    needs: changes
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Skip Flutter CI (docs / ops only)
+        if: needs.changes.outputs.app != 'true'
+        run: |
+          echo "::notice::Flutter CI skipped — no app paths changed (docs, supabase-only, etc.)."
+
       - uses: subosito/flutter-action@v2
+        if: needs.changes.outputs.app == 'true'
         with:
           channel: stable
           flutter-version: '3.35.6'
           cache: true
 
       - name: Verify Flutter version
+        if: needs.changes.outputs.app == 'true'
         run: bash scripts/check-flutter-version.sh
         env:
           FLUTTER_VERSION: '3.35.6'
 
       - name: Install dependencies
+        if: needs.changes.outputs.app == 'true'
         run: flutter pub get
 
       - name: Generate l10n
+        if: needs.changes.outputs.app == 'true'
         run: flutter gen-l10n
 
       - name: Analyze
+        if: needs.changes.outputs.app == 'true'
         run: flutter analyze --fatal-infos
 
       - name: Test
+        if: needs.changes.outputs.app == 'true'
         run: flutter test
 
   integration-pr:
     runs-on: ubuntu-latest
     if: >-
+      needs.changes.outputs.app == 'true' &&
       github.event_name == 'pull_request' &&
       contains(github.event.pull_request.labels.*.name, 'integration')
-    needs: flutter
+    needs: [changes, flutter]
     steps:
       - uses: actions/checkout@v4
 
@@ -76,8 +114,11 @@ jobs:
 
   integration:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: flutter
+    if: >-
+      needs.changes.outputs.app == 'true' &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+    needs: [changes, flutter]
     steps:
       - uses: actions/checkout@v4
 
@@ -113,7 +154,8 @@ jobs:
 
   build-web:
     runs-on: ubuntu-latest
-    needs: flutter
+    if: needs.changes.outputs.app == 'true'
+    needs: [changes, flutter]
     steps:
       - uses: actions/checkout@v4
 
