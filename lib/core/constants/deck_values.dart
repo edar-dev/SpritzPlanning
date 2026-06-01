@@ -22,6 +22,10 @@ abstract final class DeckValues {
 
   static const tshirt = ['XS', 'S', 'M', 'L', 'XL'];
 
+  static const powersOf2 = ['0', '1', '2', '4', '8', '16', '32', '?', '☕'];
+
+  static const safe = ['1', '2', '3', '5', '8', '13', '21', '?', '☕'];
+
   static List<String> forRoom(Room room) {
     if (room.deckValues.isEmpty) return List<String>.from(defaultDeck);
     return List<String>.from(room.deckValues);

@@ -180,6 +180,16 @@ class SessionReportSheet extends StatelessWidget {
                     label: Text(l10n.exportAzureDevOps),
                   ),
                   OutlinedButton.icon(
+                    onPressed: () => _copy(context, report.toLinear()),
+                    icon: const Icon(Icons.linear_scale_outlined, size: 18),
+                    label: Text(l10n.exportLinear),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => _copy(context, report.toGitHubIssues()),
+                    icon: const Icon(Icons.code_outlined, size: 18),
+                    label: Text(l10n.exportGitHubIssues),
+                  ),
+                  OutlinedButton.icon(
                     onPressed: () => _copy(context, report.toJson()),
                     icon: const Icon(Icons.data_object_outlined, size: 18),
                     label: Text(l10n.exportJson),

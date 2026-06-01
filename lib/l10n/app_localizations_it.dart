@@ -498,4 +498,215 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get notificationsTimer => 'Tempo quasi scaduto';
+
+  @override
+  String get helpTitle => 'Guida SpritzPlanning';
+
+  @override
+  String get helpIntro =>
+      'Planning poker a tema spritz per team agile. Nessun account: nickname e codice stanza bastano per iniziare.';
+
+  @override
+  String get helpRolesTitle => 'Ruoli';
+
+  @override
+  String get helpRolesBody =>
+      'Il barman facilita: avvia votazioni, rivela i voti, gestisce il menu ordini. I clienti votano con le carte. Gli osservatori seguono la sessione senza votare.';
+
+  @override
+  String get helpFlowTitle => 'Flusso di una serata';
+
+  @override
+  String get helpFlowBody =>
+      '1. Apri o entra in un locale\n2. Aggiungi ordini al menu (backlog)\n3. Avvia la votazione per ogni story\n4. Rivelate i voti e concordate la stima\n5. Esportate il report di fine serata';
+
+  @override
+  String get helpFeaturesTitle => 'Funzionalità';
+
+  @override
+  String get helpFeatTemplates => 'Template locale — Home → Crea da template';
+
+  @override
+  String get helpFeatImport => 'Import backlog — Lobby barman → icona upload';
+
+  @override
+  String get helpFeatSpike => 'Story spike — Icona fulmine su ordine pending';
+
+  @override
+  String get helpFeatPin => 'PIN stanza — Impostazioni deck del barman';
+
+  @override
+  String get helpFeatAutoReveal =>
+      'Auto-reveal — Impostazioni deck, quando tutti hanno votato';
+
+  @override
+  String get helpFeatDuplicate => 'Nuova serata — Menu ⋮ in stanza (barman)';
+
+  @override
+  String get helpFeatReport => 'Report Jira/ADO — Icona riepilogo in stanza';
+
+  @override
+  String get helpFeatNotify => 'Notifiche browser — Impostazioni home';
+
+  @override
+  String get helpFeatProjector => 'Modalità proiettore — Impostazioni home';
+
+  @override
+  String get helpFeatResume => 'Ripresa sessione — Home, se hai già giocato';
+
+  @override
+  String get helpFaqTitle => 'Domande frequenti';
+
+  @override
+  String get helpFaqNicknameTitle => 'Nickname già presente';
+
+  @override
+  String get helpFaqNicknameBody =>
+      'Significa che quel nickname è attivo in stanza. Esci dal locale prima di rientrare, oppure attendi ~2 minuti se il cliente è assente.';
+
+  @override
+  String get helpFaqRejoinTitle => 'Come rientro nella stessa stanza';
+
+  @override
+  String get helpFaqRejoinBody =>
+      'Usa lo stesso nickname e codice. L\'app propone di riprendere la sessione se l\'hai lasciata di recente.';
+
+  @override
+  String get helpFaqPinTitle => 'PIN non accettato';
+
+  @override
+  String get helpFaqPinBody =>
+      'Chiedi il PIN al barman. Deve essere di 4–6 cifre numeriche.';
+
+  @override
+  String get helpFaqObserverTitle => 'Osservatore';
+
+  @override
+  String get helpFaqObserverBody =>
+      'Spunta «Solo osservazione» in fase di join. Non potrai votare ma vedrai reveal e report.';
+
+  @override
+  String get helpShortcutsTitle => 'Scorciatoie tastiera (barman, web)';
+
+  @override
+  String get onboardingWelcomeTitle => 'Benvenuto al bancone!';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'SpritzPlanning è planning poker veloce per il tuo team — senza registrazione.';
+
+  @override
+  String get onboardingCreateTitle => 'Apri un locale';
+
+  @override
+  String get onboardingCreateBody =>
+      'Crea una stanza, condividi il codice o il QR con il team e aggiungi gli ordini da stimare.';
+
+  @override
+  String get onboardingJoinTitle => 'Entra al bancone';
+
+  @override
+  String get onboardingJoinBody =>
+      'Hai un codice? Inserisci nickname e codice stanza. Puoi anche usare un link con ?code=.';
+
+  @override
+  String get onboardingHelpTitle => 'Serve aiuto?';
+
+  @override
+  String get onboardingHelpBody =>
+      'Nella guida trovi tutte le funzioni: spike, PIN, template, export e molto altro.';
+
+  @override
+  String get onboardingSkip => 'Salta';
+
+  @override
+  String get onboardingNext => 'Avanti';
+
+  @override
+  String get onboardingDone => 'Inizia';
+
+  @override
+  String get pastSessions => 'Sessioni passate';
+
+  @override
+  String get sessionArchiveTitle => 'Archivio sessioni';
+
+  @override
+  String get sessionArchiveEmpty =>
+      'Nessuna sessione salvata. Completa almeno una serata con ordini stimati.';
+
+  @override
+  String get sessionArchiveExported => 'Report copiato';
+
+  @override
+  String get sessionCloseTitle => 'Chiudi serata';
+
+  @override
+  String get sessionCloseRetroLabel => 'Note retro (opzionale)';
+
+  @override
+  String get sessionCloseRetroHint => 'Incluse nell\'export Markdown';
+
+  @override
+  String get sessionCloseExport => 'Esporta report';
+
+  @override
+  String get sessionCloseDuplicate => 'Duplica per prossima settimana';
+
+  @override
+  String get sessionCloseLeave => 'Esci dal locale';
+
+  @override
+  String get feedbackTitle => 'Com\'è andata la serata?';
+
+  @override
+  String get feedbackSubtitle =>
+      'Un rapido feedback ci aiuta a migliorare SpritzPlanning.';
+
+  @override
+  String get feedbackPositive => 'Bene';
+
+  @override
+  String get feedbackNegative => 'Da migliorare';
+
+  @override
+  String get feedbackSuggest => 'Lascia un suggerimento';
+
+  @override
+  String get feedbackDismiss => 'Non ora';
+
+  @override
+  String roomInvitePinLine(String pin) {
+    return 'PIN: $pin';
+  }
+
+  @override
+  String roomInviteBody(
+    String roomName,
+    String code,
+    String pinLine,
+    String joinUrl,
+    String helpUrl,
+  ) {
+    return '🍹 Unisciti a «$roomName» su SpritzPlanning!\nCodice: $code\n$pinLine\nApri: $joinUrl\nGuida: $helpUrl';
+  }
+
+  @override
+  String get exportLinear => 'Linear';
+
+  @override
+  String get exportGitHubIssues => 'GitHub Issues';
+
+  @override
+  String get deckPresetPowers2 => 'Powers of 2';
+
+  @override
+  String get deckPresetSafe => 'SAFe';
+
+  @override
+  String get hideVotersUntilRevealTitle => 'Voto anonimo fino al reveal';
+
+  @override
+  String get hideVotersUntilRevealSubtitle =>
+      'Nasconde chi ha già votato; resta il conteggio N/M';
 }

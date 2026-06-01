@@ -20,8 +20,11 @@ import '../../core/export/session_report.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../core/export/session_report_stats.dart';
+import '../../core/share/room_invite_text.dart';
 import 'session_report_sheet.dart';
+import 'session_close_sheet.dart';
 import '../../core/notifications/browser_notifications.dart';
+import '../../core/preferences/session_archive_storage.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/room_screen_skeleton.dart';
@@ -123,12 +126,37 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     }
   }
 
+  void _shareRoomInvite(RoomState roomState) {
+    Share.share(
+      RoomInviteText.build(
+        l10n: context.l10n,
+        roomName: roomState.room.name,
+        code: roomState.room.code,
+      ),
+    );
+  }
+
   Future<void> _leaveAndGoHome() async {
     final session = ref.read(sessionProvider).valueOrNull;
     final roomState = ref.read(roomStateProvider).valueOrNull;
     if (roomState != null &&
         roomState.stories.any((s) => s.status == StoryStatus.done)) {
+      final state = roomState;
       await AppPreferences.markSessionCompleted();
+      final report = SessionReport.fromRoomState(
+        state,
+        includeFacilitatorNotes: true,
+      );
+      await SessionArchiveStorage.add(
+        SessionArchiveEntry(
+          id: '${state.room.code}-${DateTime.now().millisecondsSinceEpoch}',
+          roomName: state.room.name,
+          roomCode: state.room.code,
+          completedAt: DateTime.now(),
+          reportJson: report.toJson(),
+          statsJson: '{}',
+        ),
+      );
     }
     if (session != null) {
       try {
@@ -282,9 +310,20 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                   onSelected: (value) {
                     if (value == 'duplicate') {
                       unawaited(_duplicateRoom(context, ref, session));
+                    } else if (value == 'close') {
+                      SessionCloseSheet.show(
+                        context,
+                        roomState: roomState,
+                        participantId: session.participantId,
+                        onLeave: () => unawaited(_leaveAndGoHome()),
+                      );
                     }
                   },
                   itemBuilder: (ctx) => [
+                    PopupMenuItem(
+                      value: 'close',
+                      child: Text(context.l10n.sessionCloseTitle),
+                    ),
                     PopupMenuItem(
                       value: 'duplicate',
                       child: Text(context.l10n.duplicateRoom),
@@ -328,6 +367,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                         roomState: roomState,
                         isFacilitator: isFacilitator,
                         participantId: session.participantId,
+                        onShare: () => _shareRoomInvite(roomState),
                       ),
                     ),
                     Expanded(
@@ -354,9 +394,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                   children: [
                     RoomCodeDisplay(
                       code: room.code,
-                      onShare: () => Share.share(
-                        '${context.l10n.shareMessage} ${room.code}',
-                      ),
+                      onShare: () => _shareRoomInvite(roomState),
                     ),
                     const SizedBox(height: 16),
                     _ParticipantsRow(roomState: roomState),
@@ -476,11 +514,13 @@ class _Sidebar extends StatelessWidget {
     required this.roomState,
     required this.isFacilitator,
     required this.participantId,
+    required this.onShare,
   });
 
   final RoomState roomState;
   final bool isFacilitator;
   final String participantId;
+  final VoidCallback onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -492,9 +532,7 @@ class _Sidebar extends StatelessWidget {
         children: [
           RoomCodeDisplay(
             code: roomState.room.code,
-            onShare: () => Share.share(
-              '${context.l10n.shareMessage} ${roomState.room.code}',
-            ),
+            onShare: onShare,
           ),
           const SizedBox(height: 16),
           _ParticipantsRow(roomState: roomState),
@@ -513,7 +551,8 @@ class _ParticipantsRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final showVoteStatus = roomState.room.phase == RoomPhase.voting &&
-        !roomState.room.votesRevealed;
+        !roomState.room.votesRevealed &&
+        !roomState.room.hideVotersUntilReveal;
     final session = ref.watch(sessionProvider).valueOrNull;
     final isFacilitator = ref.watch(isFacilitatorProvider);
 

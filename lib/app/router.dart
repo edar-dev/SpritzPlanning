@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/providers/providers.dart';
+import '../features/help/help_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/lobby/room_screen.dart';
 
@@ -12,6 +13,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/help',
+        builder: (context, state) => const HelpScreen(),
       ),
       GoRoute(
         path: '/room/:roomId',

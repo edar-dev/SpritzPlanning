@@ -66,8 +66,9 @@ Room _room({String currentStoryId = 'story-1'}) {
     votesRevealed: false,
     deckValues: _defaultDeck,
     allowCoffeeBreak: true,
-    autoRevealWhenAllVoted: false,
-    lastActivityAt: _t,
+      autoRevealWhenAllVoted: false,
+      hideVotersUntilReveal: false,
+      lastActivityAt: _t,
     createdAt: _t,
   );
 }
@@ -81,8 +82,9 @@ Room _roomWithoutStory() {
     votesRevealed: false,
     deckValues: _defaultDeck,
     allowCoffeeBreak: true,
-    autoRevealWhenAllVoted: false,
-    lastActivityAt: _t,
+      autoRevealWhenAllVoted: false,
+      hideVotersUntilReveal: false,
+      lastActivityAt: _t,
     createdAt: _t,
   );
 }

@@ -49,6 +49,7 @@ class Room {
     required this.deckValues,
     required this.allowCoffeeBreak,
     required this.autoRevealWhenAllVoted,
+    required this.hideVotersUntilReveal,
     required this.lastActivityAt,
     required this.createdAt,
   });
@@ -63,6 +64,7 @@ class Room {
   final List<String> deckValues;
   final bool allowCoffeeBreak;
   final bool autoRevealWhenAllVoted;
+  final bool hideVotersUntilReveal;
   final DateTime lastActivityAt;
   final DateTime createdAt;
 
@@ -81,6 +83,8 @@ class Room {
       allowCoffeeBreak: json['allow_coffee_break'] as bool? ?? true,
       autoRevealWhenAllVoted:
           json['auto_reveal_when_all_voted'] as bool? ?? false,
+      hideVotersUntilReveal:
+          json['hide_voters_until_reveal'] as bool? ?? false,
       lastActivityAt: DateTime.parse(json['last_activity_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
     );

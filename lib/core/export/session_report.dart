@@ -35,8 +35,6 @@ class SessionReport {
   final DateTime exportedAt;
   final bool includeFacilitatorNotes;
 
-  bool get isEmpty => rows.isEmpty;
-
   factory SessionReport.fromRoomState(
     RoomState state, {
     bool includeFacilitatorNotes = false,
@@ -62,6 +60,34 @@ class SessionReport {
       roomCode: state.room.code,
       rows: rows,
       exportedAt: DateTime.now().toUtc(),
+      includeFacilitatorNotes: includeFacilitatorNotes,
+    );
+  }
+
+  bool get isEmpty => rows.isEmpty;
+
+  factory SessionReport.fromJson(
+    Map<String, dynamic> json, {
+    bool includeFacilitatorNotes = true,
+  }) {
+    final stories = (json['stories'] as List? ?? [])
+        .map((e) {
+          final m = Map<String, dynamic>.from(e as Map);
+          return SessionReportRow(
+            title: m['title'] as String,
+            estimate: m['estimate'] as String,
+            description: m['description'] as String? ?? '',
+            facilitatorNote: m['facilitatorNote'] as String? ?? '',
+            completedAt: DateTime.parse(m['completedAt'] as String),
+            isSpike: m['isSpike'] as bool? ?? false,
+          );
+        })
+        .toList();
+    return SessionReport(
+      roomName: json['roomName'] as String,
+      roomCode: json['roomCode'] as String,
+      rows: stories,
+      exportedAt: DateTime.parse(json['exportedAt'] as String),
       includeFacilitatorNotes: includeFacilitatorNotes,
     );
   }
@@ -109,13 +135,28 @@ class SessionReport {
     return buffer.toString();
   }
 
-  String _jiraDescription(SessionReportRow row) {
-    final parts = <String>[];
-    if (row.description.isNotEmpty) parts.add(row.description);
-    if (includeFacilitatorNotes && row.facilitatorNote.isNotEmpty) {
-      parts.add('Note: ${row.facilitatorNote}');
+  String toLinear() {
+    final buffer = StringBuffer('Title\tEstimate\tDescription\tLabels\n');
+    for (final row in rows) {
+      final labels = row.isSpike ? 'spike' : 'story';
+      buffer.writeln(
+        '${_tabField(row.title)}\t${_tabField(row.estimate)}\t${_tabField(_jiraDescription(row))}\t$labels',
+      );
     }
-    return parts.join('\n\n');
+    return buffer.toString();
+  }
+
+  String toGitHubIssues() {
+    final buffer = StringBuffer();
+    for (final row in rows) {
+      buffer.writeln(
+        '- [ ] **${row.title}** (points: ${row.estimate})',
+      );
+      if (row.description.isNotEmpty) {
+        buffer.writeln('  ${row.description.replaceAll('\n', ' ')}');
+      }
+    }
+    return buffer.toString().trim();
   }
 
   String toJson() {
@@ -138,7 +179,7 @@ class SessionReport {
     });
   }
 
-  String toMarkdown() {
+  String toMarkdown({String retroNotes = ''}) {
     final buffer = StringBuffer()
       ..writeln('# SpritzPlanning — Riepilogo')
       ..writeln()
@@ -163,6 +204,13 @@ class SessionReport {
       }
     }
 
+    if (retroNotes.trim().isNotEmpty) {
+      buffer
+        ..writeln()
+        ..writeln('## Retro')
+        ..writeln(retroNotes.trim());
+    }
+
     buffer
       ..writeln()
       ..writeln(
@@ -170,6 +218,15 @@ class SessionReport {
       );
 
     return buffer.toString();
+  }
+
+  String _jiraDescription(SessionReportRow row) {
+    final parts = <String>[];
+    if (row.description.isNotEmpty) parts.add(row.description);
+    if (includeFacilitatorNotes && row.facilitatorNote.isNotEmpty) {
+      parts.add('Note: ${row.facilitatorNote}');
+    }
+    return parts.join('\n\n');
   }
 
   static String _csvField(String value) {
