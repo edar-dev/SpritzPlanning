@@ -105,3 +105,7 @@ Dialog leggero dopo prima sessione completata: 👍/👎 + link GitHub Discussio
 - Report export: Fase 5 `#15`, Fase 14 `#53` `#57`
 - Duplica stanza: Fase 14 `#58`
 - PWA install: Fase 4 `#6`, UI-H Fase 12
+
+---
+
+**Successivo (v8 — session depth):** [IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md) · Fase 16

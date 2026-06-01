@@ -35,11 +35,12 @@ flowchart LR
   P13[Fase13_UI_a11y]
   P14[Fase14_SessionAdv]
   P15[Fase15_Discover]
+  P16[Fase16_SessionDepth]
 
   P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
   P8 --> P10
   P9 -.-> P10
-  P10 --> P11 --> P12 --> P13 --> P14 --> P15
+  P10 --> P11 --> P12 --> P13 --> P14 --> P15 --> P16
 
 ```
 
@@ -70,6 +71,7 @@ flowchart LR
 | 13 | #41–48, UI-I–T | 5–8 giorni | `feat/ui-a11y-polish` | [phase-13-ui-a11y-polish.md](plans/phase-13-ui-a11y-polish.md) |
 | 14 | #49–58 | 10–14 giorni | `feat/session-advanced` | [phase-14-session-advanced.md](plans/phase-14-session-advanced.md) |
 | 15 | #59–68 | 8–12 giorni | `feat/discoverability` | [phase-15-discoverability.md](plans/phase-15-discoverability.md) |
+| 16 | #69–78 | 10–14 giorni | `feat/session-depth` | [phase-16-session-depth.md](plans/phase-16-session-depth.md) |
 
 
 
@@ -161,11 +163,15 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 
 
-**Prossima (v7 — discoverability):**
+**Completata (v7 — discoverability):** Fase 15 — help page, tour onboarding, archivio sessioni, preset deck, invito smart, voto anonimo, chiusura sessione, Open Graph, export Linear/GitHub, feedback ([IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md), PR #12).
 
 
 
-15. **Fase 15** — help page, tour onboarding, archivio sessioni, preset deck, invito smart, voto anonimo, chiusura sessione, Open Graph, export Linear/GitHub, feedback ([IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md))
+**Prossima (v8 — session depth):**
+
+
+
+16. **Fase 16** — OG dinamico, template custom, story riferimento, commenti story, confidence vote, import Jira/ADO, push PWA, suoni/haptic, Lighthouse CI, cronologia stime ([IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md))
 
 
 
@@ -247,7 +253,8 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 12 | Completata | PR #7 — `4273442` |
 | 13 | Completata | PR #8 — `8a341ae` |
 | 14 | Completata | PR #11 — `feat/session-advanced` |
-| 15 | Pianificata | [IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md) #59–68 |
+| 15 | Completata | PR #12 — `feat/discoverability` |
+| 16 | Pianificata | [IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md) #69–78 |
 
 
 
@@ -290,6 +297,27 @@ Vedi [IMPROVEMENTS-V7.md](IMPROVEMENTS-V7.md).
 | 68 | Feedback post-sessione | 15 |
 
 Piano unico: [phase-15-discoverability.md](plans/phase-15-discoverability.md).
+
+
+
+## Lista miglioramenti v8 (#69–78)
+
+Vedi [IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md).
+
+| # | Miglioramento | Fase |
+|---|---------------|------|
+| 69 | Open Graph dinamico per codice | 16 |
+| 70 | Template stanza personalizzati (locale) | 16 |
+| 71 | Story di riferimento (relative sizing) | 16 |
+| 72 | Commenti / domande su story | 16 |
+| 73 | Secondo round «confidence vote» | 16 |
+| 74 | Import backlog da export Jira/ADO | 16 |
+| 75 | Push notification PWA (VAPID) | 16 |
+| 76 | Suoni e haptic opt-in | 16 |
+| 77 | Lighthouse CI su preview Vercel | 16 |
+| 78 | Cronologia stime e revisioni story | 16 |
+
+Piano unico: [phase-16-session-depth.md](plans/phase-16-session-depth.md).
 
 
 
