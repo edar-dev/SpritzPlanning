@@ -25,7 +25,7 @@ supabase db push
 | `20260601120938_bulk_add_stories.sql` | RPC `add_stories` — import batch titoli (max 50) |
 | `20260601131912_join_room_rejoin.sql` | `join_room` reclaim nickname assente; RPC `leave_room` per uscita |
 | `20260602140000_session_advanced.sql` | Spike, osservatori, auto-reveal, PIN, note barman, duplica stanza |
-| `20260602153000_fix_pin_pgcrypto_search_path.sql` | Fix PIN hashing: `gen_salt/crypt` con `search_path` compatibile Supabase (`public, extensions`) |
+| `20260606130000_fix_pin_pgcrypto_search_path.sql` | Fix PIN hashing: `gen_salt/crypt` con `search_path` compatibile Supabase (`public, extensions`) |
 | `20260603120000_hide_voters_until_reveal.sql` | Voto anonimo pre-reveal (#64) |
 | `20260604120000_drop_rpc_overloads.sql` | Rimuove overload `create_room`/`join_room` (fix PostgREST PGRST203) |
 | `20260605120000_session_depth.sql` | Reference story, commenti pubblici, confidence vote, cronologia stime, push subscription (#71–#75, #78) |
