@@ -1004,6 +1004,36 @@ abstract class AppLocalizations {
   /// **'Spike'**
   String get reportSpikes;
 
+  /// No description provided for @reportVariance.
+  ///
+  /// In it, this message translates to:
+  /// **'Dispersione stime'**
+  String get reportVariance;
+
+  /// No description provided for @reportRevisionRate.
+  ///
+  /// In it, this message translates to:
+  /// **'Revisioni stima'**
+  String get reportRevisionRate;
+
+  /// No description provided for @reportRevisionRateValue.
+  ///
+  /// In it, this message translates to:
+  /// **'{percent}%'**
+  String reportRevisionRateValue(int percent);
+
+  /// No description provided for @reportAvgTimePerStory.
+  ///
+  /// In it, this message translates to:
+  /// **'Tempo medio per ordine'**
+  String get reportAvgTimePerStory;
+
+  /// No description provided for @reportAvgMinutesValue.
+  ///
+  /// In it, this message translates to:
+  /// **'{minutes} min'**
+  String reportAvgMinutesValue(int minutes);
+
   /// No description provided for @roomTemplates.
   ///
   /// In it, this message translates to:

@@ -210,6 +210,21 @@
   "reportMedian": "Mediana punti",
   "reportCompleted": "Ordini completati",
   "reportSpikes": "Spike",
+  "reportVariance": "Dispersione stime",
+  "reportRevisionRate": "Revisioni stima",
+  "reportRevisionRateValue": "{percent}%",
+  "@reportRevisionRateValue": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "reportAvgTimePerStory": "Tempo medio per ordine",
+  "reportAvgMinutesValue": "{minutes} min",
+  "@reportAvgMinutesValue": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
   "roomTemplates": "Template locale",
   "businessTemplatesTitle": "Template business",
   "customTemplatesTitle": "Template personalizzati",

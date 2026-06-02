@@ -206,6 +206,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         state,
         includeFacilitatorNotes: true,
       );
+      final stats = SessionReportStats.fromRoomState(state);
       await SessionArchiveStorage.add(
         SessionArchiveEntry(
           id: '${state.room.code}-${DateTime.now().millisecondsSinceEpoch}',
@@ -213,7 +214,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
           roomCode: state.room.code,
           completedAt: DateTime.now(),
           reportJson: report.toJson(),
-          statsJson: '{}',
+          statsJson: stats.toJsonString(),
         ),
       );
     }

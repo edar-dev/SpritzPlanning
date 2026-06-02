@@ -496,6 +496,25 @@ class AppLocalizationsIt extends AppLocalizations {
   String get reportSpikes => 'Spike';
 
   @override
+  String get reportVariance => 'Dispersione stime';
+
+  @override
+  String get reportRevisionRate => 'Revisioni stima';
+
+  @override
+  String reportRevisionRateValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get reportAvgTimePerStory => 'Tempo medio per ordine';
+
+  @override
+  String reportAvgMinutesValue(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
   String get roomTemplates => 'Template locale';
 
   @override

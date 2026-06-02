@@ -61,7 +61,7 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
       SessionReportStats.fromRoomState(widget.roomState);
 
   Future<void> _copyExport() async {
-    final md = _report.toMarkdown(retroNotes: _retroController.text);
+    final md = '${_report.toMarkdown(retroNotes: _retroController.text)}\n${_stats.toMarkdownKpiBlock()}';
     await Clipboard.setData(ClipboardData(text: md));
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

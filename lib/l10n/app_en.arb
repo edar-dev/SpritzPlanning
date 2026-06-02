@@ -190,6 +190,21 @@
   "reportMedian": "Median points",
   "reportCompleted": "Completed stories",
   "reportSpikes": "Spikes",
+  "reportVariance": "Estimate spread",
+  "reportRevisionRate": "Estimate revisions",
+  "reportRevisionRateValue": "{percent}%",
+  "@reportRevisionRateValue": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "reportAvgTimePerStory": "Avg time per story",
+  "reportAvgMinutesValue": "{minutes} min",
+  "@reportAvgMinutesValue": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
   "roomTemplates": "Room templates",
   "businessTemplatesTitle": "Business templates",
   "customTemplatesTitle": "Custom templates",
