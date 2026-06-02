@@ -2,7 +2,7 @@
 
 
 
-Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI pianificati (fasi 11–12, produttività / production-ready).
+Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI completati (fasi 11–12); punti **49–78** completati (fasi 14–16); nuovi punti **79–88** pianificati (fasi 17–18, business/enterprise).
 
 
 
@@ -36,11 +36,13 @@ flowchart LR
   P14[Fase14_SessionAdv]
   P15[Fase15_Discover]
   P16[Fase16_SessionDepth]
+  P17[Fase17_Business]
+  P18[Fase18_Enterprise]
 
   P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
   P8 --> P10
   P9 -.-> P10
-  P10 --> P11 --> P12 --> P13 --> P14 --> P15 --> P16
+  P10 --> P11 --> P12 --> P13 --> P14 --> P15 --> P16 --> P17 --> P18
 
 ```
 
@@ -72,6 +74,8 @@ flowchart LR
 | 14 | #49–58 | 10–14 giorni | `feat/session-advanced` | [phase-14-session-advanced.md](plans/phase-14-session-advanced.md) |
 | 15 | #59–68 | 8–12 giorni | `feat/discoverability` | [phase-15-discoverability.md](plans/phase-15-discoverability.md) |
 | 16 | #69–78 | 10–14 giorni | `feat/session-depth` | [phase-16-session-depth.md](plans/phase-16-session-depth.md) |
+| 17 | #79, #81, #82, #84, #87 | 8–12 giorni | `feat/business-foundations` | [phase-17-business-foundations.md](plans/phase-17-business-foundations.md) |
+| 18 | #80, #83, #85, #86, #88 | 10–14 giorni | `feat/enterprise-readiness` | [phase-18-enterprise-readiness.md](plans/phase-18-enterprise-readiness.md) |
 
 
 
@@ -167,11 +171,12 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 
 
-**Prossima (v8 — session depth):**
+**Completata (v8 — session depth):** Fase 16 — OG dinamico, template custom, story riferimento, commenti story, confidence vote, import Jira/ADO, push PWA, suoni/haptic, Lighthouse CI, cronologia stime ([IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md), PR #13).
 
+**Prossime (v9 — business oriented):**
 
-
-16. **Fase 16** — OG dinamico, template custom, story riferimento, commenti story, confidence vote, import Jira/ADO, push PWA, suoni/haptic, Lighthouse CI, cronologia stime ([IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md))
+17. **Fase 17** — ruoli e permessi leggeri, KPI delivery, executive report, template business, onboarding time-to-value ([IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md))
+18. **Fase 18** — workspace/branding, sync Jira/ADO bidirezionale, audit trail, health dashboard, piano commerciale in-app ([IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md))
 
 
 
@@ -254,7 +259,9 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 13 | Completata | PR #8 — `8a341ae` |
 | 14 | Completata | PR #11 — `feat/session-advanced` |
 | 15 | Completata | PR #12 — `feat/discoverability` |
-| 16 | Pianificata | [IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md) #69–78 |
+| 16 | Completata | PR #13 — `feat/session-depth` |
+| 17 | Pianificata | [IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md) #79, #81, #82, #84, #87 |
+| 18 | Pianificata | [IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md) #80, #83, #85, #86, #88 |
 
 
 
@@ -318,6 +325,29 @@ Vedi [IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md).
 | 78 | Cronologia stime e revisioni story | 16 |
 
 Piano unico: [phase-16-session-depth.md](plans/phase-16-session-depth.md).
+
+
+
+## Lista miglioramenti v9 (#79–88)
+
+Vedi [IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md).
+
+| # | Miglioramento | Fase |
+|---|---------------|------|
+| 79 | Ruoli e permessi leggeri (facilitatore/editor/viewer) | 17 |
+| 80 | Workspace team con branding base | 18 |
+| 81 | KPI delivery su storico sessioni | 17 |
+| 82 | Executive report automatico (PDF/CSV/Markdown) | 17 |
+| 83 | Integrazione Jira/ADO bidirezionale (MVP) | 18 |
+| 84 | Template di sessione per use case business | 17 |
+| 85 | Audit trail azioni chiave | 18 |
+| 86 | Health dashboard + alerting operativo | 18 |
+| 87 | Onboarding guidato orientato al valore | 17 |
+| 88 | Piano commerciale in-app (Free/Pro/Team) | 18 |
+
+Piani:
+- [phase-17-business-foundations.md](plans/phase-17-business-foundations.md)
+- [phase-18-enterprise-readiness.md](plans/phase-18-enterprise-readiness.md)
 
 
 
