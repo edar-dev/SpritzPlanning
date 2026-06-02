@@ -326,6 +326,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         deckValues: template.deckValues,
         allowCoffeeBreak: template.allowCoffeeBreak,
       );
+      await repo.setRoomSettings(
+        participantId: result.participantId,
+        autoRevealWhenAllVoted: template.autoRevealWhenAllVoted,
+        hideVotersUntilReveal: template.hideVotersUntilReveal,
+      );
       if (template.storyTitles.isNotEmpty) {
         await repo.addStories(
           participantId: result.participantId,

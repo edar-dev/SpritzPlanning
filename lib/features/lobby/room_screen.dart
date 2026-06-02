@@ -643,6 +643,7 @@ class _ParticipantsRow extends ConsumerWidget {
                   nickname: p.nickname,
                   isFacilitator: p.isFacilitator,
                   isObserver: p.isObserver,
+                  role: p.role,
                   showVoteStatus: showVoteStatus && !p.isObserver,
                   hasVoted: roomState.hasParticipantVoted(p.id),
                   isAbsent: p.isAbsent(

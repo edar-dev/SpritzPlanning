@@ -854,6 +854,12 @@ abstract class AppLocalizations {
   /// **'Osservatore'**
   String get observerBadge;
 
+  /// No description provided for @editorBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Editor'**
+  String get editorBadge;
+
   /// No description provided for @observerCannotVote.
   ///
   /// In it, this message translates to:
@@ -979,6 +985,66 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Template locale'**
   String get roomTemplates;
+
+  /// No description provided for @businessTemplatesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Template business'**
+  String get businessTemplatesTitle;
+
+  /// No description provided for @customTemplatesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Template personalizzati'**
+  String get customTemplatesTitle;
+
+  /// No description provided for @customTemplatesEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun template personalizzato salvato'**
+  String get customTemplatesEmpty;
+
+  /// No description provided for @createCustomTemplate.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea template personalizzato'**
+  String get createCustomTemplate;
+
+  /// No description provided for @templateBusinessDiscoveryName.
+  ///
+  /// In it, this message translates to:
+  /// **'Product Discovery'**
+  String get templateBusinessDiscoveryName;
+
+  /// No description provided for @templateBusinessDiscoveryDescription.
+  ///
+  /// In it, this message translates to:
+  /// **'Allineamento su problemi, ipotesi e scope MVP'**
+  String get templateBusinessDiscoveryDescription;
+
+  /// No description provided for @templateBusinessRefinementName.
+  ///
+  /// In it, this message translates to:
+  /// **'Delivery Refinement'**
+  String get templateBusinessRefinementName;
+
+  /// No description provided for @templateBusinessRefinementDescription.
+  ///
+  /// In it, this message translates to:
+  /// **'Rifinitura backlog con dipendenze e criteri di accettazione'**
+  String get templateBusinessRefinementDescription;
+
+  /// No description provided for @templateBusinessMaintenanceName.
+  ///
+  /// In it, this message translates to:
+  /// **'Maintenance Fast Track'**
+  String get templateBusinessMaintenanceName;
+
+  /// No description provided for @templateBusinessMaintenanceDescription.
+  ///
+  /// In it, this message translates to:
+  /// **'Flusso rapido per incident, fix urgenti e follow-up'**
+  String get templateBusinessMaintenanceDescription;
 
   /// No description provided for @createFromTemplate.
   ///

@@ -420,6 +420,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get observerBadge => 'Osservatore';
 
   @override
+  String get editorBadge => 'Editor';
+
+  @override
   String get observerCannotVote => 'Stai osservando: non puoi votare';
 
   @override
@@ -482,6 +485,39 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get roomTemplates => 'Template locale';
+
+  @override
+  String get businessTemplatesTitle => 'Template business';
+
+  @override
+  String get customTemplatesTitle => 'Template personalizzati';
+
+  @override
+  String get customTemplatesEmpty => 'Nessun template personalizzato salvato';
+
+  @override
+  String get createCustomTemplate => 'Crea template personalizzato';
+
+  @override
+  String get templateBusinessDiscoveryName => 'Product Discovery';
+
+  @override
+  String get templateBusinessDiscoveryDescription =>
+      'Allineamento su problemi, ipotesi e scope MVP';
+
+  @override
+  String get templateBusinessRefinementName => 'Delivery Refinement';
+
+  @override
+  String get templateBusinessRefinementDescription =>
+      'Rifinitura backlog con dipendenze e criteri di accettazione';
+
+  @override
+  String get templateBusinessMaintenanceName => 'Maintenance Fast Track';
+
+  @override
+  String get templateBusinessMaintenanceDescription =>
+      'Flusso rapido per incident, fix urgenti e follow-up';
 
   @override
   String get createFromTemplate => 'Crea da template';

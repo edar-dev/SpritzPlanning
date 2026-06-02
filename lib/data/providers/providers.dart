@@ -256,3 +256,7 @@ final currentParticipantProvider = Provider<Participant?>((ref) {
 final isFacilitatorProvider = Provider<bool>((ref) {
   return ref.watch(currentParticipantProvider)?.isFacilitator ?? false;
 });
+
+final currentParticipantRoleProvider = Provider<ParticipantRole>((ref) {
+  return ref.watch(currentParticipantProvider)?.role ?? ParticipantRole.editor;
+});

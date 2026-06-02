@@ -418,6 +418,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get observerBadge => 'Observer';
 
   @override
+  String get editorBadge => 'Editor';
+
+  @override
   String get observerCannotVote => 'You are observing — voting is disabled';
 
   @override
@@ -480,6 +483,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get roomTemplates => 'Room templates';
+
+  @override
+  String get businessTemplatesTitle => 'Business templates';
+
+  @override
+  String get customTemplatesTitle => 'Custom templates';
+
+  @override
+  String get customTemplatesEmpty => 'No custom templates saved yet';
+
+  @override
+  String get createCustomTemplate => 'Create custom template';
+
+  @override
+  String get templateBusinessDiscoveryName => 'Product Discovery';
+
+  @override
+  String get templateBusinessDiscoveryDescription =>
+      'Align on problem framing, hypotheses, and MVP scope';
+
+  @override
+  String get templateBusinessRefinementName => 'Delivery Refinement';
+
+  @override
+  String get templateBusinessRefinementDescription =>
+      'Refine backlog with dependencies and acceptance criteria';
+
+  @override
+  String get templateBusinessMaintenanceName => 'Maintenance Fast Track';
+
+  @override
+  String get templateBusinessMaintenanceDescription =>
+      'Fast flow for incidents, urgent fixes, and follow-up';
 
   @override
   String get createFromTemplate => 'Create from template';

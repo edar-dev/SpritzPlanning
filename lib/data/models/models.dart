@@ -4,6 +4,19 @@ enum StoryStatus { pending, voting, revealed, done }
 
 enum StoryKind { story, spike }
 
+enum ParticipantRole { facilitator, editor, viewer }
+
+extension ParticipantRoleX on ParticipantRole {
+  String get dbValue => name;
+
+  static ParticipantRole fromDb(String? value) {
+    return ParticipantRole.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => ParticipantRole.editor,
+    );
+  }
+}
+
 extension StoryKindX on StoryKind {
   String get dbValue => name;
 
@@ -109,6 +122,7 @@ class Participant {
     required this.nickname,
     required this.isFacilitator,
     required this.isObserver,
+    required this.role,
     required this.joinedAt,
     required this.lastSeenAt,
   });
@@ -118,6 +132,7 @@ class Participant {
   final String nickname;
   final bool isFacilitator;
   final bool isObserver;
+  final ParticipantRole role;
   final DateTime joinedAt;
   final DateTime lastSeenAt;
 
@@ -128,14 +143,32 @@ class Participant {
       nickname: json['nickname'] as String,
       isFacilitator: json['is_facilitator'] as bool? ?? false,
       isObserver: json['is_observer'] as bool? ?? false,
+      role: _parseRole(json),
       joinedAt: DateTime.parse(json['joined_at'] as String),
       lastSeenAt: DateTime.parse(json['last_seen_at'] as String),
     );
   }
 
+  static ParticipantRole _parseRole(Map<String, dynamic> json) {
+    final roleRaw = json['role'] as String?;
+    if (roleRaw != null && roleRaw.trim().isNotEmpty) {
+      return ParticipantRoleX.fromDb(roleRaw);
+    }
+    final isFacilitator = json['is_facilitator'] as bool? ?? false;
+    final isObserver = json['is_observer'] as bool? ?? false;
+    if (isFacilitator) return ParticipantRole.facilitator;
+    if (isObserver) return ParticipantRole.viewer;
+    return ParticipantRole.editor;
+  }
+
   bool isAbsent({required DateTime now, int thresholdSeconds = 120}) {
     return now.difference(lastSeenAt).inSeconds > thresholdSeconds;
   }
+
+  bool get canModerateSession => role == ParticipantRole.facilitator;
+  bool get canEditBacklog =>
+      role == ParticipantRole.facilitator || role == ParticipantRole.editor;
+  bool get canVote => role != ParticipantRole.viewer;
 }
 
 class EstimateHistoryEntry {
