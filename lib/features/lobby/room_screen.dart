@@ -244,7 +244,8 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
 
     final roomStateAsync = ref.watch(roomStateProvider);
     final session = ref.watch(sessionProvider).valueOrNull;
-    final isFacilitator = ref.watch(isFacilitatorProvider);
+    final canModerate = ref.watch(canModerateSessionProvider);
+    final canEditBacklog = ref.watch(canEditBacklogProvider);
     final connectionStatus = ref.watch(connectionStatusProvider).valueOrNull ??
         ConnectionStatus.connected;
 
@@ -300,7 +301,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             connectionStatus != ConnectionStatus.connected;
 
         return FacilitatorShortcuts(
-          enabled: isFacilitator,
+          enabled: canModerate,
           onReveal: showVoting && !room.votesRevealed
               ? () => unawaited(_facilitatorReveal(session.participantId))
               : null,
@@ -326,7 +327,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               ],
             ),
             actions: [
-              if (isFacilitator && room.phase == RoomPhase.lobby) ...[
+              if (canEditBacklog && room.phase == RoomPhase.lobby)
                 IconButton(
                   icon: const Icon(Icons.upload_file_outlined),
                   tooltip: context.l10n.importStories,
@@ -335,13 +336,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                     participantId: session.participantId,
                   ),
                 ),
+              if (canModerate && room.phase == RoomPhase.lobby)
                 IconButton(
                   icon: const Icon(Icons.keyboard_outlined),
                   tooltip: context.l10n.keyboardShortcuts,
                   onPressed: () => _showKeyboardShortcuts(context),
                 ),
-              ],
-              if (isFacilitator && room.phase == RoomPhase.lobby)
+              if (canModerate && room.phase == RoomPhase.lobby)
                 IconButton(
                   icon: const Icon(Icons.style_outlined),
                   tooltip: context.l10n.deckSettings,
@@ -350,7 +351,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                     session.participantId,
                   ),
                 ),
-              if (isFacilitator)
+              if (canModerate)
                 IconButton(
                   icon: const Icon(Icons.summarize_outlined),
                   tooltip: context.l10n.riepilogoSerata,
@@ -363,7 +364,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                     SessionReportStats.fromRoomState(roomState),
                   ),
                 ),
-              if (isFacilitator)
+              if (canModerate)
                 PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert),
                   onSelected: (value) {
@@ -430,7 +431,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       ),
                       child: _Sidebar(
                         roomState: roomState,
-                        isFacilitator: isFacilitator,
+                        isFacilitator: canModerate,
                         participantId: session.participantId,
                         onShare: () => _shareRoomInvite(roomState),
                       ),
@@ -440,11 +441,12 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                           ? VotingPanel(
                               roomState: roomState,
                               participantId: session.participantId,
-                              isFacilitator: isFacilitator,
+                              isFacilitator: canModerate,
                             )
                           : _LobbyPanel(
                               roomState: roomState,
-                              isFacilitator: isFacilitator,
+                              canModerate: canModerate,
+                              canEditBacklog: canEditBacklog,
                               participantId: session.participantId,
                             ),
                     ),
@@ -468,12 +470,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       VotingPanel(
                         roomState: roomState,
                         participantId: session.participantId,
-                        isFacilitator: isFacilitator,
+                        isFacilitator: canModerate,
                       )
                     else
                       _LobbyPanel(
                         roomState: roomState,
-                        isFacilitator: isFacilitator,
+                        canModerate: canModerate,
+                        canEditBacklog: canEditBacklog,
                         participantId: session.participantId,
                       ),
                   ],
@@ -484,7 +487,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               ),
             ],
           ),
-          floatingActionButton: isFacilitator && !showVoting
+          floatingActionButton: canEditBacklog && !showVoting
               ? Semantics(
                   button: true,
                   label: context.l10n.addOrdine,
@@ -669,12 +672,14 @@ class _ParticipantsRow extends ConsumerWidget {
 class _LobbyPanel extends ConsumerStatefulWidget {
   const _LobbyPanel({
     required this.roomState,
-    required this.isFacilitator,
+    required this.canModerate,
+    required this.canEditBacklog,
     required this.participantId,
   });
 
   final RoomState roomState;
-  final bool isFacilitator;
+  final bool canModerate;
+  final bool canEditBacklog;
   final String participantId;
 
   @override
@@ -738,7 +743,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
   Widget build(BuildContext context) {
     final pendingStories = _pendingStories;
     final activeStories = _activeStories;
-    final canReorder = widget.isFacilitator &&
+    final canReorder = widget.canEditBacklog &&
         widget.roomState.room.phase == RoomPhase.lobby &&
         pendingStories.length > 1;
 
@@ -830,7 +835,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        if (widget.isFacilitator) ...[
+                        if (widget.canEditBacklog) ...[
                           const SizedBox(height: 20),
                           FilledButton.icon(
                             onPressed: () => StoryImportSheet.show(
@@ -849,7 +854,8 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                 ...activeStories.map(
                   (story) => _StoryTile(
                     story: story,
-                    isFacilitator: widget.isFacilitator,
+                    canModerate: widget.canModerate,
+                    canEditBacklog: widget.canEditBacklog,
                     participantId: widget.participantId,
                     onStartVoting: () => _showStartVotingDialog(
                       context,
@@ -867,7 +873,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                     onMarkSpike: _spikeCallback(
                       context,
                       ref,
-                      widget.isFacilitator,
+                      widget.canModerate,
                       widget.participantId,
                       story,
                     ),
@@ -893,7 +899,8 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                       return _StoryTile(
                         key: ValueKey(story.id),
                         story: story,
-                        isFacilitator: widget.isFacilitator,
+                        canModerate: widget.canModerate,
+                        canEditBacklog: widget.canEditBacklog,
                         participantId: widget.participantId,
                         onStartVoting: () => _showStartVotingDialog(
                           context,
@@ -907,14 +914,16 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           widget.participantId,
                           story.id,
                         ),
-                        onEdit: () => _showEditStoryDialog(
-                          context,
-                          ref,
-                          widget.participantId,
-                          story,
-                          isFacilitator: widget.isFacilitator,
-                        ),
-                        onSetReference: widget.isFacilitator
+                        onEdit: widget.canEditBacklog
+                            ? () => _showEditStoryDialog(
+                                  context,
+                                  ref,
+                                  widget.participantId,
+                                  story,
+                                  canModerate: widget.canModerate,
+                                )
+                            : null,
+                        onSetReference: widget.canModerate
                             ? () => unawaited(_setReferenceStory(
                                   context,
                                   ref,
@@ -925,7 +934,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                         onMarkSpike: _spikeCallback(
                           context,
                           ref,
-                          widget.isFacilitator,
+                          widget.canModerate,
                           widget.participantId,
                           story,
                         ),
@@ -938,7 +947,8 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                   ...pendingStories.map(
                     (story) => _StoryTile(
                       story: story,
-                      isFacilitator: widget.isFacilitator,
+                      canModerate: widget.canModerate,
+                      canEditBacklog: widget.canEditBacklog,
                       participantId: widget.participantId,
                       onStartVoting: () => _showStartVotingDialog(
                         context,
@@ -952,16 +962,16 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                         widget.participantId,
                         story.id,
                       ),
-                      onEdit: widget.isFacilitator
+                      onEdit: widget.canEditBacklog
                           ? () => _showEditStoryDialog(
                                 context,
                                 ref,
                                 widget.participantId,
                                 story,
-                                isFacilitator: true,
+                                canModerate: widget.canModerate,
                               )
                           : null,
-                      onSetReference: widget.isFacilitator
+                      onSetReference: widget.canModerate
                           ? () => unawaited(_setReferenceStory(
                                 context,
                                 ref,
@@ -972,7 +982,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                       onMarkSpike: _spikeCallback(
                         context,
                         ref,
-                        widget.isFacilitator,
+                        widget.canModerate,
                         widget.participantId,
                         story,
                       ),
@@ -980,7 +990,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                     ),
                   ),
               ],
-              if (!widget.isFacilitator) ...[
+              if (!widget.canModerate && !widget.canEditBacklog) ...[
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
@@ -1004,7 +1014,8 @@ class _StoryTile extends StatelessWidget {
   const _StoryTile({
     super.key,
     required this.story,
-    required this.isFacilitator,
+    required this.canModerate,
+    required this.canEditBacklog,
     required this.participantId,
     required this.onStartVoting,
     required this.onRemove,
@@ -1016,7 +1027,8 @@ class _StoryTile extends StatelessWidget {
   });
 
   final Story story;
-  final bool isFacilitator;
+  final bool canModerate;
+  final bool canEditBacklog;
   final String participantId;
   final VoidCallback onStartVoting;
   final VoidCallback onRemove;
@@ -1074,20 +1086,22 @@ class _StoryTile extends StatelessWidget {
                 ),
             ],
           ),
-          trailing: isFacilitator && story.status == StoryStatus.pending
+          trailing: story.status == StoryStatus.pending &&
+                  (canModerate || canEditBacklog)
               ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.chat_bubble_outline),
-                      tooltip: context.l10n.storyPublicCommentTitle,
-                      onPressed: () => StoryPublicCommentSheet.show(
-                        context,
-                        story: story,
-                        participantId: participantId,
+                    if (canEditBacklog)
+                      IconButton(
+                        icon: const Icon(Icons.chat_bubble_outline),
+                        tooltip: context.l10n.storyPublicCommentTitle,
+                        onPressed: () => StoryPublicCommentSheet.show(
+                          context,
+                          story: story,
+                          participantId: participantId,
+                        ),
                       ),
-                    ),
-                    if (onSetReference != null)
+                    if (canModerate && onSetReference != null)
                       IconButton(
                         icon: Icon(
                           story.isReference
@@ -1097,7 +1111,7 @@ class _StoryTile extends StatelessWidget {
                         tooltip: context.l10n.setReferenceStory,
                         onPressed: onSetReference,
                       ),
-                    if (showDragHandle)
+                    if (canEditBacklog && showDragHandle)
                       ReorderableDragStartListener(
                         index: dragIndex,
                         child: const Icon(
@@ -1106,29 +1120,31 @@ class _StoryTile extends StatelessWidget {
                           size: 28,
                         ),
                       ),
-                    if (onMarkSpike != null)
+                    if (canModerate && onMarkSpike != null)
                       IconButton(
                         icon: const Icon(Icons.bolt_outlined),
                         tooltip: context.l10n.markAsSpike,
                         onPressed: onMarkSpike,
                       ),
-                    if (onEdit != null)
+                    if (canEditBacklog && onEdit != null)
                       IconButton(
                         icon: const Icon(Icons.edit_outlined),
                         tooltip: context.l10n.modificaOrdine,
                         onPressed: onEdit,
                       ),
-                    IconButton(
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: onRemove,
-                    ),
-                    FilledButton(
-                      onPressed: onStartVoting,
-                      child: Text(context.l10n.startVoting),
-                    ),
+                    if (canEditBacklog)
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: onRemove,
+                      ),
+                    if (canModerate)
+                      FilledButton(
+                        onPressed: onStartVoting,
+                        child: Text(context.l10n.startVoting),
+                      ),
                   ],
                 )
-              : story.status == StoryStatus.pending
+              : story.status == StoryStatus.pending && canEditBacklog
                   ? IconButton(
                       icon: const Icon(Icons.chat_bubble_outline),
                       tooltip: context.l10n.storyPublicCommentTitle,
@@ -1398,7 +1414,7 @@ Future<void> _showEditStoryDialog(
   WidgetRef ref,
   String participantId,
   Story story, {
-  required bool isFacilitator,
+  required bool canModerate,
 }) async {
   final titleController = TextEditingController(text: story.title);
   final descController = TextEditingController(text: story.description);
@@ -1425,7 +1441,7 @@ Future<void> _showEditStoryDialog(
             ),
             maxLines: 3,
           ),
-          if (isFacilitator) ...[
+          if (canModerate) ...[
             const SizedBox(height: 12),
             TextField(
               controller: noteController,
@@ -1458,7 +1474,7 @@ Future<void> _showEditStoryDialog(
             storyId: story.id,
             title: titleController.text.trim(),
             description: descController.text.trim(),
-            facilitatorNote: isFacilitator ? noteController.text.trim() : null,
+            facilitatorNote: canModerate ? noteController.text.trim() : null,
           );
     } catch (e, st) {
       if (context.mounted) {
@@ -1556,6 +1572,18 @@ Future<void> _showParticipantActions(
             title: Text(context.l10n.azioniCliente),
             subtitle: Text(target.nickname),
           ),
+          if (!target.isFacilitator && target.role != ParticipantRole.editor)
+            ListTile(
+              leading: const Icon(Icons.edit_outlined),
+              title: Text(context.l10n.setParticipantRoleEditor),
+              onTap: () => Navigator.pop(ctx, 'role_editor'),
+            ),
+          if (!target.isFacilitator && target.role != ParticipantRole.viewer)
+            ListTile(
+              leading: const Icon(Icons.visibility_outlined),
+              title: Text(context.l10n.setParticipantRoleViewer),
+              onTap: () => Navigator.pop(ctx, 'role_viewer'),
+            ),
           ListTile(
             leading: const Icon(Icons.swap_horiz),
             title: Text(context.l10n.passaBancone),
@@ -1580,6 +1608,25 @@ Future<void> _showParticipantActions(
       fromParticipantId: barmanId,
       toParticipant: target,
     );
+  } else if (action == 'role_editor' || action == 'role_viewer') {
+    try {
+      await ref.read(roomRepositoryProvider).setParticipantRole(
+            facilitatorId: barmanId,
+            targetId: target.id,
+            role: action == 'role_editor'
+                ? ParticipantRole.editor
+                : ParticipantRole.viewer,
+          );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.participantRoleChanged)),
+        );
+      }
+    } catch (e, st) {
+      if (context.mounted) {
+        await showUserError(context, e, stackTrace: st);
+      }
+    }
   } else if (action == 'remove') {
     await _confirmRemoveParticipant(
       context,

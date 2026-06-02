@@ -421,6 +421,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editorBadge => 'Editor';
 
   @override
+  String get viewerBadge => 'View only';
+
+  @override
+  String get setParticipantRoleEditor => 'Assign editor role';
+
+  @override
+  String get setParticipantRoleViewer => 'Assign view-only role';
+
+  @override
+  String get participantRoleChanged => 'Participant role updated';
+
+  @override
   String get observerCannotVote => 'You are observing — voting is disabled';
 
   @override

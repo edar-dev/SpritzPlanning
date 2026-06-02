@@ -423,6 +423,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get editorBadge => 'Editor';
 
   @override
+  String get viewerBadge => 'Solo lettura';
+
+  @override
+  String get setParticipantRoleEditor => 'Assegna ruolo editor';
+
+  @override
+  String get setParticipantRoleViewer => 'Assegna ruolo solo lettura';
+
+  @override
+  String get participantRoleChanged => 'Ruolo partecipante aggiornato';
+
+  @override
   String get observerCannotVote => 'Stai osservando: non puoi votare';
 
   @override

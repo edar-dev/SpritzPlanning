@@ -860,6 +860,30 @@ abstract class AppLocalizations {
   /// **'Editor'**
   String get editorBadge;
 
+  /// No description provided for @viewerBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Solo lettura'**
+  String get viewerBadge;
+
+  /// No description provided for @setParticipantRoleEditor.
+  ///
+  /// In it, this message translates to:
+  /// **'Assegna ruolo editor'**
+  String get setParticipantRoleEditor;
+
+  /// No description provided for @setParticipantRoleViewer.
+  ///
+  /// In it, this message translates to:
+  /// **'Assegna ruolo solo lettura'**
+  String get setParticipantRoleViewer;
+
+  /// No description provided for @participantRoleChanged.
+  ///
+  /// In it, this message translates to:
+  /// **'Ruolo partecipante aggiornato'**
+  String get participantRoleChanged;
+
   /// No description provided for @observerCannotVote.
   ///
   /// In it, this message translates to:

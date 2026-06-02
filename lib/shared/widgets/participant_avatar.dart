@@ -122,13 +122,13 @@ class ParticipantAvatar extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-          ] else if (isAbsent) ...[
+          ] else if (role == ParticipantRole.viewer) ...[
             const SizedBox(height: 2),
             Text(
-              context.l10n.assente,
+              context.l10n.viewerBadge,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: const Color(AppColors.textSecondary),
-                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
           ] else if (role == ParticipantRole.editor) ...[
@@ -138,6 +138,15 @@ class ParticipantAvatar extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: const Color(AppColors.oliveGreen),
                     fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ] else if (isAbsent) ...[
+            const SizedBox(height: 2),
+            Text(
+              context.l10n.assente,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: const Color(AppColors.textSecondary),
+                    fontStyle: FontStyle.italic,
                   ),
             ),
           ],
@@ -167,6 +176,9 @@ class ParticipantAvatar extends StatelessWidget {
     if (isFacilitator) parts.add(l10n.barman);
     if (!isObserver && !isFacilitator && role == ParticipantRole.editor) {
       parts.add(l10n.editorBadge);
+    }
+    if (!isObserver && !isFacilitator && role == ParticipantRole.viewer) {
+      parts.add(l10n.viewerBadge);
     }
     if (showVoteStatus && hasVoted) {
       parts.add(l10n.voteSubmitted);
