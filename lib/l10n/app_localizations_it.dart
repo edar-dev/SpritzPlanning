@@ -515,6 +515,105 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get executiveReportTitle => 'Report executive';
+
+  @override
+  String get executiveReportOverview => 'Panoramica sessione';
+
+  @override
+  String get executiveReportRoomLabel => 'Locale';
+
+  @override
+  String get executiveReportCodeLabel => 'Codice';
+
+  @override
+  String get executiveReportExportedAtLabel => 'Esportato il';
+
+  @override
+  String get executiveReportKpi => 'KPI principali';
+
+  @override
+  String get executiveReportUncertainStories =>
+      'Ordini con maggiore incertezza';
+
+  @override
+  String get executiveReportUncertaintyScore => 'Indice incertezza';
+
+  @override
+  String get executiveReportActions => 'Decisioni e azioni suggerite';
+
+  @override
+  String get executiveReportBacklog => 'Ordine';
+
+  @override
+  String get executiveReportEstimateColumn => 'Stima';
+
+  @override
+  String get executiveReportNoUncertainStories =>
+      'Nessun ordine con segnali di incertezza rilevanti.';
+
+  @override
+  String get executiveReportNoSuggestedActions =>
+      'Nessuna azione suggerita automaticamente.';
+
+  @override
+  String executiveReportActionSpike(Object title) {
+    return 'Pianificare ricerca spike per «$title»';
+  }
+
+  @override
+  String executiveReportActionRevised(Object history, Object title) {
+    return 'Allineare la stima di «$title» (revisioni: $history)';
+  }
+
+  @override
+  String executiveReportActionReference(Object title) {
+    return 'Usare «$title» come riferimento relativo per le prossime stime';
+  }
+
+  @override
+  String get executiveReportActionHighVariance =>
+      'Ridurre la dispersione delle stime: rivedere la baseline del team';
+
+  @override
+  String executiveReportActionFacilitatorNote(Object note, Object title) {
+    return '«$title»: $note';
+  }
+
+  @override
+  String executiveReportActionPublicComment(Object comment, Object title) {
+    return '«$title» — commento team: $comment';
+  }
+
+  @override
+  String get executiveReportExport => 'Report executive';
+
+  @override
+  String get executiveReportCopyMarkdown => 'Copia Markdown';
+
+  @override
+  String get executiveReportCopyCsv => 'Copia CSV business';
+
+  @override
+  String get executiveReportPrint => 'Stampa / PDF';
+
+  @override
+  String get executiveReportPrintOpened => 'Finestra di stampa aperta';
+
+  @override
+  String get executiveReportPrintUnavailable =>
+      'Stampa disponibile solo su web';
+
+  @override
+  String get executiveReportOtherExports => 'Altri export';
+
+  @override
+  String get executiveReportMinutesSuffix => 'min';
+
+  @override
+  String get executiveReportPercentSuffix => '%';
+
+  @override
   String get roomTemplates => 'Template locale';
 
   @override

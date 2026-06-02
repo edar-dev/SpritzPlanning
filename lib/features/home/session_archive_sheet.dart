@@ -9,6 +9,7 @@ import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/preferences/session_archive_storage.dart';
 import '../../core/theme/app_colors.dart';
+import '../archive/executive_export_actions.dart';
 import '../archive/session_kpi_preview.dart';
 import '../lobby/session_report_sheet.dart';
 
@@ -108,6 +109,20 @@ class SessionArchiveSheet extends StatelessWidget {
                                               ),
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.summarize_outlined),
+                                    tooltip: l10n.executiveReportCopyMarkdown,
+                                    onPressed: () =>
+                                        ExecutiveExportActions.copyMarkdown(
+                                      context,
+                                      report: SessionReport.fromJson(
+                                        Map<String, dynamic>.from(
+                                          jsonDecode(entry.reportJson) as Map,
+                                        ),
+                                      ),
+                                      stats: stats,
                                     ),
                                   ),
                                   IconButton(

@@ -1034,6 +1034,174 @@ abstract class AppLocalizations {
   /// **'{minutes} min'**
   String reportAvgMinutesValue(int minutes);
 
+  /// No description provided for @executiveReportTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Report executive'**
+  String get executiveReportTitle;
+
+  /// No description provided for @executiveReportOverview.
+  ///
+  /// In it, this message translates to:
+  /// **'Panoramica sessione'**
+  String get executiveReportOverview;
+
+  /// No description provided for @executiveReportRoomLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Locale'**
+  String get executiveReportRoomLabel;
+
+  /// No description provided for @executiveReportCodeLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Codice'**
+  String get executiveReportCodeLabel;
+
+  /// No description provided for @executiveReportExportedAtLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Esportato il'**
+  String get executiveReportExportedAtLabel;
+
+  /// No description provided for @executiveReportKpi.
+  ///
+  /// In it, this message translates to:
+  /// **'KPI principali'**
+  String get executiveReportKpi;
+
+  /// No description provided for @executiveReportUncertainStories.
+  ///
+  /// In it, this message translates to:
+  /// **'Ordini con maggiore incertezza'**
+  String get executiveReportUncertainStories;
+
+  /// No description provided for @executiveReportUncertaintyScore.
+  ///
+  /// In it, this message translates to:
+  /// **'Indice incertezza'**
+  String get executiveReportUncertaintyScore;
+
+  /// No description provided for @executiveReportActions.
+  ///
+  /// In it, this message translates to:
+  /// **'Decisioni e azioni suggerite'**
+  String get executiveReportActions;
+
+  /// No description provided for @executiveReportBacklog.
+  ///
+  /// In it, this message translates to:
+  /// **'Ordine'**
+  String get executiveReportBacklog;
+
+  /// No description provided for @executiveReportEstimateColumn.
+  ///
+  /// In it, this message translates to:
+  /// **'Stima'**
+  String get executiveReportEstimateColumn;
+
+  /// No description provided for @executiveReportNoUncertainStories.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun ordine con segnali di incertezza rilevanti.'**
+  String get executiveReportNoUncertainStories;
+
+  /// No description provided for @executiveReportNoSuggestedActions.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna azione suggerita automaticamente.'**
+  String get executiveReportNoSuggestedActions;
+
+  /// No description provided for @executiveReportActionSpike.
+  ///
+  /// In it, this message translates to:
+  /// **'Pianificare ricerca spike per «{title}»'**
+  String executiveReportActionSpike(Object title);
+
+  /// No description provided for @executiveReportActionRevised.
+  ///
+  /// In it, this message translates to:
+  /// **'Allineare la stima di «{title}» (revisioni: {history})'**
+  String executiveReportActionRevised(Object history, Object title);
+
+  /// No description provided for @executiveReportActionReference.
+  ///
+  /// In it, this message translates to:
+  /// **'Usare «{title}» come riferimento relativo per le prossime stime'**
+  String executiveReportActionReference(Object title);
+
+  /// No description provided for @executiveReportActionHighVariance.
+  ///
+  /// In it, this message translates to:
+  /// **'Ridurre la dispersione delle stime: rivedere la baseline del team'**
+  String get executiveReportActionHighVariance;
+
+  /// No description provided for @executiveReportActionFacilitatorNote.
+  ///
+  /// In it, this message translates to:
+  /// **'«{title}»: {note}'**
+  String executiveReportActionFacilitatorNote(Object note, Object title);
+
+  /// No description provided for @executiveReportActionPublicComment.
+  ///
+  /// In it, this message translates to:
+  /// **'«{title}» — commento team: {comment}'**
+  String executiveReportActionPublicComment(Object comment, Object title);
+
+  /// No description provided for @executiveReportExport.
+  ///
+  /// In it, this message translates to:
+  /// **'Report executive'**
+  String get executiveReportExport;
+
+  /// No description provided for @executiveReportCopyMarkdown.
+  ///
+  /// In it, this message translates to:
+  /// **'Copia Markdown'**
+  String get executiveReportCopyMarkdown;
+
+  /// No description provided for @executiveReportCopyCsv.
+  ///
+  /// In it, this message translates to:
+  /// **'Copia CSV business'**
+  String get executiveReportCopyCsv;
+
+  /// No description provided for @executiveReportPrint.
+  ///
+  /// In it, this message translates to:
+  /// **'Stampa / PDF'**
+  String get executiveReportPrint;
+
+  /// No description provided for @executiveReportPrintOpened.
+  ///
+  /// In it, this message translates to:
+  /// **'Finestra di stampa aperta'**
+  String get executiveReportPrintOpened;
+
+  /// No description provided for @executiveReportPrintUnavailable.
+  ///
+  /// In it, this message translates to:
+  /// **'Stampa disponibile solo su web'**
+  String get executiveReportPrintUnavailable;
+
+  /// No description provided for @executiveReportOtherExports.
+  ///
+  /// In it, this message translates to:
+  /// **'Altri export'**
+  String get executiveReportOtherExports;
+
+  /// No description provided for @executiveReportMinutesSuffix.
+  ///
+  /// In it, this message translates to:
+  /// **'min'**
+  String get executiveReportMinutesSuffix;
+
+  /// No description provided for @executiveReportPercentSuffix.
+  ///
+  /// In it, this message translates to:
+  /// **'%'**
+  String get executiveReportPercentSuffix;
+
   /// No description provided for @roomTemplates.
   ///
   /// In it, this message translates to:

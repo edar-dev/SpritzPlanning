@@ -513,6 +513,105 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get executiveReportTitle => 'Executive report';
+
+  @override
+  String get executiveReportOverview => 'Session overview';
+
+  @override
+  String get executiveReportRoomLabel => 'Room';
+
+  @override
+  String get executiveReportCodeLabel => 'Code';
+
+  @override
+  String get executiveReportExportedAtLabel => 'Exported at';
+
+  @override
+  String get executiveReportKpi => 'Key metrics';
+
+  @override
+  String get executiveReportUncertainStories =>
+      'Stories with highest uncertainty';
+
+  @override
+  String get executiveReportUncertaintyScore => 'Uncertainty score';
+
+  @override
+  String get executiveReportActions => 'Decisions and suggested actions';
+
+  @override
+  String get executiveReportBacklog => 'Story';
+
+  @override
+  String get executiveReportEstimateColumn => 'Estimate';
+
+  @override
+  String get executiveReportNoUncertainStories =>
+      'No stories with notable uncertainty signals.';
+
+  @override
+  String get executiveReportNoSuggestedActions =>
+      'No suggested actions generated automatically.';
+
+  @override
+  String executiveReportActionSpike(Object title) {
+    return 'Plan a research spike for \"$title\"';
+  }
+
+  @override
+  String executiveReportActionRevised(Object history, Object title) {
+    return 'Align estimate for \"$title\" (revisions: $history)';
+  }
+
+  @override
+  String executiveReportActionReference(Object title) {
+    return 'Use \"$title\" as a relative sizing anchor';
+  }
+
+  @override
+  String get executiveReportActionHighVariance =>
+      'Reduce estimate spread: revisit team sizing baseline';
+
+  @override
+  String executiveReportActionFacilitatorNote(Object note, Object title) {
+    return '\"$title\": $note';
+  }
+
+  @override
+  String executiveReportActionPublicComment(Object comment, Object title) {
+    return '\"$title\" — team comment: $comment';
+  }
+
+  @override
+  String get executiveReportExport => 'Executive report';
+
+  @override
+  String get executiveReportCopyMarkdown => 'Copy Markdown';
+
+  @override
+  String get executiveReportCopyCsv => 'Copy business CSV';
+
+  @override
+  String get executiveReportPrint => 'Print / PDF';
+
+  @override
+  String get executiveReportPrintOpened => 'Print dialog opened';
+
+  @override
+  String get executiveReportPrintUnavailable =>
+      'Print is available on web only';
+
+  @override
+  String get executiveReportOtherExports => 'Other exports';
+
+  @override
+  String get executiveReportMinutesSuffix => 'min';
+
+  @override
+  String get executiveReportPercentSuffix => '%';
+
+  @override
   String get roomTemplates => 'Room templates';
 
   @override

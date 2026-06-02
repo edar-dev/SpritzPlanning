@@ -7,6 +7,7 @@ import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../archive/executive_export_actions.dart';
 import '../archive/session_kpi_preview.dart';
 
 class SessionReportSheet extends StatelessWidget {
@@ -132,6 +133,54 @@ class SessionReportSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+              Text(
+                l10n.executiveReportExport,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  FilledButton.icon(
+                    onPressed: () => ExecutiveExportActions.copyMarkdown(
+                      context,
+                      report: report,
+                      stats: stats,
+                    ),
+                    icon: const Icon(Icons.summarize_outlined, size: 18),
+                    label: Text(l10n.executiveReportCopyMarkdown),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => ExecutiveExportActions.copyCsv(
+                      context,
+                      report: report,
+                      stats: stats,
+                    ),
+                    icon: const Icon(Icons.table_view_outlined, size: 18),
+                    label: Text(l10n.executiveReportCopyCsv),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => ExecutiveExportActions.printPdf(
+                      context,
+                      report: report,
+                      stats: stats,
+                    ),
+                    icon: const Icon(Icons.print_outlined, size: 18),
+                    label: Text(l10n.executiveReportPrint),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l10n.executiveReportOtherExports,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
