@@ -18,8 +18,8 @@ import '../../data/providers/providers.dart';
 import '../../data/supabase/supabase_client.dart';
 import '../../shared/widgets/connection_banner.dart';
 import '../../shared/widgets/pwa_install_banner.dart';
-import '../../shared/widgets/spritz_action_tile.dart';
 import 'home_settings_sheet.dart';
+import 'home_welcome_content.dart';
 import 'room_template_sheet.dart';
 import 'business_onboarding_dialog.dart';
 import 'onboarding_dialog.dart';
@@ -495,122 +495,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final session = ref.watch(sessionProvider).valueOrNull;
     final showResume = session == null && _storedSession != null;
 
-    return Column(
-      children: [
-        if (showResume) ...[
-          SpritzActionTile(
-            icon: Icons.restore_rounded,
-            title: l10n.resumeSession,
-            subtitle: l10n.resumeSessionSubtitle(
-              _storedSession!.roomName ?? l10n.appName,
-              _storedSession!.roomCode ?? '',
-            ),
-            primary: true,
-            onTap: configured && !_isLoading ? _resumeStoredSession : null,
-          ),
-          const SizedBox(height: 12),
-        ],
-        if (_recentRooms.isNotEmpty) ...[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              l10n.recentRooms,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          ..._recentRooms.map(
-            (entry) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: SpritzActionTile(
-                icon: Icons.history_rounded,
-                title: entry.name,
-                subtitle: entry.code,
-                onTap: configured && !_isLoading
-                    ? () => _openRecentRoom(entry)
-                    : null,
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-        ],
-        SpritzActionTile(
-          icon: Icons.storefront_outlined,
-          title: l10n.openLocale,
-          subtitle: l10n.createRoomSubtitle,
-          primary: true,
-          onTap: configured && !_isLoading
-              ? () => setState(() {
-                    _mode = _HomeMode.create;
-                    _error = null;
-                  })
-              : null,
-        ),
-        const SizedBox(height: 12),
-        SpritzActionTile(
-          icon: Icons.door_front_door_outlined,
-          title: l10n.enterBancone,
-          subtitle: l10n.joinRoomSubtitle,
-          onTap: configured && !_isLoading
-              ? () => setState(() {
-                    _mode = _HomeMode.join;
-                    _error = null;
-                  })
-              : null,
-        ),
-        const SizedBox(height: 12),
-        SpritzActionTile(
-          icon: Icons.dashboard_customize_outlined,
-          title: l10n.createFromTemplate,
-          subtitle: l10n.roomTemplates,
-          onTap: configured && !_isLoading ? _createFromTemplate : null,
-        ),
-        const SizedBox(height: 12),
-        SpritzActionTile(
-          icon: Icons.groups_outlined,
-          title: l10n.orgTitle,
-          subtitle: l10n.orgManageSubtitle,
-          onTap: configured && !_isLoading
-              ? () => OrgSheet.show(context)
-              : null,
-        ),
-        const SizedBox(height: 12),
-        SpritzActionTile(
-          icon: Icons.business_outlined,
-          title: l10n.workspaceTitle,
-          subtitle: l10n.workspaceManageSubtitle,
-          onTap: configured && !_isLoading
-              ? () => WorkspaceSheet.show(context)
-              : null,
-        ),
-        const SizedBox(height: 12),
-        SpritzActionTile(
-          icon: Icons.workspace_premium_outlined,
-          title: l10n.planUpgradeTitle,
-          subtitle: l10n.planManageSubtitle,
-          onTap: () => PlanUpgradeSheet.show(context, minimumTier: PlanTier.pro),
-        ),
-        const SizedBox(height: 12),
-        SpritzActionTile(
-          icon: Icons.monitor_heart_outlined,
-          title: l10n.opsHealthTitle,
-          subtitle: l10n.opsHealthSubtitle,
-          onTap: configured && !_isLoading
-              ? () => context.push('/ops/health')
-              : null,
-        ),
-        if (_archiveCount > 0) ...[
-          const SizedBox(height: 12),
-          SpritzActionTile(
-            icon: Icons.archive_outlined,
-            title: l10n.pastSessions,
-            subtitle: '$_archiveCount',
-            onTap: () => SessionArchiveSheet.show(context),
-          ),
-        ],
-      ],
+    return HomeWelcomeContent(
+      configured: configured,
+      isLoading: _isLoading,
+      recentRooms: _recentRooms,
+      storedSession: _storedSession,
+      showResume: showResume,
+      archiveCount: _archiveCount,
+      onResume: _resumeStoredSession,
+      onOpenCreate: () => setState(() {
+        _mode = _HomeMode.create;
+        _error = null;
+      }),
+      onOpenJoin: () => setState(() {
+        _mode = _HomeMode.join;
+        _error = null;
+      }),
+      onOpenRecent: _openRecentRoom,
+      onTemplate: _createFromTemplate,
+      onOrg: () => OrgSheet.show(context),
+      onWorkspace: () => WorkspaceSheet.show(context),
+      onPlan: () => PlanUpgradeSheet.show(context, minimumTier: PlanTier.pro),
+      onOpsHealth: () => context.push('/ops/health'),
+      onArchive: () => SessionArchiveSheet.show(context),
     );
   }
 

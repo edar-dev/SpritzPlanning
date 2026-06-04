@@ -110,6 +110,18 @@ abstract class AppLocalizations {
   /// **'Stima le user story al bancone'**
   String get tagline;
 
+  /// No description provided for @homeGetStarted.
+  ///
+  /// In it, this message translates to:
+  /// **'Inizia una sessione'**
+  String get homeGetStarted;
+
+  /// No description provided for @homeMoreOptions.
+  ///
+  /// In it, this message translates to:
+  /// **'Gestione e strumenti'**
+  String get homeMoreOptions;
+
   /// No description provided for @installPwa.
   ///
   /// In it, this message translates to:

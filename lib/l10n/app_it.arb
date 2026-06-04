@@ -2,6 +2,8 @@
   "@@locale": "it",
   "appName": "SpritzPlanning",
   "tagline": "Stima le user story al bancone",
+  "homeGetStarted": "Inizia una sessione",
+  "homeMoreOptions": "Gestione e strumenti",
   "installPwa": "Installa SpritzPlanning sulla home",
   "installPwaAction": "Installa",
   "rateLimitError": "Troppe richieste. Attendi un momento e riprova.",

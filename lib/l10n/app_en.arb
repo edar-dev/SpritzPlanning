@@ -2,6 +2,8 @@
   "@@locale": "en",
   "appName": "SpritzPlanning",
   "tagline": "Estimate user stories at the bar",
+  "homeGetStarted": "Start a session",
+  "homeMoreOptions": "Management & tools",
   "installPwa": "Install SpritzPlanning on your home screen",
   "installPwaAction": "Install",
   "rateLimitError": "Too many requests. Please wait a moment and try again.",

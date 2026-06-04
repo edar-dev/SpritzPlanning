@@ -15,6 +15,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagline => 'Estimate user stories at the bar';
 
   @override
+  String get homeGetStarted => 'Start a session';
+
+  @override
+  String get homeMoreOptions => 'Management & tools';
+
+  @override
   String get installPwa => 'Install SpritzPlanning on your home screen';
 
   @override
