@@ -213,9 +213,10 @@ Documentare passi in [AGENT-PLAYBOOK.md](../AGENT-PLAYBOOK.md) §11.
 
 ## Criteri di done
 
-- [ ] #99–#102, #106 documentati e in produzione
-- [ ] Piano Fase 23 linkato in ROADMAP
-- [ ] Nessuna regressione CI (`flutter test`, build web, deploy Vercel)
+- [x] #99–#102, #106 in produzione (PR #20)
+- [x] Piano Fase 23 linkato in ROADMAP
+- [x] Nessuna regressione CI (`flutter test`, build web, deploy Vercel)
+- [ ] Search Console + sitemap submit (operativo post-deploy)
 
 ---
 
