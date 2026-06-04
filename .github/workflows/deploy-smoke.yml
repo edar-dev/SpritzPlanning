@@ -15,5 +15,9 @@ jobs:
       - name: Smoke production URLs
         run: |
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/
+          curl -fsSL https://spritz-planning.vercel.app/ | grep -qi "planning poker"
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/robots.txt
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/sitemap.xml
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/app/
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/manifest.json
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/.well-known/assetlinks.json || true

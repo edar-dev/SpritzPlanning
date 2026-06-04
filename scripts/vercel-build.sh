@@ -37,4 +37,5 @@ fi
 flutter build web \
   --release \
   --no-wasm-dry-run \
+  --base-href /app/ \
   "${DART_DEFINES[@]}"

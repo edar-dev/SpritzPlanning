@@ -4,10 +4,61 @@
   "outputDirectory": "build/web",
   "framework": null,
   "installCommand": "echo 'Dependencies installed in build script'",
+  "redirects": [
+    {
+      "source": "/help",
+      "destination": "/app/help",
+      "permanent": true
+    },
+    {
+      "source": "/room/:path*",
+      "destination": "/app/room/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/auth/callback",
+      "destination": "/app/auth/callback",
+      "permanent": true
+    },
+    {
+      "source": "/invite/:token",
+      "destination": "/app/invite/:token",
+      "permanent": true
+    },
+    {
+      "source": "/ops/health",
+      "destination": "/app/ops/health",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/j/:code",
       "destination": "/join.html?code=:code"
+    },
+    {
+      "source": "/en",
+      "destination": "/landing-en.html"
+    },
+    {
+      "source": "/features",
+      "destination": "/features.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/",
+      "destination": "/landing.html"
     }
   ],
   "headers": [
@@ -44,6 +95,42 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/app/room/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/app/ops/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/app/auth/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/app/invite/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     }

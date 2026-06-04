@@ -157,16 +157,17 @@ Documentare passi in [AGENT-PLAYBOOK.md](../AGENT-PLAYBOOK.md) §11.
 ## Requisiti tecnici (checklist implementazione)
 
 ```
-[ ] Landing HTML statica (o generator minimo) in web/
-[ ] vercel.json: rewrite / → landing, /app → index.html Flutter
-[ ] go_router: base path /app se Opzione A
-[ ] robots.txt + sitemap.xml generato (script o manuale aggiornato in CI)
-[ ] Canonical + hreflang su landing (Fase 23 se solo IT in MVP)
-[ ] JSON-LD WebApplication
-[ ] noscript in index.html app: link a landing e help
-[ ] /ops/* e route auth: noindex (meta o header)
+[x] Landing HTML statica in web/ (landing.html, landing-en.html, features.html)
+[x] vercel.json: rewrite / → landing, /app → index.html Flutter
+[x] Flutter build --base-href /app/ (Vercel + CI)
+[x] robots.txt + sitemap.xml in web/
+[x] Canonical + hreflang su landing IT/EN
+[x] JSON-LD WebApplication + Organization
+[x] noscript in index.html app: link a landing e features
+[x] /app/room, /app/ops, /app/auth: noindex (header Vercel + meta app)
 [ ] Lighthouse su URL landing in CI (opz. job separato da app)
-[ ] AGENTS.md / README: nota “marketing URL vs app URL”
+[x] AGENTS.md / supabase README: nota marketing URL vs app URL
+[ ] Search Console: sitemap submit (operativo, playbook §11)
 ```
 
 ---
@@ -200,7 +201,7 @@ Documentare passi in [AGENT-PLAYBOOK.md](../AGENT-PLAYBOOK.md) §11.
 
 ## Verifica
 
-- [ ] `curl` landing: HTML contiene H1, meta description, JSON-LD
+- [x] `curl` landing: HTML contiene H1, meta description, JSON-LD
 - [ ] [Google Rich Results Test](https://search.google.com/test/rich-results) senza errori critici
 - [ ] `robots.txt` e `sitemap.xml` raggiungibili in produzione
 - [ ] Search Console: sitemap “Success”
