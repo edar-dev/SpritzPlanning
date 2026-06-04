@@ -92,7 +92,13 @@ class SessionReportSheet extends ConsumerWidget {
                     dense: true,
                     title: Text(e.summary),
                     subtitle: Text(
-                      '${e.kind} · ${e.createdAt.toLocal()}',
+                      [
+                        if (e.actorDisplayName != null &&
+                            e.actorDisplayName!.isNotEmpty)
+                          e.actorDisplayName!,
+                        e.kind,
+                        e.createdAt.toLocal().toString(),
+                      ].join(' · '),
                     ),
                   ),
                 ),

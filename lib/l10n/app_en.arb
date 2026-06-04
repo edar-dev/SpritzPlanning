@@ -433,5 +433,21 @@
   "accountProfileSaved": "Profile updated",
   "accountAuthRequired": "Sign in to use this feature",
   "accountCallbackLoading": "Signing you in…",
-  "accountCallbackError": "Sign-in failed. Try again from home."
+  "accountCallbackError": "Sign-in failed. Try again from home.",
+  "orgTitle": "Organization",
+  "orgManageSubtitle": "Team, invites, and plan",
+  "orgEmpty": "No organization yet. Create one for your team.",
+  "orgCreateNameLabel": "Organization name",
+  "orgCreateNameHint": "e.g. Alpha Delivery Team",
+  "orgCreateAction": "Create organization",
+  "orgSignInRequired": "Sign in to manage an organization.",
+  "orgInviteMember": "Invite teammate",
+  "orgInviteTitle": "Team invite",
+  "orgInviteSend": "Generate invite link",
+  "orgInviteLinkHint": "Share the link: valid 7 days, single use.",
+  "orgInviteAccepted": "You joined the team.",
+  "orgInviteAccepting": "Accepting invite…",
+  "orgInviteExpired": "Invite expired or invalid.",
+  "workspaceCloudHint": "Workspaces stored in your active organization's cloud.",
+  "planUpgradeOrgNote": "Plan is tied to the organization (owner). Stripe coming soon."
 }

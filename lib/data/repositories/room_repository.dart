@@ -29,6 +29,8 @@ class RoomRepository {
     String? pin,
     String? workspaceName,
     String? brandColor,
+    String? orgId,
+    String? workspaceId,
   }) async {
     final response = await supabase.rpc(
       'create_room',
@@ -40,6 +42,9 @@ class RoomRepository {
           'p_workspace_name': workspaceName,
         if (brandColor != null && brandColor.isNotEmpty)
           'p_brand_color': brandColor,
+        if (orgId != null && orgId.isNotEmpty) 'p_org_id': orgId,
+        if (workspaceId != null && workspaceId.isNotEmpty)
+          'p_workspace_id': workspaceId,
       },
     );
     return SessionResult.fromJson(Map<String, dynamic>.from(response as Map));

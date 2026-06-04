@@ -5,6 +5,8 @@ class AuditEvent {
     required this.summary,
     required this.createdAt,
     this.participantId,
+    this.actorUserId,
+    this.actorDisplayName,
     this.metadata = const {},
   });
 
@@ -13,6 +15,8 @@ class AuditEvent {
   final String summary;
   final DateTime createdAt;
   final String? participantId;
+  final String? actorUserId;
+  final String? actorDisplayName;
   final Map<String, dynamic> metadata;
 
   factory AuditEvent.fromJson(Map<String, dynamic> json) {
@@ -22,6 +26,8 @@ class AuditEvent {
       summary: json['summary'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       participantId: json['participant_id'] as String?,
+      actorUserId: json['actor_user_id'] as String?,
+      actorDisplayName: json['actor_display_name'] as String?,
       metadata: Map<String, dynamic>.from(
         json['metadata'] as Map? ?? {},
       ),

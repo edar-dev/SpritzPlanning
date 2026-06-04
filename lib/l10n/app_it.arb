@@ -453,5 +453,21 @@
   "accountProfileSaved": "Profilo aggiornato",
   "accountAuthRequired": "Accedi per usare questa funzione",
   "accountCallbackLoading": "Accesso in corso…",
-  "accountCallbackError": "Accesso non riuscito. Riprova dal bancone."
+  "accountCallbackError": "Accesso non riuscito. Riprova dal bancone.",
+  "orgTitle": "Organizzazione",
+  "orgManageSubtitle": "Team, inviti e piano",
+  "orgEmpty": "Nessuna organizzazione. Creane una per il tuo team.",
+  "orgCreateNameLabel": "Nome organizzazione",
+  "orgCreateNameHint": "Es. Team Delivery Alpha",
+  "orgCreateAction": "Crea organizzazione",
+  "orgSignInRequired": "Accedi per gestire un'organizzazione.",
+  "orgInviteMember": "Invita collega",
+  "orgInviteTitle": "Invito al team",
+  "orgInviteSend": "Genera link invito",
+  "orgInviteLinkHint": "Condividi il link: valido 7 giorni, monouso.",
+  "orgInviteAccepted": "Sei entrato nel team.",
+  "orgInviteAccepting": "Accettazione invito…",
+  "orgInviteExpired": "Invito scaduto o non valido.",
+  "workspaceCloudHint": "Workspace salvati sul cloud dell'organizzazione attiva.",
+  "planUpgradeOrgNote": "Il piano è legato all'organizzazione (owner). Stripe in arrivo."
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/deck_values.dart';
 import '../../core/plan/plan_tier.dart';
+import '../../data/models/organization.dart';
+import '../../data/repositories/organization_repository.dart';
+import '../../data/supabase/supabase_client.dart';
 import 'app_preferences.dart';
 import 'plan_tier_storage.dart';
 import 'workspace_storage.dart';
@@ -64,10 +68,46 @@ final activeWorkspaceProvider = AsyncNotifierProvider<ActiveWorkspaceNotifier,
 
 class ActiveWorkspaceNotifier extends AsyncNotifier<WorkspaceProfile> {
   @override
-  Future<WorkspaceProfile> build() => WorkspaceStorage.loadActive();
+  Future<WorkspaceProfile> build() => _resolveActive();
+
+  Future<WorkspaceProfile> _resolveActive() async {
+    final user = supabase.auth.currentUser;
+    if (user != null) {
+      try {
+        final repo = OrganizationRepository();
+        final org = await repo.getActiveOrganization();
+        if (org != null) {
+          final cloud = await repo.listWorkspaces(org.id);
+          if (cloud.isNotEmpty) {
+            final activeId = await WorkspaceStorage.loadActiveId();
+            final ws = cloud.firstWhere(
+              (w) => w.id == activeId,
+              orElse: () => cloud.first,
+            );
+            return _cloudToProfile(ws);
+          }
+        }
+      } catch (_) {
+        // Fall back to local workspace prefs.
+      }
+    }
+    return WorkspaceStorage.loadActive();
+  }
+
+  static WorkspaceProfile _cloudToProfile(CloudWorkspace ws) {
+    return WorkspaceProfile(
+      id: ws.id,
+      name: ws.name,
+      brandColorArgb: ws.brandColorArgb,
+      deckValues:
+          ws.deckValues.isEmpty ? DeckValues.defaultDeck : ws.deckValues,
+      updatedAt: ws.updatedAt ?? DateTime.now().toUtc(),
+      logoEmoji: ws.logoEmoji,
+    );
+  }
 
   Future<void> refresh() async {
-    state = AsyncData(await WorkspaceStorage.loadActive());
+    state = AsyncData(await _resolveActive());
   }
 
   Future<void> setActive(String workspaceId) async {

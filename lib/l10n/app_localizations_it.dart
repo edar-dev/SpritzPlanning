@@ -1186,4 +1186,55 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get accountCallbackError =>
       'Accesso non riuscito. Riprova dal bancone.';
+
+  @override
+  String get orgTitle => 'Organizzazione';
+
+  @override
+  String get orgManageSubtitle => 'Team, inviti e piano';
+
+  @override
+  String get orgEmpty => 'Nessuna organizzazione. Creane una per il tuo team.';
+
+  @override
+  String get orgCreateNameLabel => 'Nome organizzazione';
+
+  @override
+  String get orgCreateNameHint => 'Es. Team Delivery Alpha';
+
+  @override
+  String get orgCreateAction => 'Crea organizzazione';
+
+  @override
+  String get orgSignInRequired => 'Accedi per gestire un\'organizzazione.';
+
+  @override
+  String get orgInviteMember => 'Invita collega';
+
+  @override
+  String get orgInviteTitle => 'Invito al team';
+
+  @override
+  String get orgInviteSend => 'Genera link invito';
+
+  @override
+  String get orgInviteLinkHint =>
+      'Condividi il link: valido 7 giorni, monouso.';
+
+  @override
+  String get orgInviteAccepted => 'Sei entrato nel team.';
+
+  @override
+  String get orgInviteAccepting => 'Accettazione invito…';
+
+  @override
+  String get orgInviteExpired => 'Invito scaduto o non valido.';
+
+  @override
+  String get workspaceCloudHint =>
+      'Workspace salvati sul cloud dell\'organizzazione attiva.';
+
+  @override
+  String get planUpgradeOrgNote =>
+      'Il piano è legato all\'organizzazione (owner). Stripe in arrivo.';
 }
