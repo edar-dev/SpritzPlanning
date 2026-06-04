@@ -66,16 +66,20 @@ fi
 mv "$WEB/index.html" "$APP/index.html"
 cp "$WEB/landing.html" "$WEB/index.html"
 
-# Engine JS still references flutter.js.map in some SDK versions — avoid DevTools 404 noise.
-for f in flutter.js flutter_bootstrap.js; do
-  if [ -f "$APP/$f" ]; then
-    sed -i '/sourceMappingURL/d' "$APP/$f"
-  fi
-done
+# Strip source map comments (DevTools 404 on flutter.js.map under /app/).
+find "$APP" -maxdepth 1 -name '*.js' -exec sed -i '/sourceMappingURL/d' {} +
 
-# Empty SW file when --pwa-strategy=none (do not register a broken worker).
-if [ -f "$APP/flutter_service_worker.js" ] && [ ! -s "$APP/flutter_service_worker.js" ]; then
-  rm "$APP/flutter_service_worker.js"
+# Do not register a service worker (landing + /app/ split breaks offline-first precache).
+if [ -f "$APP/flutter_bootstrap.js" ]; then
+  sed -i 's/_flutter\.loader\.load();/_flutter.loader.load({ serviceWorkerSettings: null });/' \
+    "$APP/flutter_bootstrap.js"
 fi
+
+if [ -f "$APP/flutter_service_worker.js" ]; then
+  rm -f "$APP/flutter_service_worker.js"
+fi
+
+# Satisfy DevTools if an older cached flutter.js still references flutter.js.map.
+echo '{"version":3,"sources":[],"names":[],"mappings":""}' > "$APP/flutter.js.map"
 
 echo "Web package: landing at /, Flutter under /app/"

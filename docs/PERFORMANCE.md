@@ -36,6 +36,10 @@ Con landing statica alla root e app sotto `/app/`, il build Vercel usa `--pwa-st
 
 L’app resta installabile via `manifest.json`; la cache offline Flutter si può rivalutare in Fase 23 con manifest SW dedicato solo a `/app/`.
 
+All’avvio, `web/index.html` disinstalla eventuali service worker legacy (una ricarica con `sessionStorage`). Dopo un deploy, se la console mostra ancora messaggi SW o `flutter.js.map` 404: **Ctrl+Shift+R** una volta su `/app/`.
+
+Messaggi noti **non risolvibili in app** (sicuri da ignorare): `unreachable code` in `main.dart.js` (dart2js), `WEBGL_debug_renderer_info` (CanvasKit/Firefox), cookie `__cf_bm` su WebSocket Supabase (Cloudflare).
+
 ## Ottimizzazioni applicate (Fase 7)
 
 - `theme-color` e `preconnect` Supabase in `web/index.html`

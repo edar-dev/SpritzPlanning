@@ -40,6 +40,26 @@
     <p><a href="/">Torna alla presentazione del prodotto</a></p>
     <p><a href="/features">Funzionalità</a></p>
   </noscript>
+  <!-- Drop legacy Flutter service workers (pre–pwa-strategy=none); avoids stale cache + map 404 noise. -->
+  <script>
+    (function () {
+      if (!('serviceWorker' in navigator)) return;
+      var key = 'spritz_sw_cleared_v1';
+      if (sessionStorage.getItem(key)) return;
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        if (!regs.length) {
+          sessionStorage.setItem(key, '1');
+          return;
+        }
+        return Promise.all(regs.map(function (r) { return r.unregister(); })).then(function () {
+          sessionStorage.setItem(key, '1');
+          if (navigator.serviceWorker.controller) {
+            location.reload();
+          }
+        });
+      });
+    })();
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
