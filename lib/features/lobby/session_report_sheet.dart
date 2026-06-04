@@ -148,7 +148,7 @@ class SessionReportSheet extends ConsumerWidget {
               Flexible(
                 child: SingleChildScrollView(
                   child: DecoratedBox(
-                    decoration: AppDecorations.surfaceCard(),
+                    decoration: AppDecorations.surfaceCard(context),
                     child: Column(
                       children: report.rows.map((row) {
                         return ListTile(

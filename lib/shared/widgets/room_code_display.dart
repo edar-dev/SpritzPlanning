@@ -151,7 +151,7 @@ class RoomCodeDisplay extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 DecoratedBox(
-                  decoration: AppDecorations.surfaceCard(),
+                  decoration: AppDecorations.surfaceCard(context),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: QrImageView(

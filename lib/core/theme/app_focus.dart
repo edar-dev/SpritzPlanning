@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart';
-
 /// Visible keyboard focus ring (WCAG 2.4.7). Child must use [focusNode] on InkWell/Button.
 class AppFocusBorder extends StatelessWidget {
   const AppFocusBorder({
@@ -38,10 +36,7 @@ class AppFocusBorder extends StatelessWidget {
   }
 }
 
-/// Icon color for toolbars on light gradient / surface backgrounds.
+/// Icon color for toolbars on hero gradient / preference bar.
 Color appToolbarIconColor(BuildContext context) {
-  final isDark = Theme.of(context).brightness == Brightness.dark;
-  return isDark
-      ? const Color(AppColors.darkTextPrimary)
-      : const Color(AppColors.textPrimary);
+  return Theme.of(context).colorScheme.onSurface;
 }

@@ -15,7 +15,6 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/section_header.dart';
-import '../../core/theme/light_surface_scope.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 import '../../shared/widgets/participant_avatar.dart';
@@ -298,9 +297,8 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           DecoratedBox(
-            decoration: AppDecorations.surfaceCard(highlight: true),
-            child: LightSurfaceScope(
-              child: Padding(
+            decoration: AppDecorations.surfaceCard(context, highlight: true),
+            child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,7 +326,6 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                   ],
                 ),
               ),
-            ),
           ),
           if (deadline != null && isVoting && !revealed) ...[
             const SizedBox(height: 12),

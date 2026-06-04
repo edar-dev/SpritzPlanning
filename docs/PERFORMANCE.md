@@ -5,7 +5,7 @@
 - Testo secondario: `AppColors.textSecondary` (#57534E) su bianco ≥ WCAG AA 4.5:1.
 - Hint: `AppColors.textMuted` (#78716C) — solo placeholder, non copy critico.
 - Home: barra preferenze su `surface`; tagline usa `textPrimary`.
-- Card bianche: widget `LightSurfaceScope` / `SpritzSurfaceCard` — con tema scuro i form non devono ereditare campi scuri e testo chiaro sulla card.
+- Card: `SpritzSurfaceCard` e `AppDecorations.surfaceCard(context)` usano `ColorScheme` del tema attivo (chiaro/scuro).
 - Obiettivo Lighthouse Accessibility: **≥ 90** su preview produzione (workflow CI `.github/workflows/lighthouse.yml`).
 
 # Performance — SpritzPlanning Web

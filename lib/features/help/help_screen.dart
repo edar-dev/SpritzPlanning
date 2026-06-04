@@ -5,7 +5,6 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../home/business_onboarding_dialog.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
-import '../../core/theme/light_surface_scope.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -42,8 +41,7 @@ class HelpScreen extends StatelessWidget {
           onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
       ),
-      body: LightSurfaceScope(
-        child: ListView(
+      body: ListView(
           padding: const EdgeInsets.all(24),
           children: [
             _SectionCard(
@@ -108,7 +106,6 @@ class HelpScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -129,7 +126,7 @@ class _SectionCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: DecoratedBox(
-        decoration: AppDecorations.surfaceCard(),
+        decoration: AppDecorations.surfaceCard(context),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

@@ -26,7 +26,10 @@ class VoteSummaryPanel extends StatelessWidget {
     );
 
     return DecoratedBox(
-      decoration: AppDecorations.surfaceCard(radius: AppDecorations.radiusMd),
+      decoration: AppDecorations.surfaceCard(
+        context,
+        radius: AppDecorations.radiusMd,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

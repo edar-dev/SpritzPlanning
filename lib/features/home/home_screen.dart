@@ -35,7 +35,6 @@ import 'session_archive_sheet.dart';
 import 'feedback_dialog.dart';
 import '../../core/preferences/session_archive_storage.dart';
 import '../../core/theme/app_focus.dart';
-import '../../core/theme/light_surface_scope.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -410,7 +409,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       body: DecoratedBox(
-        decoration: AppDecorations.heroGradient(),
+        decoration: AppDecorations.heroGradient(context),
         child: SafeArea(
           child: Column(
             children: [
@@ -428,12 +427,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       constraints: const BoxConstraints(maxWidth: 440),
                       child: DecoratedBox(
                         decoration: AppDecorations.surfaceCard(
+                          context,
                           radius: AppDecorations.radiusXl,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(28, 36, 28, 28),
-                          child: LightSurfaceScope(
-                            child: Column(
+                          child: Column(
                               children: [
                                 const _HomePreferencesBar(),
                                 const SizedBox(height: 20),
@@ -466,7 +465,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   _buildForm(context, l10n),
                               ],
                             ),
-                          ),
                         ),
                       ),
                     ),
@@ -484,7 +482,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Container(
       width: 72,
       height: 72,
-      decoration: AppDecorations.iconBadge(),
+      decoration: AppDecorations.iconBadge(context),
       child: const Icon(
         Icons.local_bar_rounded,
         size: 36,
@@ -763,7 +761,7 @@ class _HomePreferencesBar extends ConsumerWidget {
     final iconColor = appToolbarIconColor(context);
 
     return DecoratedBox(
-      decoration: AppDecorations.preferencesBar(),
+      decoration: AppDecorations.preferencesBar(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
@@ -773,10 +771,8 @@ class _HomePreferencesBar extends ConsumerWidget {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<Locale>(
                   value: locale,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: const Color(AppColors.textPrimary),
-                      ),
-                  dropdownColor: const Color(AppColors.surface),
+                  style: Theme.of(context).textTheme.labelLarge,
+                  dropdownColor: Theme.of(context).colorScheme.surfaceContainerLowest,
                   items: const [
                     DropdownMenuItem(
                       value: Locale('it'),

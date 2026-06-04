@@ -28,6 +28,7 @@ class ParticipantAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final initial = nickname.isNotEmpty ? nickname[0].toUpperCase() : '?';
     final avatarColor = isFacilitator
         ? const Color(AppColors.spritzOrange)
@@ -48,7 +49,7 @@ class ParticipantAvatar extends StatelessWidget {
                   border: Border.all(
                     color: isFacilitator
                         ? const Color(AppColors.spritzOrange).withValues(alpha: 0.4)
-                        : const Color(AppColors.border),
+                        : scheme.outline,
                     width: 2,
                   ),
                 ),
@@ -85,7 +86,7 @@ class ParticipantAvatar extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: hasVoted
                           ? const Color(AppColors.success)
-                          : const Color(AppColors.border),
+                          : scheme.outline,
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.white, width: 2),
                     ),
@@ -101,7 +102,7 @@ class ParticipantAvatar extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: const Color(AppColors.textPrimary),
+                  color: scheme.onSurface,
                 ),
           ),
           if (isObserver) ...[
@@ -109,7 +110,7 @@ class ParticipantAvatar extends StatelessWidget {
             Text(
               context.l10n.observerBadge,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: const Color(AppColors.textSecondary),
+                    color: scheme.onSurfaceVariant,
                     fontStyle: FontStyle.italic,
                   ),
             ),
@@ -127,7 +128,7 @@ class ParticipantAvatar extends StatelessWidget {
             Text(
               context.l10n.viewerBadge,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: const Color(AppColors.textSecondary),
+                    color: scheme.onSurfaceVariant,
                     fontWeight: FontWeight.w600,
                   ),
             ),
@@ -145,7 +146,7 @@ class ParticipantAvatar extends StatelessWidget {
             Text(
               context.l10n.assente,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: const Color(AppColors.textSecondary),
+                    color: scheme.onSurfaceVariant,
                     fontStyle: FontStyle.italic,
                   ),
             ),

@@ -41,6 +41,7 @@ class _SpritzCardState extends State<SpritzCard> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     final semanticsLabel =
         l10n != null ? l10n.voteCardSemantics(widget.value) : 'Vote ${widget.value}';
@@ -78,14 +79,14 @@ class _SpritzCardState extends State<SpritzCard> {
                 height: cardH,
                 decoration: BoxDecoration(
                   color: widget.selected
-                      ? const Color(AppColors.spritzOrange)
-                      : const Color(AppColors.surface),
+                      ? scheme.primary
+                      : scheme.surfaceContainerLowest,
                   borderRadius:
                       BorderRadius.circular(AppDecorations.radiusMd),
                   border: Border.all(
                     color: widget.selected
                         ? const Color(AppColors.spritzOrangeDark)
-                        : const Color(AppColors.border),
+                        : scheme.outline,
                     width: widget.selected ? 3 : 1,
                   ),
                   boxShadow: widget.selected
@@ -111,8 +112,8 @@ class _SpritzCardState extends State<SpritzCard> {
                             fontSize: widget.value.length > 2 ? 22 : 28,
                             fontWeight: FontWeight.w700,
                             color: widget.selected
-                                ? Colors.white
-                                : const Color(AppColors.textPrimary),
+                                ? scheme.onPrimary
+                                : scheme.onSurface,
                           ),
                         ),
                         if (widget.revealed) ...[
@@ -129,8 +130,8 @@ class _SpritzCardState extends State<SpritzCard> {
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                                 color: widget.selected
-                                    ? Colors.white.withValues(alpha: 0.9)
-                                    : const Color(AppColors.textSecondary),
+                                    ? scheme.onPrimary.withValues(alpha: 0.9)
+                                    : scheme.onSurfaceVariant,
                               ),
                             ),
                           ),

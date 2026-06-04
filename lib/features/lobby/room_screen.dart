@@ -37,7 +37,6 @@ import '../../core/preferences/app_preferences.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/room_screen_skeleton.dart';
 import '../../shared/widgets/section_header.dart';
-import '../../core/theme/light_surface_scope.dart';
 import '../../shared/widgets/spritz_surface_card.dart';
 import '../voting/voting_panel.dart';
 import '../auth/sign_in_sheet.dart';
@@ -352,7 +351,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                 Text(
                   room.code,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: const Color(AppColors.textSecondary),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         letterSpacing: 1.5,
                       ),
                 ),
@@ -466,10 +465,12 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                   children: [
                     Container(
                       width: 300,
-                      decoration: const BoxDecoration(
-                        color: Color(AppColors.surfaceMuted),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainerLow,
                         border: Border(
-                          right: BorderSide(color: Color(AppColors.border)),
+                          right: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
                         ),
                       ),
                       child: _Sidebar(
@@ -682,8 +683,7 @@ class _Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LightSurfaceScope(
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -695,7 +695,6 @@ class _Sidebar extends StatelessWidget {
           const SizedBox(height: 16),
           _ParticipantsRow(roomState: roomState),
         ],
-      ),
       ),
     );
   }
@@ -874,8 +873,9 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                                 .length /
                             widget.roomState.stories.length,
                     minHeight: 8,
-                    backgroundColor: const Color(AppColors.surfaceMuted),
-                    color: const Color(AppColors.oliveGreen),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainerLow,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ],
@@ -884,7 +884,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                 Text(
                   context.l10n.modificaOrdineHint,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: const Color(AppColors.textSecondary),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                 ),
               ],
@@ -903,6 +903,7 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           width: 64,
                           height: 64,
                           decoration: AppDecorations.iconBadge(
+                            context,
                             primary: false,
                           ),
                           child: Icon(
@@ -1134,10 +1135,10 @@ class _StoryTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: DecoratedBox(
         decoration: AppDecorations.surfaceCard(
+          context,
           radius: AppDecorations.radiusMd,
         ),
-        child: LightSurfaceScope(
-          child: ListTile(
+        child: ListTile(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 8,
@@ -1247,10 +1248,10 @@ class _StoryTile extends StatelessWidget {
                   : story.finalEstimate != null
                       ? Chip(
                           label: Text('${story.finalEstimate} pt'),
-                          backgroundColor: const Color(AppColors.primarySoft),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                         )
                       : null,
-          ),
         ),
       ),
     );

@@ -55,7 +55,7 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
     final l10n = context.l10n;
 
     return Material(
-      color: const Color(AppColors.primarySoft),
+      color: Theme.of(context).colorScheme.primaryContainer,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(

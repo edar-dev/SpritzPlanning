@@ -62,6 +62,7 @@ class _SpritzActionTileState extends State<SpritzActionTile> {
               borderRadius: BorderRadius.circular(AppDecorations.radiusLg),
               child: Ink(
                 decoration: AppDecorations.surfaceCard(
+                  context,
                   highlight: widget.primary,
                 ),
                 child: Padding(
@@ -72,6 +73,7 @@ class _SpritzActionTileState extends State<SpritzActionTile> {
                         width: 48,
                         height: 48,
                         decoration: AppDecorations.iconBadge(
+                          context,
                           primary: widget.primary,
                         ),
                         child: Icon(
@@ -88,9 +90,7 @@ class _SpritzActionTileState extends State<SpritzActionTile> {
                           children: [
                             Text(
                               widget.title,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                color: const Color(AppColors.textPrimary),
-                              ),
+                              style: theme.textTheme.titleMedium,
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -105,7 +105,7 @@ class _SpritzActionTileState extends State<SpritzActionTile> {
                       Icon(
                         Icons.arrow_forward_ios_rounded,
                         size: 16,
-                        color: const Color(AppColors.textSecondary),
+                        color: theme.colorScheme.onSurfaceVariant,
                         semanticLabel: '',
                       ),
                     ],

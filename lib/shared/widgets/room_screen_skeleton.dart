@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 
 /// Placeholder layout while room state is loading (sidebar + main panel).
@@ -129,8 +128,9 @@ class _ShimmerBoxState extends State<_ShimmerBox>
   @override
   Widget build(BuildContext context) {
     final disableAnimations = MediaQuery.disableAnimationsOf(context);
-    final base = const Color(AppColors.surfaceMuted);
-    final highlight = const Color(AppColors.border);
+    final scheme = Theme.of(context).colorScheme;
+    final base = scheme.surfaceContainerLow;
+    final highlight = scheme.outline;
 
     return AnimatedBuilder(
       animation: _controller,
