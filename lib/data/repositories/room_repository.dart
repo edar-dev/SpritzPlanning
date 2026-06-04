@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../core/network/rpc_retry.dart';
 import '../models/connection_status.dart';
+import '../models/audit_event.dart';
 import '../models/models.dart';
 import '../supabase/supabase_client.dart';
 import 'realtime_connection_manager.dart';
@@ -26,6 +27,8 @@ class RoomRepository {
     required String name,
     required String nickname,
     String? pin,
+    String? workspaceName,
+    String? brandColor,
   }) async {
     final response = await supabase.rpc(
       'create_room',
@@ -33,6 +36,10 @@ class RoomRepository {
         'p_name': name,
         'p_nickname': nickname,
         if (pin != null && pin.isNotEmpty) 'p_pin': pin,
+        if (workspaceName != null && workspaceName.isNotEmpty)
+          'p_workspace_name': workspaceName,
+        if (brandColor != null && brandColor.isNotEmpty)
+          'p_brand_color': brandColor,
       },
     );
     return SessionResult.fromJson(Map<String, dynamic>.from(response as Map));
@@ -500,6 +507,74 @@ class RoomRepository {
         'p_participant_id': participantId,
         'p_subscription': subscription,
       },
+    );
+  }
+
+  Future<List<AuditEvent>> fetchRoomAuditEvents({
+    required String roomId,
+    int limit = 100,
+  }) async {
+    final response = await supabase.rpc(
+      'get_room_audit_events',
+      params: {'p_room_id': roomId, 'p_limit': limit},
+    );
+    final list = response as List? ?? [];
+    return list
+        .map(
+          (e) => AuditEvent.fromJson(
+            Map<String, dynamic>.from(e as Map),
+          ),
+        )
+        .toList();
+  }
+
+  Future<void> logSessionClose({required String participantId}) async {
+    await supabase.rpc(
+      'log_session_close',
+      params: {'p_participant_id': participantId},
+    );
+  }
+
+  Future<void> linkStoryExternal({
+    required String participantId,
+    required String storyId,
+    required String provider,
+    required String externalKey,
+    String? externalId,
+  }) async {
+    await supabase.rpc(
+      'link_story_external',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_id': storyId,
+        'p_provider': provider,
+        'p_external_key': externalKey,
+        if (externalId != null && externalId.isNotEmpty)
+          'p_external_id': externalId,
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> recordExternalSyncPush({
+    required String participantId,
+    required String storyId,
+    required String estimate,
+  }) async {
+    final response = await supabase.rpc(
+      'record_external_sync_push',
+      params: {
+        'p_participant_id': participantId,
+        'p_story_id': storyId,
+        'p_estimate': estimate,
+      },
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
+
+  Future<OpsHealthSnapshot> fetchOpsHealthSnapshot() async {
+    final response = await supabase.rpc('get_ops_health_snapshot');
+    return OpsHealthSnapshot.fromJson(
+      Map<String, dynamic>.from(response as Map),
     );
   }
 }

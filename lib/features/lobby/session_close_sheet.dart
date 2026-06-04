@@ -63,6 +63,7 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
   Future<void> _copyExport() async {
     await ExecutiveExportActions.copyMarkdown(
       context,
+      ref,
       report: _report,
       stats: _stats,
       retroNotes: _retroController.text,

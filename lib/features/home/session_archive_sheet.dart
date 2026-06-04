@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/export/session_report.dart';
@@ -13,7 +14,7 @@ import '../archive/executive_export_actions.dart';
 import '../archive/session_kpi_preview.dart';
 import '../lobby/session_report_sheet.dart';
 
-class SessionArchiveSheet extends StatelessWidget {
+class SessionArchiveSheet extends ConsumerWidget {
   const SessionArchiveSheet({super.key, required this.entries});
 
   final List<SessionArchiveEntry> entries;
@@ -39,7 +40,7 @@ class SessionArchiveSheet extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final dateFormat = DateFormat.yMMMd().add_Hm();
 
@@ -117,6 +118,7 @@ class SessionArchiveSheet extends StatelessWidget {
                                     onPressed: () =>
                                         ExecutiveExportActions.copyMarkdown(
                                       context,
+                                      ref,
                                       report: SessionReport.fromJson(
                                         Map<String, dynamic>.from(
                                           jsonDecode(entry.reportJson) as Map,

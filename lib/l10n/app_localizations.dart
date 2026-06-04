@@ -1622,6 +1622,216 @@ abstract class AppLocalizations {
   /// **'Rivedi percorso guidato'**
   String get helpReplayBusinessOnboarding;
 
+  /// No description provided for @workspaceTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Workspace team'**
+  String get workspaceTitle;
+
+  /// No description provided for @workspaceManageSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Branding e deck predefinito'**
+  String get workspaceManageSubtitle;
+
+  /// No description provided for @workspaceEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun workspace configurato'**
+  String get workspaceEmpty;
+
+  /// No description provided for @workspaceBrandPreview.
+  ///
+  /// In it, this message translates to:
+  /// **'Colore brand'**
+  String get workspaceBrandPreview;
+
+  /// No description provided for @workspaceAdd.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi workspace'**
+  String get workspaceAdd;
+
+  /// No description provided for @planUpgradeTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Piano commerciale'**
+  String get planUpgradeTitle;
+
+  /// No description provided for @planUpgradeBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Funzione richiesta: piano {tier}'**
+  String planUpgradeBody(String tier);
+
+  /// No description provided for @planTierFree.
+  ///
+  /// In it, this message translates to:
+  /// **'Free'**
+  String get planTierFree;
+
+  /// No description provided for @planTierFreeFeatures.
+  ///
+  /// In it, this message translates to:
+  /// **'Stanze, voto e report base'**
+  String get planTierFreeFeatures;
+
+  /// No description provided for @planTierPro.
+  ///
+  /// In it, this message translates to:
+  /// **'Pro'**
+  String get planTierPro;
+
+  /// No description provided for @planTierProFeatures.
+  ///
+  /// In it, this message translates to:
+  /// **'KPI avanzati, report executive, health'**
+  String get planTierProFeatures;
+
+  /// No description provided for @planTierTeam.
+  ///
+  /// In it, this message translates to:
+  /// **'Team'**
+  String get planTierTeam;
+
+  /// No description provided for @planTierTeamFeatures.
+  ///
+  /// In it, this message translates to:
+  /// **'Workspace multipli, audit trail, sync Jira/ADO'**
+  String get planTierTeamFeatures;
+
+  /// No description provided for @planUpgradeDemoNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Demo locale: selezione piano per testare i limiti (nessun pagamento).'**
+  String get planUpgradeDemoNote;
+
+  /// No description provided for @planManageSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Free / Pro / Team'**
+  String get planManageSubtitle;
+
+  /// No description provided for @planFeatureLocked.
+  ///
+  /// In it, this message translates to:
+  /// **'Disponibile con piano superiore'**
+  String get planFeatureLocked;
+
+  /// No description provided for @auditTrailTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Registro audit'**
+  String get auditTrailTitle;
+
+  /// No description provided for @opsHealthTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Stato servizio'**
+  String get opsHealthTitle;
+
+  /// No description provided for @opsHealthSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Metriche operative (Pro+)'**
+  String get opsHealthSubtitle;
+
+  /// No description provided for @opsHealthRealtime.
+  ///
+  /// In it, this message translates to:
+  /// **'Realtime'**
+  String get opsHealthRealtime;
+
+  /// No description provided for @opsHealthActiveRooms1h.
+  ///
+  /// In it, this message translates to:
+  /// **'Stanze attive (1h)'**
+  String get opsHealthActiveRooms1h;
+
+  /// No description provided for @opsHealthActiveRooms24h.
+  ///
+  /// In it, this message translates to:
+  /// **'Stanze attive (24h)'**
+  String get opsHealthActiveRooms24h;
+
+  /// No description provided for @opsHealthAudit24h.
+  ///
+  /// In it, this message translates to:
+  /// **'Eventi audit (24h)'**
+  String get opsHealthAudit24h;
+
+  /// No description provided for @opsHealthExternalLinks.
+  ///
+  /// In it, this message translates to:
+  /// **'Collegamenti esterni'**
+  String get opsHealthExternalLinks;
+
+  /// No description provided for @opsHealthStoriesDone24h.
+  ///
+  /// In it, this message translates to:
+  /// **'Ordini completati (24h)'**
+  String get opsHealthStoriesDone24h;
+
+  /// No description provided for @opsHealthCheckedAt.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiornato: {at}'**
+  String opsHealthCheckedAt(String at);
+
+  /// No description provided for @opsHealthAlertHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Soglie alert: error rate RPC elevato o latenza prolungata — monitoraggio manuale in questa release.'**
+  String get opsHealthAlertHint;
+
+  /// No description provided for @externalSyncTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Sync Jira / ADO'**
+  String get externalSyncTitle;
+
+  /// No description provided for @externalSyncJira.
+  ///
+  /// In it, this message translates to:
+  /// **'Jira'**
+  String get externalSyncJira;
+
+  /// No description provided for @externalSyncAdo.
+  ///
+  /// In it, this message translates to:
+  /// **'Azure DevOps'**
+  String get externalSyncAdo;
+
+  /// No description provided for @externalSyncKeyLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Chiave issue'**
+  String get externalSyncKeyLabel;
+
+  /// No description provided for @externalSyncKeyHint.
+  ///
+  /// In it, this message translates to:
+  /// **'es. PROJ-123'**
+  String get externalSyncKeyHint;
+
+  /// No description provided for @externalSyncLinkAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Collega ordine'**
+  String get externalSyncLinkAction;
+
+  /// No description provided for @externalSyncPushAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Registra push stima (clipboard)'**
+  String get externalSyncPushAction;
+
+  /// No description provided for @externalSyncCopied.
+  ///
+  /// In it, this message translates to:
+  /// **'Payload sync copiato'**
+  String get externalSyncCopied;
+
   /// No description provided for @pastSessions.
   ///
   /// In it, this message translates to:

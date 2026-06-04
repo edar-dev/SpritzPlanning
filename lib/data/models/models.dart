@@ -66,6 +66,8 @@ class Room {
     required this.confidenceRoundActive,
     required this.lastActivityAt,
     required this.createdAt,
+    this.workspaceName,
+    this.brandColor,
   });
 
   final String id;
@@ -82,6 +84,8 @@ class Room {
   final bool confidenceRoundActive;
   final DateTime lastActivityAt;
   final DateTime createdAt;
+  final String? workspaceName;
+  final String? brandColor;
 
   factory Room.fromJson(Map<String, dynamic> json) {
     return Room(
@@ -104,6 +108,8 @@ class Room {
           json['confidence_round_active'] as bool? ?? false,
       lastActivityAt: DateTime.parse(json['last_activity_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
+      workspaceName: json['workspace_name'] as String?,
+      brandColor: json['brand_color'] as String?,
     );
   }
 }
