@@ -45,13 +45,13 @@ Impatto medio + sforzo medio: 94
 |------|-------|-------|
 | 19 | #89, #90, #91, #96 (MVP) | Auth Supabase, ospite→account, profilo, prime RPC legate a utente |
 | 20 | #92, #93, #94, #95, #97 | Workspace/org server-side, inviti, billing/entitlements, audit forte |
-| 21 | #98 | SSO enterprise (opzionale, dopo 19–20) |
+| 21 | #98 | SSO enterprise — **posticipata** (on demand, dopo 19–20) |
 
 Piani di dettaglio:
 
-- [phase-19-identity-auth.md](plans/phase-19-identity-auth.md)
-- [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md)
-- [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) (bozza minima)
+- [phase-19-identity-auth.md](plans/phase-19-identity-auth.md) — completata
+- [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md) — completata
+- [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) — bozza; attivare solo su necessità reale
 
 ## Dipendenze con fasi precedenti
 

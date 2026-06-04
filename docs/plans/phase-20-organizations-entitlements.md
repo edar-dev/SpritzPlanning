@@ -158,7 +158,7 @@ Oltre al MVP Fase 19:
 | KPI / archivio (#81) | Archivio cloud per org (backlog #99+) |
 | Ops health (#86) | Route protetta `authenticated` + claim `ops_admin` |
 | Sync esterno (#83) | OAuth Jira/ADO per org, non per device |
-| SSO (#98) | Fase 21 |
+| SSO (#98) | Fase 21 (posticipata, on demand) |
 
 ---
 
@@ -179,4 +179,4 @@ Oltre al MVP Fase 19:
 - Fatturazione multi-valuta / invoice PDF
 - Room “pubblica internet” con moderazione
 
-Vedi [phase-21-enterprise-sso.md](phase-21-enterprise-sso.md) per SSO.
+SSO (#98): vedi [phase-21-enterprise-sso.md](phase-21-enterprise-sso.md) — posticipato fino a necessità reale.

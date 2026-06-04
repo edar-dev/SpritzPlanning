@@ -1,9 +1,11 @@
 # Fase 21 — SSO enterprise (SAML/OIDC)
 
+> **Stato: posticipata** — non in roadmap attiva. Implementare solo quando diventa una necessità (es. cliente enterprise con IdP obbligatorio). Fasi 19–20 coprono già auth opzionale, org e entitlements.
+
 **Punto:** #98 SSO enterprise  
-**Branch suggerito:** `feat/enterprise-sso`  
+**Branch suggerito (quando attiva):** `feat/enterprise-sso`  
 **Durata stimata:** 5–8 giorni  
-**Dipende da:** [Fase 19](phase-19-identity-auth.md) · [Fase 20](phase-20-organizations-entitlements.md)
+**Dipende da:** [Fase 19](phase-19-identity-auth.md) · [Fase 20](phase-20-organizations-entitlements.md) (completate)
 
 Elenco: [IMPROVEMENTS-V10.md](../IMPROVEMENTS-V10.md).
 

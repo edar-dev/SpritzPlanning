@@ -2,7 +2,7 @@
 
 
 
-Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI completati (fasi 11–12); punti **49–78** completati (fasi 14–16); punti **79–88** completati (fasi 17–18, business/enterprise); punti **89–98** pianificati (fasi 19–21, identità e auth).
+Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI completati (fasi 11–12); punti **49–78** completati (fasi 14–16); punti **79–88** completati (fasi 17–18, business/enterprise); punti **89–97** completati (fasi 19–20, identità e auth); punto **#98** (Fase 21 SSO) **posticipato** fino a necessità reale.
 
 
 
@@ -81,7 +81,7 @@ flowchart LR
 | 18 | #80, #83, #85, #86, #88 | 10–14 giorni | `feat/enterprise-readiness` | [phase-18-enterprise-readiness.md](plans/phase-18-enterprise-readiness.md) |
 | 19 | #89, #90, #91, #96 (MVP) | 8–12 giorni | `feat/identity-auth` | [phase-19-identity-auth.md](plans/phase-19-identity-auth.md) |
 | 20 | #92, #93, #94, #95, #97 | 12–18 giorni | `feat/organizations-entitlements` | [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md) |
-| 21 | #98 | 5–8 giorni | `feat/enterprise-sso` | [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) |
+| 21 | #98 | — | — (posticipata) | [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) |
 
 
 
@@ -181,11 +181,11 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 **Completate (v9 — business oriented):** Fasi 17–18 ([IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md), PR #16–#17).
 
-**Prossime (v10 — identità e auth):**
+**Completate (v10 — identità e auth):** Fasi 19–20 ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md), PR #18–#19).
 
-19. **Fase 19** — Supabase Auth, ospite→account, profilo, hardening RPC ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md))
-20. **Fase 20** — organizzazioni, workspace cloud, inviti, Stripe/entitlements, audit forte ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md))
-21. **Fase 21** — SSO enterprise SAML/OIDC ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md))
+**Posticipata (v10 — solo se necessario):**
+
+21. **Fase 21** — SSO enterprise SAML/OIDC (#98) — implementare quando un cliente richiede IdP aziendale; piano in [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md).
 
 
 
@@ -271,9 +271,9 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 16 | Completata | PR #13 — `feat/session-depth` |
 | 17 | Completata | PR #16 — `feat/business-foundations` |
 | 18 | Completata | PR #17 — `feat/enterprise-readiness` |
-| 19 | Pianificata | [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) #89, #90, #91, #96 |
-| 20 | Pianificata | [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) #92–#95, #97 |
-| 21 | Pianificata | [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) #98 |
+| 19 | Completata | PR #18 — `feat/identity-auth` |
+| 20 | Completata | PR #19 — `feat/organizations-entitlements` |
+| 21 | Posticipata | #98 SSO — on demand ([phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md)) |
 
 
 
@@ -376,12 +376,12 @@ Vedi [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md).
 | 95 | Entitlements server-side + Stripe | 20 |
 | 96 | Hardening RPC/RLS con `auth.uid()` | 19–20 |
 | 97 | Audit trail con identità verificata | 20 |
-| 98 | SSO enterprise (SAML/OIDC) | 21 |
+| 98 | SSO enterprise (SAML/OIDC) | 21 (posticipata) |
 
 Piani:
 - [phase-19-identity-auth.md](plans/phase-19-identity-auth.md)
 - [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md)
-- [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md)
+- [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) — bozza; attivare solo su richiesta
 
 ## Riferimenti codice
 
