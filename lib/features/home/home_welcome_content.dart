@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -36,7 +38,7 @@ class HomeWelcomeContent extends StatelessWidget {
   final VoidCallback? onResume;
   final VoidCallback? onOpenCreate;
   final VoidCallback? onOpenJoin;
-  final void Function(RecentRoomEntry entry) onOpenRecent;
+  final Future<void> Function(RecentRoomEntry entry) onOpenRecent;
   final VoidCallback? onTemplate;
   final VoidCallback? onOrg;
   final VoidCallback? onWorkspace;
@@ -263,7 +265,7 @@ class _RecentRoomsCard extends StatelessWidget {
 
   final List<RecentRoomEntry> entries;
   final bool enabled;
-  final void Function(RecentRoomEntry entry) onOpen;
+  final Future<void> Function(RecentRoomEntry entry) onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -299,7 +301,7 @@ class _RecentRoomTile extends StatelessWidget {
 
   final RecentRoomEntry entry;
   final bool enabled;
-  final VoidCallback onTap;
+  final Future<void> Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -311,7 +313,7 @@ class _RecentRoomTile extends StatelessWidget {
         onTap: enabled
             ? () {
                 HapticFeedback.selectionClick();
-                onTap();
+                unawaited(onTap());
               }
             : null,
         child: Padding(

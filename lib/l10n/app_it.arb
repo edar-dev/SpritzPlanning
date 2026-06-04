@@ -152,6 +152,7 @@
     }
   },
   "recentRooms": "Locali recenti",
+  "recentRoomUnavailable": "Questo locale non è più disponibile ed è stato rimosso dall'elenco.",
   "resumeSession": "Riprendi sessione",
   "resumeSessionSubtitle": "{roomName} · {code}",
   "@resumeSessionSubtitle": {

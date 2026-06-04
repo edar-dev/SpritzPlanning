@@ -377,6 +377,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentRooms => 'Recent rooms';
 
   @override
+  String get recentRoomUnavailable =>
+      'This room is no longer available and was removed from your list.';
+
+  @override
   String get resumeSession => 'Resume session';
 
   @override

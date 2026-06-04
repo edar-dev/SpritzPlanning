@@ -75,11 +75,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _loadLocalPreferences() async {
     final nickname = await AppPreferences.loadLastNickname();
-    final recent = await RecentRoomsStorage.load();
+    var recent = await RecentRoomsStorage.load();
     final stored = await SessionStorage.loadSession();
     final archive = await SessionArchiveStorage.load();
     final completed = await AppPreferences.loadHasCompletedSession();
     final feedbackDone = await AppPreferences.loadHasSubmittedFeedback();
+    if (SupabaseConfig.isConfigured && recent.isNotEmpty) {
+      recent = await _pruneUnavailableRecentRooms(recent);
+    }
     if (!mounted) return;
     setState(() {
       if (nickname != null && _nicknameController.text.isEmpty) {
@@ -209,7 +212,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             result.roomId,
             result.participantId,
           );
-      await RecentRoomsStorage.add(code: result.code, name: localeName);
+      await RecentRoomsStorage.add(
+        code: result.code,
+        name: localeName,
+        roomId: result.roomId,
+      );
       if (mounted) context.go('/room/${result.roomId}');
     });
   }
@@ -292,6 +299,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         await RecentRoomsStorage.add(
           code: roomState.room.code,
           name: roomState.room.name,
+          roomId: result.roomId,
         );
       }
       if (mounted) context.go('/room/${result.roomId}');
@@ -320,13 +328,69 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  void _openRecentRoom(RecentRoomEntry entry) {
+  Future<List<RecentRoomEntry>> _pruneUnavailableRecentRooms(
+    List<RecentRoomEntry> entries,
+  ) async {
+    final repo = ref.read(roomRepositoryProvider);
+    final valid = <RecentRoomEntry>[];
+    for (final entry in entries) {
+      try {
+        await repo.getRoomJoinInfo(entry.code);
+        valid.add(entry);
+      } catch (_) {
+        await RecentRoomsStorage.remove(code: entry.code);
+      }
+    }
+    return valid;
+  }
+
+  Future<void> _openRecentRoom(RecentRoomEntry entry) async {
+    final code = RecentRoomsStorage.normalizeCode(entry.code);
+    final stored = _storedSession;
+
+    if (stored != null &&
+        stored.roomCode != null &&
+        stored.roomCode!.toUpperCase() == code) {
+      await _resumeStoredSession();
+      return;
+    }
+
+    if (!SupabaseConfig.isConfigured) {
+      setState(() {
+        _mode = _HomeMode.join;
+        _roomCodeController.text = code;
+        _error = null;
+      });
+      return;
+    }
+
     setState(() {
-      _mode = _HomeMode.join;
-      _roomCodeController.text = entry.code;
+      _isLoading = true;
       _error = null;
     });
-    _scheduleJoinInfoLookup(entry.code);
+
+    try {
+      final info = await ref.read(roomRepositoryProvider).getRoomJoinInfo(code);
+      if (!mounted) return;
+      setState(() {
+        _mode = _HomeMode.join;
+        _roomCodeController.text = code;
+        _requiresPin = info.requiresPin;
+        _joinRoomPreviewName =
+            info.roomName.isNotEmpty ? info.roomName : entry.name;
+        _isLoading = false;
+      });
+    } catch (e, st) {
+      await ErrorReporter.capture(e, stackTrace: st, tags: {'flow': 'recent_room'});
+      await RecentRoomsStorage.remove(code: code);
+      final recent = await RecentRoomsStorage.load();
+      if (!mounted) return;
+      setState(() {
+        _recentRooms = recent;
+        _error = context.l10n.recentRoomUnavailable;
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _createFromTemplate() async {
@@ -382,7 +446,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             result.roomId,
             result.participantId,
           );
-      await RecentRoomsStorage.add(code: result.code, name: template.name);
+      await RecentRoomsStorage.add(
+        code: result.code,
+        name: template.name,
+        roomId: result.roomId,
+      );
       if (mounted) context.go('/room/${result.roomId}');
     });
   }

@@ -378,6 +378,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get recentRooms => 'Locali recenti';
 
   @override
+  String get recentRoomUnavailable =>
+      'Questo locale non è più disponibile ed è stato rimosso dall\'elenco.';
+
+  @override
   String get resumeSession => 'Riprendi sessione';
 
   @override

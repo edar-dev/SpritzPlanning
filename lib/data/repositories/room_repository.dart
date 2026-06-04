@@ -59,7 +59,7 @@ class RoomRepository {
     final response = await supabase.rpc(
       'join_room',
       params: {
-        'p_code': code.trim(),
+        'p_code': code.trim().toUpperCase(),
         'p_nickname': nickname,
         'p_observer': observer,
         if (pin != null && pin.isNotEmpty) 'p_pin': pin,
@@ -71,7 +71,7 @@ class RoomRepository {
   Future<RoomJoinInfo> getRoomJoinInfo(String code) async {
     final response = await supabase.rpc(
       'get_room_join_info',
-      params: {'p_code': code.trim()},
+      params: {'p_code': code.trim().toUpperCase()},
     );
     final map = Map<String, dynamic>.from(response as Map);
     return RoomJoinInfo(

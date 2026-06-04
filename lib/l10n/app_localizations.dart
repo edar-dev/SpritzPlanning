@@ -788,6 +788,12 @@ abstract class AppLocalizations {
   /// **'Locali recenti'**
   String get recentRooms;
 
+  /// No description provided for @recentRoomUnavailable.
+  ///
+  /// In it, this message translates to:
+  /// **'Questo locale non è più disponibile ed è stato rimosso dall\'elenco.'**
+  String get recentRoomUnavailable;
+
   /// No description provided for @resumeSession.
   ///
   /// In it, this message translates to:

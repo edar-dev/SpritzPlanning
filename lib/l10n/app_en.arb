@@ -132,6 +132,7 @@
     }
   },
   "recentRooms": "Recent rooms",
+  "recentRoomUnavailable": "This room is no longer available and was removed from your list.",
   "resumeSession": "Resume session",
   "resumeSessionSubtitle": "{roomName} · {code}",
   "@resumeSessionSubtitle": {
