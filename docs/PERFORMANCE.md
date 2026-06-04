@@ -27,6 +27,15 @@ npx lighthouse https://spritz-planning.vercel.app --view
 | Performance (mobile) | ≥ 70 |
 | Accessibility | ≥ 90 |
 
+## PWA / service worker (Fase 22)
+
+Con landing statica alla root e app sotto `/app/`, il build Vercel usa `--pwa-strategy=none` e `--no-source-maps` per evitare:
+
+- precache del service worker su file marketing assenti in `/app/` (timeout 4s in Firefox);
+- errori DevTools su `flutter.js.map` assente.
+
+L’app resta installabile via `manifest.json`; la cache offline Flutter si può rivalutare in Fase 23 con manifest SW dedicato solo a `/app/`.
+
 ## Ottimizzazioni applicate (Fase 7)
 
 - `theme-color` e `preconnect` Supabase in `web/index.html`

@@ -180,6 +180,8 @@ jobs:
         run: |
           flutter build web --release \
             --base-href /app/ \
+            --no-source-maps \
+            --pwa-strategy=none \
             --dart-define=SUPABASE_URL=https://placeholder.supabase.co \
             --dart-define=SUPABASE_ANON_KEY=placeholder-key-for-ci-build-only \
             --dart-define=GIT_SHA=${{ github.sha }}

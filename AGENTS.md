@@ -42,7 +42,7 @@ scripts/flutter.sh gen-l10n
 scripts/flutter.sh run -d chrome --dart-define-from-file=env.json
 scripts/flutter.sh test
 scripts/flutter.sh analyze --fatal-infos
-scripts/flutter.sh build web --base-href /app/ --dart-define-from-file=env.json
+scripts/flutter.sh build web --base-href /app/ --no-source-maps --pwa-strategy=none --dart-define-from-file=env.json
 ```
 
 ## Supabase

@@ -38,6 +38,8 @@ flutter build web \
   --release \
   --no-wasm-dry-run \
   --base-href /app/ \
+  --no-source-maps \
+  --pwa-strategy=none \
   "${DART_DEFINES[@]}"
 
 # Vercel serves /index.html before rewrites — root must be the marketing landing.
@@ -63,5 +65,17 @@ fi
 
 mv "$WEB/index.html" "$APP/index.html"
 cp "$WEB/landing.html" "$WEB/index.html"
+
+# Engine JS still references flutter.js.map in some SDK versions — avoid DevTools 404 noise.
+for f in flutter.js flutter_bootstrap.js; do
+  if [ -f "$APP/$f" ]; then
+    sed -i '/sourceMappingURL/d' "$APP/$f"
+  fi
+done
+
+# Empty SW file when --pwa-strategy=none (do not register a broken worker).
+if [ -f "$APP/flutter_service_worker.js" ] && [ ! -s "$APP/flutter_service_worker.js" ]; then
+  rm "$APP/flutter_service_worker.js"
+fi
 
 echo "Web package: landing at /, Flutter under /app/"
