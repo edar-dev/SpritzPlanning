@@ -1184,4 +1184,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountCallbackError => 'Sign-in failed. Try again from home.';
+
+  @override
+  String get orgTitle => 'Organization';
+
+  @override
+  String get orgManageSubtitle => 'Team, invites, and plan';
+
+  @override
+  String get orgEmpty => 'No organization yet. Create one for your team.';
+
+  @override
+  String get orgCreateNameLabel => 'Organization name';
+
+  @override
+  String get orgCreateNameHint => 'e.g. Alpha Delivery Team';
+
+  @override
+  String get orgCreateAction => 'Create organization';
+
+  @override
+  String get orgSignInRequired => 'Sign in to manage an organization.';
+
+  @override
+  String get orgInviteMember => 'Invite teammate';
+
+  @override
+  String get orgInviteTitle => 'Team invite';
+
+  @override
+  String get orgInviteSend => 'Generate invite link';
+
+  @override
+  String get orgInviteLinkHint => 'Share the link: valid 7 days, single use.';
+
+  @override
+  String get orgInviteAccepted => 'You joined the team.';
+
+  @override
+  String get orgInviteAccepting => 'Accepting invite…';
+
+  @override
+  String get orgInviteExpired => 'Invite expired or invalid.';
+
+  @override
+  String get workspaceCloudHint =>
+      'Workspaces stored in your active organization\'s cloud.';
+
+  @override
+  String get planUpgradeOrgNote =>
+      'Plan is tied to the organization (owner). Stripe coming soon.';
 }

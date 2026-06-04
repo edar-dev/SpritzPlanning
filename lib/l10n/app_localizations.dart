@@ -2245,6 +2245,102 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Accesso non riuscito. Riprova dal bancone.'**
   String get accountCallbackError;
+
+  /// No description provided for @orgTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Organizzazione'**
+  String get orgTitle;
+
+  /// No description provided for @orgManageSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Team, inviti e piano'**
+  String get orgManageSubtitle;
+
+  /// No description provided for @orgEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna organizzazione. Creane una per il tuo team.'**
+  String get orgEmpty;
+
+  /// No description provided for @orgCreateNameLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Nome organizzazione'**
+  String get orgCreateNameLabel;
+
+  /// No description provided for @orgCreateNameHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Es. Team Delivery Alpha'**
+  String get orgCreateNameHint;
+
+  /// No description provided for @orgCreateAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea organizzazione'**
+  String get orgCreateAction;
+
+  /// No description provided for @orgSignInRequired.
+  ///
+  /// In it, this message translates to:
+  /// **'Accedi per gestire un\'organizzazione.'**
+  String get orgSignInRequired;
+
+  /// No description provided for @orgInviteMember.
+  ///
+  /// In it, this message translates to:
+  /// **'Invita collega'**
+  String get orgInviteMember;
+
+  /// No description provided for @orgInviteTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Invito al team'**
+  String get orgInviteTitle;
+
+  /// No description provided for @orgInviteSend.
+  ///
+  /// In it, this message translates to:
+  /// **'Genera link invito'**
+  String get orgInviteSend;
+
+  /// No description provided for @orgInviteLinkHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi il link: valido 7 giorni, monouso.'**
+  String get orgInviteLinkHint;
+
+  /// No description provided for @orgInviteAccepted.
+  ///
+  /// In it, this message translates to:
+  /// **'Sei entrato nel team.'**
+  String get orgInviteAccepted;
+
+  /// No description provided for @orgInviteAccepting.
+  ///
+  /// In it, this message translates to:
+  /// **'Accettazione invito…'**
+  String get orgInviteAccepting;
+
+  /// No description provided for @orgInviteExpired.
+  ///
+  /// In it, this message translates to:
+  /// **'Invito scaduto o non valido.'**
+  String get orgInviteExpired;
+
+  /// No description provided for @workspaceCloudHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Workspace salvati sul cloud dell\'organizzazione attiva.'**
+  String get workspaceCloudHint;
+
+  /// No description provided for @planUpgradeOrgNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Il piano è legato all\'organizzazione (owner). Stripe in arrivo.'**
+  String get planUpgradeOrgNote;
 }
 
 class _AppLocalizationsDelegate

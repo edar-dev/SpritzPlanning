@@ -32,6 +32,7 @@ supabase db push
 | `20260607120000_participant_roles.sql` | Ruoli partecipante (`facilitator`/`editor`/`viewer`) + permessi backlog (#79) |
 | `20260608120000_enterprise_readiness.sql` | Workspace branding su room, audit trail, link Jira/ADO, health RPC (#80, #85, #83, #86) |
 | `20260609120000_identity_auth.sql` | Supabase Auth: `user_profiles`, `participants.user_id`, link account, RPC hardening (#89–#91, #96) |
+| `20260610120000_organizations_entitlements.sql` | Organizations, cloud workspaces, invites, entitlements, audit actor (#92–#95, #97) |
 
 I nomi usano il timestamp Supabase (`YYYYMMDDHHMMSS_nome.sql`) per allinearsi a `supabase_migrations.schema_migrations` e a `supabase db push` in CI.
 
@@ -79,6 +80,19 @@ Configurazione in [Supabase Dashboard → Authentication](https://supabase.com/d
 - Locale web: `http://localhost:<port>/auth/callback`
 
 Deep link mobile (se usato): `io.supabase.spritzplanning://auth/callback`
+
+## Organizzazioni e billing (Fase 20)
+
+- Tabelle: `organizations`, `org_members`, `org_invites`, `workspaces`
+- RPC: `create_organization`, `list_workspaces`, `get_org_entitlements`, `set_org_plan_tier` (owner demo)
+- Edge Function: `supabase/functions/stripe-webhook` — aggiorna piano via `apply_org_billing_update` (service role)
+- Secrets Supabase: `STRIPE_WEBHOOK_SECRET`, `SUPABASE_SERVICE_ROLE_KEY` (solo server)
+
+Deploy function:
+
+```bash
+supabase functions deploy stripe-webhook --project-ref eyvfsgzbrdibheyejikf
+```
 
 ## Sicurezza
 

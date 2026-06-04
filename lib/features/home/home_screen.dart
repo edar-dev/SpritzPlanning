@@ -27,7 +27,9 @@ import 'plan_upgrade_sheet.dart';
 import 'workspace_sheet.dart';
 import '../auth/profile_sheet.dart';
 import '../auth/sign_in_sheet.dart';
+import '../org/org_sheet.dart';
 import '../../data/auth/auth_providers.dart';
+import '../../data/org/org_providers.dart';
 import '../../core/plan/plan_tier.dart';
 import 'session_archive_sheet.dart';
 import 'feedback_dialog.dart';
@@ -190,11 +192,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
       final workspace = await ref.read(activeWorkspaceProvider.future);
+      final org = await ref.read(activeOrganizationProvider.future);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: localeName,
             nickname: nickname,
             workspaceName: workspace.name,
             brandColor: _brandColorHex(workspace.brandColorArgb),
+            orgId: org?.id,
+            workspaceId: org != null ? workspace.id : null,
           );
       await ref.read(sessionProvider.notifier).saveSession(
             result,
@@ -343,11 +348,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
       final workspace = await ref.read(activeWorkspaceProvider.future);
+      final org = await ref.read(activeOrganizationProvider.future);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: template.name,
             nickname: nickname,
             workspaceName: workspace.name,
             brandColor: _brandColorHex(workspace.brandColorArgb),
+            orgId: org?.id,
+            workspaceId: org != null ? workspace.id : null,
           );
       final repo = ref.read(roomRepositoryProvider);
       await repo.setRoomDeck(
@@ -560,6 +568,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           title: l10n.createFromTemplate,
           subtitle: l10n.roomTemplates,
           onTap: configured && !_isLoading ? _createFromTemplate : null,
+        ),
+        const SizedBox(height: 12),
+        SpritzActionTile(
+          icon: Icons.groups_outlined,
+          title: l10n.orgTitle,
+          subtitle: l10n.orgManageSubtitle,
+          onTap: configured && !_isLoading
+              ? () => OrgSheet.show(context)
+              : null,
         ),
         const SizedBox(height: 12),
         SpritzActionTile(
