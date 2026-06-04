@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
+import '../../data/models/models.dart';
 
 class ParticipantAvatar extends StatelessWidget {
   const ParticipantAvatar({
@@ -12,6 +13,7 @@ class ParticipantAvatar extends StatelessWidget {
     this.showVoteStatus = false,
     this.isAbsent = false,
     this.isObserver = false,
+    this.role = ParticipantRole.editor,
     this.onLongPress,
   });
 
@@ -21,6 +23,7 @@ class ParticipantAvatar extends StatelessWidget {
   final bool showVoteStatus;
   final bool isAbsent;
   final bool isObserver;
+  final ParticipantRole role;
   final VoidCallback? onLongPress;
 
   @override
@@ -119,6 +122,24 @@ class ParticipantAvatar extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
             ),
+          ] else if (role == ParticipantRole.viewer) ...[
+            const SizedBox(height: 2),
+            Text(
+              context.l10n.viewerBadge,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: const Color(AppColors.textSecondary),
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ] else if (role == ParticipantRole.editor) ...[
+            const SizedBox(height: 2),
+            Text(
+              context.l10n.editorBadge,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: const Color(AppColors.oliveGreen),
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
           ] else if (isAbsent) ...[
             const SizedBox(height: 2),
             Text(
@@ -153,6 +174,12 @@ class ParticipantAvatar extends StatelessWidget {
     final parts = <String>[nickname];
     if (isObserver) parts.add(l10n.observerBadge);
     if (isFacilitator) parts.add(l10n.barman);
+    if (!isObserver && !isFacilitator && role == ParticipantRole.editor) {
+      parts.add(l10n.editorBadge);
+    }
+    if (!isObserver && !isFacilitator && role == ParticipantRole.viewer) {
+      parts.add(l10n.viewerBadge);
+    }
     if (showVoteStatus && hasVoted) {
       parts.add(l10n.voteSubmitted);
     }

@@ -360,6 +360,21 @@ class RoomRepository {
     );
   }
 
+  Future<void> setParticipantRole({
+    required String facilitatorId,
+    required String targetId,
+    required ParticipantRole role,
+  }) async {
+    await supabase.rpc(
+      'set_participant_role',
+      params: {
+        'p_facilitator_id': facilitatorId,
+        'p_target_id': targetId,
+        'p_role': role.dbValue,
+      },
+    );
+  }
+
   Future<void> updateStory({
     required String participantId,
     required String storyId,

@@ -420,6 +420,21 @@ class AppLocalizationsIt extends AppLocalizations {
   String get observerBadge => 'Osservatore';
 
   @override
+  String get editorBadge => 'Editor';
+
+  @override
+  String get viewerBadge => 'Solo lettura';
+
+  @override
+  String get setParticipantRoleEditor => 'Assegna ruolo editor';
+
+  @override
+  String get setParticipantRoleViewer => 'Assegna ruolo solo lettura';
+
+  @override
+  String get participantRoleChanged => 'Ruolo partecipante aggiornato';
+
+  @override
   String get observerCannotVote => 'Stai osservando: non puoi votare';
 
   @override
@@ -481,7 +496,158 @@ class AppLocalizationsIt extends AppLocalizations {
   String get reportSpikes => 'Spike';
 
   @override
+  String get reportVariance => 'Dispersione stime';
+
+  @override
+  String get reportRevisionRate => 'Revisioni stima';
+
+  @override
+  String reportRevisionRateValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get reportAvgTimePerStory => 'Tempo medio per ordine';
+
+  @override
+  String reportAvgMinutesValue(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get executiveReportTitle => 'Report executive';
+
+  @override
+  String get executiveReportOverview => 'Panoramica sessione';
+
+  @override
+  String get executiveReportRoomLabel => 'Locale';
+
+  @override
+  String get executiveReportCodeLabel => 'Codice';
+
+  @override
+  String get executiveReportExportedAtLabel => 'Esportato il';
+
+  @override
+  String get executiveReportKpi => 'KPI principali';
+
+  @override
+  String get executiveReportUncertainStories =>
+      'Ordini con maggiore incertezza';
+
+  @override
+  String get executiveReportUncertaintyScore => 'Indice incertezza';
+
+  @override
+  String get executiveReportActions => 'Decisioni e azioni suggerite';
+
+  @override
+  String get executiveReportBacklog => 'Ordine';
+
+  @override
+  String get executiveReportEstimateColumn => 'Stima';
+
+  @override
+  String get executiveReportNoUncertainStories =>
+      'Nessun ordine con segnali di incertezza rilevanti.';
+
+  @override
+  String get executiveReportNoSuggestedActions =>
+      'Nessuna azione suggerita automaticamente.';
+
+  @override
+  String executiveReportActionSpike(Object title) {
+    return 'Pianificare ricerca spike per «$title»';
+  }
+
+  @override
+  String executiveReportActionRevised(Object history, Object title) {
+    return 'Allineare la stima di «$title» (revisioni: $history)';
+  }
+
+  @override
+  String executiveReportActionReference(Object title) {
+    return 'Usare «$title» come riferimento relativo per le prossime stime';
+  }
+
+  @override
+  String get executiveReportActionHighVariance =>
+      'Ridurre la dispersione delle stime: rivedere la baseline del team';
+
+  @override
+  String executiveReportActionFacilitatorNote(Object note, Object title) {
+    return '«$title»: $note';
+  }
+
+  @override
+  String executiveReportActionPublicComment(Object comment, Object title) {
+    return '«$title» — commento team: $comment';
+  }
+
+  @override
+  String get executiveReportExport => 'Report executive';
+
+  @override
+  String get executiveReportCopyMarkdown => 'Copia Markdown';
+
+  @override
+  String get executiveReportCopyCsv => 'Copia CSV business';
+
+  @override
+  String get executiveReportPrint => 'Stampa / PDF';
+
+  @override
+  String get executiveReportPrintOpened => 'Finestra di stampa aperta';
+
+  @override
+  String get executiveReportPrintUnavailable =>
+      'Stampa disponibile solo su web';
+
+  @override
+  String get executiveReportOtherExports => 'Altri export';
+
+  @override
+  String get executiveReportMinutesSuffix => 'min';
+
+  @override
+  String get executiveReportPercentSuffix => '%';
+
+  @override
   String get roomTemplates => 'Template locale';
+
+  @override
+  String get businessTemplatesTitle => 'Template business';
+
+  @override
+  String get customTemplatesTitle => 'Template personalizzati';
+
+  @override
+  String get customTemplatesEmpty => 'Nessun template personalizzato salvato';
+
+  @override
+  String get createCustomTemplate => 'Crea template personalizzato';
+
+  @override
+  String get templateBusinessDiscoveryName => 'Product Discovery';
+
+  @override
+  String get templateBusinessDiscoveryDescription =>
+      'Allineamento su problemi, ipotesi e scope MVP';
+
+  @override
+  String get templateBusinessRefinementName => 'Delivery Refinement';
+
+  @override
+  String get templateBusinessRefinementDescription =>
+      'Rifinitura backlog con dipendenze e criteri di accettazione';
+
+  @override
+  String get templateBusinessMaintenanceName => 'Maintenance Fast Track';
+
+  @override
+  String get templateBusinessMaintenanceDescription =>
+      'Flusso rapido per incident, fix urgenti e follow-up';
 
   @override
   String get createFromTemplate => 'Crea da template';
@@ -624,6 +790,61 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get onboardingDone => 'Inizia';
+
+  @override
+  String get businessOnboardingTitle => 'Primo valore in 5 minuti';
+
+  @override
+  String get businessOnboardingSubtitle =>
+      'Percorso guidato per PM e team strutturati';
+
+  @override
+  String businessOnboardingProgress(int current, int total) {
+    return 'Passo $current di $total';
+  }
+
+  @override
+  String get businessOnboardingStep1Title => '1. Apri un locale';
+
+  @override
+  String get businessOnboardingStep1Body =>
+      'Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.';
+
+  @override
+  String get businessOnboardingStep2Title => '2. Importa il backlog';
+
+  @override
+  String get businessOnboardingStep2Body =>
+      'Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.';
+
+  @override
+  String get businessOnboardingStep3Title => '3. Invita il team';
+
+  @override
+  String get businessOnboardingStep3Body =>
+      'Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.';
+
+  @override
+  String get businessOnboardingStep4Title => '4. Stima e report';
+
+  @override
+  String get businessOnboardingStep4Body =>
+      'Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.';
+
+  @override
+  String get businessOnboardingSkip => 'Salta percorso';
+
+  @override
+  String get businessOnboardingNext => 'Avanti';
+
+  @override
+  String get businessOnboardingStart => 'Apri il primo locale';
+
+  @override
+  String get businessOnboardingDoneLater => 'Più tardi';
+
+  @override
+  String get helpReplayBusinessOnboarding => 'Rivedi percorso guidato';
 
   @override
   String get pastSessions => 'Sessioni passate';

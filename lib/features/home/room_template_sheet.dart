@@ -27,8 +27,67 @@ class RoomTemplateSheet extends StatefulWidget {
 }
 
 class _RoomTemplateSheetState extends State<RoomTemplateSheet> {
-  List<RoomTemplate> _templates = [];
+  List<RoomTemplate> _customTemplates = [];
   bool _loading = true;
+
+  List<_TemplateOption> _businessTemplates() {
+    final l10n = context.l10n;
+    return [
+      _TemplateOption(
+        template: RoomTemplate(
+          id: 'business-discovery',
+          name: l10n.templateBusinessDiscoveryName,
+          deckValues: List<String>.from(DeckValues.defaultDeck),
+          allowCoffeeBreak: true,
+          storyTitles: const [
+            'Problem framing',
+            'Customer interview synthesis',
+            'MVP scope',
+            'Go-to-market hypothesis',
+          ],
+          updatedAt: DateTime.now(),
+        ),
+        subtitle: l10n.templateBusinessDiscoveryDescription,
+        isBuiltIn: true,
+      ),
+      _TemplateOption(
+        template: RoomTemplate(
+          id: 'business-delivery-refinement',
+          name: l10n.templateBusinessRefinementName,
+          deckValues: List<String>.from(DeckValues.defaultDeck),
+          allowCoffeeBreak: true,
+          storyTitles: const [
+            'Dependency check',
+            'Acceptance criteria review',
+            'Risk and unknowns',
+            'Ready for sprint',
+          ],
+          updatedAt: DateTime.now(),
+          autoRevealWhenAllVoted: true,
+        ),
+        subtitle: l10n.templateBusinessRefinementDescription,
+        isBuiltIn: true,
+      ),
+      _TemplateOption(
+        template: RoomTemplate(
+          id: 'business-maintenance-fast-track',
+          name: l10n.templateBusinessMaintenanceName,
+          deckValues: List<String>.from(DeckValues.defaultDeck),
+          allowCoffeeBreak: false,
+          storyTitles: const [
+            'Incident triage',
+            'Impact and urgency',
+            'Hotfix estimation',
+            'Post-mortem follow-up',
+          ],
+          updatedAt: DateTime.now(),
+          autoRevealWhenAllVoted: true,
+        ),
+        subtitle: l10n.templateBusinessMaintenanceDescription,
+        isBuiltIn: true,
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -40,7 +99,7 @@ class _RoomTemplateSheetState extends State<RoomTemplateSheet> {
     final list = await RoomTemplateStorage.load();
     if (!mounted) return;
     setState(() {
-      _templates = list;
+      _customTemplates = list;
       _loading = false;
     });
   }
@@ -78,7 +137,7 @@ class _RoomTemplateSheetState extends State<RoomTemplateSheet> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Annulla'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
@@ -118,6 +177,7 @@ class _RoomTemplateSheetState extends State<RoomTemplateSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final businessTemplates = _businessTemplates();
 
     return SafeArea(
       child: Padding(
@@ -135,47 +195,117 @@ class _RoomTemplateSheetState extends State<RoomTemplateSheet> {
             const SizedBox(height: 16),
             if (_loading)
               const Center(child: CircularProgressIndicator())
-            else if (_templates.isEmpty)
-              Text(
-                l10n.reportEmpty,
-                textAlign: TextAlign.center,
-              )
             else
               Flexible(
-                child: ListView.builder(
+                child: ListView(
                   shrinkWrap: true,
-                  itemCount: _templates.length,
-                  itemBuilder: (context, index) {
-                    final t = _templates[index];
-                    return ListTile(
-                      title: Text(t.name),
-                      subtitle: Text(
-                        '${t.storyTitles.length} · ${t.deckValues.length}',
+                  children: [
+                    _SectionTitle(label: l10n.businessTemplatesTitle),
+                    ...businessTemplates.map((option) => _TemplateTile(
+                          option: option,
+                          onTap: () => Navigator.pop(context, option.template),
+                        )),
+                    const SizedBox(height: 12),
+                    _SectionTitle(label: l10n.customTemplatesTitle),
+                    if (_customTemplates.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          l10n.customTemplatesEmpty,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                       ),
-                      onTap: () => Navigator.pop(context, t),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        onPressed: () async {
-                          await RoomTemplateStorage.delete(t.id);
+                    ..._customTemplates.map((template) {
+                      final option = _TemplateOption(
+                        template: template,
+                        subtitle:
+                            '${template.storyTitles.length} · ${template.deckValues.length}',
+                        isBuiltIn: false,
+                      );
+                      return _TemplateTile(
+                        option: option,
+                        onTap: () => Navigator.pop(context, template),
+                        onDelete: () async {
+                          await RoomTemplateStorage.delete(template.id);
                           await _reload();
                         },
-                      ),
-                    );
-                  },
+                      );
+                    }),
+                  ],
                 ),
               ),
             const SizedBox(height: 12),
-            if (!widget.selectOnly || _templates.length < RoomTemplateStorage.maxTemplates)
+            if (!widget.selectOnly ||
+                _customTemplates.length < RoomTemplateStorage.maxTemplates)
               OutlinedButton.icon(
-                onPressed: _templates.length >= RoomTemplateStorage.maxTemplates
+                onPressed:
+                    _customTemplates.length >= RoomTemplateStorage.maxTemplates
                     ? null
                     : () => unawaited(_createTemplate()),
                 icon: const Icon(Icons.add),
-                label: Text(l10n.roomTemplates),
+                label: Text(l10n.createCustomTemplate),
               ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _TemplateOption {
+  const _TemplateOption({
+    required this.template,
+    required this.subtitle,
+    required this.isBuiltIn,
+  });
+
+  final RoomTemplate template;
+  final String subtitle;
+  final bool isBuiltIn;
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, bottom: 4),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+      ),
+    );
+  }
+}
+
+class _TemplateTile extends StatelessWidget {
+  const _TemplateTile({
+    required this.option,
+    required this.onTap,
+    this.onDelete,
+  });
+
+  final _TemplateOption option;
+  final VoidCallback onTap;
+  final VoidCallback? onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(option.template.name),
+      subtitle: Text(option.subtitle),
+      onTap: onTap,
+      trailing: option.isBuiltIn
+          ? const Icon(Icons.business_center_outlined)
+          : IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: onDelete,
+            ),
     );
   }
 }

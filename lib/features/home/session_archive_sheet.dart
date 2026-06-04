@@ -2,10 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/export/session_report.dart';
+import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/preferences/session_archive_storage.dart';
+import '../../core/theme/app_colors.dart';
+import '../archive/executive_export_actions.dart';
+import '../archive/session_kpi_preview.dart';
+import '../lobby/session_report_sheet.dart';
 
 class SessionArchiveSheet extends StatelessWidget {
   const SessionArchiveSheet({super.key, required this.entries});
@@ -23,9 +29,19 @@ class SessionArchiveSheet extends StatelessWidget {
     );
   }
 
+  static SessionReportStats _statsForEntry(SessionArchiveEntry entry) {
+    return SessionReportStats.tryParseJsonString(entry.statsJson) ??
+        SessionReportStats.fromReport(
+          SessionReport.fromJson(
+            Map<String, dynamic>.from(jsonDecode(entry.reportJson) as Map),
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final dateFormat = DateFormat.yMMMd().add_Hm();
 
     return SafeArea(
       child: Padding(
@@ -50,12 +66,78 @@ class SessionArchiveSheet extends StatelessWidget {
                   itemCount: entries.length,
                   itemBuilder: (context, index) {
                     final entry = entries[index];
-                    return ListTile(
-                      title: Text(entry.roomName),
-                      subtitle: Text('${entry.roomCode} · ${entry.completedAt.toLocal()}'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.copy_outlined),
-                        onPressed: () => _copyReport(context, entry),
+                    final stats = _statsForEntry(entry);
+                    final completedLabel =
+                        dateFormat.format(entry.completedAt.toLocal());
+
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () => _openReport(context, entry, stats),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          entry.roomName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          '${entry.roomCode} · $completedLabel',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: const Color(
+                                                  AppColors.textSecondary,
+                                                ),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.summarize_outlined),
+                                    tooltip: l10n.executiveReportCopyMarkdown,
+                                    onPressed: () =>
+                                        ExecutiveExportActions.copyMarkdown(
+                                      context,
+                                      report: SessionReport.fromJson(
+                                        Map<String, dynamic>.from(
+                                          jsonDecode(entry.reportJson) as Map,
+                                        ),
+                                      ),
+                                      stats: stats,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.copy_outlined),
+                                    tooltip: l10n.copiaReport,
+                                    onPressed: () =>
+                                        _copyReport(context, entry),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              SessionKpiPreview(stats: stats, compact: true),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -65,6 +147,18 @@ class SessionArchiveSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _openReport(
+    BuildContext context,
+    SessionArchiveEntry entry,
+    SessionReportStats stats,
+  ) async {
+    final report = SessionReport.fromJson(
+      Map<String, dynamic>.from(jsonDecode(entry.reportJson) as Map),
+    );
+    if (!context.mounted) return;
+    await SessionReportSheet.show(context, report, stats);
   }
 
   Future<void> _copyReport(BuildContext context, SessionArchiveEntry entry) async {

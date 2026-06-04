@@ -854,6 +854,36 @@ abstract class AppLocalizations {
   /// **'Osservatore'**
   String get observerBadge;
 
+  /// No description provided for @editorBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Editor'**
+  String get editorBadge;
+
+  /// No description provided for @viewerBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Solo lettura'**
+  String get viewerBadge;
+
+  /// No description provided for @setParticipantRoleEditor.
+  ///
+  /// In it, this message translates to:
+  /// **'Assegna ruolo editor'**
+  String get setParticipantRoleEditor;
+
+  /// No description provided for @setParticipantRoleViewer.
+  ///
+  /// In it, this message translates to:
+  /// **'Assegna ruolo solo lettura'**
+  String get setParticipantRoleViewer;
+
+  /// No description provided for @participantRoleChanged.
+  ///
+  /// In it, this message translates to:
+  /// **'Ruolo partecipante aggiornato'**
+  String get participantRoleChanged;
+
   /// No description provided for @observerCannotVote.
   ///
   /// In it, this message translates to:
@@ -974,11 +1004,269 @@ abstract class AppLocalizations {
   /// **'Spike'**
   String get reportSpikes;
 
+  /// No description provided for @reportVariance.
+  ///
+  /// In it, this message translates to:
+  /// **'Dispersione stime'**
+  String get reportVariance;
+
+  /// No description provided for @reportRevisionRate.
+  ///
+  /// In it, this message translates to:
+  /// **'Revisioni stima'**
+  String get reportRevisionRate;
+
+  /// No description provided for @reportRevisionRateValue.
+  ///
+  /// In it, this message translates to:
+  /// **'{percent}%'**
+  String reportRevisionRateValue(int percent);
+
+  /// No description provided for @reportAvgTimePerStory.
+  ///
+  /// In it, this message translates to:
+  /// **'Tempo medio per ordine'**
+  String get reportAvgTimePerStory;
+
+  /// No description provided for @reportAvgMinutesValue.
+  ///
+  /// In it, this message translates to:
+  /// **'{minutes} min'**
+  String reportAvgMinutesValue(int minutes);
+
+  /// No description provided for @executiveReportTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Report executive'**
+  String get executiveReportTitle;
+
+  /// No description provided for @executiveReportOverview.
+  ///
+  /// In it, this message translates to:
+  /// **'Panoramica sessione'**
+  String get executiveReportOverview;
+
+  /// No description provided for @executiveReportRoomLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Locale'**
+  String get executiveReportRoomLabel;
+
+  /// No description provided for @executiveReportCodeLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Codice'**
+  String get executiveReportCodeLabel;
+
+  /// No description provided for @executiveReportExportedAtLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Esportato il'**
+  String get executiveReportExportedAtLabel;
+
+  /// No description provided for @executiveReportKpi.
+  ///
+  /// In it, this message translates to:
+  /// **'KPI principali'**
+  String get executiveReportKpi;
+
+  /// No description provided for @executiveReportUncertainStories.
+  ///
+  /// In it, this message translates to:
+  /// **'Ordini con maggiore incertezza'**
+  String get executiveReportUncertainStories;
+
+  /// No description provided for @executiveReportUncertaintyScore.
+  ///
+  /// In it, this message translates to:
+  /// **'Indice incertezza'**
+  String get executiveReportUncertaintyScore;
+
+  /// No description provided for @executiveReportActions.
+  ///
+  /// In it, this message translates to:
+  /// **'Decisioni e azioni suggerite'**
+  String get executiveReportActions;
+
+  /// No description provided for @executiveReportBacklog.
+  ///
+  /// In it, this message translates to:
+  /// **'Ordine'**
+  String get executiveReportBacklog;
+
+  /// No description provided for @executiveReportEstimateColumn.
+  ///
+  /// In it, this message translates to:
+  /// **'Stima'**
+  String get executiveReportEstimateColumn;
+
+  /// No description provided for @executiveReportNoUncertainStories.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun ordine con segnali di incertezza rilevanti.'**
+  String get executiveReportNoUncertainStories;
+
+  /// No description provided for @executiveReportNoSuggestedActions.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna azione suggerita automaticamente.'**
+  String get executiveReportNoSuggestedActions;
+
+  /// No description provided for @executiveReportActionSpike.
+  ///
+  /// In it, this message translates to:
+  /// **'Pianificare ricerca spike per «{title}»'**
+  String executiveReportActionSpike(Object title);
+
+  /// No description provided for @executiveReportActionRevised.
+  ///
+  /// In it, this message translates to:
+  /// **'Allineare la stima di «{title}» (revisioni: {history})'**
+  String executiveReportActionRevised(Object history, Object title);
+
+  /// No description provided for @executiveReportActionReference.
+  ///
+  /// In it, this message translates to:
+  /// **'Usare «{title}» come riferimento relativo per le prossime stime'**
+  String executiveReportActionReference(Object title);
+
+  /// No description provided for @executiveReportActionHighVariance.
+  ///
+  /// In it, this message translates to:
+  /// **'Ridurre la dispersione delle stime: rivedere la baseline del team'**
+  String get executiveReportActionHighVariance;
+
+  /// No description provided for @executiveReportActionFacilitatorNote.
+  ///
+  /// In it, this message translates to:
+  /// **'«{title}»: {note}'**
+  String executiveReportActionFacilitatorNote(Object note, Object title);
+
+  /// No description provided for @executiveReportActionPublicComment.
+  ///
+  /// In it, this message translates to:
+  /// **'«{title}» — commento team: {comment}'**
+  String executiveReportActionPublicComment(Object comment, Object title);
+
+  /// No description provided for @executiveReportExport.
+  ///
+  /// In it, this message translates to:
+  /// **'Report executive'**
+  String get executiveReportExport;
+
+  /// No description provided for @executiveReportCopyMarkdown.
+  ///
+  /// In it, this message translates to:
+  /// **'Copia Markdown'**
+  String get executiveReportCopyMarkdown;
+
+  /// No description provided for @executiveReportCopyCsv.
+  ///
+  /// In it, this message translates to:
+  /// **'Copia CSV business'**
+  String get executiveReportCopyCsv;
+
+  /// No description provided for @executiveReportPrint.
+  ///
+  /// In it, this message translates to:
+  /// **'Stampa / PDF'**
+  String get executiveReportPrint;
+
+  /// No description provided for @executiveReportPrintOpened.
+  ///
+  /// In it, this message translates to:
+  /// **'Finestra di stampa aperta'**
+  String get executiveReportPrintOpened;
+
+  /// No description provided for @executiveReportPrintUnavailable.
+  ///
+  /// In it, this message translates to:
+  /// **'Stampa disponibile solo su web'**
+  String get executiveReportPrintUnavailable;
+
+  /// No description provided for @executiveReportOtherExports.
+  ///
+  /// In it, this message translates to:
+  /// **'Altri export'**
+  String get executiveReportOtherExports;
+
+  /// No description provided for @executiveReportMinutesSuffix.
+  ///
+  /// In it, this message translates to:
+  /// **'min'**
+  String get executiveReportMinutesSuffix;
+
+  /// No description provided for @executiveReportPercentSuffix.
+  ///
+  /// In it, this message translates to:
+  /// **'%'**
+  String get executiveReportPercentSuffix;
+
   /// No description provided for @roomTemplates.
   ///
   /// In it, this message translates to:
   /// **'Template locale'**
   String get roomTemplates;
+
+  /// No description provided for @businessTemplatesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Template business'**
+  String get businessTemplatesTitle;
+
+  /// No description provided for @customTemplatesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Template personalizzati'**
+  String get customTemplatesTitle;
+
+  /// No description provided for @customTemplatesEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun template personalizzato salvato'**
+  String get customTemplatesEmpty;
+
+  /// No description provided for @createCustomTemplate.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea template personalizzato'**
+  String get createCustomTemplate;
+
+  /// No description provided for @templateBusinessDiscoveryName.
+  ///
+  /// In it, this message translates to:
+  /// **'Product Discovery'**
+  String get templateBusinessDiscoveryName;
+
+  /// No description provided for @templateBusinessDiscoveryDescription.
+  ///
+  /// In it, this message translates to:
+  /// **'Allineamento su problemi, ipotesi e scope MVP'**
+  String get templateBusinessDiscoveryDescription;
+
+  /// No description provided for @templateBusinessRefinementName.
+  ///
+  /// In it, this message translates to:
+  /// **'Delivery Refinement'**
+  String get templateBusinessRefinementName;
+
+  /// No description provided for @templateBusinessRefinementDescription.
+  ///
+  /// In it, this message translates to:
+  /// **'Rifinitura backlog con dipendenze e criteri di accettazione'**
+  String get templateBusinessRefinementDescription;
+
+  /// No description provided for @templateBusinessMaintenanceName.
+  ///
+  /// In it, this message translates to:
+  /// **'Maintenance Fast Track'**
+  String get templateBusinessMaintenanceName;
+
+  /// No description provided for @templateBusinessMaintenanceDescription.
+  ///
+  /// In it, this message translates to:
+  /// **'Flusso rapido per incident, fix urgenti e follow-up'**
+  String get templateBusinessMaintenanceDescription;
 
   /// No description provided for @createFromTemplate.
   ///
@@ -1237,6 +1525,102 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Inizia'**
   String get onboardingDone;
+
+  /// No description provided for @businessOnboardingTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Primo valore in 5 minuti'**
+  String get businessOnboardingTitle;
+
+  /// No description provided for @businessOnboardingSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Percorso guidato per PM e team strutturati'**
+  String get businessOnboardingSubtitle;
+
+  /// No description provided for @businessOnboardingProgress.
+  ///
+  /// In it, this message translates to:
+  /// **'Passo {current} di {total}'**
+  String businessOnboardingProgress(int current, int total);
+
+  /// No description provided for @businessOnboardingStep1Title.
+  ///
+  /// In it, this message translates to:
+  /// **'1. Apri un locale'**
+  String get businessOnboardingStep1Title;
+
+  /// No description provided for @businessOnboardingStep1Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.'**
+  String get businessOnboardingStep1Body;
+
+  /// No description provided for @businessOnboardingStep2Title.
+  ///
+  /// In it, this message translates to:
+  /// **'2. Importa il backlog'**
+  String get businessOnboardingStep2Title;
+
+  /// No description provided for @businessOnboardingStep2Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.'**
+  String get businessOnboardingStep2Body;
+
+  /// No description provided for @businessOnboardingStep3Title.
+  ///
+  /// In it, this message translates to:
+  /// **'3. Invita il team'**
+  String get businessOnboardingStep3Title;
+
+  /// No description provided for @businessOnboardingStep3Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.'**
+  String get businessOnboardingStep3Body;
+
+  /// No description provided for @businessOnboardingStep4Title.
+  ///
+  /// In it, this message translates to:
+  /// **'4. Stima e report'**
+  String get businessOnboardingStep4Title;
+
+  /// No description provided for @businessOnboardingStep4Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.'**
+  String get businessOnboardingStep4Body;
+
+  /// No description provided for @businessOnboardingSkip.
+  ///
+  /// In it, this message translates to:
+  /// **'Salta percorso'**
+  String get businessOnboardingSkip;
+
+  /// No description provided for @businessOnboardingNext.
+  ///
+  /// In it, this message translates to:
+  /// **'Avanti'**
+  String get businessOnboardingNext;
+
+  /// No description provided for @businessOnboardingStart.
+  ///
+  /// In it, this message translates to:
+  /// **'Apri il primo locale'**
+  String get businessOnboardingStart;
+
+  /// No description provided for @businessOnboardingDoneLater.
+  ///
+  /// In it, this message translates to:
+  /// **'Più tardi'**
+  String get businessOnboardingDoneLater;
+
+  /// No description provided for @helpReplayBusinessOnboarding.
+  ///
+  /// In it, this message translates to:
+  /// **'Rivedi percorso guidato'**
+  String get helpReplayBusinessOnboarding;
 
   /// No description provided for @pastSessions.
   ///

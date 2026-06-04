@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../home/business_onboarding_dialog.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/light_surface_scope.dart';
@@ -93,6 +94,12 @@ class HelpScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: () => BusinessOnboardingDialog.showAgain(context),
+              icon: const Icon(Icons.play_lesson_outlined),
+              label: Text(l10n.helpReplayBusinessOnboarding),
+            ),
+            const SizedBox(height: 16),
             _SectionCard(
               title: l10n.helpShortcutsTitle,
               body:

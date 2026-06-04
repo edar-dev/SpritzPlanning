@@ -103,6 +103,39 @@ abstract final class AppPreferences {
     await prefs.setBool(_hasSeenOnboardingKey, true);
   }
 
+  static const _hasSeenBusinessOnboardingKey = 'has_seen_business_onboarding';
+  static const _businessOnboardingOutcomeKey = 'business_onboarding_outcome';
+  static const _businessOnboardingCompletedAtKey =
+      'business_onboarding_completed_at';
+
+  /// `skipped` or `completed` — set when the user finishes the business tour.
+  static Future<String?> loadBusinessOnboardingOutcome() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_businessOnboardingOutcomeKey);
+  }
+
+  static Future<bool> loadHasSeenBusinessOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_hasSeenBusinessOnboardingKey) ?? false;
+  }
+
+  static Future<void> markBusinessOnboardingSkipped() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hasSeenBusinessOnboardingKey, true);
+    await prefs.setString(_businessOnboardingOutcomeKey, 'skipped');
+    await prefs.remove(_businessOnboardingCompletedAtKey);
+  }
+
+  static Future<void> markBusinessOnboardingCompleted() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hasSeenBusinessOnboardingKey, true);
+    await prefs.setString(_businessOnboardingOutcomeKey, 'completed');
+    await prefs.setString(
+      _businessOnboardingCompletedAtKey,
+      DateTime.now().toUtc().toIso8601String(),
+    );
+  }
+
   static Future<bool> loadHasSubmittedFeedback() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_hasSubmittedFeedbackKey) ?? false;

@@ -21,6 +21,7 @@ import '../../shared/widgets/pwa_install_banner.dart';
 import '../../shared/widgets/spritz_action_tile.dart';
 import 'home_settings_sheet.dart';
 import 'room_template_sheet.dart';
+import 'business_onboarding_dialog.dart';
 import 'onboarding_dialog.dart';
 import 'session_archive_sheet.dart';
 import 'feedback_dialog.dart';
@@ -61,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _applyJoinCodeFromUrl();
       unawaited(_loadLocalPreferences());
-      unawaited(OnboardingDialog.maybeShow(context));
+      unawaited(_maybeShowOnboarding());
     });
   }
 
@@ -86,6 +87,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       await FeedbackDialog.maybeShow(context);
       if (mounted) setState(() => _pendingFeedback = false);
     }
+  }
+
+  Future<void> _maybeShowOnboarding() async {
+    if (!mounted) return;
+    await OnboardingDialog.maybeShow(context);
+    if (!mounted) return;
+    await BusinessOnboardingDialog.maybeShow(
+      context,
+      onStartCreate: () {
+        if (!mounted) return;
+        setState(() {
+          _mode = _HomeMode.create;
+          _error = null;
+        });
+      },
+    );
   }
 
   void _applyJoinCodeFromUrl() {
@@ -325,6 +342,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         participantId: result.participantId,
         deckValues: template.deckValues,
         allowCoffeeBreak: template.allowCoffeeBreak,
+      );
+      await repo.setRoomSettings(
+        participantId: result.participantId,
+        autoRevealWhenAllVoted: template.autoRevealWhenAllVoted,
+        hideVotersUntilReveal: template.hideVotersUntilReveal,
       );
       if (template.storyTitles.isNotEmpty) {
         await repo.addStories(

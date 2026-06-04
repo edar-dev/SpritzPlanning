@@ -98,6 +98,7 @@ Participant _participant(String id) {
     nickname: id,
     isFacilitator: id == 'p1',
     isObserver: false,
+    role: id == 'p1' ? ParticipantRole.facilitator : ParticipantRole.editor,
     joinedAt: _t,
     lastSeenAt: _now,
   );

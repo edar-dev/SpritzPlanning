@@ -632,6 +632,8 @@ class _RevealSection extends StatelessWidget {
                 ParticipantAvatar(
                   nickname: p.nickname,
                   isFacilitator: p.isFacilitator,
+                  isObserver: p.isObserver,
+                  role: p.role,
                 ),
                 const SizedBox(height: 8),
                 if (vote?.value != null)

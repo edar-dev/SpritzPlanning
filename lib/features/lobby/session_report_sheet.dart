@@ -7,6 +7,8 @@ import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../archive/executive_export_actions.dart';
+import '../archive/session_kpi_preview.dart';
 
 class SessionReportSheet extends StatelessWidget {
   const SessionReportSheet({
@@ -66,34 +68,7 @@ class SessionReportSheet extends StatelessWidget {
                 ),
               )
             else ...[
-              Semantics(
-                label: _statsSemanticsLabel(l10n),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    _StatChip(
-                      label: l10n.reportCompleted,
-                      value: '${stats.completedCount}',
-                    ),
-                    if (stats.spikeCount > 0)
-                      _StatChip(
-                        label: l10n.reportSpikes,
-                        value: '${stats.spikeCount}',
-                      ),
-                    if (stats.meanPoints != null)
-                      _StatChip(
-                        label: l10n.reportMean,
-                        value: stats.meanPoints!.toStringAsFixed(1),
-                      ),
-                    if (stats.medianPoints != null)
-                      _StatChip(
-                        label: l10n.reportMedian,
-                        value: stats.medianPoints!.toStringAsFixed(1),
-                      ),
-                  ],
-                ),
-              ),
+              SessionKpiPreview(stats: stats),
               if (stats.bars.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 SizedBox(
@@ -158,6 +133,54 @@ class SessionReportSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+              Text(
+                l10n.executiveReportExport,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  FilledButton.icon(
+                    onPressed: () => ExecutiveExportActions.copyMarkdown(
+                      context,
+                      report: report,
+                      stats: stats,
+                    ),
+                    icon: const Icon(Icons.summarize_outlined, size: 18),
+                    label: Text(l10n.executiveReportCopyMarkdown),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => ExecutiveExportActions.copyCsv(
+                      context,
+                      report: report,
+                      stats: stats,
+                    ),
+                    icon: const Icon(Icons.table_view_outlined, size: 18),
+                    label: Text(l10n.executiveReportCopyCsv),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => ExecutiveExportActions.printPdf(
+                      context,
+                      report: report,
+                      stats: stats,
+                    ),
+                    icon: const Icon(Icons.print_outlined, size: 18),
+                    label: Text(l10n.executiveReportPrint),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l10n.executiveReportOtherExports,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -213,21 +236,6 @@ class SessionReportSheet extends StatelessWidget {
     );
   }
 
-  String _statsSemanticsLabel(dynamic l10n) {
-    final parts = <String>[
-      '${l10n.reportCompleted}: ${stats.completedCount}',
-    ];
-    if (stats.meanPoints != null) {
-      parts.add('${l10n.reportMean}: ${stats.meanPoints!.toStringAsFixed(1)}');
-    }
-    if (stats.medianPoints != null) {
-      parts.add(
-        '${l10n.reportMedian}: ${stats.medianPoints!.toStringAsFixed(1)}',
-      );
-    }
-    return parts.join(', ');
-  }
-
   Future<void> _copy(BuildContext context, String text) async {
     await Clipboard.setData(ClipboardData(text: text));
     if (context.mounted) {
@@ -242,21 +250,6 @@ class SessionReportSheet extends StatelessWidget {
     await Share.share(
       report.toMarkdown(),
       subject: '${l10n.riepilogoSerata} — ${report.roomName}',
-    );
-  }
-}
-
-class _StatChip extends StatelessWidget {
-  const _StatChip({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      label: Text('$label: $value'),
-      backgroundColor: const Color(AppColors.primarySoft),
     );
   }
 }
