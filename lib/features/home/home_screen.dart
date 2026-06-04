@@ -25,6 +25,9 @@ import 'business_onboarding_dialog.dart';
 import 'onboarding_dialog.dart';
 import 'plan_upgrade_sheet.dart';
 import 'workspace_sheet.dart';
+import '../auth/profile_sheet.dart';
+import '../auth/sign_in_sheet.dart';
+import '../../data/auth/auth_providers.dart';
 import '../../core/plan/plan_tier.dart';
 import 'session_archive_sheet.dart';
 import 'feedback_dialog.dart';
@@ -776,6 +779,24 @@ class _HomePreferencesBar extends ConsumerWidget {
               ),
             ),
             const Spacer(),
+            IconButton(
+              tooltip: ref.watch(isSignedInProvider)
+                  ? l10n.accountProfile
+                  : l10n.accountSignIn,
+              onPressed: () {
+                if (ref.read(isSignedInProvider)) {
+                  unawaited(ProfileSheet.show(context));
+                } else {
+                  unawaited(SignInSheet.show(context));
+                }
+              },
+              icon: Icon(
+                ref.watch(isSignedInProvider)
+                    ? Icons.person_rounded
+                    : Icons.person_outline_rounded,
+                color: iconColor,
+              ),
+            ),
             IconButton(
               tooltip: l10n.helpTitle,
               onPressed: () => context.push('/help'),

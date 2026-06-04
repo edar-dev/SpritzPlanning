@@ -2119,6 +2119,132 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Revisioni stima'**
   String get estimateHistoryLabel;
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Account'**
+  String get accountTitle;
+
+  /// No description provided for @accountSignIn.
+  ///
+  /// In it, this message translates to:
+  /// **'Accedi'**
+  String get accountSignIn;
+
+  /// No description provided for @accountSignInSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva workspace e report sul tuo profilo'**
+  String get accountSignInSubtitle;
+
+  /// No description provided for @accountSignOut.
+  ///
+  /// In it, this message translates to:
+  /// **'Esci'**
+  String get accountSignOut;
+
+  /// No description provided for @accountProfile.
+  ///
+  /// In it, this message translates to:
+  /// **'Il tuo profilo'**
+  String get accountProfile;
+
+  /// No description provided for @accountEmailLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Email'**
+  String get accountEmailLabel;
+
+  /// No description provided for @accountEmailHint.
+  ///
+  /// In it, this message translates to:
+  /// **'nome@azienda.it'**
+  String get accountEmailHint;
+
+  /// No description provided for @accountMagicLinkSend.
+  ///
+  /// In it, this message translates to:
+  /// **'Invia link al bancone'**
+  String get accountMagicLinkSend;
+
+  /// No description provided for @accountMagicLinkSent.
+  ///
+  /// In it, this message translates to:
+  /// **'Controlla la posta: ti abbiamo mandato il link per entrare.'**
+  String get accountMagicLinkSent;
+
+  /// No description provided for @accountOAuthGoogle.
+  ///
+  /// In it, this message translates to:
+  /// **'Continua con Google'**
+  String get accountOAuthGoogle;
+
+  /// No description provided for @accountOAuthMicrosoft.
+  ///
+  /// In it, this message translates to:
+  /// **'Continua con Microsoft'**
+  String get accountOAuthMicrosoft;
+
+  /// No description provided for @accountLinkParticipantTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Collega questo tavolo'**
+  String get accountLinkParticipantTitle;
+
+  /// No description provided for @accountLinkParticipantAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Collega account a questa sessione'**
+  String get accountLinkParticipantAction;
+
+  /// No description provided for @accountLinkParticipantSuccess.
+  ///
+  /// In it, this message translates to:
+  /// **'Account collegato al bancone'**
+  String get accountLinkParticipantSuccess;
+
+  /// No description provided for @accountLinkParticipantHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Collega un account per ritrovare workspace e report su altri dispositivi.'**
+  String get accountLinkParticipantHint;
+
+  /// No description provided for @accountDisplayNameLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Nome visualizzato'**
+  String get accountDisplayNameLabel;
+
+  /// No description provided for @accountSaveProfile.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva profilo'**
+  String get accountSaveProfile;
+
+  /// No description provided for @accountProfileSaved.
+  ///
+  /// In it, this message translates to:
+  /// **'Profilo aggiornato'**
+  String get accountProfileSaved;
+
+  /// No description provided for @accountAuthRequired.
+  ///
+  /// In it, this message translates to:
+  /// **'Accedi per usare questa funzione'**
+  String get accountAuthRequired;
+
+  /// No description provided for @accountCallbackLoading.
+  ///
+  /// In it, this message translates to:
+  /// **'Accesso in corso…'**
+  String get accountCallbackLoading;
+
+  /// No description provided for @accountCallbackError.
+  ///
+  /// In it, this message translates to:
+  /// **'Accesso non riuscito. Riprova dal bancone.'**
+  String get accountCallbackError;
 }
 
 class _AppLocalizationsDelegate
