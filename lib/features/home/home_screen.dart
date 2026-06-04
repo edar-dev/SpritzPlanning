@@ -23,6 +23,9 @@ import 'home_settings_sheet.dart';
 import 'room_template_sheet.dart';
 import 'business_onboarding_dialog.dart';
 import 'onboarding_dialog.dart';
+import 'plan_upgrade_sheet.dart';
+import 'workspace_sheet.dart';
+import '../../core/plan/plan_tier.dart';
 import 'session_archive_sheet.dart';
 import 'feedback_dialog.dart';
 import '../../core/preferences/session_archive_storage.dart';
@@ -183,9 +186,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
+      final workspace = await ref.read(activeWorkspaceProvider.future);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: localeName,
             nickname: nickname,
+            workspaceName: workspace.name,
+            brandColor: _brandColorHex(workspace.brandColorArgb),
           );
       await ref.read(sessionProvider.notifier).saveSession(
             result,
@@ -333,9 +339,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
+      final workspace = await ref.read(activeWorkspaceProvider.future);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: template.name,
             nickname: nickname,
+            workspaceName: workspace.name,
+            brandColor: _brandColorHex(workspace.brandColorArgb),
           );
       final repo = ref.read(roomRepositoryProvider);
       await repo.setRoomDeck(
@@ -549,6 +558,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           subtitle: l10n.roomTemplates,
           onTap: configured && !_isLoading ? _createFromTemplate : null,
         ),
+        const SizedBox(height: 12),
+        SpritzActionTile(
+          icon: Icons.business_outlined,
+          title: l10n.workspaceTitle,
+          subtitle: l10n.workspaceManageSubtitle,
+          onTap: configured && !_isLoading
+              ? () => WorkspaceSheet.show(context)
+              : null,
+        ),
+        const SizedBox(height: 12),
+        SpritzActionTile(
+          icon: Icons.workspace_premium_outlined,
+          title: l10n.planUpgradeTitle,
+          subtitle: l10n.planManageSubtitle,
+          onTap: () => PlanUpgradeSheet.show(context, minimumTier: PlanTier.pro),
+        ),
+        const SizedBox(height: 12),
+        SpritzActionTile(
+          icon: Icons.monitor_heart_outlined,
+          title: l10n.opsHealthTitle,
+          subtitle: l10n.opsHealthSubtitle,
+          onTap: configured && !_isLoading
+              ? () => context.push('/ops/health')
+              : null,
+        ),
         if (_archiveCount > 0) ...[
           const SizedBox(height: 12),
           SpritzActionTile(
@@ -757,6 +791,15 @@ class _HomePreferencesBar extends ConsumerWidget {
       ),
     );
   }
+}
+
+String _brandColorHex(int argb) {
+  final r = (argb >> 16) & 0xFF;
+  final g = (argb >> 8) & 0xFF;
+  final b = argb & 0xFF;
+  return '#${r.toRadixString(16).padLeft(2, '0')}'
+      '${g.toRadixString(16).padLeft(2, '0')}'
+      '${b.toRadixString(16).padLeft(2, '0')}';
 }
 
 enum _HomeMode { welcome, create, join }

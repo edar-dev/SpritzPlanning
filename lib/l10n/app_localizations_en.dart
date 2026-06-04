@@ -847,6 +847,118 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpReplayBusinessOnboarding => 'Replay guided tour';
 
   @override
+  String get workspaceTitle => 'Team workspace';
+
+  @override
+  String get workspaceManageSubtitle => 'Branding and default deck';
+
+  @override
+  String get workspaceEmpty => 'No workspace configured';
+
+  @override
+  String get workspaceBrandPreview => 'Brand color';
+
+  @override
+  String get workspaceAdd => 'Add workspace';
+
+  @override
+  String get planUpgradeTitle => 'Commercial plan';
+
+  @override
+  String planUpgradeBody(String tier) {
+    return 'Required plan: $tier';
+  }
+
+  @override
+  String get planTierFree => 'Free';
+
+  @override
+  String get planTierFreeFeatures => 'Rooms, voting, and basic reports';
+
+  @override
+  String get planTierPro => 'Pro';
+
+  @override
+  String get planTierProFeatures => 'Advanced KPIs, executive report, health';
+
+  @override
+  String get planTierTeam => 'Team';
+
+  @override
+  String get planTierTeamFeatures =>
+      'Multiple workspaces, audit trail, Jira/ADO sync';
+
+  @override
+  String get planUpgradeDemoNote =>
+      'Local demo: pick a plan to test limits (no billing).';
+
+  @override
+  String get planManageSubtitle => 'Free / Pro / Team';
+
+  @override
+  String get planFeatureLocked => 'Available on a higher plan';
+
+  @override
+  String get auditTrailTitle => 'Audit log';
+
+  @override
+  String get opsHealthTitle => 'Service health';
+
+  @override
+  String get opsHealthSubtitle => 'Operational metrics (Pro+)';
+
+  @override
+  String get opsHealthRealtime => 'Realtime';
+
+  @override
+  String get opsHealthActiveRooms1h => 'Active rooms (1h)';
+
+  @override
+  String get opsHealthActiveRooms24h => 'Active rooms (24h)';
+
+  @override
+  String get opsHealthAudit24h => 'Audit events (24h)';
+
+  @override
+  String get opsHealthExternalLinks => 'External links';
+
+  @override
+  String get opsHealthStoriesDone24h => 'Completed stories (24h)';
+
+  @override
+  String opsHealthCheckedAt(String at) {
+    return 'Checked at: $at';
+  }
+
+  @override
+  String get opsHealthAlertHint =>
+      'Alert thresholds: high RPC error rate or sustained latency — manual monitoring in this release.';
+
+  @override
+  String get externalSyncTitle => 'Jira / ADO sync';
+
+  @override
+  String get externalSyncJira => 'Jira';
+
+  @override
+  String get externalSyncAdo => 'Azure DevOps';
+
+  @override
+  String get externalSyncKeyLabel => 'Issue key';
+
+  @override
+  String get externalSyncKeyHint => 'e.g. PROJ-123';
+
+  @override
+  String get externalSyncLinkAction => 'Link story';
+
+  @override
+  String get externalSyncPushAction => 'Record estimate push (clipboard)';
+
+  @override
+  String get externalSyncCopied => 'Sync payload copied';
+
+  @override
   String get pastSessions => 'Past sessions';
 
   @override

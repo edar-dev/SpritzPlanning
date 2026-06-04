@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/export/executive_report.dart';
+import '../../core/plan/plan_gate.dart';
+import '../../core/plan/plan_tier.dart';
 import '../../core/export/executive_report_print.dart';
 import '../../core/export/session_report.dart';
 import '../../core/export/session_report_stats.dart';
@@ -61,11 +64,21 @@ class ExecutiveExportActions {
   }
 
   static Future<void> copyMarkdown(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required SessionReport report,
     required SessionReportStats stats,
     String retroNotes = '',
   }) async {
+    if (!await ensurePlanFeature(
+      context,
+      ref,
+      feature: (t) => t.canUseExecutiveReport,
+      minimumTier: PlanTier.pro,
+    )) {
+      return;
+    }
+    if (!context.mounted) return;
     final executive = build(
       context: context,
       report: report,
@@ -76,11 +89,21 @@ class ExecutiveExportActions {
   }
 
   static Future<void> copyCsv(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required SessionReport report,
     required SessionReportStats stats,
     String retroNotes = '',
   }) async {
+    if (!await ensurePlanFeature(
+      context,
+      ref,
+      feature: (t) => t.canUseExecutiveReport,
+      minimumTier: PlanTier.pro,
+    )) {
+      return;
+    }
+    if (!context.mounted) return;
     final executive = build(
       context: context,
       report: report,
@@ -91,11 +114,21 @@ class ExecutiveExportActions {
   }
 
   static Future<void> printPdf(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required SessionReport report,
     required SessionReportStats stats,
     String retroNotes = '',
   }) async {
+    if (!await ensurePlanFeature(
+      context,
+      ref,
+      feature: (t) => t.canUseExecutiveReport,
+      minimumTier: PlanTier.pro,
+    )) {
+      return;
+    }
+    if (!context.mounted) return;
     final executive = build(
       context: context,
       report: report,

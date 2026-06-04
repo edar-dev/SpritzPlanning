@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/export/session_report.dart';
@@ -7,34 +8,42 @@ import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../data/models/audit_event.dart';
 import '../archive/executive_export_actions.dart';
 import '../archive/session_kpi_preview.dart';
 
-class SessionReportSheet extends StatelessWidget {
+class SessionReportSheet extends ConsumerWidget {
   const SessionReportSheet({
     super.key,
     required this.report,
     required this.stats,
+    this.auditEvents,
   });
 
   final SessionReport report;
   final SessionReportStats stats;
+  final List<AuditEvent>? auditEvents;
 
   static Future<void> show(
     BuildContext context,
     SessionReport report,
-    SessionReportStats stats,
-  ) {
+    SessionReportStats stats, {
+    List<AuditEvent>? auditEvents,
+  }) {
     return showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (ctx) => SessionReportSheet(report: report, stats: stats),
+      builder: (ctx) => SessionReportSheet(
+        report: report,
+        stats: stats,
+        auditEvents: auditEvents,
+      ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
 
     return SafeArea(
@@ -69,6 +78,25 @@ class SessionReportSheet extends StatelessWidget {
               )
             else ...[
               SessionKpiPreview(stats: stats),
+              if (auditEvents != null && auditEvents!.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  l10n.auditTrailTitle,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                ...auditEvents!.take(8).map(
+                  (e) => ListTile(
+                    dense: true,
+                    title: Text(e.summary),
+                    subtitle: Text(
+                      '${e.kind} · ${e.createdAt.toLocal()}',
+                    ),
+                  ),
+                ),
+              ],
               if (stats.bars.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 SizedBox(
@@ -147,6 +175,7 @@ class SessionReportSheet extends StatelessWidget {
                   FilledButton.icon(
                     onPressed: () => ExecutiveExportActions.copyMarkdown(
                       context,
+                      ref,
                       report: report,
                       stats: stats,
                     ),
@@ -156,6 +185,7 @@ class SessionReportSheet extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => ExecutiveExportActions.copyCsv(
                       context,
+                      ref,
                       report: report,
                       stats: stats,
                     ),
@@ -165,6 +195,7 @@ class SessionReportSheet extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => ExecutiveExportActions.printPdf(
                       context,
+                      ref,
                       report: report,
                       stats: stats,
                     ),

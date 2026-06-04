@@ -847,6 +847,118 @@ class AppLocalizationsIt extends AppLocalizations {
   String get helpReplayBusinessOnboarding => 'Rivedi percorso guidato';
 
   @override
+  String get workspaceTitle => 'Workspace team';
+
+  @override
+  String get workspaceManageSubtitle => 'Branding e deck predefinito';
+
+  @override
+  String get workspaceEmpty => 'Nessun workspace configurato';
+
+  @override
+  String get workspaceBrandPreview => 'Colore brand';
+
+  @override
+  String get workspaceAdd => 'Aggiungi workspace';
+
+  @override
+  String get planUpgradeTitle => 'Piano commerciale';
+
+  @override
+  String planUpgradeBody(String tier) {
+    return 'Funzione richiesta: piano $tier';
+  }
+
+  @override
+  String get planTierFree => 'Free';
+
+  @override
+  String get planTierFreeFeatures => 'Stanze, voto e report base';
+
+  @override
+  String get planTierPro => 'Pro';
+
+  @override
+  String get planTierProFeatures => 'KPI avanzati, report executive, health';
+
+  @override
+  String get planTierTeam => 'Team';
+
+  @override
+  String get planTierTeamFeatures =>
+      'Workspace multipli, audit trail, sync Jira/ADO';
+
+  @override
+  String get planUpgradeDemoNote =>
+      'Demo locale: selezione piano per testare i limiti (nessun pagamento).';
+
+  @override
+  String get planManageSubtitle => 'Free / Pro / Team';
+
+  @override
+  String get planFeatureLocked => 'Disponibile con piano superiore';
+
+  @override
+  String get auditTrailTitle => 'Registro audit';
+
+  @override
+  String get opsHealthTitle => 'Stato servizio';
+
+  @override
+  String get opsHealthSubtitle => 'Metriche operative (Pro+)';
+
+  @override
+  String get opsHealthRealtime => 'Realtime';
+
+  @override
+  String get opsHealthActiveRooms1h => 'Stanze attive (1h)';
+
+  @override
+  String get opsHealthActiveRooms24h => 'Stanze attive (24h)';
+
+  @override
+  String get opsHealthAudit24h => 'Eventi audit (24h)';
+
+  @override
+  String get opsHealthExternalLinks => 'Collegamenti esterni';
+
+  @override
+  String get opsHealthStoriesDone24h => 'Ordini completati (24h)';
+
+  @override
+  String opsHealthCheckedAt(String at) {
+    return 'Aggiornato: $at';
+  }
+
+  @override
+  String get opsHealthAlertHint =>
+      'Soglie alert: error rate RPC elevato o latenza prolungata — monitoraggio manuale in questa release.';
+
+  @override
+  String get externalSyncTitle => 'Sync Jira / ADO';
+
+  @override
+  String get externalSyncJira => 'Jira';
+
+  @override
+  String get externalSyncAdo => 'Azure DevOps';
+
+  @override
+  String get externalSyncKeyLabel => 'Chiave issue';
+
+  @override
+  String get externalSyncKeyHint => 'es. PROJ-123';
+
+  @override
+  String get externalSyncLinkAction => 'Collega ordine';
+
+  @override
+  String get externalSyncPushAction => 'Registra push stima (clipboard)';
+
+  @override
+  String get externalSyncCopied => 'Payload sync copiato';
+
+  @override
   String get pastSessions => 'Sessioni passate';
 
   @override

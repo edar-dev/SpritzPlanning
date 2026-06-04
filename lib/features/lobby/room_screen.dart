@@ -24,6 +24,10 @@ import '../../core/export/session_report_stats.dart';
 import '../../core/feedback/session_feedback.dart';
 import '../../core/share/room_invite_text.dart';
 import '../../core/preferences/room_template_storage.dart';
+import '../../core/plan/plan_gate.dart';
+import '../../core/plan/plan_tier.dart';
+import '../../data/models/audit_event.dart';
+import 'story_external_link_sheet.dart';
 import 'session_report_sheet.dart';
 import 'session_close_sheet.dart';
 import 'story_public_comment_sheet.dart';
@@ -220,6 +224,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     }
     if (session != null) {
       try {
+        await ref.read(roomRepositoryProvider).logSessionClose(
+              participantId: session.participantId,
+            );
+      } catch (_) {}
+      try {
         await ref.read(roomRepositoryProvider).leaveRoom(
               participantId: session.participantId,
             );
@@ -356,14 +365,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                 IconButton(
                   icon: const Icon(Icons.summarize_outlined),
                   tooltip: context.l10n.riepilogoSerata,
-                  onPressed: () => SessionReportSheet.show(
-                    context,
-                    SessionReport.fromRoomState(
-                      roomState,
-                      includeFacilitatorNotes: true,
-                    ),
-                    SessionReportStats.fromRoomState(roomState),
-                  ),
+                  onPressed: () => unawaited(
+                        _openSessionReport(context, roomState),
+                      ),
                 ),
               if (canModerate)
                 PopupMenuButton<String>(
@@ -380,6 +384,17 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       );
                     } else if (value == 'template') {
                       unawaited(_saveRoomAsTemplate(context, roomState));
+                    } else if (value == 'external') {
+                      final story = roomState.currentStory;
+                      if (story != null) {
+                        unawaited(
+                          _openExternalSync(
+                            context,
+                            story: story,
+                            participantId: session.participantId,
+                          ),
+                        );
+                      }
                     }
                   },
                   itemBuilder: (ctx) => [
@@ -387,6 +402,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       value: 'template',
                       child: Text(context.l10n.saveRoomTemplate),
                     ),
+                    if (roomState.currentStory != null)
+                      PopupMenuItem(
+                        value: 'external',
+                        child: Text(context.l10n.externalSyncTitle),
+                      ),
                     PopupMenuItem(
                       value: 'close',
                       child: Text(context.l10n.sessionCloseTitle),
@@ -506,6 +526,53 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         ),
         );
       },
+    );
+  }
+
+  Future<void> _openSessionReport(
+    BuildContext context,
+    RoomState roomState,
+  ) async {
+    final report = SessionReport.fromRoomState(
+      roomState,
+      includeFacilitatorNotes: true,
+    );
+    final stats = SessionReportStats.fromRoomState(roomState);
+    List<AuditEvent>? audit;
+    if (planAllows(ref, (t) => t.canUseAuditTrail)) {
+      try {
+        audit = await ref.read(roomRepositoryProvider).fetchRoomAuditEvents(
+              roomId: roomState.room.id,
+            );
+      } catch (_) {
+        audit = const [];
+      }
+    }
+    if (!context.mounted) return;
+    await SessionReportSheet.show(
+      context,
+      report,
+      stats,
+      auditEvents: audit,
+    );
+  }
+
+  Future<void> _openExternalSync(
+    BuildContext context, {
+    required Story story,
+    required String participantId,
+  }) async {
+    final allowed = await ensurePlanFeature(
+      context,
+      ref,
+      feature: (t) => t.canUseExternalSync,
+      minimumTier: PlanTier.team,
+    );
+    if (!allowed || !context.mounted) return;
+    await StoryExternalLinkSheet.show(
+      context,
+      story: story,
+      participantId: participantId,
     );
   }
 
