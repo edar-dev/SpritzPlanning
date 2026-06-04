@@ -52,21 +52,21 @@
       setNameMeta('description', description);
 
       if (code && !/bot|crawl|spider|facebook|slack|whatsapp|telegram|discord/i.test(navigator.userAgent)) {
-        window.location.replace('/?code=' + encodeURIComponent(code.trim()));
+        window.location.replace('/app/?code=' + encodeURIComponent(code.trim()));
       }
     })();
   </script>
 </head>
 <body>
   <p>Reindirizzamento a SpritzPlanning…</p>
-  <p><a id="join-link" href="/">Apri l'app</a></p>
+  <p><a id="join-link" href="/app/">Apri l'app</a></p>
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
       var match = window.location.pathname.match(/\/j\/([^/?#]+)/i);
       var code = params.get('code') || (match ? decodeURIComponent(match[1]) : '');
       if (code) {
-        document.getElementById('join-link').href = '/?code=' + encodeURIComponent(code.trim());
+        document.getElementById('join-link').href = '/app/?code=' + encodeURIComponent(code.trim());
       }
     })();
   </script>

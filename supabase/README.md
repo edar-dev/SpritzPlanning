@@ -75,9 +75,10 @@ Configurazione in [Supabase Dashboard → Authentication](https://supabase.com/d
 
 **Redirect URLs** (Authentication → URL Configuration):
 
-- Produzione: `https://spritz-planning.vercel.app/auth/callback`
-- Preview Vercel: `https://*.vercel.app/auth/callback` (o ogni preview esplicita)
-- Locale web: `http://localhost:<port>/auth/callback`
+- Produzione: `https://spritz-planning.vercel.app/app/auth/callback`
+- Preview Vercel: `https://*.vercel.app/app/auth/callback` (o ogni preview esplicita)
+- Locale web: `http://localhost:<port>/app/auth/callback` (con `--base-href /app/`)
+- Legacy `/auth/callback` → redirect 301 a `/app/auth/callback` (Vercel)
 
 Deep link mobile (se usato): `io.supabase.spritzplanning://auth/callback`
 
@@ -93,6 +94,12 @@ Deploy function:
 ```bash
 supabase functions deploy stripe-webhook --project-ref eyvfsgzbrdibheyejikf
 ```
+
+## SEO e landing (Fase 22)
+
+- Landing marketing: `/` (`web/landing.html`), inglese `/en`, funzionalità `/features`
+- App Flutter: `/app/*` (build con `--base-href /app/`)
+- `web/robots.txt`, `web/sitemap.xml` — Search Console: vedi [AGENT-PLAYBOOK.md](../docs/AGENT-PLAYBOOK.md) §11
 
 ## Sicurezza
 

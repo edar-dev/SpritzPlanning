@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /features
+Allow: /en
+Allow: /j/
+Disallow: /app/room/
+Disallow: /app/ops/
+Disallow: /app/auth/
+Disallow: /app/invite/
+
+Sitemap: https://spritz-planning.vercel.app/sitemap.xml

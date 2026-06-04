@@ -9,6 +9,10 @@
       "args": [
         "--dart-define-from-file=env.json"
       ],
+      "toolArgs": [
+        "--base-href",
+        "/app/"
+      ],
       "deviceId": "chrome"
     },
     {

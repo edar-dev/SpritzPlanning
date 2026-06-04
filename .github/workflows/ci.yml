@@ -179,6 +179,7 @@ jobs:
       - name: Build web (compile check)
         run: |
           flutter build web --release \
+            --base-href /app/ \
             --dart-define=SUPABASE_URL=https://placeholder.supabase.co \
             --dart-define=SUPABASE_ANON_KEY=placeholder-key-for-ci-build-only \
             --dart-define=GIT_SHA=${{ github.sha }}

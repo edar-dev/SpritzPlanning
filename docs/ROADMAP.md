@@ -282,7 +282,7 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 19 | Completata | PR #18 — `feat/identity-auth` |
 | 20 | Completata | PR #19 — `feat/organizations-entitlements` |
 | 21 | Posticipata | #98 SSO — on demand ([phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md)) |
-| 22 | Pianificata | [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) #99–#102, #106 |
+| 22 | In corso | `feat/seo-landing` — [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) #99–#102, #106 |
 | 23 | Pianificata | [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) #103–#108 |
 
 

@@ -94,7 +94,7 @@ class SupabaseAuthRedirect {
         scheme: Uri.base.scheme,
         host: Uri.base.host,
         port: Uri.base.hasPort ? Uri.base.port : null,
-        path: '/auth/callback',
+        path: '/app/auth/callback',
       ).toString();
     }
     return 'io.supabase.spritzplanning://auth/callback';

@@ -1,49 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
   <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
+    Flutter app entry — served under /app/ (see vercel.json + --base-href /app/).
+    Marketing landing: web/landing.html at /
   -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Scrum poker con tema spritz per team di sviluppatori. Planning poker veloce, senza account.">
+  <meta name="description" content="App SpritzPlanning — planning poker in tempo reale. Apri un locale, condividi il codice, vota con il team.">
+  <meta name="robots" content="noindex, follow">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SpritzPlanning — Planning poker">
+  <meta property="og:site_name" content="SpritzPlanning">
+  <meta property="og:title" content="SpritzPlanning — Apri il bancone">
   <meta property="og:description" content="Stima le user story con il tuo team. Apri un locale, condividi il codice, inizia a votare.">
-  <meta property="og:image" content="icons/Icon-512.png">
-  <meta property="og:url" content="https://spritz-planning.vercel.app/">
+  <meta property="og:image" content="https://spritz-planning.vercel.app/icons/Icon-512.png">
+  <meta property="og:url" content="https://spritz-planning.vercel.app/app/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="SpritzPlanning">
-  <meta name="twitter:description" content="Planning poker a tema spritz — nickname e codice stanza, zero registrazione.">
-  <meta name="twitter:image" content="icons/Icon-512.png">
+  <meta name="twitter:description" content="Planning poker a tema spritz — nickname e codice stanza.">
+  <meta name="twitter:image" content="https://spritz-planning.vercel.app/icons/Icon-512.png">
   <meta name="theme-color" content="#E85D24">
   <link rel="preconnect" href="https://eyvfsgzbrdibheyejikf.supabase.co" crossorigin>
 
-  <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="SpritzPlanning">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>SpritzPlanning</title>
+  <title>SpritzPlanning — App</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <noscript>
+    <p>SpritzPlanning richiede JavaScript per l'app in tempo reale.</p>
+    <p><a href="/">Torna alla presentazione del prodotto</a></p>
+    <p><a href="/features">Funzionalità</a></p>
+  </noscript>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
