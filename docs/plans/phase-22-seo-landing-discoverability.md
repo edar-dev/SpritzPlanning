@@ -158,7 +158,7 @@ Documentare passi in [AGENT-PLAYBOOK.md](../AGENT-PLAYBOOK.md) §11.
 
 ```
 [x] Landing HTML statica in web/ (landing.html, landing-en.html, features.html)
-[x] vercel.json: rewrite / → landing, /app → index.html Flutter
+[x] vercel.json: landing come `index.html` root (Vercel dà priorità al filesystem); Flutter in `/app/`; rewrite SPA solo path senza estensione
 [x] Flutter build --base-href /app/ (Vercel + CI)
 [x] robots.txt + sitemap.xml in web/
 [x] Canonical + hreflang su landing IT/EN

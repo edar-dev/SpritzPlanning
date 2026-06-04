@@ -46,24 +46,20 @@
     },
     {
       "source": "/app",
-      "destination": "/index.html"
+      "destination": "/app/index.html"
     },
     {
       "source": "/app/",
-      "destination": "/index.html"
+      "destination": "/app/index.html"
     },
     {
-      "source": "/app/(.*)",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/",
-      "destination": "/landing.html"
+      "source": "/app/:path((?!.*\\..*).*)",
+      "destination": "/app/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/flutter_service_worker.js",
+      "source": "/app/flutter_service_worker.js",
       "headers": [
         {
           "key": "Cache-Control",
@@ -72,7 +68,7 @@
       ]
     },
     {
-      "source": "/manifest.json",
+      "source": "/app/manifest.json",
       "headers": [
         {
           "key": "Cache-Control",
@@ -81,7 +77,7 @@
       ]
     },
     {
-      "source": "/canvaskit/(.*)",
+      "source": "/app/canvaskit/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -90,7 +86,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/app/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

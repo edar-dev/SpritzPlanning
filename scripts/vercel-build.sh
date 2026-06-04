@@ -39,3 +39,29 @@ flutter build web \
   --no-wasm-dry-run \
   --base-href /app/ \
   "${DART_DEFINES[@]}"
+
+# Vercel serves /index.html before rewrites — root must be the marketing landing.
+# Flutter assets live under /app/ so /app/*.js is not rewritten to HTML.
+WEB="build/web"
+APP="$WEB/app"
+mkdir -p "$APP"
+
+for item in assets canvaskit flutter_bootstrap.js flutter.js main.dart.js \
+  flutter_service_worker.js version.json manifest.json; do
+  if [ -e "$WEB/$item" ]; then
+    mv "$WEB/$item" "$APP/"
+  fi
+done
+
+if [ -d "$WEB/icons" ]; then
+  mv "$WEB/icons" "$APP/icons"
+fi
+
+if [ -f "$WEB/favicon.png" ]; then
+  cp "$WEB/favicon.png" "$APP/favicon.png"
+fi
+
+mv "$WEB/index.html" "$APP/index.html"
+cp "$WEB/landing.html" "$WEB/index.html"
+
+echo "Web package: landing at /, Flutter under /app/"
