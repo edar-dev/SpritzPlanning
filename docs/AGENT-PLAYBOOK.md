@@ -139,6 +139,20 @@ Template PR: [.github/pull_request_template.md](../.github/pull_request_template
 
 ---
 
+## 11. SEO e Search Console (Fase 22, #106)
+
+Dopo deploy landing + `sitemap.xml`:
+
+1. [Google Search Console](https://search.google.com/search-console) → proprietà URL prefix `https://spritz-planning.vercel.app`
+2. Verifica: file HTML in `web/` **oppure** record DNS TXT su dominio Vercel
+3. Sitemap: inviare `https://spritz-planning.vercel.app/sitemap.xml`
+4. Escludere dall’indice: `/ops/*`, stanze `/room/*` (noindex in meta o `robots.txt`)
+5. Dopo 2 settimane: controllare Copertura e Core Web Vitals
+
+Piano completo: [phase-22-seo-landing-discoverability.md](plans/phase-22-seo-landing-discoverability.md).
+
+---
+
 ## Riferimenti (non duplicare qui)
 
 | Argomento | File |
