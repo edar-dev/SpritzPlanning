@@ -307,6 +307,28 @@
   "onboardingSkip": "Salta",
   "onboardingNext": "Avanti",
   "onboardingDone": "Inizia",
+  "businessOnboardingTitle": "Primo valore in 5 minuti",
+  "businessOnboardingSubtitle": "Percorso guidato per PM e team strutturati",
+  "businessOnboardingProgress": "Passo {current} di {total}",
+  "@businessOnboardingProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "businessOnboardingStep1Title": "1. Apri un locale",
+  "businessOnboardingStep1Body": "Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.",
+  "businessOnboardingStep2Title": "2. Importa il backlog",
+  "businessOnboardingStep2Body": "Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.",
+  "businessOnboardingStep3Title": "3. Invita il team",
+  "businessOnboardingStep3Body": "Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.",
+  "businessOnboardingStep4Title": "4. Stima e report",
+  "businessOnboardingStep4Body": "Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.",
+  "businessOnboardingSkip": "Salta percorso",
+  "businessOnboardingNext": "Avanti",
+  "businessOnboardingStart": "Apri il primo locale",
+  "businessOnboardingDoneLater": "Più tardi",
+  "helpReplayBusinessOnboarding": "Rivedi percorso guidato",
   "pastSessions": "Sessioni passate",
   "sessionArchiveTitle": "Archivio sessioni",
   "sessionArchiveEmpty": "Nessuna sessione salvata. Completa almeno una serata con ordini stimati.",

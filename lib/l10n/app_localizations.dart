@@ -1526,6 +1526,102 @@ abstract class AppLocalizations {
   /// **'Inizia'**
   String get onboardingDone;
 
+  /// No description provided for @businessOnboardingTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Primo valore in 5 minuti'**
+  String get businessOnboardingTitle;
+
+  /// No description provided for @businessOnboardingSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Percorso guidato per PM e team strutturati'**
+  String get businessOnboardingSubtitle;
+
+  /// No description provided for @businessOnboardingProgress.
+  ///
+  /// In it, this message translates to:
+  /// **'Passo {current} di {total}'**
+  String businessOnboardingProgress(int current, int total);
+
+  /// No description provided for @businessOnboardingStep1Title.
+  ///
+  /// In it, this message translates to:
+  /// **'1. Apri un locale'**
+  String get businessOnboardingStep1Title;
+
+  /// No description provided for @businessOnboardingStep1Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.'**
+  String get businessOnboardingStep1Body;
+
+  /// No description provided for @businessOnboardingStep2Title.
+  ///
+  /// In it, this message translates to:
+  /// **'2. Importa il backlog'**
+  String get businessOnboardingStep2Title;
+
+  /// No description provided for @businessOnboardingStep2Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.'**
+  String get businessOnboardingStep2Body;
+
+  /// No description provided for @businessOnboardingStep3Title.
+  ///
+  /// In it, this message translates to:
+  /// **'3. Invita il team'**
+  String get businessOnboardingStep3Title;
+
+  /// No description provided for @businessOnboardingStep3Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.'**
+  String get businessOnboardingStep3Body;
+
+  /// No description provided for @businessOnboardingStep4Title.
+  ///
+  /// In it, this message translates to:
+  /// **'4. Stima e report'**
+  String get businessOnboardingStep4Title;
+
+  /// No description provided for @businessOnboardingStep4Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.'**
+  String get businessOnboardingStep4Body;
+
+  /// No description provided for @businessOnboardingSkip.
+  ///
+  /// In it, this message translates to:
+  /// **'Salta percorso'**
+  String get businessOnboardingSkip;
+
+  /// No description provided for @businessOnboardingNext.
+  ///
+  /// In it, this message translates to:
+  /// **'Avanti'**
+  String get businessOnboardingNext;
+
+  /// No description provided for @businessOnboardingStart.
+  ///
+  /// In it, this message translates to:
+  /// **'Apri il primo locale'**
+  String get businessOnboardingStart;
+
+  /// No description provided for @businessOnboardingDoneLater.
+  ///
+  /// In it, this message translates to:
+  /// **'Più tardi'**
+  String get businessOnboardingDoneLater;
+
+  /// No description provided for @helpReplayBusinessOnboarding.
+  ///
+  /// In it, this message translates to:
+  /// **'Rivedi percorso guidato'**
+  String get helpReplayBusinessOnboarding;
+
   /// No description provided for @pastSessions.
   ///
   /// In it, this message translates to:

@@ -792,6 +792,61 @@ class AppLocalizationsIt extends AppLocalizations {
   String get onboardingDone => 'Inizia';
 
   @override
+  String get businessOnboardingTitle => 'Primo valore in 5 minuti';
+
+  @override
+  String get businessOnboardingSubtitle =>
+      'Percorso guidato per PM e team strutturati';
+
+  @override
+  String businessOnboardingProgress(int current, int total) {
+    return 'Passo $current di $total';
+  }
+
+  @override
+  String get businessOnboardingStep1Title => '1. Apri un locale';
+
+  @override
+  String get businessOnboardingStep1Body =>
+      'Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.';
+
+  @override
+  String get businessOnboardingStep2Title => '2. Importa il backlog';
+
+  @override
+  String get businessOnboardingStep2Body =>
+      'Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.';
+
+  @override
+  String get businessOnboardingStep3Title => '3. Invita il team';
+
+  @override
+  String get businessOnboardingStep3Body =>
+      'Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.';
+
+  @override
+  String get businessOnboardingStep4Title => '4. Stima e report';
+
+  @override
+  String get businessOnboardingStep4Body =>
+      'Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.';
+
+  @override
+  String get businessOnboardingSkip => 'Salta percorso';
+
+  @override
+  String get businessOnboardingNext => 'Avanti';
+
+  @override
+  String get businessOnboardingStart => 'Apri il primo locale';
+
+  @override
+  String get businessOnboardingDoneLater => 'Più tardi';
+
+  @override
+  String get helpReplayBusinessOnboarding => 'Rivedi percorso guidato';
+
+  @override
   String get pastSessions => 'Sessioni passate';
 
   @override

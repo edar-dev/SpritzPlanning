@@ -287,6 +287,28 @@
   "onboardingSkip": "Skip",
   "onboardingNext": "Next",
   "onboardingDone": "Get started",
+  "businessOnboardingTitle": "First value in 5 minutes",
+  "businessOnboardingSubtitle": "Guided path for PMs and structured teams",
+  "businessOnboardingProgress": "Step {current} of {total}",
+  "@businessOnboardingProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "businessOnboardingStep1Title": "1. Open a room",
+  "businessOnboardingStep1Body": "Create the session, pick a business template (Discovery, Refinement, or Fast Track), and set deck rules.",
+  "businessOnboardingStep2Title": "2. Import your backlog",
+  "businessOnboardingStep2Body": "Add stories via quick paste or Jira/Azure DevOps import from the room screen.",
+  "businessOnboardingStep3Title": "3. Invite the team",
+  "businessOnboardingStep3Body": "Share the room code or QR — teammates join with a nickname, no sign-up.",
+  "businessOnboardingStep4Title": "4. Estimate and report",
+  "businessOnboardingStep4Body": "Run voting, confirm estimates, then close with the executive report (KPIs, CSV, print) for stakeholders.",
+  "businessOnboardingSkip": "Skip tour",
+  "businessOnboardingNext": "Next",
+  "businessOnboardingStart": "Open my first room",
+  "businessOnboardingDoneLater": "Later",
+  "helpReplayBusinessOnboarding": "Replay guided tour",
   "pastSessions": "Past sessions",
   "sessionArchiveTitle": "Session archive",
   "sessionArchiveEmpty": "No saved sessions yet. Complete a session with estimated stories.",
