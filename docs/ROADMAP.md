@@ -2,7 +2,7 @@
 
 
 
-Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI completati (fasi 11–12); punti **49–78** completati (fasi 14–16); nuovi punti **79–88** pianificati (fasi 17–18, business/enterprise).
+Piano di evoluzione: punti **1–9** completati (fasi 1–4); punti **11–20** completati (fasi 5–7); punti **21–30** completati (fasi 8–10); punti **31–40** + UI completati (fasi 11–12); punti **49–78** completati (fasi 14–16); punti **79–88** completati (fasi 17–18, business/enterprise); punti **89–98** pianificati (fasi 19–21, identità e auth).
 
 
 
@@ -38,11 +38,14 @@ flowchart LR
   P16[Fase16_SessionDepth]
   P17[Fase17_Business]
   P18[Fase18_Enterprise]
+  P19[Fase19_Identity]
+  P20[Fase20_Org_Entitlements]
+  P21[Fase21_SSO]
 
   P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
   P8 --> P10
   P9 -.-> P10
-  P10 --> P11 --> P12 --> P13 --> P14 --> P15 --> P16 --> P17 --> P18
+  P10 --> P11 --> P12 --> P13 --> P14 --> P15 --> P16 --> P17 --> P18 --> P19 --> P20 --> P21
 
 ```
 
@@ -76,6 +79,9 @@ flowchart LR
 | 16 | #69–78 | 10–14 giorni | `feat/session-depth` | [phase-16-session-depth.md](plans/phase-16-session-depth.md) |
 | 17 | #79, #81, #82, #84, #87 | 8–12 giorni | `feat/business-foundations` | [phase-17-business-foundations.md](plans/phase-17-business-foundations.md) |
 | 18 | #80, #83, #85, #86, #88 | 10–14 giorni | `feat/enterprise-readiness` | [phase-18-enterprise-readiness.md](plans/phase-18-enterprise-readiness.md) |
+| 19 | #89, #90, #91, #96 (MVP) | 8–12 giorni | `feat/identity-auth` | [phase-19-identity-auth.md](plans/phase-19-identity-auth.md) |
+| 20 | #92, #93, #94, #95, #97 | 12–18 giorni | `feat/organizations-entitlements` | [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md) |
+| 21 | #98 | 5–8 giorni | `feat/enterprise-sso` | [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) |
 
 
 
@@ -173,10 +179,13 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 **Completata (v8 — session depth):** Fase 16 — OG dinamico, template custom, story riferimento, commenti story, confidence vote, import Jira/ADO, push PWA, suoni/haptic, Lighthouse CI, cronologia stime ([IMPROVEMENTS-V8.md](IMPROVEMENTS-V8.md), PR #13).
 
-**Prossime (v9 — business oriented):**
+**Completate (v9 — business oriented):** Fasi 17–18 ([IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md), PR #16–#17).
 
-17. **Fase 17** — ruoli e permessi leggeri, KPI delivery, executive report, template business, onboarding time-to-value ([IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md))
-18. **Fase 18** — workspace/branding, sync Jira/ADO bidirezionale, audit trail, health dashboard, piano commerciale in-app ([IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md))
+**Prossime (v10 — identità e auth):**
+
+19. **Fase 19** — Supabase Auth, ospite→account, profilo, hardening RPC ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md))
+20. **Fase 20** — organizzazioni, workspace cloud, inviti, Stripe/entitlements, audit forte ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md))
+21. **Fase 21** — SSO enterprise SAML/OIDC ([IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md))
 
 
 
@@ -260,8 +269,11 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 14 | Completata | PR #11 — `feat/session-advanced` |
 | 15 | Completata | PR #12 — `feat/discoverability` |
 | 16 | Completata | PR #13 — `feat/session-depth` |
-| 17 | Pianificata | [IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md) #79, #81, #82, #84, #87 |
-| 18 | Pianificata | [IMPROVEMENTS-V9.md](IMPROVEMENTS-V9.md) #80, #83, #85, #86, #88 |
+| 17 | Completata | PR #16 — `feat/business-foundations` |
+| 18 | Completata | PR #17 — `feat/enterprise-readiness` |
+| 19 | Pianificata | [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) #89, #90, #91, #96 |
+| 20 | Pianificata | [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) #92–#95, #97 |
+| 21 | Pianificata | [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) #98 |
 
 
 
@@ -349,7 +361,27 @@ Piani:
 - [phase-17-business-foundations.md](plans/phase-17-business-foundations.md)
 - [phase-18-enterprise-readiness.md](plans/phase-18-enterprise-readiness.md)
 
+## Lista miglioramenti v10 (#89–98)
 
+Vedi [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md).
+
+| # | Miglioramento | Fase |
+|---|---------------|------|
+| 89 | Supabase Auth (magic link + OAuth) | 19 |
+| 90 | Ospite + collegamento account a sessione | 19 |
+| 91 | Profilo utente persistente | 19 |
+| 92 | Workspace server-side per account/org | 20 |
+| 93 | Organizzazioni e membership | 20 |
+| 94 | Inviti org e ruoli org | 20 |
+| 95 | Entitlements server-side + Stripe | 20 |
+| 96 | Hardening RPC/RLS con `auth.uid()` | 19–20 |
+| 97 | Audit trail con identità verificata | 20 |
+| 98 | SSO enterprise (SAML/OIDC) | 21 |
+
+Piani:
+- [phase-19-identity-auth.md](plans/phase-19-identity-auth.md)
+- [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md)
+- [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md)
 
 ## Riferimenti codice
 

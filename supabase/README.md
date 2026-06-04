@@ -31,6 +31,7 @@ supabase db push
 | `20260605120000_session_depth.sql` | Reference story, commenti pubblici, confidence vote, cronologia stime, push subscription (#71–#75, #78) |
 | `20260607120000_participant_roles.sql` | Ruoli partecipante (`facilitator`/`editor`/`viewer`) + permessi backlog (#79) |
 | `20260608120000_enterprise_readiness.sql` | Workspace branding su room, audit trail, link Jira/ADO, health RPC (#80, #85, #83, #86) |
+| `20260609120000_identity_auth.sql` | Supabase Auth: `user_profiles`, `participants.user_id`, link account, RPC hardening (#89–#91, #96) |
 
 I nomi usano il timestamp Supabase (`YYYYMMDDHHMMSS_nome.sql`) per allinearsi a `supabase_migrations.schema_migrations` e a `supabase db push` in CI.
 
@@ -62,9 +63,27 @@ Test manuale:
 SELECT cleanup_stale_rooms(24);
 ```
 
+## Auth (Fase 19)
+
+Configurazione in [Supabase Dashboard → Authentication](https://supabase.com/dashboard/project/eyvfsgzbrdibheyejikf/auth/providers):
+
+| Provider | Note |
+|----------|------|
+| Email (magic link) | Abilitare; conferma email opzionale in dev |
+| Google / Azure | OAuth; client ID/secret in dashboard |
+
+**Redirect URLs** (Authentication → URL Configuration):
+
+- Produzione: `https://spritz-planning.vercel.app/auth/callback`
+- Preview Vercel: `https://*.vercel.app/auth/callback` (o ogni preview esplicita)
+- Locale web: `http://localhost:<port>/auth/callback`
+
+Deep link mobile (se usato): `io.supabase.spritzplanning://auth/callback`
+
 ## Sicurezza
 
 - **Letture**: policy `SELECT` su `rooms`, `participants`, `stories`, `votes` per `anon`
+- **Profili**: `user_profiles` leggibile/aggiornabile solo da `authenticated` con `id = auth.uid()`
 - **Scritture**: solo tramite RPC `SECURITY DEFINER` (no INSERT/UPDATE/DELETE diretti)
 - **Rate limit**: max 20 `create_room` / ora (globale)
 - Funzioni interne (`generate_room_code`, `touch_room`, `check_rate_limit`) non esposte ad `anon`

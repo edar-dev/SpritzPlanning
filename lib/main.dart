@@ -9,6 +9,7 @@ import 'core/deep_link/deep_link_bootstrap.dart';
 import 'core/pwa/pwa_install_listener.dart';
 import 'data/providers/providers.dart';
 import 'data/supabase/supabase_client.dart';
+import 'features/auth/auth_link_listener.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +22,10 @@ Future<void> main() async {
     runApp(
       const ProviderScope(
         child: DeepLinkBootstrap(
-          child: SessionRestoreWrapper(
-            child: SpritzPlanningApp(),
+          child: AuthLinkListener(
+            child: SessionRestoreWrapper(
+              child: SpritzPlanningApp(),
+            ),
           ),
         ),
       ),

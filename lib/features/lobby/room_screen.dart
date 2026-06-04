@@ -40,6 +40,8 @@ import '../../shared/widgets/section_header.dart';
 import '../../core/theme/light_surface_scope.dart';
 import '../../shared/widgets/spritz_surface_card.dart';
 import '../voting/voting_panel.dart';
+import '../auth/sign_in_sheet.dart';
+import '../../data/auth/auth_providers.dart';
 
 class RoomScreen extends ConsumerStatefulWidget {
   const RoomScreen({super.key, required this.roomId});
@@ -53,6 +55,7 @@ class RoomScreen extends ConsumerStatefulWidget {
 class _RoomScreenState extends ConsumerState<RoomScreen> {
   bool? _wasVotesRevealed;
   bool _timerWarned = false;
+  bool _linkAccountPromptShown = false;
   Timer? _notificationPoll;
 
   @override
@@ -134,6 +137,25 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             session.participantId,
           );
     }
+    if (!mounted) return;
+    _maybePromptLinkAccount();
+  }
+
+  void _maybePromptLinkAccount() {
+    if (_linkAccountPromptShown || ref.read(isSignedInProvider)) return;
+    final roomState = ref.read(roomStateProvider).valueOrNull;
+    if (roomState == null) return;
+    _linkAccountPromptShown = true;
+    final l10n = context.l10n;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.accountLinkParticipantHint),
+        action: SnackBarAction(
+          label: l10n.accountSignIn,
+          onPressed: () => unawaited(SignInSheet.show(context)),
+        ),
+      ),
+    );
   }
 
   void _shareRoomInvite(RoomState roomState) {

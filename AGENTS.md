@@ -1,6 +1,6 @@
 # SpritzPlanning — Guida per Agenti AI
 
-**Ultimo aggiornamento:** Fase 8 (agent DX, doc allineata post–Fase 7).
+**Ultimo aggiornamento:** Fase 19 (auth opzionale Supabase).
 
 ## Stack
 
@@ -14,7 +14,7 @@
 ## Vincoli
 
 - UI **IT/EN** con tema **bar/spritz** (terminologia bancone, no Scrum in copy)
-- **Nessun login** — nickname + codice stanza
+- **Login opzionale** (Fase 19) — default frictionless: nickname + codice stanza; account Supabase Auth per profilo/workspace cloud (vedi `lib/features/auth/`, migration `20260609120000_identity_auth.sql`)
 - Mutazioni via **RPC Supabase**, sync via **Realtime**
 - **Dark mode** e **deck personalizzabile** per locale (migration 009)
 

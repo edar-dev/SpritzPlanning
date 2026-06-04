@@ -1118,4 +1118,72 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get estimateHistoryLabel => 'Revisioni stima';
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get accountSignIn => 'Accedi';
+
+  @override
+  String get accountSignInSubtitle =>
+      'Salva workspace e report sul tuo profilo';
+
+  @override
+  String get accountSignOut => 'Esci';
+
+  @override
+  String get accountProfile => 'Il tuo profilo';
+
+  @override
+  String get accountEmailLabel => 'Email';
+
+  @override
+  String get accountEmailHint => 'nome@azienda.it';
+
+  @override
+  String get accountMagicLinkSend => 'Invia link al bancone';
+
+  @override
+  String get accountMagicLinkSent =>
+      'Controlla la posta: ti abbiamo mandato il link per entrare.';
+
+  @override
+  String get accountOAuthGoogle => 'Continua con Google';
+
+  @override
+  String get accountOAuthMicrosoft => 'Continua con Microsoft';
+
+  @override
+  String get accountLinkParticipantTitle => 'Collega questo tavolo';
+
+  @override
+  String get accountLinkParticipantAction =>
+      'Collega account a questa sessione';
+
+  @override
+  String get accountLinkParticipantSuccess => 'Account collegato al bancone';
+
+  @override
+  String get accountLinkParticipantHint =>
+      'Collega un account per ritrovare workspace e report su altri dispositivi.';
+
+  @override
+  String get accountDisplayNameLabel => 'Nome visualizzato';
+
+  @override
+  String get accountSaveProfile => 'Salva profilo';
+
+  @override
+  String get accountProfileSaved => 'Profilo aggiornato';
+
+  @override
+  String get accountAuthRequired => 'Accedi per usare questa funzione';
+
+  @override
+  String get accountCallbackLoading => 'Accesso in corso…';
+
+  @override
+  String get accountCallbackError =>
+      'Accesso non riuscito. Riprova dal bancone.';
 }

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/providers/providers.dart';
+import '../features/auth/auth_callback_screen.dart';
 import '../features/help/help_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/lobby/room_screen.dart';
@@ -22,6 +23,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/ops/health',
         builder: (context, state) => const OpsHealthScreen(),
+      ),
+      GoRoute(
+        path: '/auth/callback',
+        builder: (context, state) => const AuthCallbackScreen(),
       ),
       GoRoute(
         path: '/room/:roomId',

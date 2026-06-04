@@ -41,5 +41,6 @@ Piani di dettaglio:
 ## Note strategiche
 
 - Mantenere il principio "frictionless": niente login obbligatorio nel breve, ma preparare struttura ruoli/workspace.
+- Evoluzione auth e org: [IMPROVEMENTS-V10.md](IMPROVEMENTS-V10.md) (fasi 19–21).
 - Mettere in evidenza outcome business: tempo risparmiato, allineamento team, qualità stime.
 - Misurare successo con KPI semplici: adozione settimanale, export report, tempo medio prima stima condivisa.

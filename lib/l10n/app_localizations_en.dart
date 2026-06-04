@@ -1118,4 +1118,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get estimateHistoryLabel => 'Estimate revisions';
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get accountSignIn => 'Sign in';
+
+  @override
+  String get accountSignInSubtitle =>
+      'Save workspaces and reports to your profile';
+
+  @override
+  String get accountSignOut => 'Sign out';
+
+  @override
+  String get accountProfile => 'Your profile';
+
+  @override
+  String get accountEmailLabel => 'Email';
+
+  @override
+  String get accountEmailHint => 'you@company.com';
+
+  @override
+  String get accountMagicLinkSend => 'Send sign-in link';
+
+  @override
+  String get accountMagicLinkSent =>
+      'Check your inbox — we sent you a sign-in link.';
+
+  @override
+  String get accountOAuthGoogle => 'Continue with Google';
+
+  @override
+  String get accountOAuthMicrosoft => 'Continue with Microsoft';
+
+  @override
+  String get accountLinkParticipantTitle => 'Link this table';
+
+  @override
+  String get accountLinkParticipantAction => 'Link account to this session';
+
+  @override
+  String get accountLinkParticipantSuccess => 'Account linked to this table';
+
+  @override
+  String get accountLinkParticipantHint =>
+      'Link an account to find workspaces and reports on other devices.';
+
+  @override
+  String get accountDisplayNameLabel => 'Display name';
+
+  @override
+  String get accountSaveProfile => 'Save profile';
+
+  @override
+  String get accountProfileSaved => 'Profile updated';
+
+  @override
+  String get accountAuthRequired => 'Sign in to use this feature';
+
+  @override
+  String get accountCallbackLoading => 'Signing you in…';
+
+  @override
+  String get accountCallbackError => 'Sign-in failed. Try again from home.';
 }
