@@ -19,7 +19,7 @@ import '../../shared/widgets/connection_banner.dart';
 import '../../core/errors/user_facing_error.dart';
 import '../../core/export/session_report.dart';
 import '../../shared/widgets/error_snackbar.dart';
-import '../../shared/widgets/participant_avatar.dart';
+import '../../shared/widgets/bar_participants_strip.dart';
 import '../../core/export/session_report_stats.dart';
 import '../../core/feedback/session_feedback.dart';
 import '../../core/share/room_invite_text.dart';
@@ -507,9 +507,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       code: room.code,
                       onShare: () => _shareRoomInvite(roomState),
                     ),
-                    const SizedBox(height: 16),
-                    _ParticipantsRow(roomState: roomState),
-                    const SizedBox(height: 24),
+                    if (!showVoting) ...[
+                      const SizedBox(height: 16),
+                      _ParticipantsRow(roomState: roomState),
+                      const SizedBox(height: 24),
+                    ],
                     if (showVoting)
                       VotingPanel(
                         roomState: roomState,
@@ -692,8 +694,13 @@ class _Sidebar extends StatelessWidget {
             code: roomState.room.code,
             onShare: onShare,
           ),
-          const SizedBox(height: 16),
-          _ParticipantsRow(roomState: roomState),
+          if (roomState.room.phase != RoomPhase.voting) ...[
+            const SizedBox(height: 16),
+            _ParticipantsRow(
+              roomState: roomState,
+              layout: BarParticipantsLayout.vertical,
+            ),
+          ],
         ],
       ),
     );
@@ -701,59 +708,36 @@ class _Sidebar extends StatelessWidget {
 }
 
 class _ParticipantsRow extends ConsumerWidget {
-  const _ParticipantsRow({required this.roomState});
+  const _ParticipantsRow({
+    required this.roomState,
+    this.layout = BarParticipantsLayout.horizontal,
+  });
 
   final RoomState roomState;
+  final BarParticipantsLayout layout;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final showVoteStatus = roomState.room.phase == RoomPhase.voting &&
-        !roomState.room.votesRevealed &&
-        !roomState.room.hideVotersUntilReveal;
+        !roomState.room.votesRevealed;
     final session = ref.watch(sessionProvider).valueOrNull;
     final isFacilitator = ref.watch(isFacilitatorProvider);
 
-    return SpritzSurfaceCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              context.l10n.clienti,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: roomState.participants.map((p) {
-                final canManage = isFacilitator &&
-                    session != null &&
-                    p.id != session.participantId;
-                return ParticipantAvatar(
-                  nickname: p.nickname,
-                  isFacilitator: p.isFacilitator,
-                  isObserver: p.isObserver,
-                  role: p.role,
-                  showVoteStatus: showVoteStatus && !p.isObserver,
-                  hasVoted: roomState.hasParticipantVoted(p.id),
-                  isAbsent: p.isAbsent(
-                    now: DateTime.now(),
-                  ),
-                  onLongPress: canManage
-                      ? () => _showParticipantActions(
-                            context,
-                            ref,
-                            barmanId: session.participantId,
-                            target: p,
-                          )
-                      : null,
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+    return BarParticipantsStrip(
+      roomState: roomState,
+      showVoteStatus: showVoteStatus,
+      layout: layout,
+      onParticipantLongPress: isFacilitator && session != null
+          ? (p) {
+              if (p.id == session.participantId) return;
+              _showParticipantActions(
+                context,
+                ref,
+                barmanId: session.participantId,
+                target: p,
+              );
+            }
+          : null,
     );
   }
 }

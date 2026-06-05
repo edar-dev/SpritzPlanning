@@ -302,6 +302,24 @@ abstract class AppLocalizations {
   /// **'Clienti al bancone'**
   String get clienti;
 
+  /// No description provided for @barVoteStatusOrdered.
+  ///
+  /// In it, this message translates to:
+  /// **'Dose scelta'**
+  String get barVoteStatusOrdered;
+
+  /// No description provided for @barVoteStatusWaiting.
+  ///
+  /// In it, this message translates to:
+  /// **'Attende'**
+  String get barVoteStatusWaiting;
+
+  /// No description provided for @barDeckTrayTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Carte al bancone'**
+  String get barDeckTrayTitle;
+
   /// No description provided for @barman.
   ///
   /// In it, this message translates to:

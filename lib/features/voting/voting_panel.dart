@@ -17,6 +17,7 @@ import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
+import '../../shared/widgets/bar_participants_strip.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../shared/widgets/spritz_card.dart';
 import 'confidence_panel.dart';
@@ -291,42 +292,25 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     final deadline = widget.roomState.room.votingDeadlineAt;
     final timerExpired = deadline != null && _now.isAfter(deadline);
 
+    final showGuestVotes = isVoting && !revealed;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DecoratedBox(
-            decoration: AppDecorations.surfaceCard(context, highlight: true),
-            child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.currentStoryLabel,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      story.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                    if (story.description.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        story.description,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ],
-                ),
-              ),
+          _BarOrderTicket(
+            label: l10n.currentStoryLabel,
+            title: story.title,
+            description: story.description,
           ),
+          if (showGuestVotes) ...[
+            const SizedBox(height: 16),
+            BarParticipantsStrip(
+              roomState: widget.roomState,
+              showVoteStatus: true,
+            ),
+          ],
           if (deadline != null && isVoting && !revealed) ...[
             const SizedBox(height: 12),
             _VotingCountdown(deadline: deadline, now: _now),
@@ -343,10 +327,14 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
                 ),
               ),
           ],
-          if (widget.isFacilitator && isVoting && !revealed) ...[
+          if (isVoting && !revealed) ...[
             const SizedBox(height: 16),
             _VoteProgressBar(stats: voteStats),
-            _ReferenceSizingHint(roomState: widget.roomState, voteStats: voteStats),
+            if (widget.isFacilitator)
+              _ReferenceSizingHint(
+                roomState: widget.roomState,
+                voteStats: voteStats,
+              ),
           ],
           const SizedBox(height: 24),
           if (revealed) ...[
@@ -363,22 +351,24 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               title: l10n.chooseDose,
               subtitle: l10n.chooseDoseSubtitle,
             ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              alignment: WrapAlignment.center,
-              children: DeckValues.forRoom(widget.roomState.room).map((value) {
-                return SpritzCard(
-                  value: value,
-                  selected: _selectedValue == value || myVote?.value == value,
-                  onTap: () => _castVote(value),
-                  onLongPress: revealed
-                      ? null
-                      : () => unawaited(_confirmAndCastVote(value)),
-                  disabled: revealed,
-                );
-              }).toList(),
+            const SizedBox(height: 12),
+            _BarDeckTray(
+              child: Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                alignment: WrapAlignment.center,
+                children: DeckValues.forRoom(widget.roomState.room).map((value) {
+                  return SpritzCard(
+                    value: value,
+                    selected: _selectedValue == value || myVote?.value == value,
+                    onTap: () => _castVote(value),
+                    onLongPress: revealed
+                        ? null
+                        : () => unawaited(_confirmAndCastVote(value)),
+                    disabled: revealed,
+                  );
+                }).toList(),
+              ),
             ),
             if (_selectedValue != null || myVote?.value != null) ...[
               const SizedBox(height: 16),
@@ -486,6 +476,145 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
   }
 }
 
+/// Ticket ordine corrente (stile comanda bancone).
+class _BarOrderTicket extends StatelessWidget {
+  const _BarOrderTicket({
+    required this.label,
+    required this.title,
+    required this.description,
+  });
+
+  final String label;
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(AppDecorations.radiusLg),
+        border: Border.all(
+          color: scheme.primary.withValues(alpha: 0.35),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.primaryContainer.withValues(alpha: 0.65),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppDecorations.radiusLg - 1),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.receipt_long_rounded, size: 18, color: scheme.primary),
+                const SizedBox(width: 8),
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onPrimaryContainer,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 14, 18, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+                if (description.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BarDeckTray extends StatelessWidget {
+  const _BarDeckTray({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: isDark
+              ? [
+                  const Color(0xFF2E2A28),
+                  scheme.surfaceContainerLow,
+                ]
+              : [
+                  const Color(0xFFEBE0D4),
+                  const Color(0xFFF7F2EC),
+                ],
+        ),
+        borderRadius: BorderRadius.circular(AppDecorations.radiusXl),
+        border: Border.all(color: scheme.outline.withValues(alpha: 0.7)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.style_rounded, size: 18, color: scheme.primary),
+                const SizedBox(width: 8),
+                Text(
+                  l10n.barDeckTrayTitle,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            child,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _VotingCountdown extends StatelessWidget {
   const _VotingCountdown({required this.deadline, required this.now});
 
@@ -504,24 +633,22 @@ class _VotingCountdown extends StatelessWidget {
     final minutes = display.inMinutes.remainder(60).toString().padLeft(2, '0');
     final seconds = display.inSeconds.remainder(60).toString().padLeft(2, '0');
 
+    final scheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           Icons.timer_outlined,
           size: 18,
-          color: expired
-              ? const Color(AppColors.spritzOrange)
-              : const Color(AppColors.textSecondary),
+          color: expired ? scheme.primary : scheme.onSurfaceVariant,
         ),
         const SizedBox(width: 6),
         Text(
           '$minutes:$seconds',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontFeatures: const [FontFeature.tabularFigures()],
-                color: expired
-                    ? const Color(AppColors.spritzOrange)
-                    : const Color(AppColors.textPrimary),
+                color: expired ? scheme.primary : scheme.onSurface,
                 fontWeight: FontWeight.w700,
               ),
         ),
@@ -529,7 +656,7 @@ class _VotingCountdown extends StatelessWidget {
         Text(
           l10n.timerLabel,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: const Color(AppColors.textSecondary),
+                color: scheme.onSurfaceVariant,
               ),
         ),
       ],
@@ -545,6 +672,8 @@ class _VoteProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final scheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -561,8 +690,8 @@ class _VoteProgressBar extends StatelessWidget {
                 stats.participantCount > 0)
               Text(
                 l10n.allVoted,
-                style: const TextStyle(
-                  color: Color(AppColors.success),
+                style: TextStyle(
+                  color: const Color(AppColors.success),
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                 ),
@@ -574,9 +703,9 @@ class _VoteProgressBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           child: LinearProgressIndicator(
             value: stats.voteProgress,
-            minHeight: 8,
-            backgroundColor: const Color(AppColors.surfaceMuted),
-            color: const Color(AppColors.spritzOrange),
+            minHeight: 10,
+            backgroundColor: scheme.surfaceContainerLow,
+            color: scheme.primary,
           ),
         ),
       ],

@@ -114,6 +114,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get clienti => 'Clienti al bancone';
 
   @override
+  String get barVoteStatusOrdered => 'Dose scelta';
+
+  @override
+  String get barVoteStatusWaiting => 'Attende';
+
+  @override
+  String get barDeckTrayTitle => 'Carte al bancone';
+
+  @override
   String get barman => 'Barman';
 
   @override
