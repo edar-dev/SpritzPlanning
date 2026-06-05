@@ -26,6 +26,16 @@ class BarParticipantsStrip extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final (voted, total) = roomState.votingProgress;
     final hideVotes = roomState.room.hideVotersUntilReveal && showVoteStatus;
+    final participants = List<Participant>.from(roomState.participants)
+      ..sort((a, b) {
+        if (a.isFacilitator != b.isFacilitator) {
+          return a.isFacilitator ? -1 : 1;
+        }
+        if (a.isObserver != b.isObserver) {
+          return a.isObserver ? 1 : -1;
+        }
+        return a.nickname.toLowerCase().compareTo(b.nickname.toLowerCase());
+      });
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -93,18 +103,32 @@ class BarParticipantsStrip extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
+            if (hideVotes) ...[
+              Text(
+                l10n.hideVotersUntilRevealSubtitle,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+              ),
+              const SizedBox(height: 8),
+            ],
             if (layout == BarParticipantsLayout.horizontal)
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: _chipList(
                     context,
+                    participants: participants,
                     hideVotes: hideVotes,
                   ),
                 ),
               )
             else
-              ..._chipList(context, hideVotes: hideVotes),
+              ..._chipList(
+                context,
+                participants: participants,
+                hideVotes: hideVotes,
+              ),
           ],
         ),
       ),
@@ -113,11 +137,12 @@ class BarParticipantsStrip extends StatelessWidget {
 
   List<Widget> _chipList(
     BuildContext context, {
+    required List<Participant> participants,
     required bool hideVotes,
   }) {
     final spacing = layout == BarParticipantsLayout.horizontal ? 10.0 : 8.0;
     final chips = <Widget>[];
-    for (final p in roomState.participants) {
+    for (final p in participants) {
       chips.add(
         _BarGuestChip(
           participant: p,
@@ -134,7 +159,7 @@ class BarParticipantsStrip extends StatelessWidget {
               : () => onParticipantLongPress!(p),
         ),
       );
-      if (p != roomState.participants.last) {
+      if (p != participants.last) {
         chips.add(SizedBox(
           width: layout == BarParticipantsLayout.horizontal ? spacing : 0,
           height: layout == BarParticipantsLayout.vertical ? spacing : 0,
