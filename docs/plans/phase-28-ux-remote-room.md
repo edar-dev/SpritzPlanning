@@ -5,6 +5,8 @@
 **Durata stimata:** 4–6 giorni  
 **Dipende da:** Fase 26 (#110 sticky) opzionale
 
+**Stato:** implementata (branch `feat/ux-remote-room`)
+
 ## Obiettivo
 
 Migliorare l'esperienza in **call remote** e **sala con proiettore/TV**: leggibilità a distanza, energia al reveal, richiamo clienti con tab in background.

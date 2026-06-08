@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -29,11 +30,15 @@ import 'session_close_sheet.dart';
 import '../../core/notifications/browser_notifications.dart';
 import '../../core/preferences/session_archive_storage.dart';
 import '../../core/preferences/app_preferences.dart';
+import '../../core/preferences/preferences_providers.dart';
+import '../../core/theme/projector_extensions.dart';
+import '../../core/theme/projector_theme.dart';
 import '../../shared/widgets/room_code_display.dart';
 import '../../shared/widgets/room_screen_skeleton.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/spritz_surface_card.dart';
 import '../voting/voting_panel.dart';
+import '../voting/reveal_flow.dart';
 import 'compact_order_list.dart';
 
 class RoomScreen extends ConsumerStatefulWidget {
@@ -49,6 +54,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   bool? _wasVotesRevealed;
   bool _timerWarned = false;
   bool _sharePromptShown = false;
+  bool _sessionProjectorDisabled = false;
   Timer? _notificationPoll;
 
   @override
@@ -71,6 +77,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       _wasVotesRevealed = currRoom.votesRevealed;
       _timerWarned = false;
       _sharePromptShown = false;
+      _sessionProjectorDisabled = false;
       _syncTimerNotificationPoll(currRoom);
       return;
     }
@@ -87,6 +94,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     if (!prevRoom.votesRevealed && currRoom.votesRevealed) {
       unawaited(SessionFeedback.onReveal());
       unawaited(_notifyReveal());
+    }
+    final votingJustStarted = currRoom.phase == RoomPhase.voting &&
+        !currRoom.votesRevealed &&
+        (prevRoom.phase != RoomPhase.voting ||
+            prevRoom.currentStoryId != currRoom.currentStoryId);
+    if (votingJustStarted) {
+      unawaited(_notifyVotingStarted(current));
     }
     _wasVotesRevealed = currRoom.votesRevealed;
     if (prevRoom.currentStoryId != currRoom.currentStoryId ||
@@ -129,6 +143,26 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     showBrowserNotification(
       title: context.l10n.notificationsTimer,
       body: context.l10n.appName,
+    );
+  }
+
+  Future<void> _notifyVotingStarted(RoomState current) async {
+    if (!await AppPreferences.loadNotificationsEnabled()) return;
+    if (!mounted) return;
+    final session = ref.read(sessionProvider).valueOrNull;
+    if (session == null) return;
+    final me = current.participants.firstWhereOrNull(
+      (p) => p.id == session.participantId,
+    );
+    if (me == null || me.canModerateSession) return;
+    final story = current.currentStory;
+    if (story == null) return;
+    notifyVotingStarted(
+      title: context.l10n.notificationVotingTitle,
+      body: context.l10n.notificationVotingBody(
+        current.room.name,
+        story.title,
+      ),
     );
   }
 
@@ -351,7 +385,33 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         final showConnectionBanner =
             connectionStatus != ConnectionStatus.connected;
 
-        return FacilitatorShortcuts(
+        final globalProjector =
+            ref.watch(projectorModeProvider).valueOrNull ?? false;
+        final autoProjectorPref =
+            ref.watch(projectorAutoEnableProvider).valueOrNull ?? true;
+        final roomProjector = ProjectorAutoDetect.effectiveProjector(
+          context: context,
+          globalManual: globalProjector,
+          autoPrefEnabled: autoProjectorPref,
+          sessionDisabled: _sessionProjectorDisabled,
+        );
+        final baseTheme = Theme.of(context);
+        final roomTheme = baseTheme.copyWith(
+          extensions: [
+            for (final ext in baseTheme.extensions.values)
+              if (ext is! ProjectorMode) ext,
+            ProjectorMode(enabled: roomProjector),
+          ],
+          textTheme: baseTheme.textTheme.apply(
+            fontSizeFactor: !globalProjector && roomProjector ? 1.25 : 1.0,
+          ),
+        );
+        final projectorMetrics = ProjectorMode(enabled: roomProjector);
+        final autoProjectorActive = roomProjector && !globalProjector;
+
+        return Theme(
+          data: roomTheme,
+          child: FacilitatorShortcuts(
           enabled: canModerate,
           onReveal: showVoting && !room.votesRevealed
               ? () => unawaited(_facilitatorReveal(session.participantId))
@@ -364,7 +424,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               : null,
           child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 64,
+            toolbarHeight: projectorMetrics.appBarHeight,
             title: Padding(
               // Evita che il titolo centrato copra le icone in actions.
               padding: const EdgeInsets.symmetric(horizontal: 104),
@@ -426,6 +486,8 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                         unawaited(_duplicateRoom(context, ref, session));
                       case 'skip':
                         unawaited(_skipCurrentOrder(context, roomState, session.participantId));
+                      case 'disable_projector':
+                        setState(() => _sessionProjectorDisabled = true);
                     }
                   },
                   itemBuilder: (ctx) => [
@@ -468,6 +530,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       PopupMenuItem(
                         value: 'duplicate',
                         child: Text(context.l10n.duplicateRoom),
+                      ),
+                    if (autoProjectorActive)
+                      PopupMenuItem(
+                        value: 'disable_projector',
+                        child: Text(context.l10n.projectorSessionDisable),
                       ),
                   ],
                 ),
@@ -612,6 +679,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                 )
               : null,
         ),
+        ),
         );
       },
     );
@@ -630,13 +698,19 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   }
 
   Future<void> _facilitatorReveal(String participantId) async {
-    try {
-      await ref.read(roomRepositoryProvider).revealVotes(
-            participantId: participantId,
-          );
-    } catch (e, st) {
-      if (mounted) await showUserError(context, e, stackTrace: st);
-    }
+    if (!mounted) return;
+    await runRevealWithOptionalCountdown(
+      context: context,
+      reveal: () async {
+        try {
+          await ref.read(roomRepositoryProvider).revealVotes(
+                participantId: participantId,
+              );
+        } catch (e, st) {
+          if (mounted) await showUserError(context, e, stackTrace: st);
+        }
+      },
+    );
   }
 
   Future<void> _facilitatorNextStory(String participantId) async {

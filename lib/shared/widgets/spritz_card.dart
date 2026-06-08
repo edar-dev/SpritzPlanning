@@ -50,6 +50,7 @@ class _SpritzCardState extends State<SpritzCard> {
         l10n != null ? l10n.voteCardSemantics(widget.value) : 'Vote ${widget.value}';
     final projector = ProjectorMode.of(context);
     final scale = projector.cardScale;
+    final revealScale = projector.voteRevealFontScale;
     final baseW = widget.revealed ? 80.0 : 72.0;
     final baseH = widget.revealed ? 108.0 : 96.0;
     final cardW = baseW * scale;
@@ -143,7 +144,7 @@ class _SpritzCardState extends State<SpritzCard> {
                           if (_isCoffee)
                             Icon(
                               Icons.local_cafe_rounded,
-                              size: widget.revealed ? 28 : 32,
+                              size: (widget.revealed ? 28 : 32) * revealScale,
                               color: widget.selected
                                   ? scheme.onPrimary
                                   : const Color(AppColors.spritzOrange),
@@ -152,7 +153,9 @@ class _SpritzCardState extends State<SpritzCard> {
                             Text(
                               widget.value,
                               style: TextStyle(
-                                fontSize: widget.value.length > 2 ? 22 : 30,
+                                fontSize:
+                                    (widget.value.length > 2 ? 22 : 30) *
+                                        revealScale,
                                 fontWeight: FontWeight.w800,
                                 height: 1,
                                 color: widget.selected
@@ -171,7 +174,7 @@ class _SpritzCardState extends State<SpritzCard> {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 10 * revealScale,
                                   fontWeight: FontWeight.w600,
                                   color: widget.selected
                                       ? scheme.onPrimary.withValues(alpha: 0.92)

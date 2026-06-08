@@ -15,6 +15,21 @@
   },
   "projectorMode": "Modalità sala / proiettore",
   "projectorModeHint": "Testo e card più grandi per proiettore o TV",
+  "projectorAutoTitle": "Proiettore automatico",
+  "projectorAutoSubtitle": "Attiva su schermi larghi o testo di sistema ingrandito",
+  "projectorSessionDisable": "Disattiva proiettore (questa sessione)",
+  "theatricalRevealTitle": "Countdown prima del reveal",
+  "theatricalRevealSubtitle": "Conto alla rovescia 3-2-1 prima di «Servizio!»",
+  "revealCountdown": "Reveal tra {seconds}",
+  "@revealCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "revealGo": "Via!",
+  "revealCountdownSkip": "Tocca o premi R per saltare",
   "appSettings": "Impostazioni",
   "nicknameLabel": "Il tuo nome al bancone",
   "nicknameHint": "Es. Marco",
@@ -280,9 +295,21 @@
   "templateBusinessMaintenanceDescription": "Flusso rapido per incident, fix urgenti e follow-up",
   "createFromTemplate": "Crea da template",
   "notificationsTitle": "Notifiche browser",
-  "notificationsSubtitle": "Reveal e timer quando la scheda è in background",
+  "notificationsSubtitle": "Reveal, timer e inizio votazione quando la scheda è in background",
   "notificationsReveal": "Voti rivelati",
   "notificationsTimer": "Tempo quasi scaduto",
+  "notificationVotingTitle": "Tocca a te!",
+  "notificationVotingBody": "{roomName}: vota «{storyTitle}»",
+  "@notificationVotingBody": {
+    "placeholders": {
+      "roomName": {
+        "type": "String"
+      },
+      "storyTitle": {
+        "type": "String"
+      }
+    }
+  },
   "helpTitle": "Guida SpritzPlanning",
   "helpIntro": "Planning poker a tema spritz per team agile. Nessun account: nickname e codice stanza bastano per iniziare.",
   "helpRolesTitle": "Ruoli",

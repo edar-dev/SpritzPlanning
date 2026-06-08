@@ -42,3 +42,33 @@ class ProjectorModeNotifier extends AsyncNotifier<bool> {
     state = AsyncData(enabled);
   }
 }
+
+final projectorAutoEnableProvider =
+    AsyncNotifierProvider<ProjectorAutoEnableNotifier, bool>(
+  ProjectorAutoEnableNotifier.new,
+);
+
+class ProjectorAutoEnableNotifier extends AsyncNotifier<bool> {
+  @override
+  Future<bool> build() => AppPreferences.loadProjectorAutoEnable();
+
+  Future<void> setProjectorAutoEnable(bool enabled) async {
+    await AppPreferences.saveProjectorAutoEnable(enabled);
+    state = AsyncData(enabled);
+  }
+}
+
+final theatricalRevealProvider =
+    AsyncNotifierProvider<TheatricalRevealNotifier, bool>(
+  TheatricalRevealNotifier.new,
+);
+
+class TheatricalRevealNotifier extends AsyncNotifier<bool> {
+  @override
+  Future<bool> build() => AppPreferences.loadTheatricalReveal();
+
+  Future<void> setTheatricalReveal(bool enabled) async {
+    await AppPreferences.saveTheatricalReveal(enabled);
+    state = AsyncData(enabled);
+  }
+}

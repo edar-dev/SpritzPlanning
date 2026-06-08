@@ -15,6 +15,21 @@
   },
   "projectorMode": "Room / projector mode",
   "projectorModeHint": "Larger text and cards for projector or TV",
+  "projectorAutoTitle": "Auto projector",
+  "projectorAutoSubtitle": "Enable on wide screens or large system text",
+  "projectorSessionDisable": "Disable projector (this session)",
+  "theatricalRevealTitle": "Countdown before reveal",
+  "theatricalRevealSubtitle": "3-2-1 countdown before «Service!»",
+  "revealCountdown": "Reveal in {seconds}",
+  "@revealCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "revealGo": "Go!",
+  "revealCountdownSkip": "Tap or press R to skip",
   "appSettings": "Settings",
   "nicknameLabel": "Your name at the bar",
   "nicknameHint": "e.g. Alex",
@@ -252,9 +267,21 @@
   "templateBusinessMaintenanceDescription": "Fast flow for incidents, urgent fixes, and follow-up",
   "createFromTemplate": "Create from template",
   "notificationsTitle": "Browser notifications",
-  "notificationsSubtitle": "Reveal and timer when tab is in background",
+  "notificationsSubtitle": "Reveal, timer, and voting start when tab is in background",
   "notificationsReveal": "Votes revealed",
   "notificationsTimer": "Time almost up",
+  "notificationVotingTitle": "Your turn!",
+  "notificationVotingBody": "{roomName}: vote on «{storyTitle}»",
+  "@notificationVotingBody": {
+    "placeholders": {
+      "roomName": {
+        "type": "String"
+      },
+      "storyTitle": {
+        "type": "String"
+      }
+    }
+  },
   "helpTitle": "SpritzPlanning guide",
   "helpIntro": "Spritz-themed planning poker for agile teams. No account needed — just a nickname and room code.",
   "helpRolesTitle": "Roles",

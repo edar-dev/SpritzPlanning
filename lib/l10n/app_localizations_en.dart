@@ -36,6 +36,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get projectorModeHint => 'Larger text and cards for projector or TV';
 
   @override
+  String get projectorAutoTitle => 'Auto projector';
+
+  @override
+  String get projectorAutoSubtitle =>
+      'Enable on wide screens or large system text';
+
+  @override
+  String get projectorSessionDisable => 'Disable projector (this session)';
+
+  @override
+  String get theatricalRevealTitle => 'Countdown before reveal';
+
+  @override
+  String get theatricalRevealSubtitle => '3-2-1 countdown before «Service!»';
+
+  @override
+  String revealCountdown(int seconds) {
+    return 'Reveal in $seconds';
+  }
+
+  @override
+  String get revealGo => 'Go!';
+
+  @override
+  String get revealCountdownSkip => 'Tap or press R to skip';
+
+  @override
   String get appSettings => 'Settings';
 
   @override
@@ -591,13 +618,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsSubtitle =>
-      'Reveal and timer when tab is in background';
+      'Reveal, timer, and voting start when tab is in background';
 
   @override
   String get notificationsReveal => 'Votes revealed';
 
   @override
   String get notificationsTimer => 'Time almost up';
+
+  @override
+  String get notificationVotingTitle => 'Your turn!';
+
+  @override
+  String notificationVotingBody(String roomName, String storyTitle) {
+    return '$roomName: vote on «$storyTitle»';
+  }
 
   @override
   String get helpTitle => 'SpritzPlanning guide';

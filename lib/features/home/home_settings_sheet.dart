@@ -30,6 +30,8 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
   bool _soundEnabled = false;
   bool _hapticEnabled = false;
   bool _autoStartNextOrder = false;
+  bool _projectorAutoEnable = true;
+  bool _theatricalReveal = false;
   bool _feedbackLoaded = false;
 
   @override
@@ -43,6 +45,8 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
     final sound = await AppPreferences.loadSoundEffectsEnabled();
     final haptic = await AppPreferences.loadHapticEnabled();
     final autoNext = await AppPreferences.loadAutoStartNextOrder();
+    final projectorAuto = await AppPreferences.loadProjectorAutoEnable();
+    final theatricalReveal = await AppPreferences.loadTheatricalReveal();
     if (!mounted) return;
     setState(() {
       _notificationsEnabled = enabled;
@@ -50,6 +54,8 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
       _soundEnabled = sound;
       _hapticEnabled = haptic;
       _autoStartNextOrder = autoNext;
+      _projectorAutoEnable = projectorAuto;
+      _theatricalReveal = theatricalReveal;
       _feedbackLoaded = true;
     });
   }
@@ -145,6 +151,18 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
                 ref.read(projectorModeProvider.notifier).setProjectorMode(value);
               },
             ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l10n.projectorAutoTitle),
+              subtitle: Text(l10n.projectorAutoSubtitle),
+              value: _projectorAutoEnable,
+              onChanged: (value) async {
+                await AppPreferences.saveProjectorAutoEnable(value);
+                ref.invalidate(projectorAutoEnableProvider);
+                if (!mounted) return;
+                setState(() => _projectorAutoEnable = value);
+              },
+            ),
             if (_notificationsLoaded)
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
@@ -185,6 +203,18 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
                   await AppPreferences.saveAutoStartNextOrder(value);
                   if (!mounted) return;
                   setState(() => _autoStartNextOrder = value);
+                },
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.theatricalRevealTitle),
+                subtitle: Text(l10n.theatricalRevealSubtitle),
+                value: _theatricalReveal,
+                onChanged: (value) async {
+                  await AppPreferences.saveTheatricalReveal(value);
+                  ref.invalidate(theatricalRevealProvider);
+                  if (!mounted) return;
+                  setState(() => _theatricalReveal = value);
                 },
               ),
             ],
