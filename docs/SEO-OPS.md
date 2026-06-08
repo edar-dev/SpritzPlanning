@@ -27,7 +27,7 @@ Impostare su **Production** (e opzionalmente Preview) nel progetto Vercel:
 
 | Variabile | Uso |
 |-----------|-----|
-| `GOOGLE_SITE_VERIFICATION` | Meta tag verifica Search Console (valore dal pannello Google) |
+| `GOOGLE_SITE_VERIFICATION` | Solo il **token** dal pannello Google (es. `abc123…`), non l’intero tag `<meta …>` |
 | `PLAUSIBLE_DOMAIN` | Dominio Plausible, es. `spritz-planning.vercel.app` |
 
 Iniettate in build su tutte le pagine marketing via `<!-- SEO_INJECT -->` in `scripts/vercel-build.sh`. Senza variabili, le pagine restano senza tag aggiuntivi.

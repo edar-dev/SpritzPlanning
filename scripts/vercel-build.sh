@@ -69,17 +69,27 @@ cp "$WEB/landing.html" "$WEB/index.html"
 inject_marketing_seo_tags() {
   local inject=""
   if [ -n "${GOOGLE_SITE_VERIFICATION:-}" ]; then
-    inject="${inject}  <meta name=\"google-site-verification\" content=\"${GOOGLE_SITE_VERIFICATION}\" />\n"
+    inject="${inject}  <meta name=\"google-site-verification\" content=\"${GOOGLE_SITE_VERIFICATION}\" />
+"
   fi
   if [ -n "${PLAUSIBLE_DOMAIN:-}" ]; then
-    inject="${inject}  <script defer data-domain=\"${PLAUSIBLE_DOMAIN}\" src=\"https://plausible.io/js/script.js\"></script>\n"
+    inject="${inject}  <script defer data-domain=\"${PLAUSIBLE_DOMAIN}\" src=\"https://plausible.io/js/script.js\"></script>
+"
   fi
   if [ -z "$inject" ]; then
     return
   fi
   for page in landing.html landing-en.html features.html features-en.html faq.html faq-en.html index.html; do
     [ -f "$WEB/$page" ] || continue
-    perl -i -0pe "s/  <!-- SEO_INJECT -->/${inject}  <!-- SEO_INJECT -->/s" "$WEB/$page"
+    local tmp
+    tmp="$(mktemp)"
+    while IFS= read -r line || [ -n "$line" ]; do
+      if [[ "$line" == *'<!-- SEO_INJECT -->'* ]]; then
+        printf '%s' "$inject"
+      fi
+      printf '%s\n' "$line"
+    done < "$WEB/$page" > "$tmp"
+    mv "$tmp" "$WEB/$page"
   done
 }
 
