@@ -86,6 +86,10 @@ flowchart LR
 | 23 | #103–#105, #104, #106 | 4–7 giorni | `feat/seo-content` | [phase-23-seo-content.md](plans/phase-23-seo-content.md) — completata |
 | 24 | Lean simplification | 5–8 giorni | `feat/lean-simplification` | [phase-24-simplification.md](plans/phase-24-simplification.md) — completata |
 | 25 | Post-lean polish | 2–3 giorni | `chore/post-lean-polish` | help crawlable, l10n prune, smoke — completata |
+| 26 | UX ciclo barman | 4–6 giorni | `feat/ux-barman-cycle` | [phase-26-ux-barman-cycle.md](plans/phase-26-ux-barman-cycle.md) — #109–#113 |
+| 27 | UX flusso sessione | 5–8 giorni | `feat/ux-session-flow` | [phase-27-ux-session-flow.md](plans/phase-27-ux-session-flow.md) — #114–#118 |
+| 28 | UX sala remota | 4–6 giorni | `feat/ux-remote-room` | [phase-28-ux-remote-room.md](plans/phase-28-ux-remote-room.md) — #119–#121 |
+| 29 | UX qualità / retention | 6–9 giorni | `feat/ux-quality-retention` | [phase-29-ux-quality-retention.md](plans/phase-29-ux-quality-retention.md) — #122–#126 |
 
 
 
@@ -206,6 +210,16 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 **Completata (post-lean polish):**
 
 25. **Fase 25** — Guida HTML crawlable (#105), prune l10n lean, smoke/ops ([LEAN-SMOKE.md](LEAN-SMOKE.md))
+
+**Prossime (UX lean — post Fase 25):**
+
+26. **Fase 26** — Ciclo barman e votazione (#109–#113) ([IMPROVEMENTS-UX-LEAN.md](IMPROVEMENTS-UX-LEAN.md), [phase-26-ux-barman-cycle.md](plans/phase-26-ux-barman-cycle.md))
+
+27. **Fase 27** — Flusso sessione e primo utilizzo (#114–#118) ([phase-27-ux-session-flow.md](plans/phase-27-ux-session-flow.md))
+
+28. **Fase 28** — Sala remota e proiettore (#119–#121) ([phase-28-ux-remote-room.md](plans/phase-28-ux-remote-room.md))
+
+29. **Fase 29** — Qualità, chiusura e retention (#122–#126) ([phase-29-ux-quality-retention.md](plans/phase-29-ux-quality-retention.md))
 
 **Follow-up opzionale:**
 
