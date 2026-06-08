@@ -12,7 +12,9 @@ $urls = @(
   'https://spritz-planning.vercel.app/sitemap.xml',
   'https://spritz-planning.vercel.app/faq',
   'https://spritz-planning.vercel.app/en/faq',
-  'https://spritz-planning.vercel.app/en/features'
+  'https://spritz-planning.vercel.app/en/features',
+  'https://spritz-planning.vercel.app/help',
+  'https://spritz-planning.vercel.app/en/help'
 )
 foreach ($u in $urls) {
   (Invoke-WebRequest -Uri $u -Method Head -UseBasicParsing).StatusCode

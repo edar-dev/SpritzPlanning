@@ -15,12 +15,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get tagline => 'Stima le user story al bancone';
 
   @override
-  String get homeGetStarted => 'Inizia una sessione';
-
-  @override
-  String get homeMoreOptions => 'Gestione e strumenti';
-
-  @override
   String get installPwa => 'Installa SpritzPlanning sulla home';
 
   @override
@@ -84,12 +78,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get back => 'Indietro';
 
   @override
-  String get createRoomSubtitle => 'Crea una stanza per il tuo team';
-
-  @override
-  String get joinRoomSubtitle => 'Unisciti con il codice bancone';
-
-  @override
   String get codiceBancone => 'Codice bancone';
 
   @override
@@ -97,9 +85,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get shareCode => 'Condividi invito';
-
-  @override
-  String get shareMessage => 'Entra al mio locale SpritzPlanning! Codice:';
 
   @override
   String get showQr => 'Mostra QR';
@@ -171,9 +156,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get chooseDose => 'Scegli la dose';
-
-  @override
-  String get yourVote => 'La tua dose';
 
   @override
   String get voteSubmitted => 'Dose scelta! In attesa degli altri...';
@@ -294,9 +276,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cancel => 'Annulla';
-
-  @override
-  String get add => 'Aggiungi';
 
   @override
   String get deckSettings => 'Impostazioni deck';
@@ -433,9 +412,6 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get exportJson => 'Esporta JSON';
-
-  @override
   String get joinAsObserver => 'Solo osservazione (non voto)';
 
   @override
@@ -506,140 +482,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get facilitatorNoteHint => 'Solo per te, visibili in export';
 
   @override
-  String get exportJira => 'Jira';
-
-  @override
-  String get exportAzureDevOps => 'Azure DevOps';
-
-  @override
-  String get reportMean => 'Media punti';
-
-  @override
   String get reportMedian => 'Mediana punti';
 
   @override
   String get reportCompleted => 'Ordini completati';
-
-  @override
-  String get reportSpikes => 'Spike';
-
-  @override
-  String get reportVariance => 'Dispersione stime';
-
-  @override
-  String get reportRevisionRate => 'Revisioni stima';
-
-  @override
-  String reportRevisionRateValue(int percent) {
-    return '$percent%';
-  }
-
-  @override
-  String get reportAvgTimePerStory => 'Tempo medio per ordine';
-
-  @override
-  String reportAvgMinutesValue(int minutes) {
-    return '$minutes min';
-  }
-
-  @override
-  String get executiveReportTitle => 'Report executive';
-
-  @override
-  String get executiveReportOverview => 'Panoramica sessione';
-
-  @override
-  String get executiveReportRoomLabel => 'Locale';
-
-  @override
-  String get executiveReportCodeLabel => 'Codice';
-
-  @override
-  String get executiveReportExportedAtLabel => 'Esportato il';
-
-  @override
-  String get executiveReportKpi => 'KPI principali';
-
-  @override
-  String get executiveReportUncertainStories =>
-      'Ordini con maggiore incertezza';
-
-  @override
-  String get executiveReportUncertaintyScore => 'Indice incertezza';
-
-  @override
-  String get executiveReportActions => 'Decisioni e azioni suggerite';
-
-  @override
-  String get executiveReportBacklog => 'Ordine';
-
-  @override
-  String get executiveReportEstimateColumn => 'Stima';
-
-  @override
-  String get executiveReportNoUncertainStories =>
-      'Nessun ordine con segnali di incertezza rilevanti.';
-
-  @override
-  String get executiveReportNoSuggestedActions =>
-      'Nessuna azione suggerita automaticamente.';
-
-  @override
-  String executiveReportActionSpike(Object title) {
-    return 'Pianificare ricerca spike per «$title»';
-  }
-
-  @override
-  String executiveReportActionRevised(Object history, Object title) {
-    return 'Allineare la stima di «$title» (revisioni: $history)';
-  }
-
-  @override
-  String executiveReportActionReference(Object title) {
-    return 'Usare «$title» come riferimento relativo per le prossime stime';
-  }
-
-  @override
-  String get executiveReportActionHighVariance =>
-      'Ridurre la dispersione delle stime: rivedere la baseline del team';
-
-  @override
-  String executiveReportActionFacilitatorNote(Object note, Object title) {
-    return '«$title»: $note';
-  }
-
-  @override
-  String executiveReportActionPublicComment(Object comment, Object title) {
-    return '«$title» — commento team: $comment';
-  }
-
-  @override
-  String get executiveReportExport => 'Report executive';
-
-  @override
-  String get executiveReportCopyMarkdown => 'Copia Markdown';
-
-  @override
-  String get executiveReportCopyCsv => 'Copia CSV business';
-
-  @override
-  String get executiveReportPrint => 'Stampa / PDF';
-
-  @override
-  String get executiveReportPrintOpened => 'Finestra di stampa aperta';
-
-  @override
-  String get executiveReportPrintUnavailable =>
-      'Stampa disponibile solo su web';
-
-  @override
-  String get executiveReportOtherExports => 'Altri export';
-
-  @override
-  String get executiveReportMinutesSuffix => 'min';
-
-  @override
-  String get executiveReportPercentSuffix => '%';
 
   @override
   String get roomTemplates => 'Template locale';
@@ -718,32 +564,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get helpFeaturesTitle => 'Funzionalità';
 
   @override
-  String get helpFeatTemplates => 'Template locale — Home → Crea da template';
-
-  @override
   String get helpFeatImport => 'Import backlog — Lobby barman → icona upload';
-
-  @override
-  String get helpFeatSpike => 'Story spike — Icona fulmine su ordine pending';
-
-  @override
-  String get helpFeatPin => 'PIN stanza — Impostazioni deck del barman';
 
   @override
   String get helpFeatAutoReveal =>
       'Auto-reveal — Impostazioni deck, quando tutti hanno votato';
 
   @override
-  String get helpFeatDuplicate => 'Nuova serata — Menu ⋮ in stanza (barman)';
-
-  @override
-  String get helpFeatReport => 'Report Jira/ADO — Icona riepilogo in stanza';
-
-  @override
-  String get helpFeatNotify => 'Notifiche browser — Impostazioni home';
-
-  @override
-  String get helpFeatProjector => 'Modalità proiettore — Impostazioni home';
+  String get helpFeatReport =>
+      'Report CSV/Markdown — Icona riepilogo in stanza';
 
   @override
   String get helpFeatResume => 'Ripresa sessione — Home, se hai già giocato';
@@ -778,9 +607,6 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get helpFaqObserverBody =>
       'Spunta «Solo osservazione» in fase di join. Non potrai votare ma vedrai reveal e report.';
-
-  @override
-  String get helpShortcutsTitle => 'Scorciatoie tastiera (barman, web)';
 
   @override
   String get onboardingWelcomeTitle => 'Benvenuto al bancone!';
@@ -820,173 +646,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get onboardingDone => 'Inizia';
 
   @override
-  String get businessOnboardingTitle => 'Primo valore in 5 minuti';
-
-  @override
-  String get businessOnboardingSubtitle =>
-      'Percorso guidato per PM e team strutturati';
-
-  @override
-  String businessOnboardingProgress(int current, int total) {
-    return 'Passo $current di $total';
-  }
-
-  @override
-  String get businessOnboardingStep1Title => '1. Apri un locale';
-
-  @override
-  String get businessOnboardingStep1Body =>
-      'Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.';
-
-  @override
-  String get businessOnboardingStep2Title => '2. Importa il backlog';
-
-  @override
-  String get businessOnboardingStep2Body =>
-      'Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.';
-
-  @override
-  String get businessOnboardingStep3Title => '3. Invita il team';
-
-  @override
-  String get businessOnboardingStep3Body =>
-      'Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.';
-
-  @override
-  String get businessOnboardingStep4Title => '4. Stima e report';
-
-  @override
-  String get businessOnboardingStep4Body =>
-      'Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.';
-
-  @override
-  String get businessOnboardingSkip => 'Salta percorso';
-
-  @override
-  String get businessOnboardingNext => 'Avanti';
-
-  @override
-  String get businessOnboardingStart => 'Apri il primo locale';
-
-  @override
-  String get businessOnboardingDoneLater => 'Più tardi';
-
-  @override
-  String get helpReplayBusinessOnboarding => 'Rivedi percorso guidato';
-
-  @override
-  String get workspaceTitle => 'Workspace team';
-
-  @override
-  String get workspaceManageSubtitle => 'Branding e deck predefinito';
-
-  @override
-  String get workspaceEmpty => 'Nessun workspace configurato';
-
-  @override
-  String get workspaceBrandPreview => 'Colore brand';
-
-  @override
-  String get workspaceAdd => 'Aggiungi workspace';
-
-  @override
-  String get planUpgradeTitle => 'Piano commerciale';
-
-  @override
-  String planUpgradeBody(String tier) {
-    return 'Funzione richiesta: piano $tier';
-  }
-
-  @override
-  String get planTierFree => 'Free';
-
-  @override
-  String get planTierFreeFeatures => 'Stanze, voto e report base';
-
-  @override
-  String get planTierPro => 'Pro';
-
-  @override
-  String get planTierProFeatures => 'KPI avanzati, report executive, health';
-
-  @override
-  String get planTierTeam => 'Team';
-
-  @override
-  String get planTierTeamFeatures =>
-      'Workspace multipli, audit trail, sync Jira/ADO';
-
-  @override
-  String get planUpgradeDemoNote =>
-      'Demo locale: selezione piano per testare i limiti (nessun pagamento).';
-
-  @override
-  String get planManageSubtitle => 'Free / Pro / Team';
-
-  @override
-  String get planFeatureLocked => 'Disponibile con piano superiore';
-
-  @override
-  String get auditTrailTitle => 'Registro audit';
-
-  @override
-  String get opsHealthTitle => 'Stato servizio';
-
-  @override
-  String get opsHealthSubtitle => 'Metriche operative (Pro+)';
-
-  @override
-  String get opsHealthRealtime => 'Realtime';
-
-  @override
-  String get opsHealthActiveRooms1h => 'Stanze attive (1h)';
-
-  @override
-  String get opsHealthActiveRooms24h => 'Stanze attive (24h)';
-
-  @override
-  String get opsHealthAudit24h => 'Eventi audit (24h)';
-
-  @override
-  String get opsHealthExternalLinks => 'Collegamenti esterni';
-
-  @override
-  String get opsHealthStoriesDone24h => 'Ordini completati (24h)';
-
-  @override
-  String opsHealthCheckedAt(String at) {
-    return 'Aggiornato: $at';
-  }
-
-  @override
-  String get opsHealthAlertHint =>
-      'Soglie alert: error rate RPC elevato o latenza prolungata — monitoraggio manuale in questa release.';
-
-  @override
-  String get externalSyncTitle => 'Sync Jira / ADO';
-
-  @override
-  String get externalSyncJira => 'Jira';
-
-  @override
-  String get externalSyncAdo => 'Azure DevOps';
-
-  @override
-  String get externalSyncKeyLabel => 'Chiave issue';
-
-  @override
-  String get externalSyncKeyHint => 'es. PROJ-123';
-
-  @override
-  String get externalSyncLinkAction => 'Collega ordine';
-
-  @override
-  String get externalSyncPushAction => 'Registra push stima (clipboard)';
-
-  @override
-  String get externalSyncCopied => 'Payload sync copiato';
-
-  @override
   String get pastSessions => 'Sessioni passate';
 
   @override
@@ -1018,22 +677,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get sessionCloseLeave => 'Esci dal locale';
 
   @override
-  String get feedbackTitle => 'Com\'è andata la serata?';
-
-  @override
-  String get feedbackSubtitle =>
-      'Un rapido feedback ci aiuta a migliorare SpritzPlanning.';
-
-  @override
-  String get feedbackPositive => 'Bene';
-
-  @override
-  String get feedbackNegative => 'Da migliorare';
-
-  @override
-  String get feedbackSuggest => 'Lascia un suggerimento';
-
-  @override
   String get feedbackDismiss => 'Non ora';
 
   @override
@@ -1053,12 +696,6 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get exportLinear => 'Linear';
-
-  @override
-  String get exportGitHubIssues => 'GitHub Issues';
-
-  @override
   String get deckPresetPowers2 => 'Powers of 2';
 
   @override
@@ -1070,36 +707,6 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get hideVotersUntilRevealSubtitle =>
       'Nasconde chi ha già votato; resta il conteggio N/M';
-
-  @override
-  String get confidenceVoteTitle => 'Quanto siete sicuri?';
-
-  @override
-  String get confidenceVoteSubtitle =>
-      'Valuta da 1 (poco) a 5 (molto) — non cambia la stima.';
-
-  @override
-  String confidenceVoteProgress(int voted, int total) {
-    return '$voted/$total hanno risposto';
-  }
-
-  @override
-  String get confidenceVoteClose => 'Chiudi confidence';
-
-  @override
-  String get confidenceVoteStart => 'Confidence vote';
-
-  @override
-  String get storyPublicCommentTitle => 'Commento / domanda';
-
-  @override
-  String get storyPublicCommentHint => 'Visibile a tutti in sala';
-
-  @override
-  String get referenceStoryBadge => 'Riferimento';
-
-  @override
-  String get setReferenceStory => 'Imposta come riferimento';
 
   @override
   String get saveRoomTemplate => 'Salva come template';
@@ -1131,138 +738,4 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get hapticSubtitle => 'Vibrazione su eventi chiave (mobile)';
-
-  @override
-  String get pushNotificationsTitle => 'Push PWA (beta)';
-
-  @override
-  String get pushNotificationsSubtitle =>
-      'Notifiche con app in background (web, richiede VAPID)';
-
-  @override
-  String relativeSizingHint(String reference, String ratio) {
-    return 'Rispetto al riferimento ($reference pt): ~$ratio×';
-  }
-
-  @override
-  String get estimateHistoryLabel => 'Revisioni stima';
-
-  @override
-  String get accountTitle => 'Account';
-
-  @override
-  String get accountSignIn => 'Accedi';
-
-  @override
-  String get accountSignInSubtitle =>
-      'Salva workspace e report sul tuo profilo';
-
-  @override
-  String get accountSignOut => 'Esci';
-
-  @override
-  String get accountProfile => 'Il tuo profilo';
-
-  @override
-  String get accountEmailLabel => 'Email';
-
-  @override
-  String get accountEmailHint => 'nome@azienda.it';
-
-  @override
-  String get accountMagicLinkSend => 'Invia link al bancone';
-
-  @override
-  String get accountMagicLinkSent =>
-      'Controlla la posta: ti abbiamo mandato il link per entrare.';
-
-  @override
-  String get accountOAuthGoogle => 'Continua con Google';
-
-  @override
-  String get accountOAuthMicrosoft => 'Continua con Microsoft';
-
-  @override
-  String get accountLinkParticipantTitle => 'Collega questo tavolo';
-
-  @override
-  String get accountLinkParticipantAction =>
-      'Collega account a questa sessione';
-
-  @override
-  String get accountLinkParticipantSuccess => 'Account collegato al bancone';
-
-  @override
-  String get accountLinkParticipantHint =>
-      'Collega un account per ritrovare workspace e report su altri dispositivi.';
-
-  @override
-  String get accountDisplayNameLabel => 'Nome visualizzato';
-
-  @override
-  String get accountSaveProfile => 'Salva profilo';
-
-  @override
-  String get accountProfileSaved => 'Profilo aggiornato';
-
-  @override
-  String get accountAuthRequired => 'Accedi per usare questa funzione';
-
-  @override
-  String get accountCallbackLoading => 'Accesso in corso…';
-
-  @override
-  String get accountCallbackError =>
-      'Accesso non riuscito. Riprova dal bancone.';
-
-  @override
-  String get orgTitle => 'Organizzazione';
-
-  @override
-  String get orgManageSubtitle => 'Team, inviti e piano';
-
-  @override
-  String get orgEmpty => 'Nessuna organizzazione. Creane una per il tuo team.';
-
-  @override
-  String get orgCreateNameLabel => 'Nome organizzazione';
-
-  @override
-  String get orgCreateNameHint => 'Es. Team Delivery Alpha';
-
-  @override
-  String get orgCreateAction => 'Crea organizzazione';
-
-  @override
-  String get orgSignInRequired => 'Accedi per gestire un\'organizzazione.';
-
-  @override
-  String get orgInviteMember => 'Invita collega';
-
-  @override
-  String get orgInviteTitle => 'Invito al team';
-
-  @override
-  String get orgInviteSend => 'Genera link invito';
-
-  @override
-  String get orgInviteLinkHint =>
-      'Condividi il link: valido 7 giorni, monouso.';
-
-  @override
-  String get orgInviteAccepted => 'Sei entrato nel team.';
-
-  @override
-  String get orgInviteAccepting => 'Accettazione invito…';
-
-  @override
-  String get orgInviteExpired => 'Invito scaduto o non valido.';
-
-  @override
-  String get workspaceCloudHint =>
-      'Workspace salvati sul cloud dell\'organizzazione attiva.';
-
-  @override
-  String get planUpgradeOrgNote =>
-      'Il piano è legato all\'organizzazione (owner). Stripe in arrivo.';
 }

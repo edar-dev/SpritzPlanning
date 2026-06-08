@@ -2,8 +2,6 @@
   "@@locale": "it",
   "appName": "SpritzPlanning",
   "tagline": "Stima le user story al bancone",
-  "homeGetStarted": "Inizia una sessione",
-  "homeMoreOptions": "Gestione e strumenti",
   "installPwa": "Installa SpritzPlanning sulla home",
   "installPwaAction": "Installa",
   "rateLimitError": "Troppe richieste. Attendi un momento e riprova.",
@@ -31,12 +29,9 @@
   "themeDark": "Scuro",
   "themeSystem": "Sistema",
   "back": "Indietro",
-  "createRoomSubtitle": "Crea una stanza per il tuo team",
-  "joinRoomSubtitle": "Unisciti con il codice bancone",
   "codiceBancone": "Codice bancone",
   "copyCode": "Copia codice",
   "shareCode": "Condividi invito",
-  "shareMessage": "Entra al mio locale SpritzPlanning! Codice:",
   "showQr": "Mostra QR",
   "qrBanconeTitle": "QR bancone",
   "qrBanconeHint": "Inquadra per entrare al locale",
@@ -49,7 +44,9 @@
   "confermaPassaBancone": "Passa il ruolo di Barman a {nickname}?",
   "@confermaPassaBancone": {
     "placeholders": {
-      "nickname": {"type": "String"}
+      "nickname": {
+        "type": "String"
+      }
     }
   },
   "menu": "Menu",
@@ -65,7 +62,6 @@
   "salvaOrdine": "Salva",
   "modificaOrdineHint": "Trascina per riordinare il menu",
   "chooseDose": "Scegli la dose",
-  "yourVote": "La tua dose",
   "voteSubmitted": "Dose scelta! In attesa degli altri...",
   "allVoted": "Tutti hanno scelto!",
   "servizio": "Servizio!",
@@ -93,7 +89,9 @@
   "confermaRimuovi": "Rimuovere {nickname} dal bancone?",
   "@confermaRimuovi": {
     "placeholders": {
-      "nickname": {"type": "String"}
+      "nickname": {
+        "type": "String"
+      }
     }
   },
   "azioniCliente": "Azioni cliente",
@@ -110,7 +108,6 @@
   "genericError": "Qualcosa è andato storto al bancone",
   "leaveLocale": "Lascia il locale",
   "cancel": "Annulla",
-  "add": "Aggiungi",
   "deckSettings": "Impostazioni deck",
   "deckPresetFibonacci": "Fibonacci (default)",
   "deckPresetNumbers": "Solo numeri",
@@ -123,13 +120,17 @@
   "deckLabelSpritz": "Spritz {value}",
   "@deckLabelSpritz": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "pointsSuffix": "{estimate} pt",
   "@pointsSuffix": {
     "placeholders": {
-      "estimate": {"type": "String"}
+      "estimate": {
+        "type": "String"
+      }
     }
   },
   "reconnecting": "Riconnessione al bancone…",
@@ -146,13 +147,17 @@
   "importStoriesSuccess": "{count, plural, =1{1 ordine importato} other{{count} ordini importati}}",
   "@importStoriesSuccess": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "importPreview": "Anteprima: {count} ordini",
   "@importPreview": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "recentRooms": "Locali recenti",
@@ -161,15 +166,23 @@
   "resumeSessionSubtitle": "{roomName} · {code}",
   "@resumeSessionSubtitle": {
     "placeholders": {
-      "roomName": {"type": "String"},
-      "code": {"type": "String"}
+      "roomName": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
     }
   },
   "backlogProgress": "{done} di {total} ordini stimati",
   "@backlogProgress": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "menuEmptyImportCta": "Importa una lista o aggiungi il primo ordine",
@@ -180,16 +193,19 @@
   "applyConsensusAndNext": "Applica {value} e prossimo",
   "@applyConsensusAndNext": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "confirmVoteTitle": "Confermi la dose {value}?",
   "@confirmVoteTitle": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
-  "exportJson": "Esporta JSON",
   "joinAsObserver": "Solo osservazione (non voto)",
   "joinAdvancedOptions": "Opzioni avanzate",
   "roomToolsTitle": "Strumenti",
@@ -213,55 +229,8 @@
   "duplicateRoomConfirm": "Si crea un nuovo codice. Il backlog viene copiato. I clienti dovranno rientrare.",
   "facilitatorNote": "Note barman",
   "facilitatorNoteHint": "Solo per te, visibili in export",
-  "exportJira": "Jira",
-  "exportAzureDevOps": "Azure DevOps",
-  "reportMean": "Media punti",
   "reportMedian": "Mediana punti",
   "reportCompleted": "Ordini completati",
-  "reportSpikes": "Spike",
-  "reportVariance": "Dispersione stime",
-  "reportRevisionRate": "Revisioni stima",
-  "reportRevisionRateValue": "{percent}%",
-  "@reportRevisionRateValue": {
-    "placeholders": {
-      "percent": { "type": "int" }
-    }
-  },
-  "reportAvgTimePerStory": "Tempo medio per ordine",
-  "reportAvgMinutesValue": "{minutes} min",
-  "@reportAvgMinutesValue": {
-    "placeholders": {
-      "minutes": { "type": "int" }
-    }
-  },
-  "executiveReportTitle": "Report executive",
-  "executiveReportOverview": "Panoramica sessione",
-  "executiveReportRoomLabel": "Locale",
-  "executiveReportCodeLabel": "Codice",
-  "executiveReportExportedAtLabel": "Esportato il",
-  "executiveReportKpi": "KPI principali",
-  "executiveReportUncertainStories": "Ordini con maggiore incertezza",
-  "executiveReportUncertaintyScore": "Indice incertezza",
-  "executiveReportActions": "Decisioni e azioni suggerite",
-  "executiveReportBacklog": "Ordine",
-  "executiveReportEstimateColumn": "Stima",
-  "executiveReportNoUncertainStories": "Nessun ordine con segnali di incertezza rilevanti.",
-  "executiveReportNoSuggestedActions": "Nessuna azione suggerita automaticamente.",
-  "executiveReportActionSpike": "Pianificare ricerca spike per «{title}»",
-  "executiveReportActionRevised": "Allineare la stima di «{title}» (revisioni: {history})",
-  "executiveReportActionReference": "Usare «{title}» come riferimento relativo per le prossime stime",
-  "executiveReportActionHighVariance": "Ridurre la dispersione delle stime: rivedere la baseline del team",
-  "executiveReportActionFacilitatorNote": "«{title}»: {note}",
-  "executiveReportActionPublicComment": "«{title}» — commento team: {comment}",
-  "executiveReportExport": "Report executive",
-  "executiveReportCopyMarkdown": "Copia Markdown",
-  "executiveReportCopyCsv": "Copia CSV business",
-  "executiveReportPrint": "Stampa / PDF",
-  "executiveReportPrintOpened": "Finestra di stampa aperta",
-  "executiveReportPrintUnavailable": "Stampa disponibile solo su web",
-  "executiveReportOtherExports": "Altri export",
-  "executiveReportMinutesSuffix": "min",
-  "executiveReportPercentSuffix": "%",
   "roomTemplates": "Template locale",
   "businessTemplatesTitle": "Template business",
   "customTemplatesTitle": "Template personalizzati",
@@ -285,15 +254,9 @@
   "helpFlowTitle": "Flusso di una serata",
   "helpFlowBody": "1. Apri o entra in un locale\n2. Aggiungi ordini al menu (backlog)\n3. Avvia la votazione per ogni story\n4. Rivelate i voti e concordate la stima\n5. Esportate il report di fine serata",
   "helpFeaturesTitle": "Funzionalità",
-  "helpFeatTemplates": "Template locale — Home → Crea da template",
   "helpFeatImport": "Import backlog — Lobby barman → icona upload",
-  "helpFeatSpike": "Story spike — Icona fulmine su ordine pending",
-  "helpFeatPin": "PIN stanza — Impostazioni deck del barman",
   "helpFeatAutoReveal": "Auto-reveal — Impostazioni deck, quando tutti hanno votato",
-  "helpFeatDuplicate": "Nuova serata — Menu ⋮ in stanza (barman)",
-  "helpFeatReport": "Report Jira/ADO — Icona riepilogo in stanza",
-  "helpFeatNotify": "Notifiche browser — Impostazioni home",
-  "helpFeatProjector": "Modalità proiettore — Impostazioni home",
+  "helpFeatReport": "Report CSV/Markdown — Icona riepilogo in stanza",
   "helpFeatResume": "Ripresa sessione — Home, se hai già giocato",
   "helpFaqTitle": "Domande frequenti",
   "helpFaqNicknameTitle": "Nickname già presente",
@@ -304,7 +267,6 @@
   "helpFaqPinBody": "Chiedi il PIN al barman. Deve essere di 4–6 cifre numeriche.",
   "helpFaqObserverTitle": "Osservatore",
   "helpFaqObserverBody": "Spunta «Solo osservazione» in fase di join. Non potrai votare ma vedrai reveal e report.",
-  "helpShortcutsTitle": "Scorciatoie tastiera (barman, web)",
   "onboardingWelcomeTitle": "Benvenuto al bancone!",
   "onboardingWelcomeBody": "SpritzPlanning è planning poker veloce per il tuo team — senza registrazione.",
   "onboardingCreateTitle": "Apri un locale",
@@ -316,73 +278,6 @@
   "onboardingSkip": "Salta",
   "onboardingNext": "Avanti",
   "onboardingDone": "Inizia",
-  "businessOnboardingTitle": "Primo valore in 5 minuti",
-  "businessOnboardingSubtitle": "Percorso guidato per PM e team strutturati",
-  "businessOnboardingProgress": "Passo {current} di {total}",
-  "@businessOnboardingProgress": {
-    "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
-    }
-  },
-  "businessOnboardingStep1Title": "1. Apri un locale",
-  "businessOnboardingStep1Body": "Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.",
-  "businessOnboardingStep2Title": "2. Importa il backlog",
-  "businessOnboardingStep2Body": "Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.",
-  "businessOnboardingStep3Title": "3. Invita il team",
-  "businessOnboardingStep3Body": "Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.",
-  "businessOnboardingStep4Title": "4. Stima e report",
-  "businessOnboardingStep4Body": "Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.",
-  "businessOnboardingSkip": "Salta percorso",
-  "businessOnboardingNext": "Avanti",
-  "businessOnboardingStart": "Apri il primo locale",
-  "businessOnboardingDoneLater": "Più tardi",
-  "helpReplayBusinessOnboarding": "Rivedi percorso guidato",
-  "workspaceTitle": "Workspace team",
-  "workspaceManageSubtitle": "Branding e deck predefinito",
-  "workspaceEmpty": "Nessun workspace configurato",
-  "workspaceBrandPreview": "Colore brand",
-  "workspaceAdd": "Aggiungi workspace",
-  "planUpgradeTitle": "Piano commerciale",
-  "planUpgradeBody": "Funzione richiesta: piano {tier}",
-  "@planUpgradeBody": {
-    "placeholders": {
-      "tier": { "type": "String" }
-    }
-  },
-  "planTierFree": "Free",
-  "planTierFreeFeatures": "Stanze, voto e report base",
-  "planTierPro": "Pro",
-  "planTierProFeatures": "KPI avanzati, report executive, health",
-  "planTierTeam": "Team",
-  "planTierTeamFeatures": "Workspace multipli, audit trail, sync Jira/ADO",
-  "planUpgradeDemoNote": "Demo locale: selezione piano per testare i limiti (nessun pagamento).",
-  "planManageSubtitle": "Free / Pro / Team",
-  "planFeatureLocked": "Disponibile con piano superiore",
-  "auditTrailTitle": "Registro audit",
-  "opsHealthTitle": "Stato servizio",
-  "opsHealthSubtitle": "Metriche operative (Pro+)",
-  "opsHealthRealtime": "Realtime",
-  "opsHealthActiveRooms1h": "Stanze attive (1h)",
-  "opsHealthActiveRooms24h": "Stanze attive (24h)",
-  "opsHealthAudit24h": "Eventi audit (24h)",
-  "opsHealthExternalLinks": "Collegamenti esterni",
-  "opsHealthStoriesDone24h": "Ordini completati (24h)",
-  "opsHealthCheckedAt": "Aggiornato: {at}",
-  "@opsHealthCheckedAt": {
-    "placeholders": {
-      "at": { "type": "String" }
-    }
-  },
-  "opsHealthAlertHint": "Soglie alert: error rate RPC elevato o latenza prolungata — monitoraggio manuale in questa release.",
-  "externalSyncTitle": "Sync Jira / ADO",
-  "externalSyncJira": "Jira",
-  "externalSyncAdo": "Azure DevOps",
-  "externalSyncKeyLabel": "Chiave issue",
-  "externalSyncKeyHint": "es. PROJ-123",
-  "externalSyncLinkAction": "Collega ordine",
-  "externalSyncPushAction": "Registra push stima (clipboard)",
-  "externalSyncCopied": "Payload sync copiato",
   "pastSessions": "Sessioni passate",
   "sessionArchiveTitle": "Archivio sessioni",
   "sessionArchiveEmpty": "Nessuna sessione salvata. Completa almeno una serata con ordini stimati.",
@@ -393,40 +288,39 @@
   "sessionCloseExport": "Esporta report",
   "sessionCloseDuplicate": "Duplica per prossima settimana",
   "sessionCloseLeave": "Esci dal locale",
-  "feedbackTitle": "Com'è andata la serata?",
-  "feedbackSubtitle": "Un rapido feedback ci aiuta a migliorare SpritzPlanning.",
-  "feedbackPositive": "Bene",
-  "feedbackNegative": "Da migliorare",
-  "feedbackSuggest": "Lascia un suggerimento",
   "feedbackDismiss": "Non ora",
   "roomInvitePinLine": "PIN: {pin}",
-  "@roomInvitePinLine": { "placeholders": { "pin": { "type": "String" } } },
+  "@roomInvitePinLine": {
+    "placeholders": {
+      "pin": {
+        "type": "String"
+      }
+    }
+  },
   "roomInviteBody": "🍹 Unisciti a «{roomName}» su SpritzPlanning!\nCodice: {code}\n{pinLine}\nApri: {joinUrl}\nGuida: {helpUrl}",
   "@roomInviteBody": {
     "placeholders": {
-      "roomName": { "type": "String" },
-      "code": { "type": "String" },
-      "pinLine": { "type": "String" },
-      "joinUrl": { "type": "String" },
-      "helpUrl": { "type": "String" }
+      "roomName": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      },
+      "pinLine": {
+        "type": "String"
+      },
+      "joinUrl": {
+        "type": "String"
+      },
+      "helpUrl": {
+        "type": "String"
+      }
     }
   },
-  "exportLinear": "Linear",
-  "exportGitHubIssues": "GitHub Issues",
   "deckPresetPowers2": "Powers of 2",
   "deckPresetSafe": "SAFe",
   "hideVotersUntilRevealTitle": "Voto anonimo fino al reveal",
   "hideVotersUntilRevealSubtitle": "Nasconde chi ha già votato; resta il conteggio N/M",
-  "confidenceVoteTitle": "Quanto siete sicuri?",
-  "confidenceVoteSubtitle": "Valuta da 1 (poco) a 5 (molto) — non cambia la stima.",
-  "confidenceVoteProgress": "{voted}/{total} hanno risposto",
-  "@confidenceVoteProgress": { "placeholders": { "voted": { "type": "int" }, "total": { "type": "int" } } },
-  "confidenceVoteClose": "Chiudi confidence",
-  "confidenceVoteStart": "Confidence vote",
-  "storyPublicCommentTitle": "Commento / domanda",
-  "storyPublicCommentHint": "Visibile a tutti in sala",
-  "referenceStoryBadge": "Riferimento",
-  "setReferenceStory": "Imposta come riferimento",
   "saveRoomTemplate": "Salva come template",
   "saveRoomTemplateSuccess": "Template salvato",
   "saveRoomTemplatePrompt": "Nome template",
@@ -436,47 +330,5 @@
   "soundEffectsTitle": "Effetti sonori",
   "soundEffectsSubtitle": "Suoni su reveal e timer (opt-in)",
   "hapticTitle": "Feedback aptico",
-  "hapticSubtitle": "Vibrazione su eventi chiave (mobile)",
-  "pushNotificationsTitle": "Push PWA (beta)",
-  "pushNotificationsSubtitle": "Notifiche con app in background (web, richiede VAPID)",
-  "relativeSizingHint": "Rispetto al riferimento ({reference} pt): ~{ratio}×",
-  "@relativeSizingHint": { "placeholders": { "reference": { "type": "String" }, "ratio": { "type": "String" } } },
-  "estimateHistoryLabel": "Revisioni stima",
-  "accountTitle": "Account",
-  "accountSignIn": "Accedi",
-  "accountSignInSubtitle": "Salva workspace e report sul tuo profilo",
-  "accountSignOut": "Esci",
-  "accountProfile": "Il tuo profilo",
-  "accountEmailLabel": "Email",
-  "accountEmailHint": "nome@azienda.it",
-  "accountMagicLinkSend": "Invia link al bancone",
-  "accountMagicLinkSent": "Controlla la posta: ti abbiamo mandato il link per entrare.",
-  "accountOAuthGoogle": "Continua con Google",
-  "accountOAuthMicrosoft": "Continua con Microsoft",
-  "accountLinkParticipantTitle": "Collega questo tavolo",
-  "accountLinkParticipantAction": "Collega account a questa sessione",
-  "accountLinkParticipantSuccess": "Account collegato al bancone",
-  "accountLinkParticipantHint": "Collega un account per ritrovare workspace e report su altri dispositivi.",
-  "accountDisplayNameLabel": "Nome visualizzato",
-  "accountSaveProfile": "Salva profilo",
-  "accountProfileSaved": "Profilo aggiornato",
-  "accountAuthRequired": "Accedi per usare questa funzione",
-  "accountCallbackLoading": "Accesso in corso…",
-  "accountCallbackError": "Accesso non riuscito. Riprova dal bancone.",
-  "orgTitle": "Organizzazione",
-  "orgManageSubtitle": "Team, inviti e piano",
-  "orgEmpty": "Nessuna organizzazione. Creane una per il tuo team.",
-  "orgCreateNameLabel": "Nome organizzazione",
-  "orgCreateNameHint": "Es. Team Delivery Alpha",
-  "orgCreateAction": "Crea organizzazione",
-  "orgSignInRequired": "Accedi per gestire un'organizzazione.",
-  "orgInviteMember": "Invita collega",
-  "orgInviteTitle": "Invito al team",
-  "orgInviteSend": "Genera link invito",
-  "orgInviteLinkHint": "Condividi il link: valido 7 giorni, monouso.",
-  "orgInviteAccepted": "Sei entrato nel team.",
-  "orgInviteAccepting": "Accettazione invito…",
-  "orgInviteExpired": "Invito scaduto o non valido.",
-  "workspaceCloudHint": "Workspace salvati sul cloud dell'organizzazione attiva.",
-  "planUpgradeOrgNote": "Il piano è legato all'organizzazione (owner). Stripe in arrivo."
+  "hapticSubtitle": "Vibrazione su eventi chiave (mobile)"
 }

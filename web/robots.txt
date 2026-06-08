@@ -7,6 +7,8 @@ Allow: /en
 Allow: /en/features
 Allow: /faq
 Allow: /en/faq
+Allow: /help
+Allow: /en/help
 Allow: /j/
 Disallow: /app/room/
 Disallow: /app/ops/

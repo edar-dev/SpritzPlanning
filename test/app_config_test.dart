@@ -12,7 +12,7 @@ void main() {
     expect(url, endsWith('/j/xy99'));
   });
 
-  test('helpUrl points to in-app help under /app/', () {
-    expect(AppConfig.helpUrl, endsWith('/app/help'));
+  test('helpUrl points to crawlable static guide', () {
+    expect(AppConfig.helpUrl, endsWith('/help'));
   });
 }

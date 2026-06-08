@@ -110,18 +110,6 @@ abstract class AppLocalizations {
   /// **'Stima le user story al bancone'**
   String get tagline;
 
-  /// No description provided for @homeGetStarted.
-  ///
-  /// In it, this message translates to:
-  /// **'Inizia una sessione'**
-  String get homeGetStarted;
-
-  /// No description provided for @homeMoreOptions.
-  ///
-  /// In it, this message translates to:
-  /// **'Gestione e strumenti'**
-  String get homeMoreOptions;
-
   /// No description provided for @installPwa.
   ///
   /// In it, this message translates to:
@@ -242,18 +230,6 @@ abstract class AppLocalizations {
   /// **'Indietro'**
   String get back;
 
-  /// No description provided for @createRoomSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Crea una stanza per il tuo team'**
-  String get createRoomSubtitle;
-
-  /// No description provided for @joinRoomSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Unisciti con il codice bancone'**
-  String get joinRoomSubtitle;
-
   /// No description provided for @codiceBancone.
   ///
   /// In it, this message translates to:
@@ -271,12 +247,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Condividi invito'**
   String get shareCode;
-
-  /// No description provided for @shareMessage.
-  ///
-  /// In it, this message translates to:
-  /// **'Entra al mio locale SpritzPlanning! Codice:'**
-  String get shareMessage;
 
   /// No description provided for @showQr.
   ///
@@ -415,12 +385,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Scegli la dose'**
   String get chooseDose;
-
-  /// No description provided for @yourVote.
-  ///
-  /// In it, this message translates to:
-  /// **'La tua dose'**
-  String get yourVote;
 
   /// No description provided for @voteSubmitted.
   ///
@@ -656,12 +620,6 @@ abstract class AppLocalizations {
   /// **'Annulla'**
   String get cancel;
 
-  /// No description provided for @add.
-  ///
-  /// In it, this message translates to:
-  /// **'Aggiungi'**
-  String get add;
-
   /// No description provided for @deckSettings.
   ///
   /// In it, this message translates to:
@@ -878,12 +836,6 @@ abstract class AppLocalizations {
   /// **'Confermi la dose {value}?'**
   String confirmVoteTitle(String value);
 
-  /// No description provided for @exportJson.
-  ///
-  /// In it, this message translates to:
-  /// **'Esporta JSON'**
-  String get exportJson;
-
   /// No description provided for @joinAsObserver.
   ///
   /// In it, this message translates to:
@@ -1022,24 +974,6 @@ abstract class AppLocalizations {
   /// **'Solo per te, visibili in export'**
   String get facilitatorNoteHint;
 
-  /// No description provided for @exportJira.
-  ///
-  /// In it, this message translates to:
-  /// **'Jira'**
-  String get exportJira;
-
-  /// No description provided for @exportAzureDevOps.
-  ///
-  /// In it, this message translates to:
-  /// **'Azure DevOps'**
-  String get exportAzureDevOps;
-
-  /// No description provided for @reportMean.
-  ///
-  /// In it, this message translates to:
-  /// **'Media punti'**
-  String get reportMean;
-
   /// No description provided for @reportMedian.
   ///
   /// In it, this message translates to:
@@ -1051,210 +985,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Ordini completati'**
   String get reportCompleted;
-
-  /// No description provided for @reportSpikes.
-  ///
-  /// In it, this message translates to:
-  /// **'Spike'**
-  String get reportSpikes;
-
-  /// No description provided for @reportVariance.
-  ///
-  /// In it, this message translates to:
-  /// **'Dispersione stime'**
-  String get reportVariance;
-
-  /// No description provided for @reportRevisionRate.
-  ///
-  /// In it, this message translates to:
-  /// **'Revisioni stima'**
-  String get reportRevisionRate;
-
-  /// No description provided for @reportRevisionRateValue.
-  ///
-  /// In it, this message translates to:
-  /// **'{percent}%'**
-  String reportRevisionRateValue(int percent);
-
-  /// No description provided for @reportAvgTimePerStory.
-  ///
-  /// In it, this message translates to:
-  /// **'Tempo medio per ordine'**
-  String get reportAvgTimePerStory;
-
-  /// No description provided for @reportAvgMinutesValue.
-  ///
-  /// In it, this message translates to:
-  /// **'{minutes} min'**
-  String reportAvgMinutesValue(int minutes);
-
-  /// No description provided for @executiveReportTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Report executive'**
-  String get executiveReportTitle;
-
-  /// No description provided for @executiveReportOverview.
-  ///
-  /// In it, this message translates to:
-  /// **'Panoramica sessione'**
-  String get executiveReportOverview;
-
-  /// No description provided for @executiveReportRoomLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Locale'**
-  String get executiveReportRoomLabel;
-
-  /// No description provided for @executiveReportCodeLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Codice'**
-  String get executiveReportCodeLabel;
-
-  /// No description provided for @executiveReportExportedAtLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Esportato il'**
-  String get executiveReportExportedAtLabel;
-
-  /// No description provided for @executiveReportKpi.
-  ///
-  /// In it, this message translates to:
-  /// **'KPI principali'**
-  String get executiveReportKpi;
-
-  /// No description provided for @executiveReportUncertainStories.
-  ///
-  /// In it, this message translates to:
-  /// **'Ordini con maggiore incertezza'**
-  String get executiveReportUncertainStories;
-
-  /// No description provided for @executiveReportUncertaintyScore.
-  ///
-  /// In it, this message translates to:
-  /// **'Indice incertezza'**
-  String get executiveReportUncertaintyScore;
-
-  /// No description provided for @executiveReportActions.
-  ///
-  /// In it, this message translates to:
-  /// **'Decisioni e azioni suggerite'**
-  String get executiveReportActions;
-
-  /// No description provided for @executiveReportBacklog.
-  ///
-  /// In it, this message translates to:
-  /// **'Ordine'**
-  String get executiveReportBacklog;
-
-  /// No description provided for @executiveReportEstimateColumn.
-  ///
-  /// In it, this message translates to:
-  /// **'Stima'**
-  String get executiveReportEstimateColumn;
-
-  /// No description provided for @executiveReportNoUncertainStories.
-  ///
-  /// In it, this message translates to:
-  /// **'Nessun ordine con segnali di incertezza rilevanti.'**
-  String get executiveReportNoUncertainStories;
-
-  /// No description provided for @executiveReportNoSuggestedActions.
-  ///
-  /// In it, this message translates to:
-  /// **'Nessuna azione suggerita automaticamente.'**
-  String get executiveReportNoSuggestedActions;
-
-  /// No description provided for @executiveReportActionSpike.
-  ///
-  /// In it, this message translates to:
-  /// **'Pianificare ricerca spike per «{title}»'**
-  String executiveReportActionSpike(Object title);
-
-  /// No description provided for @executiveReportActionRevised.
-  ///
-  /// In it, this message translates to:
-  /// **'Allineare la stima di «{title}» (revisioni: {history})'**
-  String executiveReportActionRevised(Object history, Object title);
-
-  /// No description provided for @executiveReportActionReference.
-  ///
-  /// In it, this message translates to:
-  /// **'Usare «{title}» come riferimento relativo per le prossime stime'**
-  String executiveReportActionReference(Object title);
-
-  /// No description provided for @executiveReportActionHighVariance.
-  ///
-  /// In it, this message translates to:
-  /// **'Ridurre la dispersione delle stime: rivedere la baseline del team'**
-  String get executiveReportActionHighVariance;
-
-  /// No description provided for @executiveReportActionFacilitatorNote.
-  ///
-  /// In it, this message translates to:
-  /// **'«{title}»: {note}'**
-  String executiveReportActionFacilitatorNote(Object note, Object title);
-
-  /// No description provided for @executiveReportActionPublicComment.
-  ///
-  /// In it, this message translates to:
-  /// **'«{title}» — commento team: {comment}'**
-  String executiveReportActionPublicComment(Object comment, Object title);
-
-  /// No description provided for @executiveReportExport.
-  ///
-  /// In it, this message translates to:
-  /// **'Report executive'**
-  String get executiveReportExport;
-
-  /// No description provided for @executiveReportCopyMarkdown.
-  ///
-  /// In it, this message translates to:
-  /// **'Copia Markdown'**
-  String get executiveReportCopyMarkdown;
-
-  /// No description provided for @executiveReportCopyCsv.
-  ///
-  /// In it, this message translates to:
-  /// **'Copia CSV business'**
-  String get executiveReportCopyCsv;
-
-  /// No description provided for @executiveReportPrint.
-  ///
-  /// In it, this message translates to:
-  /// **'Stampa / PDF'**
-  String get executiveReportPrint;
-
-  /// No description provided for @executiveReportPrintOpened.
-  ///
-  /// In it, this message translates to:
-  /// **'Finestra di stampa aperta'**
-  String get executiveReportPrintOpened;
-
-  /// No description provided for @executiveReportPrintUnavailable.
-  ///
-  /// In it, this message translates to:
-  /// **'Stampa disponibile solo su web'**
-  String get executiveReportPrintUnavailable;
-
-  /// No description provided for @executiveReportOtherExports.
-  ///
-  /// In it, this message translates to:
-  /// **'Altri export'**
-  String get executiveReportOtherExports;
-
-  /// No description provided for @executiveReportMinutesSuffix.
-  ///
-  /// In it, this message translates to:
-  /// **'min'**
-  String get executiveReportMinutesSuffix;
-
-  /// No description provided for @executiveReportPercentSuffix.
-  ///
-  /// In it, this message translates to:
-  /// **'%'**
-  String get executiveReportPercentSuffix;
 
   /// No description provided for @roomTemplates.
   ///
@@ -1394,29 +1124,11 @@ abstract class AppLocalizations {
   /// **'Funzionalità'**
   String get helpFeaturesTitle;
 
-  /// No description provided for @helpFeatTemplates.
-  ///
-  /// In it, this message translates to:
-  /// **'Template locale — Home → Crea da template'**
-  String get helpFeatTemplates;
-
   /// No description provided for @helpFeatImport.
   ///
   /// In it, this message translates to:
   /// **'Import backlog — Lobby barman → icona upload'**
   String get helpFeatImport;
-
-  /// No description provided for @helpFeatSpike.
-  ///
-  /// In it, this message translates to:
-  /// **'Story spike — Icona fulmine su ordine pending'**
-  String get helpFeatSpike;
-
-  /// No description provided for @helpFeatPin.
-  ///
-  /// In it, this message translates to:
-  /// **'PIN stanza — Impostazioni deck del barman'**
-  String get helpFeatPin;
 
   /// No description provided for @helpFeatAutoReveal.
   ///
@@ -1424,29 +1136,11 @@ abstract class AppLocalizations {
   /// **'Auto-reveal — Impostazioni deck, quando tutti hanno votato'**
   String get helpFeatAutoReveal;
 
-  /// No description provided for @helpFeatDuplicate.
-  ///
-  /// In it, this message translates to:
-  /// **'Nuova serata — Menu ⋮ in stanza (barman)'**
-  String get helpFeatDuplicate;
-
   /// No description provided for @helpFeatReport.
   ///
   /// In it, this message translates to:
-  /// **'Report Jira/ADO — Icona riepilogo in stanza'**
+  /// **'Report CSV/Markdown — Icona riepilogo in stanza'**
   String get helpFeatReport;
-
-  /// No description provided for @helpFeatNotify.
-  ///
-  /// In it, this message translates to:
-  /// **'Notifiche browser — Impostazioni home'**
-  String get helpFeatNotify;
-
-  /// No description provided for @helpFeatProjector.
-  ///
-  /// In it, this message translates to:
-  /// **'Modalità proiettore — Impostazioni home'**
-  String get helpFeatProjector;
 
   /// No description provided for @helpFeatResume.
   ///
@@ -1507,12 +1201,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Spunta «Solo osservazione» in fase di join. Non potrai votare ma vedrai reveal e report.'**
   String get helpFaqObserverBody;
-
-  /// No description provided for @helpShortcutsTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Scorciatoie tastiera (barman, web)'**
-  String get helpShortcutsTitle;
 
   /// No description provided for @onboardingWelcomeTitle.
   ///
@@ -1580,312 +1268,6 @@ abstract class AppLocalizations {
   /// **'Inizia'**
   String get onboardingDone;
 
-  /// No description provided for @businessOnboardingTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Primo valore in 5 minuti'**
-  String get businessOnboardingTitle;
-
-  /// No description provided for @businessOnboardingSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Percorso guidato per PM e team strutturati'**
-  String get businessOnboardingSubtitle;
-
-  /// No description provided for @businessOnboardingProgress.
-  ///
-  /// In it, this message translates to:
-  /// **'Passo {current} di {total}'**
-  String businessOnboardingProgress(int current, int total);
-
-  /// No description provided for @businessOnboardingStep1Title.
-  ///
-  /// In it, this message translates to:
-  /// **'1. Apri un locale'**
-  String get businessOnboardingStep1Title;
-
-  /// No description provided for @businessOnboardingStep1Body.
-  ///
-  /// In it, this message translates to:
-  /// **'Crea la stanza, scegli un template business (Discovery, Refinement o Fast Track) e imposta deck e regole.'**
-  String get businessOnboardingStep1Body;
-
-  /// No description provided for @businessOnboardingStep2Title.
-  ///
-  /// In it, this message translates to:
-  /// **'2. Importa il backlog'**
-  String get businessOnboardingStep2Title;
-
-  /// No description provided for @businessOnboardingStep2Body.
-  ///
-  /// In it, this message translates to:
-  /// **'Inserisci gli ordini con incolla rapido o import Jira/Azure DevOps dalla schermata del bancone.'**
-  String get businessOnboardingStep2Body;
-
-  /// No description provided for @businessOnboardingStep3Title.
-  ///
-  /// In it, this message translates to:
-  /// **'3. Invita il team'**
-  String get businessOnboardingStep3Title;
-
-  /// No description provided for @businessOnboardingStep3Body.
-  ///
-  /// In it, this message translates to:
-  /// **'Condividi codice stanza o QR: i partecipanti entrano con nickname, senza registrazione.'**
-  String get businessOnboardingStep3Body;
-
-  /// No description provided for @businessOnboardingStep4Title.
-  ///
-  /// In it, this message translates to:
-  /// **'4. Stima e report'**
-  String get businessOnboardingStep4Title;
-
-  /// No description provided for @businessOnboardingStep4Body.
-  ///
-  /// In it, this message translates to:
-  /// **'Avvia il voto, conferma le stime e chiudi con il report executive (KPI, CSV, stampa) per i manager.'**
-  String get businessOnboardingStep4Body;
-
-  /// No description provided for @businessOnboardingSkip.
-  ///
-  /// In it, this message translates to:
-  /// **'Salta percorso'**
-  String get businessOnboardingSkip;
-
-  /// No description provided for @businessOnboardingNext.
-  ///
-  /// In it, this message translates to:
-  /// **'Avanti'**
-  String get businessOnboardingNext;
-
-  /// No description provided for @businessOnboardingStart.
-  ///
-  /// In it, this message translates to:
-  /// **'Apri il primo locale'**
-  String get businessOnboardingStart;
-
-  /// No description provided for @businessOnboardingDoneLater.
-  ///
-  /// In it, this message translates to:
-  /// **'Più tardi'**
-  String get businessOnboardingDoneLater;
-
-  /// No description provided for @helpReplayBusinessOnboarding.
-  ///
-  /// In it, this message translates to:
-  /// **'Rivedi percorso guidato'**
-  String get helpReplayBusinessOnboarding;
-
-  /// No description provided for @workspaceTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Workspace team'**
-  String get workspaceTitle;
-
-  /// No description provided for @workspaceManageSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Branding e deck predefinito'**
-  String get workspaceManageSubtitle;
-
-  /// No description provided for @workspaceEmpty.
-  ///
-  /// In it, this message translates to:
-  /// **'Nessun workspace configurato'**
-  String get workspaceEmpty;
-
-  /// No description provided for @workspaceBrandPreview.
-  ///
-  /// In it, this message translates to:
-  /// **'Colore brand'**
-  String get workspaceBrandPreview;
-
-  /// No description provided for @workspaceAdd.
-  ///
-  /// In it, this message translates to:
-  /// **'Aggiungi workspace'**
-  String get workspaceAdd;
-
-  /// No description provided for @planUpgradeTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Piano commerciale'**
-  String get planUpgradeTitle;
-
-  /// No description provided for @planUpgradeBody.
-  ///
-  /// In it, this message translates to:
-  /// **'Funzione richiesta: piano {tier}'**
-  String planUpgradeBody(String tier);
-
-  /// No description provided for @planTierFree.
-  ///
-  /// In it, this message translates to:
-  /// **'Free'**
-  String get planTierFree;
-
-  /// No description provided for @planTierFreeFeatures.
-  ///
-  /// In it, this message translates to:
-  /// **'Stanze, voto e report base'**
-  String get planTierFreeFeatures;
-
-  /// No description provided for @planTierPro.
-  ///
-  /// In it, this message translates to:
-  /// **'Pro'**
-  String get planTierPro;
-
-  /// No description provided for @planTierProFeatures.
-  ///
-  /// In it, this message translates to:
-  /// **'KPI avanzati, report executive, health'**
-  String get planTierProFeatures;
-
-  /// No description provided for @planTierTeam.
-  ///
-  /// In it, this message translates to:
-  /// **'Team'**
-  String get planTierTeam;
-
-  /// No description provided for @planTierTeamFeatures.
-  ///
-  /// In it, this message translates to:
-  /// **'Workspace multipli, audit trail, sync Jira/ADO'**
-  String get planTierTeamFeatures;
-
-  /// No description provided for @planUpgradeDemoNote.
-  ///
-  /// In it, this message translates to:
-  /// **'Demo locale: selezione piano per testare i limiti (nessun pagamento).'**
-  String get planUpgradeDemoNote;
-
-  /// No description provided for @planManageSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Free / Pro / Team'**
-  String get planManageSubtitle;
-
-  /// No description provided for @planFeatureLocked.
-  ///
-  /// In it, this message translates to:
-  /// **'Disponibile con piano superiore'**
-  String get planFeatureLocked;
-
-  /// No description provided for @auditTrailTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Registro audit'**
-  String get auditTrailTitle;
-
-  /// No description provided for @opsHealthTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Stato servizio'**
-  String get opsHealthTitle;
-
-  /// No description provided for @opsHealthSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Metriche operative (Pro+)'**
-  String get opsHealthSubtitle;
-
-  /// No description provided for @opsHealthRealtime.
-  ///
-  /// In it, this message translates to:
-  /// **'Realtime'**
-  String get opsHealthRealtime;
-
-  /// No description provided for @opsHealthActiveRooms1h.
-  ///
-  /// In it, this message translates to:
-  /// **'Stanze attive (1h)'**
-  String get opsHealthActiveRooms1h;
-
-  /// No description provided for @opsHealthActiveRooms24h.
-  ///
-  /// In it, this message translates to:
-  /// **'Stanze attive (24h)'**
-  String get opsHealthActiveRooms24h;
-
-  /// No description provided for @opsHealthAudit24h.
-  ///
-  /// In it, this message translates to:
-  /// **'Eventi audit (24h)'**
-  String get opsHealthAudit24h;
-
-  /// No description provided for @opsHealthExternalLinks.
-  ///
-  /// In it, this message translates to:
-  /// **'Collegamenti esterni'**
-  String get opsHealthExternalLinks;
-
-  /// No description provided for @opsHealthStoriesDone24h.
-  ///
-  /// In it, this message translates to:
-  /// **'Ordini completati (24h)'**
-  String get opsHealthStoriesDone24h;
-
-  /// No description provided for @opsHealthCheckedAt.
-  ///
-  /// In it, this message translates to:
-  /// **'Aggiornato: {at}'**
-  String opsHealthCheckedAt(String at);
-
-  /// No description provided for @opsHealthAlertHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Soglie alert: error rate RPC elevato o latenza prolungata — monitoraggio manuale in questa release.'**
-  String get opsHealthAlertHint;
-
-  /// No description provided for @externalSyncTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Sync Jira / ADO'**
-  String get externalSyncTitle;
-
-  /// No description provided for @externalSyncJira.
-  ///
-  /// In it, this message translates to:
-  /// **'Jira'**
-  String get externalSyncJira;
-
-  /// No description provided for @externalSyncAdo.
-  ///
-  /// In it, this message translates to:
-  /// **'Azure DevOps'**
-  String get externalSyncAdo;
-
-  /// No description provided for @externalSyncKeyLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Chiave issue'**
-  String get externalSyncKeyLabel;
-
-  /// No description provided for @externalSyncKeyHint.
-  ///
-  /// In it, this message translates to:
-  /// **'es. PROJ-123'**
-  String get externalSyncKeyHint;
-
-  /// No description provided for @externalSyncLinkAction.
-  ///
-  /// In it, this message translates to:
-  /// **'Collega ordine'**
-  String get externalSyncLinkAction;
-
-  /// No description provided for @externalSyncPushAction.
-  ///
-  /// In it, this message translates to:
-  /// **'Registra push stima (clipboard)'**
-  String get externalSyncPushAction;
-
-  /// No description provided for @externalSyncCopied.
-  ///
-  /// In it, this message translates to:
-  /// **'Payload sync copiato'**
-  String get externalSyncCopied;
-
   /// No description provided for @pastSessions.
   ///
   /// In it, this message translates to:
@@ -1946,36 +1328,6 @@ abstract class AppLocalizations {
   /// **'Esci dal locale'**
   String get sessionCloseLeave;
 
-  /// No description provided for @feedbackTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Com\'è andata la serata?'**
-  String get feedbackTitle;
-
-  /// No description provided for @feedbackSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Un rapido feedback ci aiuta a migliorare SpritzPlanning.'**
-  String get feedbackSubtitle;
-
-  /// No description provided for @feedbackPositive.
-  ///
-  /// In it, this message translates to:
-  /// **'Bene'**
-  String get feedbackPositive;
-
-  /// No description provided for @feedbackNegative.
-  ///
-  /// In it, this message translates to:
-  /// **'Da migliorare'**
-  String get feedbackNegative;
-
-  /// No description provided for @feedbackSuggest.
-  ///
-  /// In it, this message translates to:
-  /// **'Lascia un suggerimento'**
-  String get feedbackSuggest;
-
   /// No description provided for @feedbackDismiss.
   ///
   /// In it, this message translates to:
@@ -2000,18 +1352,6 @@ abstract class AppLocalizations {
     String helpUrl,
   );
 
-  /// No description provided for @exportLinear.
-  ///
-  /// In it, this message translates to:
-  /// **'Linear'**
-  String get exportLinear;
-
-  /// No description provided for @exportGitHubIssues.
-  ///
-  /// In it, this message translates to:
-  /// **'GitHub Issues'**
-  String get exportGitHubIssues;
-
   /// No description provided for @deckPresetPowers2.
   ///
   /// In it, this message translates to:
@@ -2035,60 +1375,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Nasconde chi ha già votato; resta il conteggio N/M'**
   String get hideVotersUntilRevealSubtitle;
-
-  /// No description provided for @confidenceVoteTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Quanto siete sicuri?'**
-  String get confidenceVoteTitle;
-
-  /// No description provided for @confidenceVoteSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Valuta da 1 (poco) a 5 (molto) — non cambia la stima.'**
-  String get confidenceVoteSubtitle;
-
-  /// No description provided for @confidenceVoteProgress.
-  ///
-  /// In it, this message translates to:
-  /// **'{voted}/{total} hanno risposto'**
-  String confidenceVoteProgress(int voted, int total);
-
-  /// No description provided for @confidenceVoteClose.
-  ///
-  /// In it, this message translates to:
-  /// **'Chiudi confidence'**
-  String get confidenceVoteClose;
-
-  /// No description provided for @confidenceVoteStart.
-  ///
-  /// In it, this message translates to:
-  /// **'Confidence vote'**
-  String get confidenceVoteStart;
-
-  /// No description provided for @storyPublicCommentTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Commento / domanda'**
-  String get storyPublicCommentTitle;
-
-  /// No description provided for @storyPublicCommentHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Visibile a tutti in sala'**
-  String get storyPublicCommentHint;
-
-  /// No description provided for @referenceStoryBadge.
-  ///
-  /// In it, this message translates to:
-  /// **'Riferimento'**
-  String get referenceStoryBadge;
-
-  /// No description provided for @setReferenceStory.
-  ///
-  /// In it, this message translates to:
-  /// **'Imposta come riferimento'**
-  String get setReferenceStory;
 
   /// No description provided for @saveRoomTemplate.
   ///
@@ -2149,252 +1435,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Vibrazione su eventi chiave (mobile)'**
   String get hapticSubtitle;
-
-  /// No description provided for @pushNotificationsTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Push PWA (beta)'**
-  String get pushNotificationsTitle;
-
-  /// No description provided for @pushNotificationsSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Notifiche con app in background (web, richiede VAPID)'**
-  String get pushNotificationsSubtitle;
-
-  /// No description provided for @relativeSizingHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Rispetto al riferimento ({reference} pt): ~{ratio}×'**
-  String relativeSizingHint(String reference, String ratio);
-
-  /// No description provided for @estimateHistoryLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Revisioni stima'**
-  String get estimateHistoryLabel;
-
-  /// No description provided for @accountTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Account'**
-  String get accountTitle;
-
-  /// No description provided for @accountSignIn.
-  ///
-  /// In it, this message translates to:
-  /// **'Accedi'**
-  String get accountSignIn;
-
-  /// No description provided for @accountSignInSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Salva workspace e report sul tuo profilo'**
-  String get accountSignInSubtitle;
-
-  /// No description provided for @accountSignOut.
-  ///
-  /// In it, this message translates to:
-  /// **'Esci'**
-  String get accountSignOut;
-
-  /// No description provided for @accountProfile.
-  ///
-  /// In it, this message translates to:
-  /// **'Il tuo profilo'**
-  String get accountProfile;
-
-  /// No description provided for @accountEmailLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Email'**
-  String get accountEmailLabel;
-
-  /// No description provided for @accountEmailHint.
-  ///
-  /// In it, this message translates to:
-  /// **'nome@azienda.it'**
-  String get accountEmailHint;
-
-  /// No description provided for @accountMagicLinkSend.
-  ///
-  /// In it, this message translates to:
-  /// **'Invia link al bancone'**
-  String get accountMagicLinkSend;
-
-  /// No description provided for @accountMagicLinkSent.
-  ///
-  /// In it, this message translates to:
-  /// **'Controlla la posta: ti abbiamo mandato il link per entrare.'**
-  String get accountMagicLinkSent;
-
-  /// No description provided for @accountOAuthGoogle.
-  ///
-  /// In it, this message translates to:
-  /// **'Continua con Google'**
-  String get accountOAuthGoogle;
-
-  /// No description provided for @accountOAuthMicrosoft.
-  ///
-  /// In it, this message translates to:
-  /// **'Continua con Microsoft'**
-  String get accountOAuthMicrosoft;
-
-  /// No description provided for @accountLinkParticipantTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Collega questo tavolo'**
-  String get accountLinkParticipantTitle;
-
-  /// No description provided for @accountLinkParticipantAction.
-  ///
-  /// In it, this message translates to:
-  /// **'Collega account a questa sessione'**
-  String get accountLinkParticipantAction;
-
-  /// No description provided for @accountLinkParticipantSuccess.
-  ///
-  /// In it, this message translates to:
-  /// **'Account collegato al bancone'**
-  String get accountLinkParticipantSuccess;
-
-  /// No description provided for @accountLinkParticipantHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Collega un account per ritrovare workspace e report su altri dispositivi.'**
-  String get accountLinkParticipantHint;
-
-  /// No description provided for @accountDisplayNameLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Nome visualizzato'**
-  String get accountDisplayNameLabel;
-
-  /// No description provided for @accountSaveProfile.
-  ///
-  /// In it, this message translates to:
-  /// **'Salva profilo'**
-  String get accountSaveProfile;
-
-  /// No description provided for @accountProfileSaved.
-  ///
-  /// In it, this message translates to:
-  /// **'Profilo aggiornato'**
-  String get accountProfileSaved;
-
-  /// No description provided for @accountAuthRequired.
-  ///
-  /// In it, this message translates to:
-  /// **'Accedi per usare questa funzione'**
-  String get accountAuthRequired;
-
-  /// No description provided for @accountCallbackLoading.
-  ///
-  /// In it, this message translates to:
-  /// **'Accesso in corso…'**
-  String get accountCallbackLoading;
-
-  /// No description provided for @accountCallbackError.
-  ///
-  /// In it, this message translates to:
-  /// **'Accesso non riuscito. Riprova dal bancone.'**
-  String get accountCallbackError;
-
-  /// No description provided for @orgTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Organizzazione'**
-  String get orgTitle;
-
-  /// No description provided for @orgManageSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Team, inviti e piano'**
-  String get orgManageSubtitle;
-
-  /// No description provided for @orgEmpty.
-  ///
-  /// In it, this message translates to:
-  /// **'Nessuna organizzazione. Creane una per il tuo team.'**
-  String get orgEmpty;
-
-  /// No description provided for @orgCreateNameLabel.
-  ///
-  /// In it, this message translates to:
-  /// **'Nome organizzazione'**
-  String get orgCreateNameLabel;
-
-  /// No description provided for @orgCreateNameHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Es. Team Delivery Alpha'**
-  String get orgCreateNameHint;
-
-  /// No description provided for @orgCreateAction.
-  ///
-  /// In it, this message translates to:
-  /// **'Crea organizzazione'**
-  String get orgCreateAction;
-
-  /// No description provided for @orgSignInRequired.
-  ///
-  /// In it, this message translates to:
-  /// **'Accedi per gestire un\'organizzazione.'**
-  String get orgSignInRequired;
-
-  /// No description provided for @orgInviteMember.
-  ///
-  /// In it, this message translates to:
-  /// **'Invita collega'**
-  String get orgInviteMember;
-
-  /// No description provided for @orgInviteTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Invito al team'**
-  String get orgInviteTitle;
-
-  /// No description provided for @orgInviteSend.
-  ///
-  /// In it, this message translates to:
-  /// **'Genera link invito'**
-  String get orgInviteSend;
-
-  /// No description provided for @orgInviteLinkHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Condividi il link: valido 7 giorni, monouso.'**
-  String get orgInviteLinkHint;
-
-  /// No description provided for @orgInviteAccepted.
-  ///
-  /// In it, this message translates to:
-  /// **'Sei entrato nel team.'**
-  String get orgInviteAccepted;
-
-  /// No description provided for @orgInviteAccepting.
-  ///
-  /// In it, this message translates to:
-  /// **'Accettazione invito…'**
-  String get orgInviteAccepting;
-
-  /// No description provided for @orgInviteExpired.
-  ///
-  /// In it, this message translates to:
-  /// **'Invito scaduto o non valido.'**
-  String get orgInviteExpired;
-
-  /// No description provided for @workspaceCloudHint.
-  ///
-  /// In it, this message translates to:
-  /// **'Workspace salvati sul cloud dell\'organizzazione attiva.'**
-  String get workspaceCloudHint;
-
-  /// No description provided for @planUpgradeOrgNote.
-  ///
-  /// In it, this message translates to:
-  /// **'Il piano è legato all\'organizzazione (owner). Stripe in arrivo.'**
-  String get planUpgradeOrgNote;
 }
 
 class _AppLocalizationsDelegate

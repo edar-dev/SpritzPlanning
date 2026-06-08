@@ -12,7 +12,7 @@ abstract final class AppConfig {
     return '$productionWebUrl/j/${Uri.encodeComponent(trimmed)}';
   }
 
-  static const helpUrl = '$productionWebUrl/app/help';
+  static const helpUrl = '$productionWebUrl/help';
 
   static const feedbackUrl =
       'https://github.com/edar-dev/SpritzPlanning/issues/new/choose';
