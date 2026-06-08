@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
-import '../home/business_onboarding_dialog.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 
@@ -14,15 +13,9 @@ class HelpScreen extends StatelessWidget {
     final l10n = context.l10n;
 
     final features = [
-      (Icons.dashboard_customize_outlined, l10n.helpFeatTemplates),
       (Icons.upload_file_outlined, l10n.helpFeatImport),
-      (Icons.bolt_outlined, l10n.helpFeatSpike),
-      (Icons.lock_outline, l10n.helpFeatPin),
       (Icons.auto_awesome_outlined, l10n.helpFeatAutoReveal),
-      (Icons.copy_all_outlined, l10n.helpFeatDuplicate),
       (Icons.summarize_outlined, l10n.helpFeatReport),
-      (Icons.notifications_outlined, l10n.helpFeatNotify),
-      (Icons.tv_outlined, l10n.helpFeatProjector),
       (Icons.restore_rounded, l10n.helpFeatResume),
     ];
 
@@ -91,19 +84,6 @@ class HelpScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () => BusinessOnboardingDialog.showAgain(context),
-              icon: const Icon(Icons.play_lesson_outlined),
-              label: Text(l10n.helpReplayBusinessOnboarding),
-            ),
-            const SizedBox(height: 16),
-            _SectionCard(
-              title: l10n.helpShortcutsTitle,
-              body:
-                  '${l10n.keyboardShortcutReveal}\n${l10n.keyboardShortcutNext}\n${l10n.keyboardShortcutStartVote}',
-              icon: Icons.keyboard_outlined,
-            ),
           ],
         ),
     );
@@ -144,7 +124,7 @@ class _SectionCard extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Text(body),
                   ],
                 ),

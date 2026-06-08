@@ -7,7 +7,7 @@ description: Domain knowledge for SpritzPlanning — Scrum poker with spritz/bar
 
 ## Scopo
 
-App Scrum poker per team dev. Stanze senza login, accesso via codice + nickname.
+App Scrum poker leggera per team dev. Nessun login in UI — accesso via codice + nickname.
 
 ## Flusso
 

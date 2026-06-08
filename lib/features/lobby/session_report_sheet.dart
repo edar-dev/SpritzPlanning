@@ -1,49 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/export/session_report.dart';
-import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
-import '../../data/models/audit_event.dart';
-import '../archive/executive_export_actions.dart';
-import '../archive/session_kpi_preview.dart';
 
-class SessionReportSheet extends ConsumerWidget {
+class SessionReportSheet extends StatelessWidget {
   const SessionReportSheet({
     super.key,
     required this.report,
-    required this.stats,
-    this.auditEvents,
   });
 
   final SessionReport report;
-  final SessionReportStats stats;
-  final List<AuditEvent>? auditEvents;
 
   static Future<void> show(
     BuildContext context,
     SessionReport report,
-    SessionReportStats stats, {
-    List<AuditEvent>? auditEvents,
-  }) {
+  ) {
     return showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (ctx) => SessionReportSheet(
-        report: report,
-        stats: stats,
-        auditEvents: auditEvents,
-      ),
+      builder: (ctx) => SessionReportSheet(report: report),
     );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
 
     return SafeArea(
@@ -77,74 +62,6 @@ class SessionReportSheet extends ConsumerWidget {
                 ),
               )
             else ...[
-              SessionKpiPreview(stats: stats),
-              if (auditEvents != null && auditEvents!.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                Text(
-                  l10n.auditTrailTitle,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                ...auditEvents!.take(8).map(
-                  (e) => ListTile(
-                    dense: true,
-                    title: Text(e.summary),
-                    subtitle: Text(
-                      [
-                        if (e.actorDisplayName != null &&
-                            e.actorDisplayName!.isNotEmpty)
-                          e.actorDisplayName!,
-                        e.kind,
-                        e.createdAt.toLocal().toString(),
-                      ].join(' · '),
-                    ),
-                  ),
-                ),
-              ],
-              if (stats.bars.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                SizedBox(
-                  height: 120,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: stats.bars.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 8),
-                    itemBuilder: (context, index) {
-                      final bar = stats.bars[index];
-                      final maxIndex = 8.0;
-                      final h = bar.numericIndex != null
-                          ? 24 + (bar.numericIndex! / maxIndex) * 72
-                          : 40.0;
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            width: 36,
-                            height: h,
-                            decoration: BoxDecoration(
-                              color: const Color(AppColors.spritzOrange)
-                                  .withValues(alpha: 0.85),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          SizedBox(
-                            width: 48,
-                            child: Text(
-                              bar.estimate,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ],
-              const SizedBox(height: 16),
               Flexible(
                 child: SingleChildScrollView(
                   child: DecoratedBox(
@@ -167,102 +84,25 @@ class SessionReportSheet extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                l10n.executiveReportExport,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  FilledButton.icon(
-                    onPressed: () => ExecutiveExportActions.copyMarkdown(
-                      context,
-                      ref,
-                      report: report,
-                      stats: stats,
-                    ),
-                    icon: const Icon(Icons.summarize_outlined, size: 18),
-                    label: Text(l10n.executiveReportCopyMarkdown),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => ExecutiveExportActions.copyCsv(
-                      context,
-                      ref,
-                      report: report,
-                      stats: stats,
-                    ),
-                    icon: const Icon(Icons.table_view_outlined, size: 18),
-                    label: Text(l10n.executiveReportCopyCsv),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => ExecutiveExportActions.printPdf(
-                      context,
-                      ref,
-                      report: report,
-                      stats: stats,
-                    ),
-                    icon: const Icon(Icons.print_outlined, size: 18),
-                    label: Text(l10n.executiveReportPrint),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n.executiveReportOtherExports,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 alignment: WrapAlignment.center,
                 children: [
-                  OutlinedButton.icon(
+                  FilledButton.icon(
                     onPressed: () => _copy(context, report.toCsv()),
                     icon: const Icon(Icons.table_chart_outlined, size: 18),
                     label: Text(l10n.exportCsv),
                   ),
                   OutlinedButton.icon(
-                    onPressed: () => _copy(context, report.toJira()),
-                    icon: const Icon(Icons.integration_instructions_outlined,
-                        size: 18),
-                    label: Text(l10n.exportJira),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => _copy(context, report.toAzureDevOps()),
-                    icon: const Icon(Icons.cloud_outlined, size: 18),
-                    label: Text(l10n.exportAzureDevOps),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => _copy(context, report.toLinear()),
-                    icon: const Icon(Icons.linear_scale_outlined, size: 18),
-                    label: Text(l10n.exportLinear),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => _copy(context, report.toGitHubIssues()),
-                    icon: const Icon(Icons.code_outlined, size: 18),
-                    label: Text(l10n.exportGitHubIssues),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => _copy(context, report.toJson()),
-                    icon: const Icon(Icons.data_object_outlined, size: 18),
-                    label: Text(l10n.exportJson),
+                    onPressed: () => _copy(context, report.toMarkdown()),
+                    icon: const Icon(Icons.copy_rounded, size: 18),
+                    label: Text(l10n.copiaReport),
                   ),
                   OutlinedButton.icon(
                     onPressed: () => _shareMarkdown(context, report),
                     icon: const Icon(Icons.share_outlined, size: 18),
                     label: Text(l10n.exportMarkdown),
-                  ),
-                  FilledButton.icon(
-                    onPressed: () => _copy(context, report.toMarkdown()),
-                    icon: const Icon(Icons.copy_rounded, size: 18),
-                    label: Text(l10n.copiaReport),
                   ),
                 ],
               ),

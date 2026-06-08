@@ -1,6 +1,6 @@
 # SpritzPlanning — Guida per Agenti AI
 
-**Ultimo aggiornamento:** Fase 19 (auth opzionale Supabase).
+**Ultimo aggiornamento:** Fase 24 (lean tool — UI semplificata).
 
 ## Stack
 
@@ -14,7 +14,7 @@
 ## Vincoli
 
 - UI **IT/EN** con tema **bar/spritz** (terminologia bancone, no Scrum in copy)
-- **Login opzionale** (Fase 19) — default frictionless: nickname + codice stanza; account Supabase Auth per profilo/workspace cloud (vedi `lib/features/auth/`, migration `20260609120000_identity_auth.sql`)
+- **Nessun login in UI** (Fase 24 lean) — percorso felice: nickname + codice stanza; codice auth/org resta nel backend ma non è esposto (vedi [phase-24-simplification.md](docs/plans/phase-24-simplification.md))
 - Mutazioni via **RPC Supabase**, sync via **Realtime**
 - **Dark mode** e **deck personalizzabile** per locale (migration 009)
 

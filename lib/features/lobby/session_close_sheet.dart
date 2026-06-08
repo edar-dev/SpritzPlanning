@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../archive/executive_export_actions.dart';
 import '../../core/export/session_report.dart';
 import '../../core/export/session_report_stats.dart';
 import '../../core/l10n/l10n_extensions.dart';
@@ -61,13 +61,20 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
       SessionReportStats.fromRoomState(widget.roomState);
 
   Future<void> _copyExport() async {
-    await ExecutiveExportActions.copyMarkdown(
-      context,
-      ref,
-      report: _report,
-      stats: _stats,
-      retroNotes: _retroController.text,
-    );
+    final retro = _retroController.text.trim();
+    final buffer = StringBuffer(_report.toMarkdown());
+    if (retro.isNotEmpty) {
+      buffer
+        ..writeln()
+        ..writeln('## ${context.l10n.sessionCloseRetroLabel}')
+        ..writeln(retro);
+    }
+    await Clipboard.setData(ClipboardData(text: buffer.toString()));
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.reportCopied)),
+      );
+    }
   }
 
   Future<void> _duplicate() async {

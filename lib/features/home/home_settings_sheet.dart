@@ -5,11 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/notifications/browser_notifications.dart';
-import '../../core/notifications/web_push_service.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/preferences/preferences_providers.dart';
-import '../../data/providers/providers.dart';
-
 /// Lingua, tema e modalità proiettore in un unico pannello accessibile.
 class HomeSettingsSheet extends ConsumerStatefulWidget {
   const HomeSettingsSheet({super.key});
@@ -32,7 +29,6 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
   bool _notificationsLoaded = false;
   bool _soundEnabled = false;
   bool _hapticEnabled = false;
-  bool _pushEnabled = false;
   bool _feedbackLoaded = false;
 
   @override
@@ -45,14 +41,12 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
     final enabled = await AppPreferences.loadNotificationsEnabled();
     final sound = await AppPreferences.loadSoundEffectsEnabled();
     final haptic = await AppPreferences.loadHapticEnabled();
-    final push = await AppPreferences.loadPushNotificationsEnabled();
     if (!mounted) return;
     setState(() {
       _notificationsEnabled = enabled;
       _notificationsLoaded = true;
       _soundEnabled = sound;
       _hapticEnabled = haptic;
-      _pushEnabled = push;
       _feedbackLoaded = true;
     });
   }
@@ -70,36 +64,6 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
     await AppPreferences.saveNotificationsEnabled(value);
     if (!mounted) return;
     setState(() => _notificationsEnabled = value);
-  }
-
-  Future<void> _setPush(bool value) async {
-    if (value) {
-      final session = ref.read(sessionProvider).valueOrNull;
-      if (session == null || !WebPushService.isSupported) {
-        if (!mounted) return;
-        setState(() => _pushEnabled = false);
-        await AppPreferences.savePushNotificationsEnabled(false);
-        return;
-      }
-      final ok = await WebPushService.subscribeAndRegister(
-        participantId: session.participantId,
-        register: (sub) => ref.read(roomRepositoryProvider).registerPushSubscription(
-              participantId: session.participantId,
-              subscription: sub,
-            ),
-      );
-      if (!ok) {
-        if (!mounted) return;
-        setState(() => _pushEnabled = false);
-        await AppPreferences.savePushNotificationsEnabled(false);
-        return;
-      }
-    } else {
-      await WebPushService.unsubscribe();
-    }
-    await AppPreferences.savePushNotificationsEnabled(value);
-    if (!mounted) return;
-    setState(() => _pushEnabled = value);
   }
 
   @override
@@ -209,14 +173,6 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
                   setState(() => _hapticEnabled = value);
                 },
               ),
-              if (WebPushService.isSupported)
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(l10n.pushNotificationsTitle),
-                  subtitle: Text(l10n.pushNotificationsSubtitle),
-                  value: _pushEnabled,
-                  onChanged: (value) => unawaited(_setPush(value)),
-                ),
             ],
           ],
         ),

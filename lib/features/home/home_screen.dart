@@ -21,18 +21,8 @@ import '../../shared/widgets/pwa_install_banner.dart';
 import 'home_settings_sheet.dart';
 import 'home_welcome_content.dart';
 import 'room_template_sheet.dart';
-import 'business_onboarding_dialog.dart';
 import 'onboarding_dialog.dart';
-import 'plan_upgrade_sheet.dart';
-import 'workspace_sheet.dart';
-import '../auth/profile_sheet.dart';
-import '../auth/sign_in_sheet.dart';
-import '../org/org_sheet.dart';
-import '../../data/auth/auth_providers.dart';
-import '../../data/org/org_providers.dart';
-import '../../core/plan/plan_tier.dart';
 import 'session_archive_sheet.dart';
-import 'feedback_dialog.dart';
 import '../../core/preferences/session_archive_storage.dart';
 import '../../core/theme/app_focus.dart';
 
@@ -50,6 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _pinController = TextEditingController();
   bool _isLoading = false;
   bool _joinAsObserver = false;
+  bool _showJoinAdvanced = false;
   bool _requiresPin = false;
   String? _joinRoomPreviewName;
   Timer? _joinInfoDebounce;
@@ -61,8 +52,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   List<RecentRoomEntry> _recentRooms = [];
   StoredSession? _storedSession;
   int _archiveCount = 0;
-  bool _pendingFeedback = false;
-
   @override
   void initState() {
     super.initState();
@@ -78,8 +67,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     var recent = await RecentRoomsStorage.load();
     final stored = await SessionStorage.loadSession();
     final archive = await SessionArchiveStorage.load();
-    final completed = await AppPreferences.loadHasCompletedSession();
-    final feedbackDone = await AppPreferences.loadHasSubmittedFeedback();
     if (SupabaseConfig.isConfigured && recent.isNotEmpty) {
       recent = await _pruneUnavailableRecentRooms(recent);
     }
@@ -91,28 +78,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       _recentRooms = recent;
       _storedSession = stored;
       _archiveCount = archive.length;
-      _pendingFeedback = completed && !feedbackDone;
     });
-    if (_pendingFeedback && mounted) {
-      await FeedbackDialog.maybeShow(context);
-      if (mounted) setState(() => _pendingFeedback = false);
-    }
   }
 
   Future<void> _maybeShowOnboarding() async {
     if (!mounted) return;
     await OnboardingDialog.maybeShow(context);
-    if (!mounted) return;
-    await BusinessOnboardingDialog.maybeShow(
-      context,
-      onStartCreate: () {
-        if (!mounted) return;
-        setState(() {
-          _mode = _HomeMode.create;
-          _error = null;
-        });
-      },
-    );
   }
 
   void _applyJoinCodeFromUrl() {
@@ -193,15 +164,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
-      final workspace = await ref.read(activeWorkspaceProvider.future);
-      final org = await ref.read(activeOrganizationProvider.future);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: localeName,
             nickname: nickname,
-            workspaceName: workspace.name,
-            brandColor: _brandColorHex(workspace.brandColorArgb),
-            orgId: org?.id,
-            workspaceId: org != null ? workspace.id : null,
           );
       await ref.read(sessionProvider.notifier).saveSession(
             result,
@@ -410,15 +375,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     await _joinAction(() async {
       await AppPreferences.saveLastNickname(nickname);
-      final workspace = await ref.read(activeWorkspaceProvider.future);
-      final org = await ref.read(activeOrganizationProvider.future);
       final result = await ref.read(roomRepositoryProvider).createRoom(
             name: template.name,
             nickname: nickname,
-            workspaceName: workspace.name,
-            brandColor: _brandColorHex(workspace.brandColorArgb),
-            orgId: org?.id,
-            workspaceId: org != null ? workspace.id : null,
           );
       final repo = ref.read(roomRepositoryProvider);
       await repo.setRoomDeck(
@@ -581,10 +540,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       }),
       onOpenRecent: _openRecentRoom,
       onTemplate: _createFromTemplate,
-      onOrg: () => OrgSheet.show(context),
-      onWorkspace: () => WorkspaceSheet.show(context),
-      onPlan: () => PlanUpgradeSheet.show(context, minimumTier: PlanTier.pro),
-      onOpsHealth: () => context.push('/ops/health'),
       onArchive: () => SessionArchiveSheet.show(context),
     );
   }
@@ -662,13 +617,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
           const SizedBox(height: 8),
-          CheckboxListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(l10n.joinAsObserver),
-            value: _joinAsObserver,
-            onChanged: (value) =>
-                setState(() => _joinAsObserver = value ?? false),
-            controlAffinity: ListTileControlAffinity.leading,
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: EdgeInsets.zero,
+              title: Text(
+                l10n.joinAdvancedOptions,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              initiallyExpanded: _showJoinAdvanced,
+              onExpansionChanged: (expanded) =>
+                  setState(() => _showJoinAdvanced = expanded),
+              children: [
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(l10n.joinAsObserver),
+                  value: _joinAsObserver,
+                  onChanged: (value) =>
+                      setState(() => _joinAsObserver = value ?? false),
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
+              ],
+            ),
           ),
         ],
         const SizedBox(height: 24),
@@ -768,24 +739,6 @@ class _HomePreferencesBar extends ConsumerWidget {
             ),
             const Spacer(),
             IconButton(
-              tooltip: ref.watch(isSignedInProvider)
-                  ? l10n.accountProfile
-                  : l10n.accountSignIn,
-              onPressed: () {
-                if (ref.read(isSignedInProvider)) {
-                  unawaited(ProfileSheet.show(context));
-                } else {
-                  unawaited(SignInSheet.show(context));
-                }
-              },
-              icon: Icon(
-                ref.watch(isSignedInProvider)
-                    ? Icons.person_rounded
-                    : Icons.person_outline_rounded,
-                color: iconColor,
-              ),
-            ),
-            IconButton(
               tooltip: l10n.helpTitle,
               onPressed: () => context.push('/help'),
               icon: Icon(Icons.help_outline_rounded, color: iconColor),
@@ -800,15 +753,6 @@ class _HomePreferencesBar extends ConsumerWidget {
       ),
     );
   }
-}
-
-String _brandColorHex(int argb) {
-  final r = (argb >> 16) & 0xFF;
-  final g = (argb >> 8) & 0xFF;
-  final b = argb & 0xFF;
-  return '#${r.toRadixString(16).padLeft(2, '0')}'
-      '${g.toRadixString(16).padLeft(2, '0')}'
-      '${b.toRadixString(16).padLeft(2, '0')}';
 }
 
 enum _HomeMode { welcome, create, join }

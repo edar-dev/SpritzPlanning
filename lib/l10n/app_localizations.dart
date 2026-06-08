@@ -392,6 +392,12 @@ abstract class AppLocalizations {
   /// **'Modifica ordine'**
   String get modificaOrdine;
 
+  /// No description provided for @eliminaOrdine.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina ordine'**
+  String get eliminaOrdine;
+
   /// No description provided for @salvaOrdine.
   ///
   /// In it, this message translates to:
@@ -883,6 +889,18 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Solo osservazione (non voto)'**
   String get joinAsObserver;
+
+  /// No description provided for @joinAdvancedOptions.
+  ///
+  /// In it, this message translates to:
+  /// **'Opzioni avanzate'**
+  String get joinAdvancedOptions;
+
+  /// No description provided for @roomToolsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Strumenti'**
+  String get roomToolsTitle;
 
   /// No description provided for @observerBadge.
   ///

@@ -161,6 +161,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modificaOrdine => 'Edit story';
 
   @override
+  String get eliminaOrdine => 'Remove story';
+
+  @override
   String get salvaOrdine => 'Save';
 
   @override
@@ -432,6 +435,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get joinAsObserver => 'Observe only (no voting)';
+
+  @override
+  String get joinAdvancedOptions => 'Advanced options';
+
+  @override
+  String get roomToolsTitle => 'Tools';
 
   @override
   String get observerBadge => 'Observer';
