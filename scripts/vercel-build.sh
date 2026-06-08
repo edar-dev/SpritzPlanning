@@ -66,6 +66,25 @@ fi
 mv "$WEB/index.html" "$APP/index.html"
 cp "$WEB/landing.html" "$WEB/index.html"
 
+inject_marketing_seo_tags() {
+  local inject=""
+  if [ -n "${GOOGLE_SITE_VERIFICATION:-}" ]; then
+    inject="${inject}  <meta name=\"google-site-verification\" content=\"${GOOGLE_SITE_VERIFICATION}\" />\n"
+  fi
+  if [ -n "${PLAUSIBLE_DOMAIN:-}" ]; then
+    inject="${inject}  <script defer data-domain=\"${PLAUSIBLE_DOMAIN}\" src=\"https://plausible.io/js/script.js\"></script>\n"
+  fi
+  if [ -z "$inject" ]; then
+    return
+  fi
+  for page in landing.html landing-en.html features.html features-en.html faq.html faq-en.html index.html; do
+    [ -f "$WEB/$page" ] || continue
+    perl -i -0pe "s/  <!-- SEO_INJECT -->/${inject}  <!-- SEO_INJECT -->/s" "$WEB/$page"
+  done
+}
+
+inject_marketing_seo_tags
+
 # Strip source map comments (DevTools 404 on flutter.js.map under /app/).
 find "$APP" -maxdepth 1 -name '*.js' -exec sed -i '/sourceMappingURL/d' {} +
 
