@@ -27,11 +27,13 @@ class VotingPanel extends ConsumerStatefulWidget {
     required this.roomState,
     required this.participantId,
     required this.isFacilitator,
+    this.useStickyFacilitatorBar = false,
   });
 
   final RoomState roomState;
   final String participantId;
   final bool isFacilitator;
+  final bool useStickyFacilitatorBar;
 
   @override
   ConsumerState<VotingPanel> createState() => _VotingPanelState();
@@ -279,133 +281,187 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     final timerExpired = deadline != null && _now.isAfter(deadline);
 
     final showGuestVotes = isVoting && !revealed;
+    final stickyFacilitatorBar = widget.useStickyFacilitatorBar &&
+        widget.isFacilitator &&
+        isVoting &&
+        !revealed;
+
+    final scrollBody = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _BarOrderTicket(
+          label: l10n.currentStoryLabel,
+          title: story.title,
+          description: story.description,
+        ),
+        if (showGuestVotes) ...[
+          const SizedBox(height: 16),
+          BarParticipantsStrip(
+            roomState: widget.roomState,
+            showVoteStatus: true,
+          ),
+        ],
+        if (deadline != null && isVoting && !revealed) ...[
+          const SizedBox(height: 12),
+          _VotingCountdown(deadline: deadline, now: _now),
+          if (timerExpired)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                l10n.timerScaduto,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(AppColors.spritzOrange),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
+        ],
+        if (isVoting && !revealed) ...[
+          const SizedBox(height: 16),
+          _VoteProgressBar(stats: voteStats),
+        ],
+        const SizedBox(height: 24),
+        if (revealed) ...[
+          _buildRevealContent(
+            voteStats: voteStats,
+          ),
+        ] else ...[
+          SectionHeader(
+            title: l10n.chooseDose,
+            subtitle: l10n.chooseDoseSubtitle,
+          ),
+          const SizedBox(height: 12),
+          _BarDeckTray(
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              alignment: WrapAlignment.center,
+              children: DeckValues.forRoom(widget.roomState.room).map((value) {
+                return SpritzCard(
+                  value: value,
+                  selected: _selectedValue == value || myVote?.value == value,
+                  onTap: () => _castVote(value),
+                  onLongPress: revealed
+                      ? null
+                      : () => unawaited(_confirmAndCastVote(value)),
+                  disabled: revealed,
+                );
+              }).toList(),
+            ),
+          ),
+          if (_selectedValue != null || myVote?.value != null) ...[
+            const SizedBox(height: 16),
+            Text(
+              l10n.voteSubmitted,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ],
+        const SizedBox(height: 24),
+        if (widget.isFacilitator) ...[
+          if (isVoting && !revealed && !stickyFacilitatorBar) ...[
+            if (widget.roomState.allParticipantsVoted)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  l10n.allVoted,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Color(AppColors.success),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            FilledButton.icon(
+              onPressed: _reveal,
+              icon: const Icon(Icons.celebration_outlined),
+              label: Text(l10n.servizio),
+            ),
+          ],
+          if (revealed) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _reset,
+                    child: Text(l10n.resetRound),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: _finalEstimate != null ? _confirmEstimate : null,
+                    child: Text(l10n.confirmEstimate),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton(
+              onPressed: _nextStory,
+              child: Text(l10n.nextOrdine),
+            ),
+          ],
+        ],
+        if (stickyFacilitatorBar) const SizedBox(height: 72),
+      ],
+    );
+
+    if (stickyFacilitatorBar) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: scrollBody,
+            ),
+          ),
+          Material(
+            elevation: 8,
+            color: Theme.of(context).colorScheme.surface,
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.roomState.allParticipantsVoted)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          l10n.allVoted,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Color(AppColors.success),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    FilledButton.icon(
+                      onPressed: _reveal,
+                      icon: const Icon(Icons.celebration_outlined),
+                      label: Text(l10n.servizio),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _BarOrderTicket(
-            label: l10n.currentStoryLabel,
-            title: story.title,
-            description: story.description,
-          ),
-          if (showGuestVotes) ...[
-            const SizedBox(height: 16),
-            BarParticipantsStrip(
-              roomState: widget.roomState,
-              showVoteStatus: true,
-            ),
-          ],
-          if (deadline != null && isVoting && !revealed) ...[
-            const SizedBox(height: 12),
-            _VotingCountdown(deadline: deadline, now: _now),
-            if (timerExpired)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  l10n.timerScaduto,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(AppColors.spritzOrange),
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ),
-          ],
-          if (isVoting && !revealed) ...[
-            const SizedBox(height: 16),
-            _VoteProgressBar(stats: voteStats),
-          ],
-          const SizedBox(height: 24),
-          if (revealed) ...[
-            _buildRevealContent(
-              voteStats: voteStats,
-            ),
-          ] else ...[
-            SectionHeader(
-              title: l10n.chooseDose,
-              subtitle: l10n.chooseDoseSubtitle,
-            ),
-            const SizedBox(height: 12),
-            _BarDeckTray(
-              child: Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: DeckValues.forRoom(widget.roomState.room).map((value) {
-                  return SpritzCard(
-                    value: value,
-                    selected: _selectedValue == value || myVote?.value == value,
-                    onTap: () => _castVote(value),
-                    onLongPress: revealed
-                        ? null
-                        : () => unawaited(_confirmAndCastVote(value)),
-                    disabled: revealed,
-                  );
-                }).toList(),
-              ),
-            ),
-            if (_selectedValue != null || myVote?.value != null) ...[
-              const SizedBox(height: 16),
-              Text(
-                l10n.voteSubmitted,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ],
-          ],
-          const SizedBox(height: 24),
-          if (widget.isFacilitator) ...[
-            if (isVoting && !revealed) ...[
-              if (widget.roomState.allParticipantsVoted)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    l10n.allVoted,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Color(AppColors.success),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              FilledButton.icon(
-                onPressed: _reveal,
-                icon: const Icon(Icons.celebration_outlined),
-                label: Text(l10n.servizio),
-              ),
-            ],
-            if (revealed) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: _reset,
-                      child: Text(l10n.resetRound),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: _finalEstimate != null ? _confirmEstimate : null,
-                      child: Text(l10n.confirmEstimate),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              OutlinedButton(
-                onPressed: _nextStory,
-                child: Text(l10n.nextOrdine),
-              ),
-            ],
-          ],
-        ],
-      ),
+      child: scrollBody,
     );
   }
 

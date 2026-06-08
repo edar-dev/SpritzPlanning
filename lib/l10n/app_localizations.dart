@@ -380,6 +380,36 @@ abstract class AppLocalizations {
   /// **'In attesa dell\'aperitivo...'**
   String get waitingAperitivo;
 
+  /// No description provided for @waitingBarmanMenu.
+  ///
+  /// In it, this message translates to:
+  /// **'Il barman prepara il menu…'**
+  String get waitingBarmanMenu;
+
+  /// No description provided for @waitingServeOrder.
+  ///
+  /// In it, this message translates to:
+  /// **'In attesa che il barman serva un ordine'**
+  String get waitingServeOrder;
+
+  /// No description provided for @alwaysUseVotingTimer.
+  ///
+  /// In it, this message translates to:
+  /// **'Usa sempre questa durata'**
+  String get alwaysUseVotingTimer;
+
+  /// No description provided for @shareRoomPrompt.
+  ///
+  /// In it, this message translates to:
+  /// **'Invita il team: condividi il codice bancone'**
+  String get shareRoomPrompt;
+
+  /// No description provided for @shareRoomPromptDismiss.
+  ///
+  /// In it, this message translates to:
+  /// **'Chiudi'**
+  String get shareRoomPromptDismiss;
+
   /// No description provided for @modificaOrdine.
   ///
   /// In it, this message translates to:

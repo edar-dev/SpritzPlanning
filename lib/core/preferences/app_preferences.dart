@@ -8,6 +8,9 @@ abstract final class AppPreferences {
   static const _hasCompletedSessionKey = 'has_completed_session';
   static const _projectorModeKey = 'projector_mode';
   static const _notificationsEnabledKey = 'notifications_enabled';
+  static const _alwaysUseVotingTimerKey = 'always_use_voting_timer';
+  /// JSON null = senza timer; omitted = non impostato.
+  static const _lastVotingTimerSecondsKey = 'last_voting_timer_seconds';
 
   static Future<ThemeMode> loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
@@ -85,6 +88,33 @@ abstract final class AppPreferences {
   static Future<void> saveNotificationsEnabled(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_notificationsEnabledKey, enabled);
+  }
+
+  /// `null` = senza timer.
+  static Future<int?> loadLastVotingTimerSeconds() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey(_lastVotingTimerSecondsKey)) return null;
+    final value = prefs.getInt(_lastVotingTimerSecondsKey)!;
+    return value < 0 ? null : value;
+  }
+
+  static Future<void> saveLastVotingTimerSeconds(int? seconds) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (seconds == null) {
+      await prefs.setInt(_lastVotingTimerSecondsKey, -1);
+    } else {
+      await prefs.setInt(_lastVotingTimerSecondsKey, seconds);
+    }
+  }
+
+  static Future<bool> loadAlwaysUseVotingTimer() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_alwaysUseVotingTimerKey) ?? false;
+  }
+
+  static Future<void> saveAlwaysUseVotingTimer(bool always) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_alwaysUseVotingTimerKey, always);
   }
 
   static const _hasSeenOnboardingKey = 'has_seen_onboarding';

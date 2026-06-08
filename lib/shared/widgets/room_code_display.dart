@@ -80,7 +80,7 @@ class RoomCodeDisplay extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
-          onPressed: () => _showQrSheet(context),
+          onPressed: () => showQrSheet(context, code),
           icon: const Icon(Icons.qr_code_2_rounded, size: 18),
           label: Text(context.l10n.showQr),
         ),
@@ -108,7 +108,7 @@ class RoomCodeDisplay extends StatelessWidget {
           label: Text(context.l10n.copyCode),
         ),
         OutlinedButton.icon(
-          onPressed: () => _showQrSheet(context),
+          onPressed: () => showQrSheet(context, code),
           icon: const Icon(Icons.qr_code_2_rounded, size: 18),
           label: Text(context.l10n.showQr),
         ),
@@ -122,7 +122,16 @@ class RoomCodeDisplay extends StatelessWidget {
     );
   }
 
-  void _showQrSheet(BuildContext context) {
+  void _copyCode(BuildContext context) => copyCodeToClipboard(context, code);
+
+  static void copyCodeToClipboard(BuildContext context, String code) {
+    Clipboard.setData(ClipboardData(text: code));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.l10n.codeCopied)),
+    );
+  }
+
+  static void showQrSheet(BuildContext context, String code) {
     final joinUrl = AppConfig.joinUrlForCode(code);
 
     showModalBottomSheet<void>(
@@ -175,13 +184,6 @@ class RoomCodeDisplay extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  void _copyCode(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: code));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.l10n.codeCopied)),
     );
   }
 }
