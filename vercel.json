@@ -45,6 +45,18 @@
       "destination": "/features.html"
     },
     {
+      "source": "/en/features",
+      "destination": "/features-en.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
+    },
+    {
+      "source": "/en/faq",
+      "destination": "/faq-en.html"
+    },
+    {
       "source": "/app",
       "destination": "/app/index.html"
     },

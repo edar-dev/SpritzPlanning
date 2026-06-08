@@ -2,6 +2,9 @@ User-agent: *
 Allow: /
 Allow: /features
 Allow: /en
+Allow: /en/features
+Allow: /faq
+Allow: /en/faq
 Allow: /j/
 Disallow: /app/room/
 Disallow: /app/ops/
