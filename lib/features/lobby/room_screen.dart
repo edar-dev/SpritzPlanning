@@ -317,23 +317,38 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               : null,
           child: Scaffold(
           appBar: AppBar(
-            title: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(room.name),
-                Text(
-                  room.code,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        letterSpacing: 1.5,
-                      ),
-                ),
-              ],
+            toolbarHeight: 64,
+            title: Padding(
+              // Evita che il titolo centrato copra le icone in actions.
+              padding: const EdgeInsets.symmetric(horizontal: 104),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    room.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    room.code,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant,
+                          letterSpacing: 1.5,
+                        ),
+                  ),
+                ],
+              ),
             ),
             actions: [
               if (canModerate || canEditBacklog)
                 PopupMenuButton<String>(
-                  icon: const Icon(Icons.tune_outlined),
+                  icon: Icon(
+                    Icons.more_vert_rounded,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   tooltip: context.l10n.roomToolsTitle,
                   onSelected: (value) {
                     switch (value) {
@@ -402,10 +417,18 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       ),
                   ],
                 ),
-              IconButton(
-                icon: const Icon(Icons.logout_rounded),
-                tooltip: context.l10n.leaveLocale,
-                onPressed: () => unawaited(_leaveAndGoHome()),
+              Padding(
+                padding: EdgeInsets.only(
+                  right: MediaQuery.viewPaddingOf(context).right + 4,
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.logout_rounded,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  tooltip: context.l10n.leaveLocale,
+                  onPressed: () => unawaited(_leaveAndGoHome()),
+                ),
               ),
             ],
           ),
