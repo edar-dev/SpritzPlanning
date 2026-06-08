@@ -48,6 +48,7 @@ class RoomScreen extends ConsumerStatefulWidget {
 class _RoomScreenState extends ConsumerState<RoomScreen> {
   bool? _wasVotesRevealed;
   bool _timerWarned = false;
+  bool _sharePromptShown = false;
   Timer? _notificationPoll;
 
   @override
@@ -69,8 +70,19 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     if (prevRoom.id != currRoom.id) {
       _wasVotesRevealed = currRoom.votesRevealed;
       _timerWarned = false;
+      _sharePromptShown = false;
       _syncTimerNotificationPoll(currRoom);
       return;
+    }
+    if (previous.stories.isEmpty &&
+        current.stories.isNotEmpty &&
+        !_sharePromptShown &&
+        ref.read(canModerateSessionProvider)) {
+      _sharePromptShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _showShareRoomBanner(current);
+      });
     }
     if (!prevRoom.votesRevealed && currRoom.votesRevealed) {
       unawaited(SessionFeedback.onReveal());
@@ -137,6 +149,40 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         l10n: context.l10n,
         roomName: roomState.room.name,
         code: roomState.room.code,
+      ),
+    );
+  }
+
+  void _showShareRoomBanner(RoomState roomState) {
+    final l10n = context.l10n;
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.clearMaterialBanners();
+    messenger.showMaterialBanner(
+      MaterialBanner(
+        content: Text(l10n.shareRoomPrompt),
+        leading: const Icon(Icons.group_add_outlined),
+        actions: [
+          TextButton(
+            onPressed: () => RoomCodeDisplay.copyCodeToClipboard(
+              context,
+              roomState.room.code,
+            ),
+            child: Text(l10n.copyCode),
+          ),
+          TextButton(
+            onPressed: () =>
+                RoomCodeDisplay.showQrSheet(context, roomState.room.code),
+            child: Text(l10n.showQr),
+          ),
+          TextButton(
+            onPressed: () => _shareRoomInvite(roomState),
+            child: Text(l10n.shareCode),
+          ),
+          TextButton(
+            onPressed: messenger.hideCurrentMaterialBanner,
+            child: Text(l10n.shareRoomPromptDismiss),
+          ),
+        ],
       ),
     );
   }
@@ -487,6 +533,32 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                 );
               }
 
+              if (showVoting) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (canModerate) ...[
+                        CompactOrderList(
+                          roomState: roomState,
+                          participantId: session.participantId,
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      Expanded(
+                        child: VotingPanel(
+                          roomState: roomState,
+                          participantId: session.participantId,
+                          isFacilitator: canModerate,
+                          useStickyFacilitatorBar: canModerate,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -496,31 +568,15 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       code: room.code,
                       onShare: () => _shareRoomInvite(roomState),
                     ),
-                    if (!showVoting) ...[
-                      const SizedBox(height: 16),
-                      _ParticipantsRow(roomState: roomState),
-                      const SizedBox(height: 24),
-                    ],
-                    if (showVoting && canModerate) ...[
-                      CompactOrderList(
-                        roomState: roomState,
-                        participantId: session.participantId,
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                    if (showVoting)
-                      VotingPanel(
-                        roomState: roomState,
-                        participantId: session.participantId,
-                        isFacilitator: canModerate,
-                      )
-                    else
-                      _LobbyPanel(
-                        roomState: roomState,
-                        canModerate: canModerate,
-                        canEditBacklog: canEditBacklog,
-                        participantId: session.participantId,
-                      ),
+                    const SizedBox(height: 16),
+                    _ParticipantsRow(roomState: roomState),
+                    const SizedBox(height: 24),
+                    _LobbyPanel(
+                      roomState: roomState,
+                      canModerate: canModerate,
+                      canEditBacklog: canEditBacklog,
+                      participantId: session.participantId,
+                    ),
                   ],
                 ),
               );
@@ -663,6 +719,24 @@ class _Sidebar extends StatelessWidget {
               roomState: roomState,
               participantId: participantId,
             ),
+            const SizedBox(height: 12),
+            ExpansionTile(
+              initiallyExpanded: true,
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: EdgeInsets.zero,
+              title: Text(
+                context.l10n.clienti,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              children: [
+                _ParticipantsRow(
+                  roomState: roomState,
+                  layout: BarParticipantsLayout.vertical,
+                ),
+              ],
+            ),
           ] else if (roomState.room.phase != RoomPhase.voting) ...[
             const SizedBox(height: 16),
             _ParticipantsRow(
@@ -709,6 +783,17 @@ class _ParticipantsRow extends ConsumerWidget {
           : null,
     );
   }
+}
+
+String _guestWaitingMessage(BuildContext context, RoomState roomState) {
+  final l10n = context.l10n;
+  final openOrders = roomState.stories.where(
+    (s) => s.status != StoryStatus.done && s.kind != StoryKind.spike,
+  );
+  if (openOrders.isEmpty) {
+    return l10n.waitingBarmanMenu;
+  }
+  return l10n.waitingServeOrder;
 }
 
 class _LobbyPanel extends ConsumerStatefulWidget {
@@ -1022,9 +1107,12 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
-                    context.l10n.waitingAperitivo,
+                    _guestWaitingMessage(context, widget.roomState),
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey.shade600,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurfaceVariant,
                           fontStyle: FontStyle.italic,
                         ),
                   ),
@@ -1457,45 +1545,80 @@ Future<void> _showStartVotingDialog(
   BuildContext context,
   WidgetRef ref,
   String participantId,
-  String storyId,
-) async {
-  int? durationSeconds;
+  String storyId, {
+  bool forceTimerDialog = false,
+}) async {
+  if (!forceTimerDialog && await AppPreferences.loadAlwaysUseVotingTimer()) {
+    final seconds = await AppPreferences.loadLastVotingTimerSeconds();
+    try {
+      await ref.read(roomRepositoryProvider).startVoting(
+            participantId: participantId,
+            storyId: storyId,
+            durationSeconds: seconds,
+          );
+    } catch (e, st) {
+      if (context.mounted) {
+        await showUserError(context, e, stackTrace: st);
+      }
+    }
+    return;
+  }
+
+  final savedSeconds = await AppPreferences.loadLastVotingTimerSeconds();
+  int? durationSeconds = savedSeconds;
+  var alwaysUse = await AppPreferences.loadAlwaysUseVotingTimer();
+
+  if (!context.mounted) return;
 
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (ctx) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
         title: Text(context.l10n.scegliTimer),
-        content: Wrap(
-          spacing: 8,
-          runSpacing: 8,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ChoiceChip(
-              label: Text(context.l10n.timerNone),
-              selected: durationSeconds == null,
-              onSelected: (_) => setState(() => durationSeconds = null),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ChoiceChip(
+                  label: Text(context.l10n.timerNone),
+                  selected: durationSeconds == null,
+                  onSelected: (_) => setState(() => durationSeconds = null),
+                ),
+                ChoiceChip(
+                  label: Text(context.l10n.timer2Min),
+                  selected: durationSeconds == 120,
+                  onSelected: (_) => setState(() => durationSeconds = 120),
+                ),
+                ChoiceChip(
+                  label: Text(context.l10n.timer5Min),
+                  selected: durationSeconds == 300,
+                  onSelected: (_) => setState(() => durationSeconds = 300),
+                ),
+                ChoiceChip(
+                  label: Text(context.l10n.timer10Min),
+                  selected: durationSeconds == 600,
+                  onSelected: (_) => setState(() => durationSeconds = 600),
+                ),
+              ],
             ),
-            ChoiceChip(
-              label: Text(context.l10n.timer2Min),
-              selected: durationSeconds == 120,
-              onSelected: (_) => setState(() => durationSeconds = 120),
-            ),
-            ChoiceChip(
-              label: Text(context.l10n.timer5Min),
-              selected: durationSeconds == 300,
-              onSelected: (_) => setState(() => durationSeconds = 300),
-            ),
-            ChoiceChip(
-              label: Text(context.l10n.timer10Min),
-              selected: durationSeconds == 600,
-              onSelected: (_) => setState(() => durationSeconds = 600),
+            const SizedBox(height: 12),
+            CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(context.l10n.alwaysUseVotingTimer),
+              value: alwaysUse,
+              onChanged: (v) => setState(() => alwaysUse = v ?? false),
+              controlAffinity: ListTileControlAffinity.leading,
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Annulla'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
@@ -1507,6 +1630,9 @@ Future<void> _showStartVotingDialog(
   );
 
   if (confirmed != true) return;
+
+  await AppPreferences.saveLastVotingTimerSeconds(durationSeconds);
+  await AppPreferences.saveAlwaysUseVotingTimer(alwaysUse);
 
   try {
     await ref.read(roomRepositoryProvider).startVoting(

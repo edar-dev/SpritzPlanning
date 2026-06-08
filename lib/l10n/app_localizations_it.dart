@@ -157,6 +157,21 @@ class AppLocalizationsIt extends AppLocalizations {
   String get waitingAperitivo => 'In attesa dell\'aperitivo...';
 
   @override
+  String get waitingBarmanMenu => 'Il barman prepara il menu…';
+
+  @override
+  String get waitingServeOrder => 'In attesa che il barman serva un ordine';
+
+  @override
+  String get alwaysUseVotingTimer => 'Usa sempre questa durata';
+
+  @override
+  String get shareRoomPrompt => 'Invita il team: condividi il codice bancone';
+
+  @override
+  String get shareRoomPromptDismiss => 'Chiudi';
+
+  @override
   String get modificaOrdine => 'Modifica ordine';
 
   @override

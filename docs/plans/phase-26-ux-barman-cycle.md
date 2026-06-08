@@ -176,6 +176,6 @@ Oppure **un solo PR** se team piccolo.
 
 ## Criteri di done
 
-- [ ] Tutti e 5 i punti #109–#113 implementati o esplicitamente deferiti nel PR
-- [ ] ARB IT/EN + `gen-l10n`
-- [ ] Aggiornato [IMPROVEMENTS-UX-LEAN.md](../IMPROVEMENTS-UX-LEAN.md) stato
+- [x] Tutti e 5 i punti #109–#113 implementati (#109–#113 in PR feat/ux-barman-cycle)
+- [x] ARB IT/EN + `gen-l10n`
+- [x] Aggiornato [IMPROVEMENTS-UX-LEAN.md](../IMPROVEMENTS-UX-LEAN.md) stato
