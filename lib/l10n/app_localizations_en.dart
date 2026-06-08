@@ -166,6 +166,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alwaysUseVotingTimer => 'Always use this duration';
 
   @override
+  String get autoNextOrderTitle => 'Serve next order automatically';
+
+  @override
+  String get autoNextOrderSubtitle =>
+      'After confirming an estimate, start voting on the next item';
+
+  @override
+  String get skipCurrentOrder => 'Back to menu';
+
+  @override
+  String skipCurrentOrderConfirm(String title) {
+    return 'Voting on \"$title\" will be cancelled. Return to the menu?';
+  }
+
+  @override
+  String get guidedStep1Add => 'Add the first order';
+
+  @override
+  String get guidedStep2Share => 'Share the bar code';
+
+  @override
+  String get guidedStep3Serve => 'Serve an order to start voting';
+
+  @override
+  String get resumeSessionAction => 'Enter';
+
+  @override
+  String get resumeSessionDismiss => 'Dismiss';
+
+  @override
+  String get voteChanged => 'Dose updated';
+
+  @override
   String get shareRoomPrompt => 'Invite the team — share the bar code';
 
   @override

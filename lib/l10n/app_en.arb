@@ -67,6 +67,23 @@
   "waitingBarmanMenu": "The bartender is preparing the menu…",
   "waitingServeOrder": "Waiting for the bartender to serve an order",
   "alwaysUseVotingTimer": "Always use this duration",
+  "autoNextOrderTitle": "Serve next order automatically",
+  "autoNextOrderSubtitle": "After confirming an estimate, start voting on the next item",
+  "skipCurrentOrder": "Back to menu",
+  "skipCurrentOrderConfirm": "Voting on \"{title}\" will be cancelled. Return to the menu?",
+  "@skipCurrentOrderConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "guidedStep1Add": "Add the first order",
+  "guidedStep2Share": "Share the bar code",
+  "guidedStep3Serve": "Serve an order to start voting",
+  "resumeSessionAction": "Enter",
+  "resumeSessionDismiss": "Dismiss",
+  "voteChanged": "Dose updated",
   "shareRoomPrompt": "Invite the team — share the bar code",
   "shareRoomPromptDismiss": "Dismiss",
   "modificaOrdine": "Edit story",

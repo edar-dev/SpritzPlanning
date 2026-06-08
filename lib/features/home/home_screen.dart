@@ -65,7 +65,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _loadLocalPreferences() async {
     final nickname = await AppPreferences.loadLastNickname();
     var recent = await RecentRoomsStorage.load();
-    final stored = await SessionStorage.loadSession();
+    var stored = await SessionStorage.loadSession();
+    stored = await _validateStoredSession(stored);
     final archive = await SessionArchiveStorage.load();
     if (SupabaseConfig.isConfigured && recent.isNotEmpty) {
       recent = await _pruneUnavailableRecentRooms(recent);
@@ -79,6 +80,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       _storedSession = stored;
       _archiveCount = archive.length;
     });
+  }
+
+  Future<StoredSession?> _validateStoredSession(StoredSession? stored) async {
+    if (stored == null || !SupabaseConfig.isConfigured) return stored;
+    final code = stored.roomCode?.trim();
+    if (code == null || code.isEmpty) return stored;
+    try {
+      await ref.read(roomRepositoryProvider).getRoomJoinInfo(code);
+      return stored;
+    } catch (_) {
+      await SessionStorage.clearSession();
+      return null;
+    }
+  }
+
+  Future<void> _dismissStoredSession() async {
+    await SessionStorage.clearSession();
+    if (!mounted) return;
+    setState(() => _storedSession = null);
   }
 
   Future<void> _maybeShowOnboarding() async {
@@ -530,6 +550,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       showResume: showResume,
       archiveCount: _archiveCount,
       onResume: _resumeStoredSession,
+      onDismissResume: _dismissStoredSession,
       onOpenCreate: () => setState(() {
         _mode = _HomeMode.create;
         _error = null;

@@ -186,6 +186,6 @@ Tap carta può sentirsi «muto»; long-press conferma poco discoverable.
 
 ## Criteri di done
 
-- [ ] Toggle auto-next default **off**
-- [ ] Migration solo se `next_story` non resetta story status (documentare in PR)
-- [ ] ROADMAP + IMPROVEMENTS-UX-LEAN aggiornati
+- [x] Toggle auto-next default **off**
+- [x] Migration `next_story` reset story status (#115)
+- [ ] ROADMAP + IMPROVEMENTS-UX-LEAN aggiornati (in PR)

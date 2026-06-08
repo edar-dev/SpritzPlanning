@@ -19,6 +19,7 @@ class HomeWelcomeContent extends StatelessWidget {
     required this.showResume,
     required this.archiveCount,
     required this.onResume,
+    required this.onDismissResume,
     required this.onOpenCreate,
     required this.onOpenJoin,
     required this.onOpenRecent,
@@ -33,6 +34,7 @@ class HomeWelcomeContent extends StatelessWidget {
   final bool showResume;
   final int archiveCount;
   final VoidCallback? onResume;
+  final VoidCallback? onDismissResume;
   final VoidCallback? onOpenCreate;
   final VoidCallback? onOpenJoin;
   final Future<void> Function(RecentRoomEntry entry) onOpenRecent;
@@ -54,6 +56,7 @@ class HomeWelcomeContent extends StatelessWidget {
             roomCode: storedSession!.roomCode ?? '',
             enabled: _enabled,
             onTap: onResume,
+            onDismiss: onDismissResume,
           ),
           const SizedBox(height: 20),
         ],
@@ -137,12 +140,14 @@ class _ResumeBanner extends StatelessWidget {
     required this.roomCode,
     required this.enabled,
     required this.onTap,
+    required this.onDismiss,
   });
 
   final String roomName;
   final String roomCode;
   final bool enabled;
   final VoidCallback? onTap;
+  final VoidCallback? onDismiss;
 
   @override
   Widget build(BuildContext context) {
@@ -152,51 +157,76 @@ class _ResumeBanner extends StatelessWidget {
     return Material(
       color: scheme.primaryContainer,
       borderRadius: BorderRadius.circular(AppDecorations.radiusMd),
-      child: InkWell(
-        onTap: enabled
-            ? () {
-                HapticFeedback.lightImpact();
-                onTap?.call();
-              }
-            : null,
-        borderRadius: BorderRadius.circular(AppDecorations.radiusMd),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          child: Row(
-            children: [
-              Icon(
-                Icons.restore_rounded,
-                color: scheme.onPrimaryContainer,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.resumeSession,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: scheme.onPrimaryContainer,
-                          ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.resumeSessionSubtitle(roomName, roomCode),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: scheme.onPrimaryContainer
-                                .withValues(alpha: 0.85),
-                          ),
-                    ),
-                  ],
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+        child: Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: enabled
+                    ? () {
+                        HapticFeedback.lightImpact();
+                        onTap?.call();
+                      }
+                    : null,
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.restore_rounded,
+                        color: scheme.onPrimaryContainer,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.resumeSession,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: scheme.onPrimaryContainer,
+                                  ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              l10n.resumeSessionSubtitle(roomName, roomCode),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: scheme.onPrimaryContainer
+                                        .withValues(alpha: 0.85),
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (enabled)
+                        FilledButton.tonal(
+                          onPressed: onTap,
+                          child: Text(l10n.resumeSessionAction),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-              Icon(
-                Icons.chevron_right_rounded,
-                color: scheme.onPrimaryContainer,
+            ),
+            if (onDismiss != null)
+              IconButton(
+                tooltip: l10n.resumeSessionDismiss,
+                onPressed: enabled ? onDismiss : null,
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: scheme.onPrimaryContainer,
+                ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

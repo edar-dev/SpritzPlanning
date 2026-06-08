@@ -34,6 +34,7 @@ supabase db push
 | `20260609120000_identity_auth.sql` | Supabase Auth: `user_profiles`, `participants.user_id`, link account, RPC hardening (#89–#91, #96) |
 | `20260610120000_organizations_entitlements.sql` | Organizations, cloud workspaces, invites, entitlements, audit actor (#92–#95, #97) |
 | `20260610140000_switch_voting_story.sql` | `start_voting` resetta ordini in votazione/reveal e pulisce voti abbandonati |
+| `20260610200000_next_story_reset_status.sql` | `next_story` riporta ordini attivi a `pending` e pulisce voti |
 
 I nomi usano il timestamp Supabase (`YYYYMMDDHHMMSS_nome.sql`) per allinearsi a `supabase_migrations.schema_migrations` e a `supabase db push` in CI.
 

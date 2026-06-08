@@ -29,6 +29,7 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
   bool _notificationsLoaded = false;
   bool _soundEnabled = false;
   bool _hapticEnabled = false;
+  bool _autoStartNextOrder = false;
   bool _feedbackLoaded = false;
 
   @override
@@ -41,12 +42,14 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
     final enabled = await AppPreferences.loadNotificationsEnabled();
     final sound = await AppPreferences.loadSoundEffectsEnabled();
     final haptic = await AppPreferences.loadHapticEnabled();
+    final autoNext = await AppPreferences.loadAutoStartNextOrder();
     if (!mounted) return;
     setState(() {
       _notificationsEnabled = enabled;
       _notificationsLoaded = true;
       _soundEnabled = sound;
       _hapticEnabled = haptic;
+      _autoStartNextOrder = autoNext;
       _feedbackLoaded = true;
     });
   }
@@ -171,6 +174,17 @@ class _HomeSettingsSheetState extends ConsumerState<HomeSettingsSheet> {
                   await AppPreferences.saveHapticEnabled(value);
                   if (!mounted) return;
                   setState(() => _hapticEnabled = value);
+                },
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.autoNextOrderTitle),
+                subtitle: Text(l10n.autoNextOrderSubtitle),
+                value: _autoStartNextOrder,
+                onChanged: (value) async {
+                  await AppPreferences.saveAutoStartNextOrder(value);
+                  if (!mounted) return;
+                  setState(() => _autoStartNextOrder = value);
                 },
               ),
             ],

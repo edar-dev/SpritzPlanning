@@ -74,6 +74,23 @@
   "waitingBarmanMenu": "Il barman prepara il menu…",
   "waitingServeOrder": "In attesa che il barman serva un ordine",
   "alwaysUseVotingTimer": "Usa sempre questa durata",
+  "autoNextOrderTitle": "Servi il prossimo ordine",
+  "autoNextOrderSubtitle": "Dopo la stima, avvia subito la votazione sul successivo",
+  "skipCurrentOrder": "Torna al menu",
+  "skipCurrentOrderConfirm": "La votazione su «{title}» verrà annullata. Tornare al menu?",
+  "@skipCurrentOrderConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "guidedStep1Add": "Aggiungi il primo ordine",
+  "guidedStep2Share": "Condividi il codice bancone",
+  "guidedStep3Serve": "Servi l'ordine per iniziare a votare",
+  "resumeSessionAction": "Entra",
+  "resumeSessionDismiss": "Ignora",
+  "voteChanged": "Dose aggiornata",
   "shareRoomPrompt": "Invita il team: condividi il codice bancone",
   "shareRoomPromptDismiss": "Chiudi",
   "modificaOrdine": "Modifica ordine",
