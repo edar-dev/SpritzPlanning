@@ -398,6 +398,66 @@ abstract class AppLocalizations {
   /// **'Usa sempre questa durata'**
   String get alwaysUseVotingTimer;
 
+  /// No description provided for @autoNextOrderTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Servi il prossimo ordine'**
+  String get autoNextOrderTitle;
+
+  /// No description provided for @autoNextOrderSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Dopo la stima, avvia subito la votazione sul successivo'**
+  String get autoNextOrderSubtitle;
+
+  /// No description provided for @skipCurrentOrder.
+  ///
+  /// In it, this message translates to:
+  /// **'Torna al menu'**
+  String get skipCurrentOrder;
+
+  /// No description provided for @skipCurrentOrderConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'La votazione su «{title}» verrà annullata. Tornare al menu?'**
+  String skipCurrentOrderConfirm(String title);
+
+  /// No description provided for @guidedStep1Add.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi il primo ordine'**
+  String get guidedStep1Add;
+
+  /// No description provided for @guidedStep2Share.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi il codice bancone'**
+  String get guidedStep2Share;
+
+  /// No description provided for @guidedStep3Serve.
+  ///
+  /// In it, this message translates to:
+  /// **'Servi l\'ordine per iniziare a votare'**
+  String get guidedStep3Serve;
+
+  /// No description provided for @resumeSessionAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Entra'**
+  String get resumeSessionAction;
+
+  /// No description provided for @resumeSessionDismiss.
+  ///
+  /// In it, this message translates to:
+  /// **'Ignora'**
+  String get resumeSessionDismiss;
+
+  /// No description provided for @voteChanged.
+  ///
+  /// In it, this message translates to:
+  /// **'Dose aggiornata'**
+  String get voteChanged;
+
   /// No description provided for @shareRoomPrompt.
   ///
   /// In it, this message translates to:

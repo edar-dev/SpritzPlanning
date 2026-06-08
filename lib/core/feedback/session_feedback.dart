@@ -28,4 +28,13 @@ abstract final class SessionFeedback {
       await HapticFeedback.lightImpact();
     }
   }
+
+  static Future<void> onVoteCast() async {
+    if (await AppPreferences.loadSoundEffectsEnabled()) {
+      await SystemSound.play(SystemSoundType.click);
+    }
+    if (!kIsWeb && await AppPreferences.loadHapticEnabled()) {
+      await HapticFeedback.selectionClick();
+    }
+  }
 }

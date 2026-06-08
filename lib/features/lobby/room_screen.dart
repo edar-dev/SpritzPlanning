@@ -424,9 +424,16 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                         );
                       case 'duplicate':
                         unawaited(_duplicateRoom(context, ref, session));
+                      case 'skip':
+                        unawaited(_skipCurrentOrder(context, roomState, session.participantId));
                     }
                   },
                   itemBuilder: (ctx) => [
+                    if (canModerate && showVoting)
+                      PopupMenuItem(
+                        value: 'skip',
+                        child: Text(context.l10n.skipCurrentOrder),
+                      ),
                     if (canEditBacklog && room.phase == RoomPhase.lobby)
                       PopupMenuItem(
                         value: 'import',
@@ -527,6 +534,8 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                               canModerate: canModerate,
                               canEditBacklog: canEditBacklog,
                               participantId: session.participantId,
+                              roomCode: room.code,
+                              onShare: () => _shareRoomInvite(roomState),
                             ),
                     ),
                   ],
@@ -576,6 +585,8 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       canModerate: canModerate,
                       canEditBacklog: canEditBacklog,
                       participantId: session.participantId,
+                      roomCode: room.code,
+                      onShare: () => _shareRoomInvite(roomState),
                     ),
                   ],
                 ),
@@ -640,6 +651,44 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       }
     } catch (e, st) {
       if (mounted) await showUserError(context, e, stackTrace: st);
+    }
+  }
+
+  Future<void> _skipCurrentOrder(
+    BuildContext context,
+    RoomState roomState,
+    String participantId,
+  ) async {
+    final story = roomState.currentStory;
+    if (story == null) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(context.l10n.skipCurrentOrder),
+        content: Text(context.l10n.skipCurrentOrderConfirm(story.title)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(context.l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(context.l10n.skipCurrentOrder),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      await ref.read(roomRepositoryProvider).nextStory(
+            participantId: participantId,
+          );
+    } catch (e, st) {
+      if (!context.mounted) return;
+      await showUserError(context, e, stackTrace: st);
     }
   }
 
@@ -802,12 +851,16 @@ class _LobbyPanel extends ConsumerStatefulWidget {
     required this.canModerate,
     required this.canEditBacklog,
     required this.participantId,
+    required this.roomCode,
+    required this.onShare,
   });
 
   final RoomState roomState;
   final bool canModerate;
   final bool canEditBacklog;
   final String participantId;
+  final String roomCode;
+  final VoidCallback onShare;
 
   @override
   ConsumerState<_LobbyPanel> createState() => _LobbyPanelState();
@@ -928,7 +981,17 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
               ],
               const SizedBox(height: 16),
               if (pendingStories.isEmpty && activeStories.isEmpty)
-                SpritzSurfaceCard(
+                widget.canEditBacklog
+                    ? _GuidedFirstOrderSteps(
+                        roomCode: widget.roomCode,
+                        onShare: widget.onShare,
+                        onAddOrder: () => _showAddStoryDialog(
+                          context,
+                          ref,
+                          widget.participantId,
+                        ),
+                      )
+                    : SpritzSurfaceCard(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 56,
@@ -964,17 +1027,6 @@ class _LobbyPanelState extends ConsumerState<_LobbyPanel> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        if (widget.canEditBacklog) ...[
-                          const SizedBox(height: 20),
-                          FilledButton.icon(
-                            onPressed: () => StoryImportSheet.show(
-                              context,
-                              participantId: widget.participantId,
-                            ),
-                            icon: const Icon(Icons.upload_file_outlined),
-                            label: Text(context.l10n.importStories),
-                          ),
-                        ],
                       ],
                     ),
                   ),
@@ -1724,6 +1776,133 @@ Future<void> _showParticipantActions(
       ref,
       barmanId: barmanId,
       target: target,
+    );
+  }
+}
+
+class _GuidedFirstOrderSteps extends StatelessWidget {
+  const _GuidedFirstOrderSteps({
+    required this.roomCode,
+    required this.onShare,
+    required this.onAddOrder,
+  });
+
+  final String roomCode;
+  final VoidCallback onShare;
+  final VoidCallback onAddOrder;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final scheme = Theme.of(context).colorScheme;
+
+    return SpritzSurfaceCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.menuEmpty,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 16),
+          _GuidedStepRow(
+            step: 1,
+            label: l10n.guidedStep1Add,
+            trailing: FilledButton.icon(
+              onPressed: onAddOrder,
+              icon: const Icon(Icons.add, size: 18),
+              label: Text(l10n.addOrdine),
+            ),
+          ),
+          const SizedBox(height: 12),
+          _GuidedStepRow(
+            step: 2,
+            label: l10n.guidedStep2Share,
+            trailing: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                OutlinedButton(
+                  onPressed: () =>
+                      RoomCodeDisplay.copyCodeToClipboard(context, roomCode),
+                  child: Text(l10n.copyCode),
+                ),
+                OutlinedButton(
+                  onPressed: () => RoomCodeDisplay.showQrSheet(context, roomCode),
+                  child: Text(l10n.showQr),
+                ),
+                TextButton(onPressed: onShare, child: Text(l10n.shareCode)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          _GuidedStepRow(
+            step: 3,
+            label: l10n.guidedStep3Serve,
+            trailing: Text(
+              l10n.startVoting,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GuidedStepRow extends StatelessWidget {
+  const _GuidedStepRow({
+    required this.step,
+    required this.label,
+    required this.trailing,
+  });
+
+  final int step;
+  final String label;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          radius: 14,
+          backgroundColor: scheme.primaryContainer,
+          child: Text(
+            '$step',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: scheme.onPrimaryContainer,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              trailing,
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

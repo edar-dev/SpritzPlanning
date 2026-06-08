@@ -150,6 +150,12 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     final story = widget.roomState.currentStory;
     if (story == null || _castVoteInFlight) return;
 
+    final previousVote = widget.roomState.currentVotes.firstWhereOrNull(
+      (v) => v.participantId == widget.participantId,
+    );
+    final hadPreviousVote =
+        previousVote?.value != null && previousVote!.value != value;
+
     setState(() {
       _selectedValue = value;
       _castVoteInFlight = true;
@@ -160,6 +166,16 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
             storyId: story.id,
             value: value,
           );
+      if (!mounted) return;
+      unawaited(SessionFeedback.onVoteCast());
+      if (hadPreviousVote) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.voteChanged),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     } catch (e, st) {
       if (mounted) {
         setState(() => _selectedValue = null);
@@ -227,6 +243,13 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       await ref.read(roomRepositoryProvider).nextStory(
             participantId: widget.participantId,
           );
+
+      if (widget.isFacilitator &&
+          await AppPreferences.loadAutoStartNextOrder()) {
+        await _autoStartNextPendingOrder();
+        return;
+      }
+
       final updated = ref.read(roomStateProvider).valueOrNull;
       if (updated != null &&
           updated.stories.any((s) => s.status == StoryStatus.done)) {
@@ -235,6 +258,42 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     } catch (e, st) {
       if (mounted) {
         await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
+      }
+    }
+  }
+
+  Future<void> _autoStartNextPendingOrder() async {
+    final updated = ref.read(roomStateProvider).valueOrNull;
+    if (updated == null) return;
+
+    final nextPending = updated.stories
+        .where(
+          (s) => s.status == StoryStatus.pending && s.kind != StoryKind.spike,
+        )
+        .toList()
+      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+    if (nextPending.isEmpty) {
+      if (updated.stories.any((s) => s.status == StoryStatus.done)) {
+        await AppPreferences.markSessionCompleted();
+      }
+      return;
+    }
+
+    int? durationSeconds;
+    if (await AppPreferences.loadAlwaysUseVotingTimer()) {
+      durationSeconds = await AppPreferences.loadLastVotingTimerSeconds();
+    }
+
+    try {
+      await ref.read(roomRepositoryProvider).startVoting(
+            participantId: widget.participantId,
+            storyId: nextPending.first.id,
+            durationSeconds: durationSeconds,
+          );
+    } catch (e, st) {
+      if (mounted) {
+        await showUserError(context, e, stackTrace: st, tags: {'action': 'start_voting'});
       }
     }
   }

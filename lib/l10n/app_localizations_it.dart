@@ -166,6 +166,39 @@ class AppLocalizationsIt extends AppLocalizations {
   String get alwaysUseVotingTimer => 'Usa sempre questa durata';
 
   @override
+  String get autoNextOrderTitle => 'Servi il prossimo ordine';
+
+  @override
+  String get autoNextOrderSubtitle =>
+      'Dopo la stima, avvia subito la votazione sul successivo';
+
+  @override
+  String get skipCurrentOrder => 'Torna al menu';
+
+  @override
+  String skipCurrentOrderConfirm(String title) {
+    return 'La votazione su «$title» verrà annullata. Tornare al menu?';
+  }
+
+  @override
+  String get guidedStep1Add => 'Aggiungi il primo ordine';
+
+  @override
+  String get guidedStep2Share => 'Condividi il codice bancone';
+
+  @override
+  String get guidedStep3Serve => 'Servi l\'ordine per iniziare a votare';
+
+  @override
+  String get resumeSessionAction => 'Entra';
+
+  @override
+  String get resumeSessionDismiss => 'Ignora';
+
+  @override
+  String get voteChanged => 'Dose aggiornata';
+
+  @override
   String get shareRoomPrompt => 'Invita il team: condividi il codice bancone';
 
   @override

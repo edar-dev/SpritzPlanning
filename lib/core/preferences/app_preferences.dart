@@ -117,6 +117,18 @@ abstract final class AppPreferences {
     await prefs.setBool(_alwaysUseVotingTimerKey, always);
   }
 
+  static const _autoStartNextOrderKey = 'auto_start_next_order';
+
+  static Future<bool> loadAutoStartNextOrder() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_autoStartNextOrderKey) ?? false;
+  }
+
+  static Future<void> saveAutoStartNextOrder(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_autoStartNextOrderKey, enabled);
+  }
+
   static const _hasSeenOnboardingKey = 'has_seen_onboarding';
   static const _hasSubmittedFeedbackKey = 'has_submitted_feedback';
   static const _soundEffectsEnabledKey = 'sound_effects_enabled';
