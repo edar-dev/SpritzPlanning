@@ -21,6 +21,15 @@ foreach ($u in $urls) {
 
 Atteso: `200` per tutti.
 
+Verifica sitemap (UTF-8, non UTF-16):
+
+```powershell
+curl.exe -s "https://spritz-planning.vercel.app/sitemap.xml" --output sitemap.bin
+python -c "import xml.etree.ElementTree as ET; ET.parse('sitemap.bin'); print('sitemap XML OK')"
+```
+
+Atteso: `sitemap XML OK`. Se il parse fallisce, il file non è UTF-8 valido.
+
 ## 2. Variabili Vercel (opzionali)
 
 Impostare su **Production** (e opzionalmente Preview) nel progetto Vercel:
@@ -37,9 +46,12 @@ Iniettate in build su tutte le pagine marketing via `<!-- SEO_INJECT -->` in `sc
 1. Apri [Google Search Console](https://search.google.com/search-console)
 2. Proprietà: **Prefisso URL** → `https://spritz-planning.vercel.app/`
 3. Verifica: copia il token in `GOOGLE_SITE_VERIFICATION` su Vercel → redeploy
-4. **Sitemap** → Aggiungi: `https://spritz-planning.vercel.app/sitemap.xml`
+4. **Sitemap** → Elimina eventuali invii falliti (⋮ → Elimina), poi aggiungi:
+   `https://spritz-planning.vercel.app/sitemap.xml`
+   - Se resta «Impossibile leggere/recuperare», prova `https://spritz-planning.vercel.app/sitemap.xml/` (slash finale forza un nuovo fetch)
+   - La sitemap è XML semplice (hreflang resta nelle pagine HTML, non nel file XML)
 5. **Ispezione URL** → Richiedi indicizzazione per `/`, `/faq`, `/features`
-6. Attendi stato sitemap **Success** (24–48 h)
+6. Attendi stato sitemap **Operazione riuscita** (minuti–48 h)
 
 ## 4. Bing Webmaster Tools (opzionale)
 
