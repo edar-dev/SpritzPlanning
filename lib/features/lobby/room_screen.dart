@@ -34,6 +34,7 @@ import '../../shared/widgets/room_screen_skeleton.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/spritz_surface_card.dart';
 import '../voting/voting_panel.dart';
+import 'compact_order_list.dart';
 
 class RoomScreen extends ConsumerStatefulWidget {
   const RoomScreen({super.key, required this.roomId});
@@ -465,6 +466,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                         isFacilitator: canModerate,
                         participantId: session.participantId,
                         onShare: () => _shareRoomInvite(roomState),
+                        showCompactOrders: showVoting && canModerate,
                       ),
                     ),
                     Expanded(
@@ -498,6 +500,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                       const SizedBox(height: 16),
                       _ParticipantsRow(roomState: roomState),
                       const SizedBox(height: 24),
+                    ],
+                    if (showVoting && canModerate) ...[
+                      CompactOrderList(
+                        roomState: roomState,
+                        participantId: session.participantId,
+                      ),
+                      const SizedBox(height: 16),
                     ],
                     if (showVoting)
                       VotingPanel(
@@ -628,12 +637,14 @@ class _Sidebar extends StatelessWidget {
     required this.isFacilitator,
     required this.participantId,
     required this.onShare,
+    required this.showCompactOrders,
   });
 
   final RoomState roomState;
   final bool isFacilitator;
   final String participantId;
   final VoidCallback onShare;
+  final bool showCompactOrders;
 
   @override
   Widget build(BuildContext context) {
@@ -646,7 +657,13 @@ class _Sidebar extends StatelessWidget {
             code: roomState.room.code,
             onShare: onShare,
           ),
-          if (roomState.room.phase != RoomPhase.voting) ...[
+          if (showCompactOrders) ...[
+            const SizedBox(height: 16),
+            CompactOrderList(
+              roomState: roomState,
+              participantId: participantId,
+            ),
+          ] else if (roomState.room.phase != RoomPhase.voting) ...[
             const SizedBox(height: 16),
             _ParticipantsRow(
               roomState: roomState,

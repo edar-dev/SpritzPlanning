@@ -125,6 +125,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuSubtitle => 'Stories to estimate with the team';
 
   @override
+  String get menuCompactHint => 'Tap an order to switch voting';
+
+  @override
+  String get switchOrderTitle => 'Switch order?';
+
+  @override
+  String switchOrderMessage(String currentTitle, String targetTitle) {
+    return 'Voting on \"$currentTitle\" will be cancelled and the team will move to \"$targetTitle\".';
+  }
+
+  @override
+  String get switchOrderConfirm => 'Serve this order';
+
+  @override
   String get menuEmpty => 'The menu is empty. Add the first story!';
 
   @override

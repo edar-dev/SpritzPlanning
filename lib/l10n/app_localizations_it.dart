@@ -125,6 +125,20 @@ class AppLocalizationsIt extends AppLocalizations {
   String get menuSubtitle => 'Ordini da stimare con il team';
 
   @override
+  String get menuCompactHint => 'Tocca un ordine per passare alla votazione';
+
+  @override
+  String get switchOrderTitle => 'Cambiare ordine?';
+
+  @override
+  String switchOrderMessage(String currentTitle, String targetTitle) {
+    return 'La votazione su «$currentTitle» verrà annullata e si passerà a «$targetTitle».';
+  }
+
+  @override
+  String get switchOrderConfirm => 'Servi questo ordine';
+
+  @override
   String get menuEmpty => 'Il menu è vuoto. Aggiungi il primo ordine!';
 
   @override

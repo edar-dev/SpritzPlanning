@@ -51,6 +51,20 @@
   },
   "menu": "Menu",
   "menuSubtitle": "Ordini da stimare con il team",
+  "menuCompactHint": "Tocca un ordine per passare alla votazione",
+  "switchOrderTitle": "Cambiare ordine?",
+  "switchOrderMessage": "La votazione su «{currentTitle}» verrà annullata e si passerà a «{targetTitle}».",
+  "@switchOrderMessage": {
+    "placeholders": {
+      "currentTitle": {
+        "type": "String"
+      },
+      "targetTitle": {
+        "type": "String"
+      }
+    }
+  },
+  "switchOrderConfirm": "Servi questo ordine",
   "menuEmpty": "Il menu è vuoto. Aggiungi il primo ordine!",
   "addOrdine": "Aggiungi ordine",
   "ordineTitle": "Titolo ordine",
