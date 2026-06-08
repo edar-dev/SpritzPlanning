@@ -44,6 +44,20 @@
   "confermaPassaBancone": "Pass Bartender role to {nickname}?",
   "menu": "Menu",
   "menuSubtitle": "Stories to estimate with the team",
+  "menuCompactHint": "Tap an order to switch voting",
+  "switchOrderTitle": "Switch order?",
+  "switchOrderMessage": "Voting on \"{currentTitle}\" will be cancelled and the team will move to \"{targetTitle}\".",
+  "@switchOrderMessage": {
+    "placeholders": {
+      "currentTitle": {
+        "type": "String"
+      },
+      "targetTitle": {
+        "type": "String"
+      }
+    }
+  },
+  "switchOrderConfirm": "Serve this order",
   "menuEmpty": "The menu is empty. Add the first story!",
   "addOrdine": "Add story",
   "ordineTitle": "Story title",

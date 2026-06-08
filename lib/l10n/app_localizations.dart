@@ -320,6 +320,30 @@ abstract class AppLocalizations {
   /// **'Ordini da stimare con il team'**
   String get menuSubtitle;
 
+  /// No description provided for @menuCompactHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Tocca un ordine per passare alla votazione'**
+  String get menuCompactHint;
+
+  /// No description provided for @switchOrderTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Cambiare ordine?'**
+  String get switchOrderTitle;
+
+  /// No description provided for @switchOrderMessage.
+  ///
+  /// In it, this message translates to:
+  /// **'La votazione su «{currentTitle}» verrà annullata e si passerà a «{targetTitle}».'**
+  String switchOrderMessage(String currentTitle, String targetTitle);
+
+  /// No description provided for @switchOrderConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Servi questo ordine'**
+  String get switchOrderConfirm;
+
   /// No description provided for @menuEmpty.
   ///
   /// In it, this message translates to:
