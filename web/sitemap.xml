@@ -17,6 +17,29 @@
   </url>
   <url>
     <loc>https://spritz-planning.vercel.app/features</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://spritz-planning.vercel.app/features"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spritz-planning.vercel.app/en/features"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spritz-planning.vercel.app/en/features</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://spritz-planning.vercel.app/features"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spritz-planning.vercel.app/en/features"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spritz-planning.vercel.app/faq</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://spritz-planning.vercel.app/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spritz-planning.vercel.app/en/faq"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spritz-planning.vercel.app/en/faq</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://spritz-planning.vercel.app/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spritz-planning.vercel.app/en/faq"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

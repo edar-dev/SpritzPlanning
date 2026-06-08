@@ -83,7 +83,7 @@ flowchart LR
 | 20 | #92, #93, #94, #95, #97 | 12–18 giorni | `feat/organizations-entitlements` | [phase-20-organizations-entitlements.md](plans/phase-20-organizations-entitlements.md) |
 | 21 | #98 | — | — (posticipata) | [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) |
 | 22 | #99–#102, #106 | 5–8 giorni | `feat/seo-landing` | [phase-22-seo-landing-discoverability.md](plans/phase-22-seo-landing-discoverability.md) |
-| 23 | #103–#108 | 4–7 giorni | `feat/seo-content` | [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) |
+| 23 | #103–#105, #104, #106 | 4–7 giorni | `feat/seo-content` | [phase-23-seo-content.md](plans/phase-23-seo-content.md) — completata |
 | 24 | Lean simplification | 5–8 giorni | `feat/lean-simplification` | [phase-24-simplification.md](plans/phase-24-simplification.md) — completata |
 
 
@@ -194,11 +194,17 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 22. **Fase 22** — Landing page + fondamenta SEO (#99–#102, #106) ([IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md), [phase-22-seo-landing-discoverability.md](plans/phase-22-seo-landing-discoverability.md))
 
-23. **Fase 23** — Contenuti SEO, hreflang, analytics (#103–#105, #107–#108) (bozza in IMPROVEMENTS-V11)
-
 **Completata (lean tool):**
 
 24. **Fase 24** — Semplificazione UI lean: rimosse superfici business/enterprise, focus poker planning frictionless ([phase-24-simplification.md](plans/phase-24-simplification.md))
+
+**Completata (SEO contenuti):**
+
+23. **Fase 23** — FAQ IT/EN, features EN, hreflang, sitemap ([phase-23-seo-content.md](plans/phase-23-seo-content.md), [SEO-OPS.md](SEO-OPS.md))
+
+**Follow-up opzionale:**
+
+- **#107–#108** — LCP landing, analytics privacy-friendly (IMPROVEMENTS-V11)
 
 
 
@@ -288,7 +294,7 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 20 | Completata | PR #19 — `feat/organizations-entitlements` |
 | 21 | Posticipata | #98 SSO — on demand ([phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md)) |
 | 22 | Completata | PR #20 — `feat/seo-landing` |
-| 23 | Pianificata | [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) #103–#108 |
+| 23 | Completata | `feat/seo-content` — FAQ, features EN, hreflang ([phase-23-seo-content.md](plans/phase-23-seo-content.md)) |
 | 24 | Completata | `feat/lean-simplification` — UI lean ([phase-24-simplification.md](plans/phase-24-simplification.md)) |
 
 
