@@ -146,6 +146,54 @@ abstract class AppLocalizations {
   /// **'Testo e card più grandi per proiettore o TV'**
   String get projectorModeHint;
 
+  /// No description provided for @projectorAutoTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Proiettore automatico'**
+  String get projectorAutoTitle;
+
+  /// No description provided for @projectorAutoSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Attiva su schermi larghi o testo di sistema ingrandito'**
+  String get projectorAutoSubtitle;
+
+  /// No description provided for @projectorSessionDisable.
+  ///
+  /// In it, this message translates to:
+  /// **'Disattiva proiettore (questa sessione)'**
+  String get projectorSessionDisable;
+
+  /// No description provided for @theatricalRevealTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Countdown prima del reveal'**
+  String get theatricalRevealTitle;
+
+  /// No description provided for @theatricalRevealSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Conto alla rovescia 3-2-1 prima di «Servizio!»'**
+  String get theatricalRevealSubtitle;
+
+  /// No description provided for @revealCountdown.
+  ///
+  /// In it, this message translates to:
+  /// **'Reveal tra {seconds}'**
+  String revealCountdown(int seconds);
+
+  /// No description provided for @revealGo.
+  ///
+  /// In it, this message translates to:
+  /// **'Via!'**
+  String get revealGo;
+
+  /// No description provided for @revealCountdownSkip.
+  ///
+  /// In it, this message translates to:
+  /// **'Tocca o premi R per saltare'**
+  String get revealCountdownSkip;
+
   /// No description provided for @appSettings.
   ///
   /// In it, this message translates to:
@@ -1181,7 +1229,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsSubtitle.
   ///
   /// In it, this message translates to:
-  /// **'Reveal e timer quando la scheda è in background'**
+  /// **'Reveal, timer e inizio votazione quando la scheda è in background'**
   String get notificationsSubtitle;
 
   /// No description provided for @notificationsReveal.
@@ -1195,6 +1243,18 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Tempo quasi scaduto'**
   String get notificationsTimer;
+
+  /// No description provided for @notificationVotingTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Tocca a te!'**
+  String get notificationVotingTitle;
+
+  /// No description provided for @notificationVotingBody.
+  ///
+  /// In it, this message translates to:
+  /// **'{roomName}: vota «{storyTitle}»'**
+  String notificationVotingBody(String roomName, String storyTitle);
 
   /// No description provided for @helpTitle.
   ///

@@ -11,7 +11,13 @@ class ProjectorMode extends ThemeExtension<ProjectorMode> {
         const ProjectorMode();
   }
 
-  double get cardScale => enabled ? 1.2 : 1.0;
+  double get cardScale => enabled ? 1.25 : 1.0;
+
+  double get deckSpacing => enabled ? 18.0 : 12.0;
+
+  double get voteRevealFontScale => enabled ? 1.25 : 1.0;
+
+  double get appBarHeight => enabled ? 80.0 : 64.0;
 
   @override
   ProjectorMode copyWith({bool? enabled}) {

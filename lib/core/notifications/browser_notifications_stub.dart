@@ -6,4 +6,6 @@ Future<BrowserNotificationPermission> requestBrowserNotificationPermission() asy
 
 void showBrowserNotification({required String title, String? body}) {}
 
+void notifyVotingStarted({required String title, String? body}) {}
+
 bool get isDocumentHidden => false;

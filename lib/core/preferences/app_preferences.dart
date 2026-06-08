@@ -7,6 +7,8 @@ abstract final class AppPreferences {
   static const _lastNicknameKey = 'last_nickname';
   static const _hasCompletedSessionKey = 'has_completed_session';
   static const _projectorModeKey = 'projector_mode';
+  static const _projectorAutoEnableKey = 'projector_auto_enable';
+  static const _theatricalRevealKey = 'theatrical_reveal';
   static const _notificationsEnabledKey = 'notifications_enabled';
   static const _alwaysUseVotingTimerKey = 'always_use_voting_timer';
   /// JSON null = senza timer; omitted = non impostato.
@@ -78,6 +80,26 @@ abstract final class AppPreferences {
   static Future<void> saveProjectorMode(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_projectorModeKey, enabled);
+  }
+
+  static Future<bool> loadProjectorAutoEnable() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_projectorAutoEnableKey) ?? true;
+  }
+
+  static Future<void> saveProjectorAutoEnable(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_projectorAutoEnableKey, enabled);
+  }
+
+  static Future<bool> loadTheatricalReveal() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_theatricalRevealKey) ?? false;
+  }
+
+  static Future<void> saveTheatricalReveal(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_theatricalRevealKey, enabled);
   }
 
   static Future<bool> loadNotificationsEnabled() async {

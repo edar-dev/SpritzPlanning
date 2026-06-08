@@ -37,4 +37,22 @@ abstract final class SessionFeedback {
       await HapticFeedback.selectionClick();
     }
   }
+
+  static Future<void> onRevealCountdownTick() async {
+    if (await AppPreferences.loadSoundEffectsEnabled()) {
+      await SystemSound.play(SystemSoundType.click);
+    }
+    if (!kIsWeb && await AppPreferences.loadHapticEnabled()) {
+      await HapticFeedback.lightImpact();
+    }
+  }
+
+  static Future<void> onRevealCountdownGo() async {
+    if (await AppPreferences.loadSoundEffectsEnabled()) {
+      await SystemSound.play(SystemSoundType.alert);
+    }
+    if (!kIsWeb && await AppPreferences.loadHapticEnabled()) {
+      await HapticFeedback.mediumImpact();
+    }
+  }
 }

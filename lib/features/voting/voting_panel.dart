@@ -13,6 +13,7 @@ import '../../core/voting/vote_stats.dart';
 import 'vote_summary_panel.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../core/theme/projector_theme.dart';
 import '../../shared/widgets/error_snackbar.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../data/models/models.dart';
@@ -20,6 +21,7 @@ import '../../data/providers/providers.dart';
 import '../../shared/widgets/bar_participants_strip.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../shared/widgets/spritz_card.dart';
+import 'reveal_flow.dart';
 
 class VotingPanel extends ConsumerStatefulWidget {
   const VotingPanel({
@@ -194,15 +196,26 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
   }
 
   Future<void> _reveal() async {
-    try {
-      await ref.read(roomRepositoryProvider).revealVotes(
-            participantId: widget.participantId,
-          );
-    } catch (e, st) {
-      if (mounted) {
-        await showUserError(context, e, stackTrace: st, tags: {'action': 'cast_vote'});
-      }
-    }
+    if (!mounted) return;
+    await runRevealWithOptionalCountdown(
+      context: context,
+      reveal: () async {
+        try {
+          await ref.read(roomRepositoryProvider).revealVotes(
+                participantId: widget.participantId,
+              );
+        } catch (e, st) {
+          if (mounted) {
+            await showUserError(
+              context,
+              e,
+              stackTrace: st,
+              tags: const {'action': 'cast_vote'},
+            );
+          }
+        }
+      },
+    );
   }
 
   Future<void> _reset() async {
@@ -336,6 +349,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       votes: widget.roomState.currentVotes,
       participants: widget.roomState.activeVotingParticipants,
     );
+    final projector = ProjectorMode.of(context);
     final deadline = widget.roomState.room.votingDeadlineAt;
     final timerExpired = deadline != null && _now.isAfter(deadline);
 
@@ -393,8 +407,8 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
           const SizedBox(height: 12),
           _BarDeckTray(
             child: Wrap(
-              spacing: 12,
-              runSpacing: 12,
+              spacing: projector.deckSpacing,
+              runSpacing: projector.deckSpacing,
               alignment: WrapAlignment.center,
               children: DeckValues.forRoom(widget.roomState.room).map((value) {
                 return SpritzCard(
@@ -813,6 +827,7 @@ class _RevealSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final projector = ProjectorMode.of(context);
     return Semantics(
       liveRegion: true,
       child: Column(
@@ -826,8 +841,8 @@ class _RevealSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Wrap(
-          spacing: 16,
-          runSpacing: 16,
+          spacing: projector.deckSpacing,
+          runSpacing: projector.deckSpacing,
           alignment: WrapAlignment.center,
           children: roomState.participants.map((p) {
             final vote = roomState.currentVotes.firstWhereOrNull(
