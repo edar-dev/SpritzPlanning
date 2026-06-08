@@ -56,7 +56,7 @@ for item in assets canvaskit flutter_bootstrap.js flutter.js main.dart.js \
 done
 
 if [ -d "$WEB/icons" ]; then
-  mv "$WEB/icons" "$APP/icons"
+  cp -r "$WEB/icons" "$APP/icons"
 fi
 
 if [ -f "$WEB/favicon.png" ]; then
