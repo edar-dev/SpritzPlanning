@@ -230,6 +230,31 @@ class SessionReportStats {
   }
 }
 
+/// Three headline metrics shown when closing a session (#122).
+class SessionSummaryStats {
+  const SessionSummaryStats({
+    required this.estimatedOrders,
+    required this.sessionDuration,
+    required this.participantCount,
+  });
+
+  final int estimatedOrders;
+  final Duration sessionDuration;
+  final int participantCount;
+
+  int get sessionDurationMinutes => sessionDuration.inMinutes;
+
+  static SessionSummaryStats fromRoomState(RoomState state) {
+    final stats = SessionReportStats.fromRoomState(state);
+    final duration = DateTime.now().toUtc().difference(state.room.createdAt);
+    return SessionSummaryStats(
+      estimatedOrders: stats.completedCount,
+      sessionDuration: duration.isNegative ? Duration.zero : duration,
+      participantCount: state.participants.length,
+    );
+  }
+}
+
 class _MeanMedian {
   const _MeanMedian({this.mean, this.median});
 

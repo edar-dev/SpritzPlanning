@@ -28,7 +28,7 @@ Future<T> withRpcRetry<T>(
   Error.throwWithStackTrace(lastError!, lastStack!);
 }
 
-bool _isRetryable(Object error) {
+bool isRetryableRpcError(Object error) {
   if (error is TimeoutException || error is SocketException) {
     return true;
   }
@@ -45,3 +45,5 @@ bool _isRetryable(Object error) {
   }
   return false;
 }
+
+bool _isRetryable(Object error) => isRetryableRpcError(error);

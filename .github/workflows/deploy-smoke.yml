@@ -12,6 +12,7 @@ jobs:
       (github.event.deployment_status.state == 'success' &&
        github.event.deployment_status.environment == 'Production')
     steps:
+      # Full manual E2E checklist: docs/LEAN-SMOKE.md § Flusso E2E stanza
       - name: Smoke production URLs
         run: |
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/

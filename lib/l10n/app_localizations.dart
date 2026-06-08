@@ -770,6 +770,60 @@ abstract class AppLocalizations {
   /// **'Qualcosa è andato storto al bancone'**
   String get genericError;
 
+  /// No description provided for @errorNicknameTaken.
+  ///
+  /// In it, this message translates to:
+  /// **'Questo nickname è già al bancone. Esci dall\'altra sessione o attendi ~2 min.'**
+  String get errorNicknameTaken;
+
+  /// No description provided for @errorRoomNotFound.
+  ///
+  /// In it, this message translates to:
+  /// **'Locale chiuso. Chiedi un nuovo codice al barman.'**
+  String get errorRoomNotFound;
+
+  /// No description provided for @errorNotFacilitator.
+  ///
+  /// In it, this message translates to:
+  /// **'Solo il barman può fare questa azione.'**
+  String get errorNotFacilitator;
+
+  /// No description provided for @errorInvalidVote.
+  ///
+  /// In it, this message translates to:
+  /// **'Quella dose non è nel menu della stanza.'**
+  String get errorInvalidVote;
+
+  /// No description provided for @errorInvalidPin.
+  ///
+  /// In it, this message translates to:
+  /// **'PIN non valido per questo locale.'**
+  String get errorInvalidPin;
+
+  /// No description provided for @errorVotingNotActive.
+  ///
+  /// In it, this message translates to:
+  /// **'La votazione non è attiva in questo momento.'**
+  String get errorVotingNotActive;
+
+  /// No description provided for @errorVotesAlreadyRevealed.
+  ///
+  /// In it, this message translates to:
+  /// **'I voti sono già stati rivelati.'**
+  String get errorVotesAlreadyRevealed;
+
+  /// No description provided for @voteOutboxPending.
+  ///
+  /// In it, this message translates to:
+  /// **'Voto in invio…'**
+  String get voteOutboxPending;
+
+  /// No description provided for @voteOutboxSynced.
+  ///
+  /// In it, this message translates to:
+  /// **'Voto sincronizzato'**
+  String get voteOutboxSynced;
+
   /// No description provided for @leaveLocale.
   ///
   /// In it, this message translates to:
@@ -1466,11 +1520,65 @@ abstract class AppLocalizations {
   /// **'Report copiato'**
   String get sessionArchiveExported;
 
+  /// No description provided for @archiveCopyReport.
+  ///
+  /// In it, this message translates to:
+  /// **'Copia report'**
+  String get archiveCopyReport;
+
+  /// No description provided for @archiveUseTemplate.
+  ///
+  /// In it, this message translates to:
+  /// **'Usa come template'**
+  String get archiveUseTemplate;
+
+  /// No description provided for @archiveDeleteEntry.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina'**
+  String get archiveDeleteEntry;
+
+  /// No description provided for @archiveUseTemplateEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun ordine in questo archivio da riusare'**
+  String get archiveUseTemplateEmpty;
+
   /// No description provided for @sessionCloseTitle.
   ///
   /// In it, this message translates to:
   /// **'Chiudi serata'**
   String get sessionCloseTitle;
+
+  /// No description provided for @closeSummaryTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Serata chiusa'**
+  String get closeSummaryTitle;
+
+  /// No description provided for @closeSummaryStories.
+  ///
+  /// In it, this message translates to:
+  /// **'{count, plural, =1{1 ordine stimato} other{{count} ordini stimati}}'**
+  String closeSummaryStories(int count);
+
+  /// No description provided for @closeSummaryDurationMinutes.
+  ///
+  /// In it, this message translates to:
+  /// **'{minutes} minuti al bancone'**
+  String closeSummaryDurationMinutes(int minutes);
+
+  /// No description provided for @closeSummaryDurationHours.
+  ///
+  /// In it, this message translates to:
+  /// **'{hours} h {minutes} min al bancone'**
+  String closeSummaryDurationHours(int hours, int minutes);
+
+  /// No description provided for @closeSummaryParticipants.
+  ///
+  /// In it, this message translates to:
+  /// **'{count, plural, =1{1 cliente} other{{count} clienti}}'**
+  String closeSummaryParticipants(int count);
 
   /// No description provided for @sessionCloseRetroLabel.
   ///

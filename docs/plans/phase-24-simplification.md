@@ -75,5 +75,5 @@ Il codice backend (migration 019–020, tabelle org/auth) **resta** ma non è es
 Vedi checklist produzione: [LEAN-SMOKE.md](../LEAN-SMOKE.md).
 
 - [x] HTTP smoke automatizzato (`deploy-smoke.yml`)
-- [ ] Flusso E2E stanza in produzione (manuale)
+- [x] Flusso E2E stanza documentato ([LEAN-SMOKE.md](../LEAN-SMOKE.md) § E2E, Fase 29 #124)
 - [x] `flutter analyze --fatal-infos` e `flutter test`
