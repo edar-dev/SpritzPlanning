@@ -84,6 +84,7 @@ flowchart LR
 | 21 | #98 | — | — (posticipata) | [phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md) |
 | 22 | #99–#102, #106 | 5–8 giorni | `feat/seo-landing` | [phase-22-seo-landing-discoverability.md](plans/phase-22-seo-landing-discoverability.md) |
 | 23 | #103–#108 | 4–7 giorni | `feat/seo-content` | [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) |
+| 24 | Lean simplification | 5–8 giorni | `feat/lean-simplification` | [phase-24-simplification.md](plans/phase-24-simplification.md) — completata |
 
 
 
@@ -195,6 +196,10 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 23. **Fase 23** — Contenuti SEO, hreflang, analytics (#103–#105, #107–#108) (bozza in IMPROVEMENTS-V11)
 
+**Completata (lean tool):**
+
+24. **Fase 24** — Semplificazione UI lean: rimosse superfici business/enterprise, focus poker planning frictionless ([phase-24-simplification.md](plans/phase-24-simplification.md))
+
 
 
 ## Lista miglioramenti v3 (#21–30)
@@ -284,6 +289,7 @@ Vedi [IMPROVEMENTS-PROD.md](IMPROVEMENTS-PROD.md).
 | 21 | Posticipata | #98 SSO — on demand ([phase-21-enterprise-sso.md](plans/phase-21-enterprise-sso.md)) |
 | 22 | Completata | PR #20 — `feat/seo-landing` |
 | 23 | Pianificata | [IMPROVEMENTS-V11.md](IMPROVEMENTS-V11.md) #103–#108 |
+| 24 | Completata | `feat/lean-simplification` — UI lean ([phase-24-simplification.md](plans/phase-24-simplification.md)) |
 
 
 

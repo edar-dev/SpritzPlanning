@@ -20,7 +20,6 @@ import '../../data/providers/providers.dart';
 import '../../shared/widgets/bar_participants_strip.dart';
 import '../../shared/widgets/participant_avatar.dart';
 import '../../shared/widgets/spritz_card.dart';
-import 'confidence_panel.dart';
 
 class VotingPanel extends ConsumerStatefulWidget {
   const VotingPanel({
@@ -176,19 +175,6 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
     }
   }
 
-  Future<void> _startConfidence() async {
-    try {
-      await ref.read(roomRepositoryProvider).startConfidenceVote(
-            participantId: widget.participantId,
-          );
-      await ref.read(roomStateProvider.notifier).refresh();
-    } catch (e, st) {
-      if (mounted) {
-        await showUserError(context, e, stackTrace: st);
-      }
-    }
-  }
-
   Future<void> _reveal() async {
     try {
       await ref.read(roomRepositoryProvider).revealVotes(
@@ -330,19 +316,9 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
           if (isVoting && !revealed) ...[
             const SizedBox(height: 16),
             _VoteProgressBar(stats: voteStats),
-            if (widget.isFacilitator)
-              _ReferenceSizingHint(
-                roomState: widget.roomState,
-                voteStats: voteStats,
-              ),
           ],
           const SizedBox(height: 24),
           if (revealed) ...[
-            ConfidencePanel(
-              roomState: widget.roomState,
-              participantId: widget.participantId,
-              isFacilitator: widget.isFacilitator,
-            ),
             _buildRevealContent(
               voteStats: voteStats,
             ),
@@ -404,17 +380,6 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
               ),
             ],
             if (revealed) ...[
-              if (widget.isFacilitator &&
-                  !widget.roomState.room.confidenceRoundActive &&
-                  voteStats.numericOutliers.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: OutlinedButton.icon(
-                    onPressed: _startConfidence,
-                    icon: const Icon(Icons.psychology_outlined),
-                    label: Text(l10n.confidenceVoteStart),
-                  ),
-                ),
               Row(
                 children: [
                   Expanded(
@@ -818,50 +783,6 @@ class _RevealSection extends StatelessWidget {
           ),
         ],
       ],
-      ),
-    );
-  }
-}
-
-class _ReferenceSizingHint extends StatelessWidget {
-  const _ReferenceSizingHint({
-    required this.roomState,
-    required this.voteStats,
-  });
-
-  final RoomState roomState;
-  final VoteStats voteStats;
-
-  @override
-  Widget build(BuildContext context) {
-    final reference = roomState.referenceStory;
-    final refEstimate = reference?.finalEstimate;
-    if (reference == null ||
-        refEstimate == null ||
-        !isNumericDeckValue(refEstimate)) {
-      return const SizedBox.shrink();
-    }
-
-    final consensus = voteStats.suggestedConsensus;
-    if (consensus == null || !isNumericDeckValue(consensus)) {
-      return const SizedBox.shrink();
-    }
-
-    const order = ['0', '½', '1', '2', '3', '5', '8', '13', '21'];
-    final refIdx = order.indexOf(refEstimate);
-    final conIdx = order.indexOf(consensus);
-    if (refIdx < 0 || conIdx < 0 || refIdx == 0) return const SizedBox.shrink();
-
-    final ratio = (conIdx / refIdx).toStringAsFixed(1);
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Text(
-        context.l10n.relativeSizingHint(refEstimate, ratio),
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: const Color(AppColors.textSecondary),
-              fontStyle: FontStyle.italic,
-            ),
       ),
     );
   }

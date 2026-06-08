@@ -161,6 +161,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get modificaOrdine => 'Modifica ordine';
 
   @override
+  String get eliminaOrdine => 'Elimina ordine';
+
+  @override
   String get salvaOrdine => 'Salva';
 
   @override
@@ -434,6 +437,12 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get joinAsObserver => 'Solo osservazione (non voto)';
+
+  @override
+  String get joinAdvancedOptions => 'Opzioni avanzate';
+
+  @override
+  String get roomToolsTitle => 'Strumenti';
 
   @override
   String get observerBadge => 'Osservatore';
