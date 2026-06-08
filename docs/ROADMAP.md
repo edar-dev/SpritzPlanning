@@ -85,6 +85,7 @@ flowchart LR
 | 22 | #99–#102, #106 | 5–8 giorni | `feat/seo-landing` | [phase-22-seo-landing-discoverability.md](plans/phase-22-seo-landing-discoverability.md) |
 | 23 | #103–#105, #104, #106 | 4–7 giorni | `feat/seo-content` | [phase-23-seo-content.md](plans/phase-23-seo-content.md) — completata |
 | 24 | Lean simplification | 5–8 giorni | `feat/lean-simplification` | [phase-24-simplification.md](plans/phase-24-simplification.md) — completata |
+| 25 | Post-lean polish | 2–3 giorni | `chore/post-lean-polish` | help crawlable, l10n prune, smoke — completata |
 
 
 
@@ -202,9 +203,16 @@ Vedi [IMPROVEMENTS-NEXT.md](IMPROVEMENTS-NEXT.md).
 
 23. **Fase 23** — FAQ IT/EN, features EN, hreflang, sitemap ([phase-23-seo-content.md](plans/phase-23-seo-content.md), [SEO-OPS.md](SEO-OPS.md))
 
+**Completata (post-lean polish):**
+
+25. **Fase 25** — Guida HTML crawlable (#105), prune l10n lean, smoke/ops ([LEAN-SMOKE.md](LEAN-SMOKE.md))
+
 **Follow-up opzionale:**
 
-- **#107–#108** — LCP landing, analytics privacy-friendly (IMPROVEMENTS-V11)
+- Search Console sitemap (reinvio manuale dopo deploy)
+- **Sentry** `SENTRY_DSN` su Vercel (vedi [AGENT-PLAYBOOK.md](AGENT-PLAYBOOK.md) §8)
+- **Android release** fingerprint in `assetlinks.json`
+- **Bing Webmaster** (import da GSC)
 
 
 

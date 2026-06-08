@@ -79,7 +79,7 @@ inject_marketing_seo_tags() {
   if [ -z "$inject" ]; then
     return
   fi
-  for page in landing.html landing-en.html features.html features-en.html faq.html faq-en.html index.html; do
+  for page in landing.html landing-en.html features.html features-en.html faq.html faq-en.html help.html help-en.html index.html; do
     [ -f "$WEB/$page" ] || continue
     local tmp
     tmp="$(mktemp)"

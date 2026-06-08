@@ -18,6 +18,8 @@ jobs:
           curl -fsSL https://spritz-planning.vercel.app/ | grep -qi "planning poker"
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/robots.txt
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/sitemap.xml
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/help
+          curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/en/help
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/app/
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/app/manifest.json
           curl -fsSL -o /dev/null -w "%{http_code}\n" https://spritz-planning.vercel.app/icons/Icon-512.png

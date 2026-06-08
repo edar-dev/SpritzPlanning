@@ -6,11 +6,6 @@
   "installCommand": "echo 'Dependencies installed in build script'",
   "redirects": [
     {
-      "source": "/help",
-      "destination": "/app/help",
-      "permanent": true
-    },
-    {
       "source": "/room/:path*",
       "destination": "/app/room/:path*",
       "permanent": true
@@ -60,6 +55,14 @@
     {
       "source": "/en/faq",
       "destination": "/faq-en.html"
+    },
+    {
+      "source": "/help",
+      "destination": "/help.html"
+    },
+    {
+      "source": "/en/help",
+      "destination": "/help-en.html"
     },
     {
       "source": "/app",

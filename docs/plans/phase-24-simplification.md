@@ -72,8 +72,8 @@ Il codice backend (migration 019–020, tabelle org/auth) **resta** ma non è es
 
 ## Test plan
 
-- [ ] Home: solo Apri / Entra visibili senza scroll
-- [ ] Crea stanza → aggiungi ordine → vota → reveal → conferma
-- [ ] Join con codice deep link
-- [ ] Export report CSV
-- [ ] `flutter analyze --fatal-infos` e `flutter test`
+Vedi checklist produzione: [LEAN-SMOKE.md](../LEAN-SMOKE.md).
+
+- [x] HTTP smoke automatizzato (`deploy-smoke.yml`)
+- [ ] Flusso E2E stanza in produzione (manuale)
+- [x] `flutter analyze --fatal-infos` e `flutter test`

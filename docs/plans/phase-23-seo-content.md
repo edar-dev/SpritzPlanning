@@ -17,11 +17,11 @@ Pagine marketing indicizzabili allineate al posizionamento **lean tool**, con co
 | 105 | Link `<noscript>` e nav HTML su landing/FAQ |
 | 106 | Checklist Search Console in [docs/SEO-OPS.md](../SEO-OPS.md) |
 
-## Follow-up (#107–#108) ✅ parziale
+## Follow-up (#105–#108)
 
-- **#107** — `preload` CSS su pagine marketing
-- **#108** — Plausible + Google verification via env Vercel (`GOOGLE_SITE_VERIFICATION`, `PLAUSIBLE_DOMAIN`)
-- Prerender `/app/help` — ancora fuori scope
+- **#105** — ✅ `web/help.html`, `web/help-en.html` + rewrite `/help`, `/en/help` (fase 25)
+- **#107** — ✅ parziale: preload CSS + icona OG su landing/help
+- **#108** — ✅ injection Plausible + Google verification via env Vercel
 
 ## Test plan
 
