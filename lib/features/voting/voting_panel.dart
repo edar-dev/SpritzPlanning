@@ -532,7 +532,7 @@ class _VotingPanelState extends ConsumerState<VotingPanel>
       );
     }
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: scrollBody,
     );
