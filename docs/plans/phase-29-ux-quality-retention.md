@@ -5,6 +5,8 @@
 **Durata stimata:** 6–9 giorni  
 **Dipende da:** Fasi 26–27 consigliate
 
+**Stato:** implementata (branch `feat/ux-quality-retention`)
+
 ## Obiettivo
 
 Chiudere il cerchio **post-sessione**, aumentare **affidabilità percepita** (errori, offline) e formalizzare **QA manuale** lean.

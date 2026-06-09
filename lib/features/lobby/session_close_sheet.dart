@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +7,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/export/session_report.dart';
 import '../../core/export/session_report_stats.dart';
+import '../../core/errors/user_facing_error.dart';
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_decorations.dart';
 import '../../data/models/models.dart';
 import '../../data/providers/providers.dart';
 
@@ -57,8 +62,8 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
         includeFacilitatorNotes: true,
       );
 
-  SessionReportStats get _stats =>
-      SessionReportStats.fromRoomState(widget.roomState);
+  SessionSummaryStats get _summary =>
+      SessionSummaryStats.fromRoomState(widget.roomState);
 
   Future<void> _copyExport() async {
     final retro = _retroController.text.trim();
@@ -101,16 +106,28 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(
+            content: Text(userFacingMessage(e, l10n: context.l10n)),
+          ),
         );
       }
     }
   }
 
+  String _formatDuration(BuildContext context, Duration duration) {
+    final l10n = context.l10n;
+    final minutes = duration.inMinutes;
+    if (minutes < 60) {
+      return l10n.closeSummaryDurationMinutes(minutes);
+    }
+    return l10n.closeSummaryDurationHours(minutes ~/ 60, minutes % 60);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final stats = _stats;
+    final summary = _summary;
+    final scheme = Theme.of(context).colorScheme;
 
     return SafeArea(
       child: Padding(
@@ -130,11 +147,49 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
                     fontWeight: FontWeight.w700,
                   ),
             ),
-            const SizedBox(height: 12),
-            Text('${l10n.reportCompleted}: ${stats.completedCount}'),
-            if (stats.medianPoints != null)
-              Text('${l10n.reportMedian}: ${stats.medianPoints!.toStringAsFixed(1)}'),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: scheme.primaryContainer.withValues(alpha: 0.35),
+                borderRadius: BorderRadius.circular(AppDecorations.radiusLg),
+                border: Border.all(
+                  color: scheme.primary.withValues(alpha: 0.25),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.closeSummaryTitle,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: const Color(AppColors.spritzOrangeDark),
+                          ),
+                    ),
+                    const SizedBox(height: 12),
+                    _SummaryLine(
+                      icon: Icons.receipt_long_outlined,
+                      text: l10n.closeSummaryStories(summary.estimatedOrders),
+                    ),
+                    const SizedBox(height: 8),
+                    _SummaryLine(
+                      icon: Icons.schedule_outlined,
+                      text: _formatDuration(context, summary.sessionDuration),
+                    ),
+                    const SizedBox(height: 8),
+                    _SummaryLine(
+                      icon: Icons.groups_outlined,
+                      text: l10n.closeSummaryParticipants(
+                        summary.participantCount,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             TextField(
               controller: _retroController,
               decoration: InputDecoration(
@@ -166,6 +221,30 @@ class _SessionCloseSheetState extends ConsumerState<SessionCloseSheet> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SummaryLine extends StatelessWidget {
+  const _SummaryLine({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -56,6 +56,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   bool _sharePromptShown = false;
   bool _sessionProjectorDisabled = false;
   Timer? _notificationPoll;
+  Timer? _voteSyncBannerTimer;
 
   @override
   void initState() {
@@ -66,6 +67,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   @override
   void dispose() {
     _notificationPoll?.cancel();
+    _voteSyncBannerTimer?.cancel();
     super.dispose();
   }
 
@@ -327,6 +329,30 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       ),
     );
 
+    ref.listen(voteOutboxBannerProvider, (previous, next) {
+      if (next == VoteOutboxBannerState.synced) {
+        _voteSyncBannerTimer?.cancel();
+        _voteSyncBannerTimer = Timer(const Duration(seconds: 3), () {
+          if (!mounted) return;
+          ref.read(roomStateProvider.notifier).clearVoteOutboxBanner();
+        });
+      }
+    });
+
+    ref.listen<AsyncValue<ConnectionStatus>>(connectionStatusProvider,
+        (previous, next) {
+      final session = ref.read(sessionProvider).valueOrNull;
+      if (session == null) return;
+      final status = next.valueOrNull;
+      if (status == ConnectionStatus.connected) {
+        unawaited(
+          ref
+              .read(roomStateProvider.notifier)
+              .syncPendingVotes(session.participantId),
+        );
+      }
+    });
+
     final roomStateAsync = ref.watch(roomStateProvider);
     final session = ref.watch(sessionProvider).valueOrNull;
     final canModerate = ref.watch(canModerateSessionProvider);
@@ -384,6 +410,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
 
         final showConnectionBanner =
             connectionStatus != ConnectionStatus.connected;
+        final voteOutboxBanner = ref.watch(voteOutboxBannerProvider);
 
         final globalProjector =
             ref.watch(projectorModeProvider).valueOrNull ?? false;
@@ -561,6 +588,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                   status: connectionStatus,
                   onRefresh: () =>
                       ref.read(roomStateProvider.notifier).refresh(),
+                ),
+              if (voteOutboxBanner == VoteOutboxBannerState.pending)
+                _VoteOutboxBanner(message: context.l10n.voteOutboxPending),
+              if (voteOutboxBanner == VoteOutboxBannerState.synced)
+                _VoteOutboxBanner(
+                  message: context.l10n.voteOutboxSynced,
+                  success: true,
                 ),
               Expanded(
                 child: LayoutBuilder(
@@ -1977,6 +2011,50 @@ class _GuidedStepRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _VoteOutboxBanner extends StatelessWidget {
+  const _VoteOutboxBanner({required this.message, this.success = false});
+
+  final String message;
+  final bool success;
+
+  @override
+  Widget build(BuildContext context) {
+    final backgroundColor = success
+        ? const Color(AppColors.success)
+        : const Color(AppColors.spritzOrangeDark);
+
+    return Material(
+      color: backgroundColor.withValues(alpha: 0.95),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: [
+              Icon(
+                success ? Icons.check_circle_outline : Icons.cloud_upload_outlined,
+                color: Colors.white,
+                size: 18,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  message,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

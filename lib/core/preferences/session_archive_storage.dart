@@ -70,4 +70,14 @@ abstract final class SessionArchiveStorage {
       jsonEncode(trimmed.map((e) => e.toJson()).toList()),
     );
   }
+
+  static Future<void> delete(String id) async {
+    final list = await load();
+    list.removeWhere((e) => e.id == id);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _key,
+      jsonEncode(list.map((e) => e.toJson()).toList()),
+    );
+  }
 }

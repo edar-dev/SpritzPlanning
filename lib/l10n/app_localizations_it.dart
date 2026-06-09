@@ -363,6 +363,36 @@ class AppLocalizationsIt extends AppLocalizations {
   String get genericError => 'Qualcosa è andato storto al bancone';
 
   @override
+  String get errorNicknameTaken =>
+      'Questo nickname è già al bancone. Esci dall\'altra sessione o attendi ~2 min.';
+
+  @override
+  String get errorRoomNotFound =>
+      'Locale chiuso. Chiedi un nuovo codice al barman.';
+
+  @override
+  String get errorNotFacilitator => 'Solo il barman può fare questa azione.';
+
+  @override
+  String get errorInvalidVote => 'Quella dose non è nel menu della stanza.';
+
+  @override
+  String get errorInvalidPin => 'PIN non valido per questo locale.';
+
+  @override
+  String get errorVotingNotActive =>
+      'La votazione non è attiva in questo momento.';
+
+  @override
+  String get errorVotesAlreadyRevealed => 'I voti sono già stati rivelati.';
+
+  @override
+  String get voteOutboxPending => 'Voto in invio…';
+
+  @override
+  String get voteOutboxSynced => 'Voto sincronizzato';
+
+  @override
   String get leaveLocale => 'Lascia il locale';
 
   @override
@@ -758,7 +788,55 @@ class AppLocalizationsIt extends AppLocalizations {
   String get sessionArchiveExported => 'Report copiato';
 
   @override
+  String get archiveCopyReport => 'Copia report';
+
+  @override
+  String get archiveUseTemplate => 'Usa come template';
+
+  @override
+  String get archiveDeleteEntry => 'Elimina';
+
+  @override
+  String get archiveUseTemplateEmpty =>
+      'Nessun ordine in questo archivio da riusare';
+
+  @override
   String get sessionCloseTitle => 'Chiudi serata';
+
+  @override
+  String get closeSummaryTitle => 'Serata chiusa';
+
+  @override
+  String closeSummaryStories(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ordini stimati',
+      one: '1 ordine stimato',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String closeSummaryDurationMinutes(int minutes) {
+    return '$minutes minuti al bancone';
+  }
+
+  @override
+  String closeSummaryDurationHours(int hours, int minutes) {
+    return '$hours h $minutes min al bancone';
+  }
+
+  @override
+  String closeSummaryParticipants(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count clienti',
+      one: '1 cliente',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get sessionCloseRetroLabel => 'Note retro (opzionale)';

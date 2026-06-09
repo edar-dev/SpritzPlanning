@@ -4,10 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/session_constants.dart';
 import '../../core/monitoring/error_reporter.dart';
+import '../../core/network/rpc_retry.dart';
+import '../../core/network/vote_outbox.dart';
 import '../../core/storage/session_storage.dart';
 import '../models/connection_status.dart';
 import '../models/models.dart';
 import '../repositories/room_repository.dart';
+
+enum VoteOutboxBannerState { hidden, pending, synced }
+
+final voteOutboxBannerProvider =
+    StateProvider<VoteOutboxBannerState>((ref) => VoteOutboxBannerState.hidden);
+
+final voteOutboxPendingCountProvider = StateProvider<int>((ref) => 0);
 
 final roomRepositoryProvider = Provider<RoomRepository>((ref) {
   final repo = RoomRepository();
@@ -141,6 +150,8 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
       _roomSubscription = _repo.roomStateStream.listen((updated) {
         state = AsyncData(updated);
       });
+
+      await syncPendingVotes(participantId);
     } catch (e, st) {
       await ErrorReporter.capture(
         e,
@@ -151,7 +162,7 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
     }
   }
 
-  /// Applies vote locally, then RPC with retry; rolls back on failure.
+  /// Applies vote locally, then RPC; queues on transient failure (#126).
   Future<void> castVoteOptimistic({
     required String participantId,
     required String storyId,
@@ -176,7 +187,31 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
         storyId: storyId,
         value: value,
       );
+      await VoteOutbox.remove(
+        participantId: participantId,
+        storyId: storyId,
+      );
+      await _refreshOutboxUi(participantId);
+      await syncPendingVotes(participantId);
     } catch (e, st) {
+      if (isRetryableRpcError(e)) {
+        await VoteOutbox.enqueue(
+          VoteOutboxEntry(
+            participantId: participantId,
+            storyId: storyId,
+            value: value,
+            enqueuedAt: DateTime.now().toUtc(),
+          ),
+        );
+        await _refreshOutboxUi(participantId);
+        ref.read(voteOutboxBannerProvider.notifier).state =
+            VoteOutboxBannerState.pending;
+        return;
+      }
+      await VoteOutbox.remove(
+        participantId: participantId,
+        storyId: storyId,
+      );
       state = AsyncData(previous);
       ErrorReporter.breadcrumbRpcFailure('cast_vote', e);
       await ErrorReporter.capture(
@@ -190,6 +225,68 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
     } finally {
       _castVoteInFlight = false;
     }
+  }
+
+  Future<void> syncPendingVotes(String participantId) async {
+    final pending = await VoteOutbox.loadForParticipant(participantId);
+    if (pending.isEmpty) {
+      await _refreshOutboxUi(participantId);
+      return;
+    }
+
+    ref.read(voteOutboxBannerProvider.notifier).state =
+        VoteOutboxBannerState.pending;
+
+    for (final entry in pending) {
+      try {
+        await _repo.castVote(
+          participantId: entry.participantId,
+          storyId: entry.storyId,
+          value: entry.value,
+        );
+        await VoteOutbox.remove(
+          participantId: entry.participantId,
+          storyId: entry.storyId,
+        );
+      } catch (e, st) {
+        if (isRetryableRpcError(e)) {
+          await _refreshOutboxUi(participantId);
+          return;
+        }
+        await VoteOutbox.remove(
+          participantId: entry.participantId,
+          storyId: entry.storyId,
+        );
+        ErrorReporter.breadcrumbRpcFailure('cast_vote_outbox', e);
+        await ErrorReporter.capture(
+          e,
+          stackTrace: st,
+          tags: const {'action': 'cast_vote_outbox'},
+        );
+      }
+    }
+
+    final remaining = await VoteOutbox.loadForParticipant(participantId);
+    await _refreshOutboxUi(participantId);
+    if (remaining.isEmpty) {
+      ref.read(voteOutboxBannerProvider.notifier).state =
+          VoteOutboxBannerState.synced;
+    }
+  }
+
+  Future<void> _refreshOutboxUi(String participantId) async {
+    final pending = await VoteOutbox.loadForParticipant(participantId);
+    ref.read(voteOutboxPendingCountProvider.notifier).state = pending.length;
+    if (pending.isEmpty &&
+        ref.read(voteOutboxBannerProvider) == VoteOutboxBannerState.pending) {
+      ref.read(voteOutboxBannerProvider.notifier).state =
+          VoteOutboxBannerState.hidden;
+    }
+  }
+
+  void clearVoteOutboxBanner() {
+    ref.read(voteOutboxBannerProvider.notifier).state =
+        VoteOutboxBannerState.hidden;
   }
 
   List<Vote> _upsertVote(
@@ -229,6 +326,10 @@ class RoomStateNotifier extends AsyncNotifier<RoomState?> {
   Future<void> refresh() async {
     if (state.valueOrNull == null) return;
     await _repo.refreshSubscribedRoom();
+    final session = ref.read(sessionProvider).valueOrNull;
+    if (session != null) {
+      await syncPendingVotes(session.participantId);
+    }
   }
 
   void leaveRoom() {

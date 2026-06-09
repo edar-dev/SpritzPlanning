@@ -143,6 +143,15 @@
   "roomCodeRequired": "Enter the bar code",
   "connectionLost": "Lost connection to the bar",
   "genericError": "Something went wrong at the bar",
+  "errorNicknameTaken": "This nickname is already at the bar. Leave the other session or wait ~2 min.",
+  "errorRoomNotFound": "Room closed. Ask the barman for a new code.",
+  "errorNotFacilitator": "Only the barman can do this.",
+  "errorInvalidVote": "That dose is not on this room's menu.",
+  "errorInvalidPin": "Invalid PIN for this room.",
+  "errorVotingNotActive": "Voting is not active right now.",
+  "errorVotesAlreadyRevealed": "Votes have already been revealed.",
+  "voteOutboxPending": "Sending vote…",
+  "voteOutboxSynced": "Vote synced",
   "leaveLocale": "Leave room",
   "cancel": "Cancel",
   "deckSettings": "Deck settings",
@@ -317,7 +326,47 @@
   "sessionArchiveTitle": "Session archive",
   "sessionArchiveEmpty": "No saved sessions yet. Complete a session with estimated stories.",
   "sessionArchiveExported": "Report copied",
+  "archiveCopyReport": "Copy report",
+  "archiveUseTemplate": "Use as template",
+  "archiveDeleteEntry": "Delete",
+  "archiveUseTemplateEmpty": "No orders in this archive to reuse",
   "sessionCloseTitle": "Close session",
+  "closeSummaryTitle": "Session closed",
+  "closeSummaryStories": "{count, plural, =1{1 story estimated} other{{count} stories estimated}}",
+  "@closeSummaryStories": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSummaryDurationMinutes": "{minutes} minutes at the bar",
+  "@closeSummaryDurationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSummaryDurationHours": "{hours} h {minutes} min at the bar",
+  "@closeSummaryDurationHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSummaryParticipants": "{count, plural, =1{1 participant} other{{count} participants}}",
+  "@closeSummaryParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "sessionCloseRetroLabel": "Retro notes (optional)",
   "sessionCloseRetroHint": "Included in Markdown export",
   "sessionCloseExport": "Export report",

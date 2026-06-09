@@ -157,6 +157,15 @@
   "roomCodeRequired": "Inserisci il codice bancone",
   "connectionLost": "Connessione persa al bancone",
   "genericError": "Qualcosa è andato storto al bancone",
+  "errorNicknameTaken": "Questo nickname è già al bancone. Esci dall'altra sessione o attendi ~2 min.",
+  "errorRoomNotFound": "Locale chiuso. Chiedi un nuovo codice al barman.",
+  "errorNotFacilitator": "Solo il barman può fare questa azione.",
+  "errorInvalidVote": "Quella dose non è nel menu della stanza.",
+  "errorInvalidPin": "PIN non valido per questo locale.",
+  "errorVotingNotActive": "La votazione non è attiva in questo momento.",
+  "errorVotesAlreadyRevealed": "I voti sono già stati rivelati.",
+  "voteOutboxPending": "Voto in invio…",
+  "voteOutboxSynced": "Voto sincronizzato",
   "leaveLocale": "Lascia il locale",
   "cancel": "Annulla",
   "deckSettings": "Impostazioni deck",
@@ -345,7 +354,47 @@
   "sessionArchiveTitle": "Archivio sessioni",
   "sessionArchiveEmpty": "Nessuna sessione salvata. Completa almeno una serata con ordini stimati.",
   "sessionArchiveExported": "Report copiato",
+  "archiveCopyReport": "Copia report",
+  "archiveUseTemplate": "Usa come template",
+  "archiveDeleteEntry": "Elimina",
+  "archiveUseTemplateEmpty": "Nessun ordine in questo archivio da riusare",
   "sessionCloseTitle": "Chiudi serata",
+  "closeSummaryTitle": "Serata chiusa",
+  "closeSummaryStories": "{count, plural, =1{1 ordine stimato} other{{count} ordini stimati}}",
+  "@closeSummaryStories": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSummaryDurationMinutes": "{minutes} minuti al bancone",
+  "@closeSummaryDurationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSummaryDurationHours": "{hours} h {minutes} min al bancone",
+  "@closeSummaryDurationHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSummaryParticipants": "{count, plural, =1{1 cliente} other{{count} clienti}}",
+  "@closeSummaryParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "sessionCloseRetroLabel": "Note retro (opzionale)",
   "sessionCloseRetroHint": "Incluse nell'export Markdown",
   "sessionCloseExport": "Esporta report",

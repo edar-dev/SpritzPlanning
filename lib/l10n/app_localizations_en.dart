@@ -360,6 +360,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genericError => 'Something went wrong at the bar';
 
   @override
+  String get errorNicknameTaken =>
+      'This nickname is already at the bar. Leave the other session or wait ~2 min.';
+
+  @override
+  String get errorRoomNotFound => 'Room closed. Ask the barman for a new code.';
+
+  @override
+  String get errorNotFacilitator => 'Only the barman can do this.';
+
+  @override
+  String get errorInvalidVote => 'That dose is not on this room\'s menu.';
+
+  @override
+  String get errorInvalidPin => 'Invalid PIN for this room.';
+
+  @override
+  String get errorVotingNotActive => 'Voting is not active right now.';
+
+  @override
+  String get errorVotesAlreadyRevealed => 'Votes have already been revealed.';
+
+  @override
+  String get voteOutboxPending => 'Sending vote…';
+
+  @override
+  String get voteOutboxSynced => 'Vote synced';
+
+  @override
   String get leaveLocale => 'Leave room';
 
   @override
@@ -754,7 +782,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sessionArchiveExported => 'Report copied';
 
   @override
+  String get archiveCopyReport => 'Copy report';
+
+  @override
+  String get archiveUseTemplate => 'Use as template';
+
+  @override
+  String get archiveDeleteEntry => 'Delete';
+
+  @override
+  String get archiveUseTemplateEmpty => 'No orders in this archive to reuse';
+
+  @override
   String get sessionCloseTitle => 'Close session';
+
+  @override
+  String get closeSummaryTitle => 'Session closed';
+
+  @override
+  String closeSummaryStories(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stories estimated',
+      one: '1 story estimated',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String closeSummaryDurationMinutes(int minutes) {
+    return '$minutes minutes at the bar';
+  }
+
+  @override
+  String closeSummaryDurationHours(int hours, int minutes) {
+    return '$hours h $minutes min at the bar';
+  }
+
+  @override
+  String closeSummaryParticipants(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count participants',
+      one: '1 participant',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get sessionCloseRetroLabel => 'Retro notes (optional)';
